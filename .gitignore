@@ -2,3 +2,16 @@
 .Rhistory
 .RData
 .Ruserdata
+otu_tables
+ITS
+TGP_18S_tables_021722
+OTU_table_rrfd_3200_w_taxa.guilds.xlsx
+OTU_table_rrfd_3200_w_taxa.xlsx
+SV_table_rrfd_3200.guilds.xlsx
+SV_table_rrfd_3200.xlsx
+OTU_UNwghtd_UNIFRAC.tsv
+OTU_wghtd_UNIFRAC.tsv
+OTUs_18S_TGP_table_rarefied.txt
+SV_Unweighted_UNIFRAC.tsv
+SV_weighted_UNIFRAC_rrfd.tsv
+SVs_18S_TGP_rarefied_table.txt
