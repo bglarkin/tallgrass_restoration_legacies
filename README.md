@@ -1,2 +1,6 @@
-# tallgrass_restoration_legacies
+# Introduction
+## Repo name: tallgrass_restoration_legacies
 Agricultural practices in cropland, like soil tillage and fertilizer applications, profoundly alter the soil's physical and chemical properties over time. Soil carbon is greatly reduced and belowground metabolic pathways are greatly simplified, leading to attrition of microbial diversity. Restoration of abandoned cropland is increasingly popular, and usually involves seeding a great density of native plants into post-agricultural soil. Although these plants can establish, bacterial communities often fail to recover to a pre-agricultural state, instead forming novel communities [(Badger and Docherty 2022)](https://link.springer.com/10.1007/s00248-022-02150-1). We sampled soil from fields in current row-crop agriculture, active restoration of varying ages, and prairie remnants to investigate changes in fungal communities. Our goal was to learn whether fungi, like bacteria, transition to novel communities during prairie restoration, or whether post-restoration communities begin to resemble those in remnants.   
+
+## Source Data
+Raw source data were output from QIIME. These are relatively large files, some of which are binaries (e.g., .xlsx) and not compatible with GitHub. To save space and avoid compatibility complications, they are not included in this repository. ETL of these files is accomplished in **this file**, which produces clean .csv files which are included in this here and available for use.
