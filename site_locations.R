@@ -12,16 +12,18 @@
 #' ---
 #'
 #' # Description
-#' Site locations, maps, and metadata are included here
-#' Other raster data, like climate data, are also be processed here
-#' Precipitation data downloaded from [PRISM](https://prism.oregonstate.edu/) 2022-01-06, 
-#' Following this [tutorial](https://rpubs.com/collnell/get_prism)
-#' - 30-year normal from 1991-2020 was attempted
-#' - Also monthly data from 2007-2016 were downloaded and converted into BIOCLIM variables
-
-
-# Resources ------------------------
-# ——————————————————————————————————
+#' Site locations, maps, and metadata are produced here. 
+#' Other raster data, like climate data, are also be processed here.
+#' Precipitation data was downloaded from [PRISM](https://prism.oregonstate.edu/) on 2022-01-06 
+#' following this [tutorial](https://rpubs.com/collnell/get_prism).
+#' - Raw (downloaded) data is stored locally; site level data was processed into .csv files 
+#' and included in this repository. 
+#' - 30-year normal from 1991-2020 was attempted.
+#' - Also monthly data from 2007-2016 were downloaded and converted into BIOCLIM variables.
+#' 
+#' Note that in this script, messages and verbose outputs are often suppressed for brevity.
+#'
+#' # Package and library installation
 packages_needed = c(
     "tidyverse",
     "colorspace",
@@ -37,124 +39,111 @@ packages_needed = c(
     "dismo",
     "vegan"
 )
+#+ packages,message=FALSE
 packages_installed = packages_needed %in% rownames(installed.packages())
-
+#+ libraries,message=FALSE
 if (any(! packages_installed))
     install.packages(packages_needed[! packages_installed])
 for (i in 1:length(packages_needed)) {
     library(packages_needed[i], character.only = T)
 } 
-
+#+ conflicts,message=FALSE
+{
 conflict_prefer("filter", "dplyr")
 conflict_prefer("select", "dplyr")
 conflict_prefer("extract", "raster")
-
+}
 # Cleanplot PCA (Borcard et al.)
-source("/Volumes/blarkin@mpgcloud/Private/blarkin/ΩMiscellaneous/R_global/cleanplot_pca.txt")
-
-
-# Data -----------------------------
-# ——————————————————————————————————
-sites <- read_csv(paste0(getwd(), "/clean_data/site.csv")) %>% 
+source("/Users/blarkin/Library/CloudStorage/Egnyte-mpgcloud/Private/blarkin/ΩMiscellaneous/R_global/Cleanplot_pca.txt")
+#'
+#' # Data, ETL
+#' ## Sites
+#' Field type "oldfield" is not considered because they were only available in one region.
+sites <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALSE) %>% 
     filter(site_type != "oldfield") %>% 
     glimpse()
-
-# Climate data
-# ——————————————————————————————————
-# All data now stored in the external hard drive; summary tables written to the working directory
-# ——————————————————————————————————
-# Directory and command to download the normals
+#' ## Climate data
+#' Climate data was accessed and downloaded on 2022-01-06. The following script does not need to be run 
+#' again and is commented out. Raw downloaded data are stored locally, summary files are written to 
+#' the working directory and included in this repository. 
+#' 
+#' ### Normals
 # prism_set_dl_dir(paste0(getwd(), "/prism_rasters/normals/ppt"))
-# get_prism_normals(type = 'ppt', resolution = '4km', annual = TRUE, keepZip = FALSE) # data already available in working directory
+# get_prism_normals(type = 'ppt', resolution = '4km', annual = TRUE, keepZip = FALSE)
 # prism_archive_ls()
 # RS <- pd_stack(prism_archive_ls())
-proj4string(RS) <- CRS("+proj=longlat +ellps=WGS84 +no_defs")
-
-sites_spdf <-
-    SpatialPointsDataFrame(
-        coords = sites[, c("long", "lat")],
-        data = sites,
-        proj4string = CRS("+proj=longlat +ellps=WGS84 +no_defs")
-    )
-sites_ppt <- raster::extract(RS, sites_spdf, fun = mean, na.rm = TRUE, sp = TRUE)@data %>% 
-    rename(ppt_mm = PRISM_ppt_30yr_normal_4kmM3_annual_bil)
-write_csv(sites_ppt %>% select(site_key, ppt_mm), paste0(getwd(), "/clean_data/site_precip_normal.csv"))
-# ——————————————————————————————————
-
-# All data now stored in the external hard drive; summary tables written to the working directory
-# ——————————————————————————————————
-# Directory and command to download the monthly data
-# run once each for ppt, tmin, tmax
-# prism_set_dl_dir(paste0(getwd(), "/prism_rasters/monthly/åtmax"))
+# proj4string(RS) <- CRS("+proj=longlat +ellps=WGS84 +no_defs")
+# sites_spdf <-
+#     SpatialPointsDataFrame(
+#         coords = sites[, c("long", "lat")],
+#         data = sites,
+#         proj4string = CRS("+proj=longlat +ellps=WGS84 +no_defs")
+#     )
+# sites_ppt <- raster::extract(RS, sites_spdf, fun = mean, na.rm = TRUE, sp = TRUE)@data %>% 
+#     rename(ppt_mm = PRISM_ppt_30yr_normal_4kmM3_annual_bil)
+# write_csv(sites_ppt %>% select(site_key, ppt_mm), paste0(getwd(), "/clean_data/site_precip_normal.csv"))
+#'
+#' ### Monthly climate data
+#' The following script was run once each for ppt, tmin, and tmax
+# prism_set_dl_dir(paste0(getwd(), "/prism_rasters/monthly/tmax"))
 # get_prism_monthlys(type = "tmax", years = 2007:2016, mon = 1:12, keepZip = FALSE)
 # prism_archive_ls()
 # RS <- pd_stack(prism_archive_ls())
-proj4string(RS) <- CRS("+proj=longlat +ellps=WGS84 +no_defs")
-sites_spdf <-
-    SpatialPointsDataFrame(
-        coords = sites[, c("long", "lat")],
-        data = sites,
-        proj4string = CRS("+proj=longlat +ellps=WGS84 +no_defs")
-    )
-sites_tmax_month <- raster::extract(RS, sites_spdf, fun = mean, na.rm = TRUE, sp = TRUE)@data
-
-
-sites_ppt_month[, c(2,10,11)]
-sites_tmin_month[, c(2,10,11)]
-sites_tmax_month[, c(2,10,11)]
-
-wrangle_clim <- function(data, value) {
-    data %>% 
-        select(site_name, starts_with("PRISM")) %>% 
-        pivot_longer(starts_with("PRISM"), names_to = "var", values_to = value) %>% 
-        separate(var, c(NA, NA, NA, NA, "date_str", NA), sep = "_")
-}
-
-ppt_month <- wrangle_clim(sites_ppt_month, "ppt_mm")
-tmin_month <- wrangle_clim(sites_tmin_month, "tmin_C")
-tmax_month <- wrangle_clim(sites_tmax_month, "tmax_C")
-
-tgr_clim <- 
-    ppt_month %>% 
-    left_join(tmin_month) %>% 
-    left_join(tmax_month) %>% 
-    mutate(date = ym(date_str), year = year(date), month = month(date)) %>% 
-    select(site_name, year, month, ppt_mm, tmin_C, tmax_C) %>% 
-    glimpse()
-
-write_csv(tgr_clim, paste0(getwd(), "/clean_data/clim.csv"))
-
-yrs <- unique(tgr_clim$year)
-sites <- unique(tgr_clim$site_name)
-tgr_bioclim <- vector("list", length(yrs))
-names(tgr_bioclim) <- yrs
-for(i in 1:length(yrs)) {
-    data <- 
-        tgr_clim %>% 
-        filter(year == yrs[i])
-    site_list <- split(data, data$site_name)
-    tgr_bioclim[[i]] <- 
-        bind_rows(lapply(site_list, function(x){data.frame(biovars(x$ppt_mm, x$tmin_C, x$tmax_C))}), .id = "site")
-}
-
-bind_rows(tgr_bioclim, .id = "year") %>% 
-    pivot_longer(starts_with("bio"), names_to = "biovar", values_to = "value") %>% 
-    group_by(site, biovar) %>% 
-    summarize(mean = mean(value)) %>% 
-    pivot_wider(names_from = "biovar", values_from = mean) %>% 
-    write_csv(paste0(getwd(), "/clean_data/bioclim.csv"))
-
-
-# ——————————————————————————————————
-
-
-
-# Results --------------------------
-# ——————————————————————————————————
-# Sites in categories
-kable(table(sites$region, sites$site_type), format = "pandoc")
-
-# Site maps and extent
+# proj4string(RS) <- CRS("+proj=longlat +ellps=WGS84 +no_defs")
+# sites_spdf <-
+#     SpatialPointsDataFrame(
+#         coords = sites[, c("long", "lat")],
+#         data = sites,
+#         proj4string = CRS("+proj=longlat +ellps=WGS84 +no_defs")
+#     )
+# sites_tmax_month <- raster::extract(RS, sites_spdf, fun = mean, na.rm = TRUE, sp = TRUE)@data
+# sites_ppt_month[, c(2,10,11)]
+# sites_tmin_month[, c(2,10,11)]
+# sites_tmax_month[, c(2,10,11)]
+#' Transform extracted data to facilitate later analysis
+# wrangle_clim <- function(data, value) {
+#     data %>% 
+#         select(site_name, starts_with("PRISM")) %>% 
+#         pivot_longer(starts_with("PRISM"), names_to = "var", values_to = value) %>% 
+#         separate(var, c(NA, NA, NA, NA, "date_str", NA), sep = "_")
+# }
+# ppt_month <- wrangle_clim(sites_ppt_month, "ppt_mm")
+# tmin_month <- wrangle_clim(sites_tmin_month, "tmin_C")
+# tmax_month <- wrangle_clim(sites_tmax_month, "tmax_C")
+# tgr_clim <- 
+#     ppt_month %>% 
+#     left_join(tmin_month) %>% 
+#     left_join(tmax_month) %>% 
+#     mutate(date = ym(date_str), year = year(date), month = month(date)) %>% 
+#     select(site_name, year, month, ppt_mm, tmin_C, tmax_C) %>% 
+#     glimpse()
+# write_csv(tgr_clim, paste0(getwd(), "/clean_data/clim.csv"))
+# yrs <- unique(tgr_clim$year)
+# sites <- unique(tgr_clim$site_name)
+# tgr_bioclim <- vector("list", length(yrs))
+# names(tgr_bioclim) <- yrs
+# for(i in 1:length(yrs)) {
+#     data <- 
+#         tgr_clim %>% 
+#         filter(year == yrs[i])
+#     site_list <- split(data, data$site_name)
+#     tgr_bioclim[[i]] <- 
+#         bind_rows(lapply(site_list, function(x){data.frame(biovars(x$ppt_mm, x$tmin_C, x$tmax_C))}), .id = "site")
+# }
+# bind_rows(tgr_bioclim, .id = "year") %>% 
+#     pivot_longer(starts_with("bio"), names_to = "biovar", values_to = "value") %>% 
+#     group_by(site, biovar) %>% 
+#     summarize(mean = mean(value)) %>% 
+#     pivot_wider(names_from = "biovar", values_from = mean) %>% 
+#     write_csv(paste0(getwd(), "/clean_data/bioclim.csv"))
+#'
+#' # Results 
+#' ## Site types
+#' How many sites are in each field type?
+kable(table(sites$region, sites$site_type), format = "pandoc", caption = "Field types by region:\nBM = Blue Mounds, FG = Faville Grove,\nFL = Fermilab, LP = Lake Petite")
+#' 
+#' ## Site map
+#+ site_map,message=FALSE
 map <- ggmap(
     get_stamenmap(
         bbox = c(
@@ -168,6 +157,7 @@ map <- ggmap(
         color = c("color")
     )
 )
+#+ map_metadata
 map +
     geom_polygon(
         data = sites %>% group_by(region) %>% slice(chull(long, lat)),
@@ -181,22 +171,25 @@ map +
     ) +
     theme_void()
 
-# Precipitation normals
+#' ## Precipitation normals
+sites_ppt <- read_csv(paste0(getwd(), "/clean_data/site_precip_normal.csv"), show_col_types = FALSE) %>% 
+    left_join(sites, by = "site_key")
+#+ normals_plot
 ggplot(sites_ppt, aes(x = region, y = ppt_mm)) +
     geom_beeswarm(aes(fill = factor(site_type, ordered = TRUE, levels = c("corn", "restored", "remnant"))), dodge.width = 0.2, shape = 21, size = 4) +
     labs(x = "", y = "Precipitation (mm)") +
     scale_fill_discrete_qualitative(name = "site_type", palette = "Harmonic") +
     theme_bw()
-
-# Bioclimate variables from 2007-2016
-bioclim <- read_csv(paste0(getwd(), "/clean_data/bioclim.csv")) %>% glimpse
+#' 
+#' Bioclim variables from 2007-2016
+bioclim <- read_csv(paste0(getwd(), "/clean_data/bioclim.csv"), show_col_types = FALSE)
 bioclim_pca <- rda(data.frame(bioclim, row.names = 1), scale = TRUE)
 summary(bioclim_pca, display = NULL)
 screeplot(bioclim_pca, bstick = TRUE)
 cleanplot.pca(bioclim_pca)
-# Component loadings (correlations)
+#' Component loadings (correlations)
 data.frame(scores(bioclim_pca, choices = c(1,2), display = "species", scaling = 0)) %>% arrange(PC1)
-# Site scores
+#' Site scores
 data.frame(scores(bioclim_pca, choices = c(1,2), display = "sites", scaling = 1)) %>% 
     rownames_to_column() %>% 
     rename(site_name = rowname) %>% 
