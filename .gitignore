@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+.DS_Store
 otu_tables
 ITS
 TGP_18S_tables_021722
