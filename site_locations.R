@@ -33,11 +33,12 @@ packages_needed = c(
     "ggbeeswarm",
     "knitr"
 )
-#+ packages,message=FALSE
 packages_installed = packages_needed %in% rownames(installed.packages())
-#+ libraries,message=FALSE
-if (any(!packages_installed))
+#+ packages,message=FALSE
+if (any(!packages_installed)) {
     install.packages(packages_needed[!packages_installed])
+}
+#+ libraries,message=FALSE
 for (i in 1:length(packages_needed)) {
     library(packages_needed[i], character.only = T)
 }

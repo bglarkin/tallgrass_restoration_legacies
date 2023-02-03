@@ -1,0 +1,845 @@
+sv_num,otu_ID,class,order,family,genus,taxon,accession
+sv_1,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Douhan3, VTX00212
+sv_2,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_3,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_4,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Whitfield type 17, VTX00195
+sv_5,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_6,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_7,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_8,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_9,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo7, VTX00214
+sv_10,210c71717f87c8e4912431ed98b553f5,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Douhan9, VTX00056
+sv_11,fa34a5226112d5c3040a09e932c851d1,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00177
+sv_12,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G18, VTX00064
+sv_13,c53835b541e6990536c815e7e4b953c2,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_14,e52a5d72a4a7a5ac0ebe5dad0d430ec8,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_15,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus viscosum, VTX00063
+sv_16,45a426b419552dcf8deaf1cc237da73c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus viscosum, VTX00063
+sv_17,3bbb6fe91b995807a605b6f5983446a4,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Glo59, VTX00276
+sv_18,ce12dfd0da051ffb0ed18e3eb924dd15,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Douhan3, VTX00212
+sv_19,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_20,c01d0bc28a5fb412aa7b06a28b808e3c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00177
+sv_21,0c0b462f8d5de10f429a4a5339afa569,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_22,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus ORVIN GLO4, VTX00278
+sv_23,438dad17f499ab8c84b2dadd36a0bcbb,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_24,e57559a910fd8763695edf2a45af4ecf,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_25,3ea271a390b5f981a235cd62868e5989,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G22, VTX00125
+sv_26,017839fccf682a6e9cdde4e078b39519,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_27,e7251f7cb36f04986a298ba5f7c4b89f,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_28,e93219e3fa9866eaf244784446de5b40,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_29,d338b134f9f7963d5615f06009ce3895,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_30,50fa89cc42eb06898809ab8408c14188,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Whitfield type 17, VTX00195
+sv_31,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_32,140da1c9edd13ad241f781f1eeb2beb8,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU16, VTX00156
+sv_33,a737c9d64ea8567bd5fbd6694ced50b8,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G8, VTX00130
+sv_34,19489d75f7c56f3fe08622d5539ff9f6,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G18, VTX00064
+sv_35,66b093616c2a009b3c7e342de3a17845,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G18, VTX00064
+sv_36,4f6d913948da846959622e546321bc27,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_37,e40cac3e7eadfc084186b670392162bb,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G22, VTX00125
+sv_38,1b047c315d8ee8a8524f04d9caf3ac74,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Douhan9, VTX00056
+sv_39,023bc830ec1ab4b2125c9edee93cc9bb,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_40,08b4c352b6a374856297cc59939e1900,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_41,6575a4da1c18bf9f7d6e7073bad057f6,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo7, VTX00214
+sv_42,77ac270ac1b5f45e8a8eb2e8d6dc2dd9,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00177
+sv_43,b723648c48efdac5dcae10eb948f5296,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_44,33af5fd0661f9d0517296641737f17f5,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_45,68b1c78e0bed0214d8c154bcc73e2259,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus viscosum, VTX00063
+sv_46,24e0e2c3e3523c0dfe1842eff4c25078,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_47,663650390696ac576adf3531dddef4bb,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_48,d378cada02b87539df6bbcf669dc4174,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G7, VTX00199
+sv_49,8faa863a3714f9bbcfbf76a496aa592c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_50,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus acnaGlo7, VTX00057
+sv_51,bc912e1f8f8a4c0e9c4c7504bf2a4d7e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU16, VTX00156
+sv_52,8358caad260504807d38cd2898ca954d,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus acnaGlo2, VTX00155
+sv_53,a90b0d8694e4c06ad880655ef53443d4,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_54,d283f71f493f433a53b0c3bbc3306dc8,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp.,NA
+sv_55,928594adcbd64937948fbe791e84deb4,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_56,5f7dff610e5e41496a224f9c06c36c56,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_57,0b10db9bb084d4b3233a3c6e743a461e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_58,8e0ab0341460216c742331e7dddae7b0,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Yamato2005 D, VTX00084
+sv_59,1f08a6ba4170c5f3246f17bf498031ae,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_60,7ba96a903f9b390bcd78c55d23747061,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_61,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_62,4fca16b49e27701e6b962c029d49f2eb,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_63,20b9819cb3c9e302aa6165acd0c4329d,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_64,747d4a574a1aca1d6d01a45ee9529c04,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_65,be7c0a15cf559870b8837a0a165435a4,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00234
+sv_66,011c425e4c3599f39f7d5fa04dc1686d,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_67,f0cc400dc0c00335b7f2c8c0cb93a1ca,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G20, VTX00143
+sv_68,7bc067a6540c755cd1578b51202b746f,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_69,c40379b949044e9782baada99f17db5f,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G22, VTX00125
+sv_70,9bb0bf8be08f0f8a3ab32d1c0c303bb3,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00159
+sv_71,b5ace7f97324a861587747599210cfa3,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_72,5090f31ae98220b86d5ebdcbcb50639a,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_73,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU4, VTX00086
+sv_74,96d65ae63aaf56da55cedd4fcdb05425,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_75,22e462b5159ccfade45d36f0feb1d751,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_76,5bb0ff12f216fad2d9d3a9d1813d2fbe,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo8, VTX00175
+sv_77,b06022708344ecd30dad35de25cbf507,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_78,420028dc2dfc3e9c6a9e5d43b3cfd66b,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_79,132ccfc0da746037dbbad52507f0a381,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_80,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora, Diversispora MO-GC1, VTX00060
+sv_81,9bd4e3df0e3f0ccb05679d5a91734e37,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_82,e4cd5f7fd4cbb511e8f17b07d8df6cd4,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_83,98107578c7eed00e95b2b89858397794,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo-D, VTX00103
+sv_84,f232c1c1ba99188e4f0d5698dd8784af,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_85,72f025306b465e5a915bf5a9d59a2167,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus viscosum, VTX00063
+sv_86,a967c9fd2dee4876c959167ef691e63c,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_87,57437b1275fc1f83d37f693788c54229,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus ORVIN GLO1E, VTX00151
+sv_88,926e25af8f1ea74cf8e2ff69aac9dbd1,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus viscosum, VTX00063
+sv_89,d5c9a2c52df41011f02cb461b16b464b,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_90,22674d53f20b0b70bd9f5486f7f60697,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_91,dd5db82dac9abbcdce904032abaaf2c0,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus viscosum, VTX00063
+sv_92,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus, Paraglomus Pa 1, VTX00335
+sv_93,7b10cece76c2127a6a264ba37893b277,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_94,36075b441e61fae7c30ce9eb98e657fe,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_95,b569f987e0c2f77ffbf448a1067ecdf8,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_96,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Torrecillas12b Glo G13, VTX00409
+sv_97,c8a08e4f8c944df3c85c621392e2fc65,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00304
+sv_98,a9c8cf3d006c2910de635126e53e148d,Archaeosporomycetes, Archaeosporales, Archaeosporaceae, Archaeospora, Archaeospora Schechter08 Arch1, VTX00008
+sv_99,f6bea1b9bb5baf15bd3647be3c1bfd23,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G8, VTX00130
+sv_100,78a061d3578a0858af1d4bae6eceaaab,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_101,fbe5c7828bc0626dac72604b54861031,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_102,9265f06a3152925e254f443d6b0f0636,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo3b, VTX00069
+sv_103,f828480e27adb99df68b8915e059870c,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_104,a790f9d502323a755a2cc9f9f8b912f6,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_105,b7345b1148b85faf6581c8a245e5b59b,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G22, VTX00125
+sv_106,e43ef1aff5635f65d954d6f565138e9e,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora, Diversispora MO-GC1, VTX00060
+sv_107,314e21d5f6db68184353aa0a37786b4f,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_108,bac52c868e388432231dad7fdc96e705,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_109,a74fd59195ffe5abf1acef6437cdd5c7,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora, Diversispora MO-GC1, VTX00060
+sv_110,b3565b6ca13e7e0a5892a4e99cf169b1,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo2, VTX00280
+sv_111,34d1724d86abb5f79e61e137bcc90194,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_112,80d85cd113af37eb53e0a10133c9b7bc,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G17, VTX00114
+sv_113,a9efcf7c14a3a7ea509f3d673cadffe1,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_114,a8847e68b086c5125847fc0bc983a4a7,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Torrecillas12b Glo G13, VTX00409
+sv_115,bc5c42762a45f6f2b303bbb06eaccf0d,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_116,a910ee8693f96616338415abab73e252,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_117,b647c2d53288edb03e0c8c3e7697cac7,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU16, VTX00156
+sv_118,e7b2a6ab746177d50fec392d92199d86,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_119,5799ddab05002143907b2e309a056e0d,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_120,53495002854adee17369bb428d11e211,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus acnaGlo2, VTX00155
+sv_121,6240145e4e1f6e0a9ae2f546244d7f71,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus perpusillum, VTX00287
+sv_122,5ca01b9b9f0bd1b03f1a7a6b4ece2241,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora,NA,NA
+sv_123,5a09b75699b2224b3c13f44ade2dd158,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_124,ac206eab786de3670def1498bbce209d,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_125,4a284d71aa58d9b477d2c263e4cbfdc9,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_126,3a75eca347784cf39642894ffd4093e8,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU16, VTX00156
+sv_127,1fc3b2cf281d9328b8412689016b0ac4,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_128,18e7952181cc140d20c9349765f47542,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G22, VTX00125
+sv_129,e0dfca64c94c6fb7d85172b756934400,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Glo58, VTX00225
+sv_130,d5a8874db3d1f714a0160e25e88fd0c5,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G22, VTX00125
+sv_131,deff3465a76541440352e1e48450ed7d,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_132,b05ee8493fd5bcbe777c93f20faf6ce3,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Yamato2005 D, VTX00084
+sv_133,36f435187086cd86dc8407b6d7fa38c8,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo-I, VTX00107
+sv_134,f34409c81dee20764bac3b500eb4140c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00177
+sv_135,03a07df68bfbdf28a1b86735b134c95a,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G18, VTX00064
+sv_136,4b0ee396bf523c4e03fa8066d5eeb7c3,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_137,c7c2a3d8c977b70e837c661e58d815d6,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_138,3d0a9cd02f8d972a97c34486dc645dac,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_139,ae5605de5f0f253d46a10843dacf6f9e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU16, VTX00156
+sv_140,fdf1600bac0838f76691f7e23083e888,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_141,b02e1e76a352b95f253bd8d03e36a758,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_142,0c7b69f8f4af3f90e6667d01327b4b22,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_143,f870da406726432012c576da4e5d3520,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G17, VTX00114
+sv_144,ba422ee7d088ddce09edd6fc0ad9f4b6,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G17, VTX00114
+sv_145,b3775f39419d3aad768b1d51b5ccbe2a,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_146,b1f99ba39c263e796a7406839936c5a0,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo3b, VTX00069
+sv_147,452f0d591f9cc968680ff9adb8b97b2a,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_148,d2a6e059922a10c60cb9fd45fcb054c9,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G18, VTX00064
+sv_149,5f338f0f05339ee0f87410250babe2c3,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_150,eb7209ffd193c6c5a60e9a4ecc6a2c98,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo3b, VTX00069
+sv_151,98f1bb1afdb1e629fc08b00402e94cad,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_152,6c72a002437b67204f4bb55a544e49b0,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G22, VTX00125
+sv_153,a4feb60261441d08563741aa062cefc3,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00234
+sv_154,ea5f3fe5bcf60f4b67dc1336caf3ede7,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_155,1279f4f08a820a4af75e9ccbc7d43f5f,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G27, VTX00160
+sv_156,855e834d8654ae570870f7e60740d231,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Torrecillas12b Glo G13, VTX00409
+sv_157,eac18199c53aa01e7fe7e940900207a6,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo7, VTX00214
+sv_158,1f6152dbdc382bad400841edbdc77e54,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_159,91bf5230fc19e5bfa4f8ca79ec9220a9,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G8, VTX00130
+sv_160,d9bb8b0b8d7324810eccd6054f156c25,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo8, VTX00175
+sv_161,a71a96c90f3cba9d6e73c14799d30e05,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus INTA-4, VTX00445
+sv_162,5675e1a6b8f2f3891c3983af9413cb31,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_163,ebbb73d97cc875659541c58e19fcada2,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_164,bef260001e4533694d725a226915ee66,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo7, VTX00214
+sv_165,b05d94fbfc0294a04c5934ed379ca4fd,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_166,25454948bde44517c8ca46bdc42a2b61,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_167,005f706f54113f78e2c0fce7541464a7,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00177
+sv_168,6767a5b097389223e7e3d8eacc7c9c12,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo3, VTX00074
+sv_169,7ef269a4bf06fd008c20295456a1f4d6,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_170,4a97d2b02eb400d30c09c790138eca40,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G17, VTX00114
+sv_171,f7326d56afdd16868f31b97e67040f38,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Whitfield type 17, VTX00195
+sv_172,abb789d73f987e92f6c6f93e5ff481a1,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_173,1679260edb9331c3cf4f7444038e6580,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_174,93f755172cd08632098273a2fc54efe1,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_175,23c00bbf804cf2d657bf93fffa164b0a,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_176,1dc3e5b41efd2ffae95c4e0b97a6eb7c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo8, VTX00175
+sv_177,dfd53448f81f23769e110f8d82e671f6,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_178,1c6b3908ce4daf6edb494d67dd1eb37e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00177
+sv_179,8c15f09136ae6b97a8cadfcff7f9469c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G8, VTX00130
+sv_180,0b7958c5b182fae5e0cc9df7120b0982,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU13, VTX00140
+sv_181,4de59754f323556c1cb7d219f9becea9,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_182,edef33de89868cdb3f4a050b1d239579,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_183,b269178c57f09e9caf5ceaa106d52279,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G18, VTX00064
+sv_184,77b4e0e5cdb3defdffc40156f63310bb,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Douhan3, VTX00212
+sv_185,78a2181cb5df467432da0c4d3e7c2539,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_186,a7569d05992d2caf5e557b9b1883e376,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp.,NA
+sv_187,c41f4069001e6da1b6a17e95cefc3710,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_188,6e612dc3f460a4e34f2822a25e39a1dc,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00159
+sv_189,aede16ef6825b341ed349f27f2063636,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Torrecillas12b Glo G13, VTX00409
+sv_190,b3634f45a4ccdf3cb4d8d1c6b2b364da,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_191,731988e8d835da43abdf3655ef7730f5,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_192,d048c8e92236a39c54b0d17f3fd4de87,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus ORVIN GLO4, VTX00278
+sv_193,526e8b36d15995fadb620f1af1e9d3a2,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_194,f496b60318bc95c323af6417fc1f72a5,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_195,57bc25ab3e627c2b72c0b11217434898,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G7, VTX00199
+sv_196,0f2987e222b120bc729dbb0b3691642d,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo2, VTX00280
+sv_197,1c30b29ba78048dbd12c10c32dec28a5,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_198,c83d6fea0d41bdb1ea617517e1052489,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_199,f4d1202082edca48be5e7377e677a17c,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_200,adf5d69c4f37ce9fecc75ce31acd2e48,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Porras-Alfaro03 OTU1, VTX00294
+sv_201,21f5e4a9cab8bc16b8feed764e1ed80c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo3b, VTX00069
+sv_202,b3746908bc895a83ca94f54ebb1e71be,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_203,54a827a95e60b32ff7761b18ee8532f3,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_204,d4fd084751ad0b995a5f92bb8120bf7a,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_205,ea30322d03c5e02bc844daf453983072,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Whitfield type 17, VTX00195
+sv_206,d3155c9851330303298c8bb4e3600831,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_207,2f113020fc07718e6df07b7c200466af,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_208,2ce4fb318681216f34eac3068b03f219,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_209,7f3f26c13d95a3db4f35213c5861d698,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_210,ef9a301b3f50a549b3cf3be759237d37,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_211,37c0a91863d7790692f766b31edb943c,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_212,3920d4c5e6817e0c29940eb3f3179d48,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_213,699b44e27431352da579db4e70966c4d,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_214,ba8591e93f3d4f7ad04d0710d021cb0a,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_215,20f3b8bfe8c9906d4758bac240559089,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp.,NA
+sv_216,34e99f02aeade0f86a9f1042dbe8e44e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Whitfield type 17, VTX00195
+sv_217,e62b97249716db36efee8f20756f4fcc,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_218,a654aac78dc31cd4f68206fc5fcda2e1,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_219,52f8aed469e0457a571afcc470fb7b24,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_220,72609daac2b3b57a302bc3689c825919,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00165
+sv_221,91f2162a46bf86290a9c302fe462285f,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_222,71e7d8456f23faf2415afc9c1f42ed49,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_223,8ae3a71a6af32a55870020e46fdc1a43,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_224,b9ce58fa09f3cdf40706b66ed1e17cba,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_225,c1c6182be14bf9a4c95a3aebcdd3d78d,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G14, VTX00083
+sv_226,38de7eeba697781668fd43cc4baf47c6,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_227,0821d4d0bbb899b071e8ec0498bf86b9,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora, Diversispora sp., VTX00356
+sv_228,97378037372343341a2bee79ce55bb75,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G16, VTX00072
+sv_229,1b883a843e4a8d1c01da36de5e8c52c8,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_230,2f630db47c452a18eb480206bdf9f2bb,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00301
+sv_231,2eaf2aae05b1f6b98db353fefe0a02fa,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus acnaGlo2, VTX00155
+sv_232,2e653b41a79668a856818f7ec45fe769,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_233,756d767caf751f3c37decd789c1c8a12,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_234,ea10c65ee26bce92726facb7b0a6ea47,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU14, VTX00137
+sv_235,52694296d2dfee1a1247bdd07ea6e7c2,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus viscosum, VTX00063
+sv_236,b3e22862db64b9205912446bf567caca,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G8, VTX00130
+sv_237,83af21086968b7177e28eb003976282a,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus, Paraglomus IS-Pg1, VTX00446
+sv_238,df60441e7406b0d2c3be027b4bf0ef46,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp.,NA
+sv_239,4c2e509a1cf08962b28c3ce5578eebea,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus SS-G1, VTX00448
+sv_240,4a93d81ff8c91ad74afb883bce05843d,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_241,144cdacfa725b7ed0138c57197d285b9,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_242,98794e363a6231bc6ad7629a6c50d38d,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Yamato09 A2, VTX00248
+sv_243,1ee6c179f765b3700ccc85ea9d5e4ee8,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Douhan9, VTX00056
+sv_244,025f4a989cbd0ca25eca41d106167f1c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_245,54ba2b36918e5e33a3dcef5a333b8656,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G5, VTX00219
+sv_246,f811504d29fbe9b1e3304d07a17828b8,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_247,668ed511aa57ae90bd0a0ef8b181e0df,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00159
+sv_248,4811a02a61a2741f8c3d48380534f2c6,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G14, VTX00083
+sv_249,7ca78d38a43e3f35b36b2889f0f56f77,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_250,e6ac68e5afce28e81a4caf19d5967be3,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Douhan3, VTX00212
+sv_251,a62ed46ba1420a82648cefa287e65505,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G7, VTX00199
+sv_252,a13a2e299ffe54995287ecfa68b5c32f,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_253,63cf0a2664bc33a20bb3ad48e5008090,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_254,779113bbc0e2f266ded89e557b30c82e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G8, VTX00130
+sv_255,25496232cf173668d60835379e8bab26,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus acnaGlo2, VTX00155
+sv_256,875c7396a3c8edacf029518f1d7e8eda,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_257,4e026c63b79f3806710375ea9f8ca08b,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_258,856ee7ec9cd39fef5530d67fff1c64c9,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus acnaGlo2, VTX00155
+sv_259,53e6a7baa2efd07c35637b50838ea8f2,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora, Diversispora sp.,NA
+sv_260,a90976c0b9871c82b6f6a0a1aca19310,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus viscosum, VTX00063
+sv_261,cdf906492d1889c4cb0f1fd5b41faf33,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU16, VTX00156
+sv_262,09acae69b7bae5a86276acc2281250ff,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_263,32271b19c6c536c7314d534598322d5f,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_264,6eb4b49a316f623cb21f26a0d55dae26,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora, Scutellospora Scut1, VTX00049
+sv_265,67541cfcd3095e11ffb3c1f81df9ca30,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_266,197dc851780028763cfaec27267b599e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Whitfield type 17, VTX00195
+sv_267,cf3d3b69eb0b37559f53481e7fdb081f,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_268,7587c30227522c80d3c536d776974479,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G22, VTX00125
+sv_269,9b0b928a4eeca97284d983cd2ff2ff37,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora,NA,NA
+sv_270,961ec74bf61d2ab4bc5af3be18cf9134,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_271,b3d9453b8b6f7b30c79443bf2b0faedd,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_272,3da54ff2ce11106909d66d60c5991b36,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Glo59, VTX00276
+sv_273,06d540563798489914183874e6e2ba0b,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_274,9805d9788ba088501617efe11168e378,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Douhan9, VTX00056
+sv_275,3fb8b9f8d06a46b7bbf936ade2aaa1a3,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G14, VTX00083
+sv_276,6e835f70e4917ff0d70fab9e369c640f,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_277,c02182aacdae81e9ee10338bed2304d1,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G7, VTX00199
+sv_278,356eff866799c467aab34e9947c6fbb8,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_279,5631da1f661c86ab203e82be06b1a957,Archaeosporomycetes, Archaeosporales, Archaeosporaceae, Archaeospora, Archaeospora sp., VTX00009
+sv_280,a80f4edc08e63f8edab2173fa430c72a,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU12, VTX00188
+sv_281,a7b805211cefc561a19461b13a4d1480,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_282,da186307ba46f659e9bf91e8a4d861a8,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_283,df38a2aef10ec39b4663f835ec724cff,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_284,ef1f0ca362e29b7c599ccf6b0ea0037e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_285,8364548a5ac2827d0cb833cfdd7f9318,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G8, VTX00130
+sv_286,5915c4cc50f6f10147fc991038b7037a,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus acnaGlo2, VTX00155
+sv_287,22dd174ae675ae9fc249c8ab720350c7,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo-D, VTX00103
+sv_288,f3b5f801c1021ed0fec9db6421bdddc5,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_289,7a7a89421895cd0c295232b41d690477,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_290,486b756ed8a62fe11ff8b7e0ad445b8d,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_291,02442d57427159988b9c1f8932e8c3ea,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00197
+sv_292,fcdd0cd69cf7137207dcb0452446f34f,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU16, VTX00156
+sv_293,123ab84e49adddaba010887e613473b9,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G16, VTX00072
+sv_294,a70a07eecf9558fb2b3daafa7ed8eb75,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_295,a9c02bb60884f6d71d327c24b7cfeb0e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Douhan3, VTX00212
+sv_296,8c7b33438f1cdb36382b7bc94e29942c,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_297,75ec73b36cd3498ee03c814d0f910820,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_298,2863c720f1864a13d6043b70f6990585,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Douhan3, VTX00212
+sv_299,293f3bdaf445b0c728390b06b2e30059,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00159
+sv_300,1a29798c25acba760effd95ad76c0ec7,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_301,40f00bd21274816510afd79896d925ab,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_302,abd32d71afbcf8c603838f57e465a665,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_303,8dc681fb8bd2608ad29acf34be18c523,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_304,a42d783aed9b1e691b74ba4ddaa01c87,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_305,79a1a7c48aba28dcb65011875ea21926,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_306,c603446fcd07f3753f83fe2dbf86c2de,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Yamato2005 E, VTX00088
+sv_307,45b0ca48f9db210507525be487b7cca3,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_308,8db21249743d21686749e5e1b80686ee,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus, Paraglomus Pa 1, VTX00335
+sv_309,bea04d5d5354ea1627ae18cf8b119efc,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_310,f0cec7958ec57b5db0dd3237725aa3bd,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_311,92411995060c276c308dc79560a4bfa0,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus, Paraglomus Pa 1, VTX00335
+sv_312,e983468a6038af60b1f09ada6cf6847a,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Yamato2005 D, VTX00084
+sv_313,2ebed559f549d10296c15efd57d8b2d4,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G22, VTX00125
+sv_314,6a3728b7ef1b01d4e5f920b69fc205e5,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00301
+sv_315,c4efed21e01e7b7f96671a46e00ceb3c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_316,b25835242327e97d473a56c1e9867af2,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo3b, VTX00069
+sv_317,ddc14431bb2882c6668ef481704af23c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus ORVIN GLO1E, VTX00151
+sv_318,f4309928d09eb54666e1afddf5138300,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G22, VTX00125
+sv_319,d9b8b41852a0ccca8281e0059febec1a,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_320,18f1ce3acc32fcf26c40eaf07262f26a,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_321,3d6a09744b1a8330ea8d2b24926f5f89,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_322,3a1eee95d0b5323bf50d67fe68b00360,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Douhan9, VTX00056
+sv_323,5476fd57b860d323c720999ff6916435,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_324,5d960e46469d7e5c03b1fa3d5c1be6f9,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo8, VTX00175
+sv_325,40e16f060d9fe8d760a3d84c9820e88c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus viscosum, VTX00063
+sv_326,f357b5fe8e799333bc000ed802480bb6,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G5, VTX00219
+sv_327,64d0859a4b985b3537b6864094ee5367,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_328,10fad5f870c245cf0463164b49e8a31f,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_329,062f972def40a2c067ec19cbffdf3438,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo3b, VTX00069
+sv_330,7c225891809ff4fd1b628b150f8bf50a,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_331,2b8fcc042b03a2d61f581314a674cee2,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G8, VTX00130
+sv_332,b23e617a59831626c8e6b961340f6d18,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_333,893f01e70d03fc40569f9ac48386bcaa,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_334,c64aeab1ff46a927d19e06b86b8022cb,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G14, VTX00083
+sv_335,b6e1d6c3c3762534a1ca5803447747e4,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_336,6085b9f9b1e3f551d8c97566942f3502,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_337,15720844479057271688cb5bb4bf2db7,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo7, VTX00214
+sv_338,01d85904b0f78fddb99355552dd9573a,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora,NA,NA
+sv_339,24018d088e92d6604e9377a7e375d594,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU6, VTX00202
+sv_340,3f9a334f712b02c77a6f4c02d09dc3b5,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus INTA-4, VTX00445
+sv_341,197869ce750dd76de93bc4d498552460,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Glo58, VTX00225
+sv_342,0b8f7e1e76d21f7b20a7a0c442b6e976,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus acnaGlo2, VTX00155
+sv_343,f300f362ef89f1a5feed061f9b500e55,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Torrecillas12b Glo G13, VTX00409
+sv_344,1e10b7d1673934d04ebb75fe4ecaa32c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus viscosum, VTX00063
+sv_345,844d108846a13c2642144b2334e7f5ae,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_346,8ac0038f0e701da58c7f42ef3d3d1fd3,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_347,e3557c7e81db40605772427a7b8d6de8,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_348,09a4f822e9c20446a290e23e1b6ecde9,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_349,304459d0d445e5e97000e5279f40fb61,Glomeromycetes, Diversisporales, Acaulosporaceae, Acaulospora, Acaulospora Acau2, VTX00030
+sv_350,317d41ad4304ed56d1a88678b0bad96d,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo-I, VTX00107
+sv_351,7013562bb44cf1fcb29a7d7462ebc318,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_352,2d91d96879550247ac1d95221ec31595,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo3b, VTX00069
+sv_353,ca038bd6dfaf39de32c231757dc1fec1,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_354,5978f8a24477839fca07ff4f5786dad9,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus viscosum, VTX00063
+sv_355,c605c6f39da875c0d28420dd8bbe190f,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_356,45910479a8f9cd2e09829476ec0c08ba,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo7, VTX00214
+sv_357,806f32d567abba563e8d16b5cd748f0b,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora, Scutellospora castanea, VTX00041
+sv_358,038aa38806b5ae6f72b5379dfba13a2e,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_359,1f74a4a2c11f17c8aa695b82b7d6ee6f,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU12, VTX00188
+sv_360,b5ae5796f1869784414643399fb68c04,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_361,8a79e6d22f7b1c30e7dfb05aa0d51eeb,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_362,47ce15c802ee3eb52a25acdf9a6c8c7c,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_363,49cdd9155d18be6c79667d814a6b6da3,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_364,68cbadf41dab9fdb89c7afc2eb13f68c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_365,9976ee86295ca4108d23354c9d13a59f,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_366,1afb481fb64764e173eeafb4a95f9191,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_367,38709460ea2c1b9a3bed4526131f1c5b,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_368,9691157f2a061d7b5338478a7cce2f5e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus acnaGlo2, VTX00155
+sv_369,c1b9c3c6750ba7feddd9994773147ffc,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_370,4a3a691aea637688ba625c6baa8f0ce6,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_371,ad167aa4faf19d14530477db46edb682,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_372,613dd42e9297db53b7d85543af658ee4,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_373,6021fde80fb809918297faf0e097aa22,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00197
+sv_374,ab572b859da184b8c60288737e6447e4,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU4, VTX00086
+sv_375,f3beaa408947717814fc55796b6f758e,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_376,43f8a8fc315e69e790e9155b22cb9343,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_377,a40e3069394d5bf5e2a471a04801864c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Yamato2005 D, VTX00084
+sv_378,b785333c951403ca0e551f5f228d04e0,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G8, VTX00130
+sv_379,90831f7caf8c72c26a0a3a24ab92aa9d,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_380,702aca3f1893c3799321a4c62a5abbb8,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00197
+sv_381,ad0fac02d270ea750c26e833ee8d60fe,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_382,dc998311d09b9660ae78ec9a30f3c2d5,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Yamato2005 E, VTX00088
+sv_383,e826ddeb45a32eb478642796abd74c27,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_384,7bd5155e09bc1cc9ff188218fedfc374,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_385,5ebd23b1ec1eeafef556e8a7e67aa36a,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU16, VTX00156
+sv_386,6b0495379d0579df879e459ceb96c4c6,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_387,c11f3ff417407a264f30798635440c75,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus viscosum, VTX00063
+sv_388,1998c4dda925670c9dff22301734529a,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_389,8b09a664410a159c9bbec9bea78706e9,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus SS-G1, VTX00448
+sv_390,05a0205e576a3da313263757eeda202e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus INTA-4, VTX00445
+sv_391,ada190c46ba14302579a9c55ddc54bb5,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_392,9d1b342215e7dacfc8340e59bac9e9eb,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Douhan3, VTX00212
+sv_393,d7a2d4f07959d0cdd6246480ce2e7723,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G8, VTX00130
+sv_394,2da1a5284ebaa24b34b2c9cffb896688,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_395,01b281974770b55b7821ce14efaf903c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_396,42ccd6383f01d076e879d307b807b169,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G5, VTX00219
+sv_397,a97b07d03f8fd689d9ef7906182a3f73,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_398,558338d2dc3138aaff334e7ce20d3ee7,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_399,0cc550f5142db064f6782aadae6abbd1,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_400,97e06f506e2b98abb621f7fbb98555eb,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G8, VTX00130
+sv_401,95d9d2f17d287108fe56cb2fdfe9cbfc,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G16, VTX00072
+sv_402,205b9b28d2dd50ca0af2864089d39f3f,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_403,b16c33ea293011d1ee1f485ec2dc3ee0,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU6, VTX00202
+sv_404,5d92e3bb37989ededc131971290655cd,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Douhan9, VTX00056
+sv_405,065031e05c361c2bfa369273fa60f367,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00177
+sv_406,79d129533107c272f00758e7d4510511,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Douhan3, VTX00212
+sv_407,4486d7599427672d6886cce432a0a46e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_408,5829e4aa44843d8eb4667a58d80bc3ca,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_409,3a23647084156e6ca807d878d868065e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_410,31e80f22613d4af24065b96d0dbf758a,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_411,f62fe95f3db8474ae552a0f42850506a,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G7, VTX00199
+sv_412,db369c48e4c57992fe74d4693749bc31,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_413,13685f835e483e52ecb46ad353150881,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Torrecillas12b Glo G13, VTX00409
+sv_414,372a5649f437b41ebef30c22164766a4,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora,NA,NA
+sv_415,84aeb4c5269d029f41d5f7f5bf84c44d,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_416,7d21d145d41441aecd84b245bea00acf,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_417,f0bbab98740c1818a1ec6f86b8643500,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora, Diversispora MO-GC1, VTX00060
+sv_418,5a73fd9bd7a32765f54affdc2d04f41e,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_419,8073e594fb4717e0cc9db165b9eeb023,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_420,c1e79cc6113a3dab030116bac852a53b,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus SS-G1, VTX00448
+sv_421,c943514b59575c269c5fba7e13915808,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_422,f3041558637a926c2adc78ebd0afc477,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus acnaGlo2, VTX00155
+sv_423,efdb0ad73f524e5cd31c172852c0eeed,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus INTA-4, VTX00445
+sv_424,a4c725028d3221fec635d0f711b3fb1b,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Whitfield type 17, VTX00195
+sv_425,aac09c0ebb92aa6fa39d390b35ef2617,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G22, VTX00125
+sv_426,97c117b3e9a1ac726243cb969d5b973e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00177
+sv_427,a748d7b808db83c59f79e7f6ea86749f,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU16, VTX00156
+sv_428,1ec5bd90df1c851688e2cf4c4f404a07,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Whitfield type 17, VTX00195
+sv_429,2c8e9d188de90dce855b6fde02184411,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_430,ea083d19b0538fbadce6ffd0cb59e856,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Douhan9, VTX00056
+sv_431,703c1929720f7a2bae6e8489c6ab9276,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_432,00e2053abd30d5147d725acf3f28b410,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_433,54444850cd192e1c1e0788edae66ef8d,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_434,04ea5d6faf5d2ef7e27484d8b69b492e,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_435,22fd52aad87c850f4cced74a83cf0e2a,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_436,10d6e923a1ddbb9051a1a8aa32baf348,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_437,ee0ecfa2cdeaaa1171289dbf4fabbcaf,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_438,5e8bb692d65c33a9842bd89dc75e9628,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_439,4450ebb4fcf067460b7f0bf8e5d9e876,Archaeosporomycetes, Archaeosporales, Archaeosporaceae, Archaeospora, Archaeospora Schechter08 Arch1, VTX00008
+sv_440,b6cddd96f450a7bf3c4950c2f2a06b83,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_441,50f6885a34a5f8f1c2eb507ab77746b8,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_442,9b1747a15ebf0b3e6176d0e5f1442545,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_443,c827185367b3d18694672402e84ffc7d,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_444,20ac5fde469b203cce7267e90ad27839,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_445,b9f071d59c334c103415465cc85ccf47,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_446,bd55a80e95b7a31da1a989e7f0fe7784,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Glo59, VTX00276
+sv_447,18b928a09a0982c6b766c993fb89a7a0,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Yamato2005 E, VTX00088
+sv_448,e3bf7f5cf4842a5dc4bd9c9febc5eb6e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU16, VTX00156
+sv_449,891209ae8cbbe5a8fc9b00658e0cf5e3,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_450,37e4b1a1a11d28ea0a6404d7ae48d1c1,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00159
+sv_451,a1799523628566b04c00375d775044ce,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_452,9c742df77e7ced61786c5d5896b87a6f,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_453,dd05233abfa4d9dd91f715b678a7acd6,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus ORVIN GLO4, VTX00278
+sv_454,b8737892158145b6551411e533e5fd49,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_455,ee1d45ab77c9e6a144ace2ea8fa7db4d,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_456,6b97be76e61fe122a6173dd118d4e2ae,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_457,1cd05ce98e4ccc038395f80f8a5420eb,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus ORVIN GLO3E, VTX00309
+sv_458,8ef98f8746d7421d60fb97c8b2f7147d,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_459,f98c73ae83db5612a9c914957c40478b,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00159
+sv_460,ab8ba186d1dc0d992672291cc4e88d54,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Whitfield type 17, VTX00195
+sv_461,040e13e8698daa3f17be65d97fe3250c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_462,47906c7064a497e0f32f62c34c81ead2,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora, Diversispora MO-GC1, VTX00060
+sv_463,8bceb5b646c415c687437de14ca4d004,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_464,701207afbcb80ed4ce00e3091456f3b4,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G4, VTX00166
+sv_465,b56d74028987ab9f2c3fee9c56f135fd,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Glo58, VTX00225
+sv_466,d36494c5bc2599d4fe9fad5ae0ed6002,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_467,4eac309ace4078af9bc15fd1bf41d92f,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_468,ee64301dda378c3992795ee57610d245,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_469,9854791e099495f1ef9196c6370325be,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00159
+sv_470,424564eb7cd62645f949ee74fc19e28c,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_471,cd7846d25617a6bb5a16a4d8f8e5c54b,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_472,bb986f0053f8eb32947ced8b4646229f,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_473,2f8453f2d2b82b97c65412f554cabcff,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G7, VTX00199
+sv_474,3884ac331d34a9538260c57231053b0c,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_475,7e1d274576275c6131a3d7ebb2674a4e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU4, VTX00086
+sv_476,126abc8488b180a9cde45f75bebda3fb,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_477,46e497819940b5581061c0cbe577b79c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G4, VTX00166
+sv_478,3ecd9d4e08d489beac08735f51e80393,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Whitfield type 17, VTX00195
+sv_479,a38e174739c1aa60d0e56ef4fe6cb385,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU14, VTX00137
+sv_480,b45a529ff857d429e48e010c0fe02558,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus ORVIN GLO3D, VTX00310
+sv_481,fec59166f2355871d9679aeccb4e1f78,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_482,290c380352f461dad429812689f143a3,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_483,ac47a0794246276662215b5dd20c303d,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_484,f18cce57009b68d8d0081847a0bcdfc1,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_485,de76897c121bf2ce6c9de0a7b1db6e1d,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus ORVIN GLO4, VTX00278
+sv_486,b182d9cc12a74effdba45a0336f4ab86,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_487,86ce62d722071ac4eaf6b91743a5fea4,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_488,75dc43743bed645aace8942d48217be8,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_489,098bfeb1acfb37eaa997fe85e0a07c01,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus ORVIN GLO1E, VTX00151
+sv_490,c6ad871b3d996efcda701d28e384fc9c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo8, VTX00175
+sv_491,f43469b3d45e024b481efc9f177ef010,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_492,c741dd7653cde466153da75bbc97bbff,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo2, VTX00096
+sv_493,cfae2cfd0b0b5529ab65627db6a740a8,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00177
+sv_494,77e1550b520cda41de3537566ecbbb7b,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora, Diversispora sp.,NA
+sv_495,c8e78001959b563d6aac0d6d19b90f1e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G18, VTX00064
+sv_496,6d6a701419cbfdc493c8c7e8e9d3c69e,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_497,e3aa06b5951e2860225b4011de05360e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00177
+sv_498,5717ee9393a39de34d877444eb0ccde0,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_499,b3c7f5ced2c06f2eef86fb9983975690,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_500,593023b2aaacdb2b4648f21d56b8aae6,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora, Diversispora sp., VTX00356
+sv_501,f02174af20ef8ceb2c51df0778680696,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Yamato2005 D, VTX00084
+sv_502,7ed9da21bfdf429802b1e4f6bc3fcbde,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU13, VTX00140
+sv_503,5d16dcf820e55f361a3d5b2613060cab,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus ORVIN GLO1E, VTX00151
+sv_504,a86fc930dfcc94871fd28dfbeab1587c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_505,e0d232e365520706d082838cabf68e1f,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo54, VTX00216
+sv_506,2c304dea32c93f0cbbeac95b53c854ad,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_507,567bb0d30981caab3242c278580cb84e,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_508,5b5ed40f6809989ff1979bf95667b60a,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_509,e0c32c9485a0a7bb2d7b7c3e8b4617e2,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora, Scutellospora castanea, VTX00041
+sv_510,83e2211cb2387f20105644a07ed12e8a,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_511,c8b0413b7e76384264759bdd6af7e9ad,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_512,2e4a3670d8d6748311c7b0a5354eff83,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_513,5596aac448c5302efa5bba13551adfb0,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp.,NA
+sv_514,402aa66658ccd2800b9c4737839ac4c4,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_515,b3782ff74368263ac38063ee00004073,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_516,4441a3447ffa1d7e23403610432e4dbf,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G27, VTX00160
+sv_517,cb761fcc2ebac74170c27472009d55f5,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_518,d4fcb9c006ab7fdb935380315077dff3,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus ORVIN GLO4, VTX00278
+sv_519,9a339bf730da9556ef3ac374b24b98f7,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_520,57bc4d5526c670661272c4fc3e17c535,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00304
+sv_521,dbe662d0de9d0a31a6c0793a5c2806a0,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_522,7bad16eb4561253a9cf7257482e7aef1,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU6, VTX00202
+sv_523,97af57a7c1c0866ea2f64f1aec87bad7,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU6, VTX00202
+sv_524,00f77a458f301c6eeea6a02243721da4,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_525,c0fe075c838635c40bfd2f65280ad177,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Glo59, VTX00276
+sv_526,a60385d79dc72c1c94ad6d886b3304e3,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_527,8d8d1f88c5390cd8545e71bf5210e195,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_528,295c1409b9b069c52c16e3dd9f45a371,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU6, VTX00202
+sv_529,50ca642f13169240a16a7c81051da891,Archaeosporomycetes, Archaeosporales, Archaeosporaceae, Archaeospora, Archaeospora Other1, VTX00005
+sv_530,d6a260fe3b473f90a3907d0624a5ad78,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU12, VTX00188
+sv_531,b71c59b0f8ccfb2ca5064a9a98909d54,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_532,8c1184414d49a2d7c91430ce11c7b8ce,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_533,d3fadd64cd04f7657447516ae3312abf,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_534,fd3a0fea0aeaaa48a9ca1361beb8c896,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_535,2725fcd325a3ac3b9a2d0a4c776ed1a1,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_536,bb9252014dd2018b1047f371baa09783,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_537,a664195713a1654dd9903b3daf5b8378,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_538,c8f3e6bc0803cfed90abe6efc6899a49,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_539,12c6a0ef881921e16ea408c11729cf91,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G22, VTX00125
+sv_540,0d7a6e0bed053443f88157e2205d2545,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G22, VTX00125
+sv_541,637426dae4ce069840f204fef6a13e8e,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_542,da5d0538857423bd61763b3015d600a4,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00177
+sv_543,2bea53a011e43bd5664be6e6028e6cc0,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_544,41f0639dccd355d0add677ffe6a53c3c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_545,3842fe10d4b7f681d15b3dd699c9b199,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_546,fbcad76d6591014a578ff6506f4f531e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_547,60d93784be6f5b072e5698de66e15c33,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00177
+sv_548,a182889effd913d9dd149a5384ec536f,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_549,046b34965e5c0a590d7aa822e2f89aaf,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_550,b8f0f9b1e9b1e776b3a0ed1124d1b6e3,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_551,d5055acfdfdbca2a0087a77c843fc286,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo8, VTX00175
+sv_552,1029b3f79b6fbf2333eca0e1aa196017,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_553,cb4c737656fd309bc0d3f10f7d6eaea7,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Whitfield type 17, VTX00195
+sv_554,58a0d20829d16b04501206117b70d104,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU16, VTX00156
+sv_555,32df56c08b2bf1e0a3fb3ec9cad07580,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_556,c089ffcb1d5df2ec0297e69866d06129,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_557,24435da6fdb67ebdb6541e2de5498c1c,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_558,73107bb5b571fb18f178c542b046b83a,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_559,6b963e3baf15f167bcffffbe397aa4a5,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_560,f40cc92a2b2d29b4186fd1b1509e6205,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU12, VTX00188
+sv_561,f99046ba33e63e7ea1c928f3980336cf,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_562,0d4a21334e4253ae7a0035c5ded2c6ca,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_563,969e1f929283fff908f7251aee1033fc,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Douhan9, VTX00056
+sv_564,cb89a9aa9fd13f89d38a5b4f8b78c037,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G8, VTX00130
+sv_565,5cc851e7b1676e8d0e7c163d3cc9efc6,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Whitfield type 17, VTX00195
+sv_566,039639f7a90a2a8b56e9259d1ed6ebdf,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_567,354412b49e9787ecc939c8569a33c3de,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_568,78e441587d5638396a2d30e39285228b,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_569,9de1847da33717a323e6aaab99076b16,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo-D, VTX00103
+sv_570,54fa83e334b628cbb4217faa91e9f54f,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_571,a829f30dce90a88682e3e994884d9a3d,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Glo58, VTX00225
+sv_572,c14373ddec8e1b89058bad2897f1b849,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_573,1a29aced444d6f7a14a371ee64de987a,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_574,3279488255f1975097bf63e6b7122c82,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_575,31aefed8c8a558229ec22ba5e20d3338,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_576,2f6e501a3fe150ec413a4b5a036cc37e,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_577,0e53de1e4a94ec3617e700eac2e8fae5,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_578,719992555d078877d5e555ade6af4977,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_579,41ddc3e5220239693ab7b76340749f88,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_580,b41eb3e230eebda711901f6d06b7c313,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G8, VTX00130
+sv_581,4d198fdaa271920c38eaa15b0f07e327,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_582,05abcc46da407dd860d98ca47c85b097,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00177
+sv_583,cd84e8e4bbcd0da68a6d7d4b4375c2d7,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_584,06948f31cf736d61eeb70c237073808c,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_585,bcf9a698969a4a469b03a41787871320,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora, Scutellospora Scut1, VTX00049
+sv_586,fe18e8075174c6e9b6c807dd322985cd,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus ORVIN GLO1E, VTX00151
+sv_587,64dd065e597d5c107c3aca512fb614ac,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00165
+sv_588,e388b8dabd813ac63c1dcae435ecdefc,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_589,1b774d303cefccfef44b0875313d0b83,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora, Diversispora sp., VTX00356
+sv_590,3393d19c21b8e0b1d6c13362d7ac64b7,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_591,a73754b43c37120d51ab57144e8c905d,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_592,e28a911ae49d9f56ceb8cc2d40286168,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_593,f0815d0df0eef71a662b7bfc0983d7d2,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_594,389cb8d921ac1b06addcc69f0ddd4281,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G22, VTX00125
+sv_595,0e58800e87e07bc68fe31e6225fed47a,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus, Paraglomus Pa 1, VTX00335
+sv_596,350669ba6e12b94fcd5a30856e101acf,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G22, VTX00125
+sv_597,db3fbab7d4f17a60004a9d8deda259f7,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Whitfield type 17, VTX00195
+sv_598,d35fa095c9d10a928f18ded067f77a74,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora,NA,NA
+sv_599,5183857bbabb1c51255ef232bd9b3db0,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_600,5dbcb3d943e7b6a591952c6d1d4f36c7,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00234
+sv_601,34e1cc634922661972b098758e76fcb1,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_602,ccada6b3e6926482abea99b7a30926fd,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Douhan3, VTX00212
+sv_603,a258991a4c7712ca7474808e101b491c,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_604,4e5b322285bdaff37f6fdb19ae41dc9f,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_605,9dc45b7df51b549feddb088e7a451bea,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_606,32700529321e09abe31182d0a210b2cf,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_607,0d6cca9aef3df65ac3e1365449f97a46,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_608,af93ffc46c73a0f5e5dc3e900ba77e58,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_609,dba4b51cb2bf859cebaf5f9aa8d5bb20,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_610,a7420908326448d6564d24fb93ec09dd,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_611,6450ebfd5a5125793dc90de51910b620,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_612,dc495859cdd4081d7f02ccda5a95c585,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Yamato2005 D, VTX00084
+sv_613,c5305e6d1af45102a50d227d6b5cff94,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_614,73fe58eea2de298dc7380cc5e37b9cc7,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU4, VTX00086
+sv_615,e6423bb1d53a6e9f2bf2f472674feb77,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus viscosum, VTX00063
+sv_616,bc900fb41a559b63de50b6bc47d2d7de,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Yamato2005 D, VTX00084
+sv_617,8afb140dd51bdf39257abe7c1a96d11a,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_618,5e6c65c36877c0ac4d2cc76953272f39,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU4, VTX00086
+sv_619,2e1e5d666608bebfdcaa548a37f9c0b8,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_620,59361a70c367fd4ddc161c81e73f8258,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_621,14b9821e2ebf58779ceab523d0729722,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_622,6d69915d51f6a993f43577433fd6fda0,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00177
+sv_623,ccaba9fd533ce02fdc81b7af758c3ae3,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_624,a620220611437e5b8a56388ff7a5e606,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Douhan3, VTX00212
+sv_625,a354480ab6a46207330031ef17ff8182,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_626,9d74403ea48ab3cff5e3afa1201f953f,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G22, VTX00125
+sv_627,bb6dc96df1fb6007af1fb210f335bb82,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_628,6ca4a219e090efde51bcc0600f71a3f6,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora, Scutellospora LER04, VTX00318
+sv_629,0e5350157818645231cd07c4f188e3c7,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus acnaGlo7, VTX00057
+sv_630,5436889eb9ec5ad8999b0cbbb2513d91,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_631,1ea33fc56e5e03f5a6aafcc422ebdefd,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G8, VTX00130
+sv_632,0ad22960c9754fcf5b48f506875f7cad,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo7, VTX00214
+sv_633,ddf938a8f5b264547728789ed37d3d3d,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_634,d80eb2d67de27cba579c1bc2bc17b2fe,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_635,141a1b59d9b690289c2cadfa151d2521,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_636,94dc5ba0ac2dce682293f8257afc9bc7,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_637,436bbe4c386bf82a121ecaced5667012,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_638,ead7dc400de32ddc5dbf6a90e9830695,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus acnaGlo2, VTX00155
+sv_639,68096f7004dab19bfcc14198fa0158d4,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Whitfield type 17, VTX00195
+sv_640,7a792f06476bced479e24316397b9508,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Glo58, VTX00225
+sv_641,565a7d86acc0d4763a7dba4406357fcd,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_642,003eda4819f5a1e68c53549d9a68e204,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_643,f45923c2ccfd89ba01125a298212b0dc,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_644,ee7304039ce88b17fcbcb084bf6df3d1,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_645,51c03f8eb40da2552674270a6d82210e,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_646,021b5dd75f3accbeed1f8ee94ab1e8d7,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_647,618de643868c4ce037eb4110d41ccba3,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_648,61489b4e1610956a11eef09da4d4e85a,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus ORVIN GLO3D, VTX00310
+sv_649,8b1fdfe47b400214fb6082cf09e0cafb,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G22, VTX00125
+sv_650,295a7203a76e9b921727d55b73525586,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_651,3c7f57f8f8128697bacd2604847d8778,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_652,d3d9945d3151574f3849f4533d30a6e7,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU4, VTX00086
+sv_653,42140f9c49c511702ebe658b5be8e3df,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G16, VTX00072
+sv_654,f23bb3a89dbacd7e77e9bf530369be64,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Douhan3, VTX00212
+sv_655,ec08a7a5481b8fd28f14fe9da2b7083f,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_656,e8767b126142419363b3da1188cac51c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo8, VTX00175
+sv_657,9a9fdd49279ba1663fefdcaeb2f553c6,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G14, VTX00083
+sv_658,166a6e2677e7420556c15d53435c6a3a,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp.,NA
+sv_659,ab03a5ea31d48310f43923b7e198bdaf,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_660,a1ad0e2ca94dacd1f5c30bbee58051f6,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus viscosum, VTX00063
+sv_661,2c0e34d9454aeedfd075d8d2b5c8e693,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_662,b79e3e41be1e262c91877e18eca3671a,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus ORVIN GLO4, VTX00278
+sv_663,ed5d5e3edb9e383165274f6054359d63,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Yamato2005 D, VTX00084
+sv_664,cdebe1e5cb0dbb436ea337e4a8eca828,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G22, VTX00125
+sv_665,b08c934a3c222b1bca1f4f4d1af02ee9,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G18, VTX00064
+sv_666,94f123032a9fbf211c95bc9f5a263d72,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Douhan9, VTX00056
+sv_667,4c2d7a917d40be7036e0297aff0ec0aa,Archaeosporomycetes, Archaeosporales, Archaeosporaceae, Archaeospora, Archaeospora Other1, VTX00005
+sv_668,e4f0075a0c86489cd5a353f1b6bd8103,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU12, VTX00188
+sv_669,0cf8b06119c46d516529464b9d336512,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_670,74a6cc03a369194da1411427aa338b7d,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo3b, VTX00069
+sv_671,8f08826d57c1bab0f8041117ab8ac8bb,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_672,ca1891a75c6a9e92295d82cf2eae53c7,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_673,93cd698435f034309a6b5eb95e32b5e4,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_674,113aecb2f7c50441e27e9ce2a40cd9a2,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_675,4ea264c2eb956083dcd03acc20f09b8f,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus ORVIN GLO1E, VTX00151
+sv_676,37b84ef3895e7cd9eca88a01867fe764,Glomeromycetes, Diversisporales, Acaulosporaceae, Acaulospora, Acaulospora Acau2, VTX00030
+sv_677,b3b6a34b12a6bb035f3c53c15fd39830,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_678,e0d06e2b174ef1d070be334a0dfdfeab,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus acnaGlo2, VTX00155
+sv_679,d078e0c8d3242c7e23f9e6a4ac40f3d8,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_680,602641cf71e1a00a14f9d2797342de8d,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_681,544a0b944aabb095d9e8b3416cecd458,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_682,cfd9d09417f81433b4a95a90b00944c2,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_683,25c0acb4c218f6ddd04e572a9cab1c69,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_684,e8afbf2ea4a27be9e654f328b4513d5e,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Glo59, VTX00276
+sv_685,4c9cd17255934809951fb0052d692a0c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G5, VTX00219
+sv_686,caafd853e8e73324de3ff4607edc60b5,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Glo58, VTX00225
+sv_687,8139a14ba1e8eae906bc19796a0f23d3,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_688,eb7683fb75558de1b4f50cdddf46da2a,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_689,e8c738be9ba791a3894c1c8a44bb36d2,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_690,1f0ec0b796ba39ead0e7e3df6e5b05c3,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_691,439eb53365f8831964d443a9f959bc61,Glomeromycetes, Diversisporales, Acaulosporaceae, Acaulospora, Acaulospora Acau2, VTX00030
+sv_692,86fcb8bbb67cfeb6ee29bbe609f66ac9,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_693,72176e35dad65303abd75d820f90802a,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_694,0f65aaea564900ddb0213309c0e20573,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora,NA,NA
+sv_695,32a603f90902d09cba5b72b260d3815b,Glomeromycetes, Diversisporales, Acaulosporaceae, Acaulospora, Acaulospora Acau3, VTX00228
+sv_696,60181070deab5c251ce83d40a4ed0983,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00315
+sv_697,e02ed1f94a5088d402a5089ed97a13d3,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus viscosum, VTX00063
+sv_698,f92bc62c48617b3cd407fadfaebc39fd,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Glo58, VTX00225
+sv_699,6af8e1fc1edec097339970fc5abe0e74,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU6, VTX00202
+sv_700,ccb0d38850a6c056ddeb8d48234e5ed1,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_701,dca18aad62f3da407ee6c01954b67677,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_702,6d8ff50b35c15d21da53f2a483dfb780,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_703,4f03ab9fb711cb6d49885577ff96d4ab,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_704,4db97578ac0f1fc70b292804a05a8e06,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_705,64f873c8e3c516cb8701777622d079a6,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora, Diversispora sp., VTX00356
+sv_706,51dbc910fca57a0ff5cff5bd3aa4fd97,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_707,ea0f9936073f324ce9c56bac6ab1046e,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_708,8df7aa0461e701f5aed964d0ee2dd63f,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G14, VTX00083
+sv_709,95e476f8ff8a3b42817967354a590bf2,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_710,e6bea4d022a3f708db7ff01b1da63ab6,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_711,829eb3556abdd6bbc9b9aa2ed9dde357,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo3b, VTX00069
+sv_712,ad20e186cb75532cfcc8367ba9692659,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_713,58eef984d74c933f37a0c03672d1bfe7,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_714,bd8f1375b6a4c6fc7954599731615aae,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_715,d2a4d6d3cfa6fcec402f313d8034c3fd,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_716,192ba459ed45056abdc9c0f175f6e2c8,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_717,e59f5d1ac448cae3db9ff63906e79771,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_718,baad9ed7ec55b0a799487fc5e10f9cd4,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus ORVIN GLO3D, VTX00310
+sv_719,52eb4f24a70e080e75714effdeef306b,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_720,410102737abb8cc131162048a7c109a5,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Yamato2005 D, VTX00084
+sv_721,5fa71e16f2241ef15688ef0bd2d254fd,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_722,9fb318e5ea50f2472a7644c07fc74d96,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo3, VTX00074
+sv_723,66b4a64eabb9cafbef3c89d85570640c,Glomeromycetes, Diversisporales, Acaulosporaceae, Acaulospora, Acaulospora Acau2, VTX00030
+sv_724,f5321eb1e5e734f1aef1ff85ad39f84a,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo-I, VTX00107
+sv_725,4c3ca99a80f03bd4de404cce8e05751d,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_726,3cfa3ab0b737fbf203665a6c50afc29e,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU4, VTX00086
+sv_727,ae749f680bb19764dd09876a99b704ef,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_728,3749188b8a0f2287d466fc81964797c6,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_729,8bfd35dd949b06a46abbdf9f650c72f2,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_730,46824bd3c09a2246e5866e895140c0a6,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_731,1e9a9e909f63329fa8124ffc567917b0,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G27, VTX00160
+sv_732,9708fa837ed887f0c7de0127f88199a2,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Glo58, VTX00225
+sv_733,37d41b9c15509ef0bce91f43548243e6,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_734,644512008129b4adba870c6c120d81ca,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora, Diversispora MO-GC1, VTX00060
+sv_735,5e9d7dcd1b22a57cac7d8883e658a854,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_736,6d029a71ce84c0d5a2266f594b9d35b2,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_737,dadbf9312f73c0cb76e4912520f1665b,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_738,bf6a6441d4dd1b704a66c82dc8f7fd9d,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora, Scutellospora castanea, VTX00041
+sv_739,67b800d24b6cbed8b758077c0255b1dd,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Douhan9, VTX00056
+sv_740,8421e66d62a01fdb976e6aee452681af,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU4, VTX00086
+sv_741,6f08e60e949abec931598fea7ba6a7f3,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_742,f452cc3966756887bd307a87001e3f7d,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_743,3fb47df4c84edb958a2e55f662247210,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU4, VTX00086
+sv_744,abf313f000adf56904e4e3bd294db5ec,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_745,a00e0dac4283801ce6a3e7a2c5488bb9,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_746,ecabd7b133d8f233d00d892894c2a5f4,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_747,7c4ec4829c8da63e49c305cbca787afd,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_748,f9d6c1c22560bd8fef2f829c7b03c7f2,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo7, VTX00214
+sv_749,2e34203f2322d79373aac9707660ef09,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_750,eefc4bdfb862dc8213dad2e36291db66,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_751,861197c75d0bfa1ba553839d8e7cb315,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo3b, VTX00069
+sv_752,097543bfd5ecd8d3757cd6b8754fb0f7,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_753,d57868e99811730deb5af2869dcda821,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_754,4a15506b7b25796c59b686974414d291,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Douhan3, VTX00212
+sv_755,97d5d5e878c56b859de16500db02a25c,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_756,c9d249523bb12ffa053a9005c8e79287,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_757,d6ad22f0701f342d48cb5cd0b906f7b7,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_758,c145398ab64a97d3a70d357ab5e3ccfa,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_759,01d457ef3a138f4cae3687ea13e0eb53,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_760,2ef61aa1de777986a0efad4bb255adf6,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_761,4f03adf862bfb577a8b7213560ccc179,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU4, VTX00086
+sv_762,28207b4f0b1c09fb5bc8faa6bc01051d,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Douhan3, VTX00212
+sv_763,14fa7cc430b55f4304a8d239dc118fff,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus acnaGlo7, VTX00057
+sv_764,8d0c013977acdbfce0aec1cced309d22,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G14, VTX00083
+sv_765,29daf882ef0787fd8e17882f109b82dd,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_766,c953e77faa9c5f891a8aa54424676c5a,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo-D, VTX00103
+sv_767,81ab7a5a6c191b23514cf1228dcc4030,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_768,3ce5e0e0bf14aab0aab3854c649f000d,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_769,8d072e6a6a77ba63086c3eff70afc602,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus LER09, VTX00341
+sv_770,e9b6613c03dcfd33a26a96b4011f0ff0,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_771,16c2b85d58d4fa22b16030bc44f77eda,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_772,b991dbccef763c8edc3dca517ff71bac,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_773,ec24f425d4aa96059243b8f4b2797d56,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU12, VTX00188
+sv_774,42b656f78531e3710aa39ab18da12c8c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00165
+sv_775,0686f1b115de15a84e172b64aa690061,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_776,69aa557556a91ab37d5a3975e2929260,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_777,23ec2931636f142777b16564816efd38,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Alguacil10 Glo6, VTX00395
+sv_778,1346b02f7fba9db89b620ddcf7b6a6c2,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_779,6bc5a992359fc42beaba48f6047897c0,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00197
+sv_780,bfd59b0a00aae2c7ca4c8a61c6f95be3,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp.,NA
+sv_781,3a0931ad72baa041ca825138395eed6c,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_782,1f09d2a44abd2236f26c055f1ad2af79,Archaeosporomycetes, Archaeosporales, Archaeosporaceae, Archaeospora, Archaeospora Other1, VTX00005
+sv_783,a5fc2e467399f8e3f4fc272f543edf95,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Glo G8, VTX00340
+sv_784,4ca0067b166a8c19caa7a596d27eb896,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Whitfield type 17, VTX00195
+sv_785,073aae269958487058fd321b45dacd26,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_786,6c7b1db7ada01a5caee481356f650ce9,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_787,bc1d1287423ea640fa35202589ef2310,Archaeosporomycetes, Archaeosporales, Archaeosporaceae, Archaeospora, Archaeospora sp., VTX00009
+sv_788,f9698fe024f9346b01a13964957054f7,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU6, VTX00202
+sv_789,7ba002fb02fd0cdb29ca22fba12e9315,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_790,ba0a9957ccdcd7865023bf79c3738042,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_791,ee91bcbd74a08c2480ec0e76ab69e267,Glomeromycetes, Diversisporales, Acaulosporaceae, Acaulospora, Acaulospora Acau10, VTX00028
+sv_792,dc4f08cc310f25ad02743a5a961c15c9,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_793,97f138234a41900f29467c8c0dc99868,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_794,a50f04c4581dba64da358e8d9c45985a,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU4, VTX00086
+sv_795,87b2693f86e7facb602ced66da1c1af7,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus,NA,NA
+sv_796,933f043da555028d60f869ff28b1e63f,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_797,8faa2642ec801c9a28863294eeca1429,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_798,19b48a9a90ea1941a1cb7dc9d9e2651f,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo7, VTX00214
+sv_799,7c2234628aeac7cbabaafd3a1c8d0d2e,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_800,64517f18ec798fbaa82312245ade80b0,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_801,981611d2ad29cc6d5d2cc7508f422848,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G23, VTX00222
+sv_802,79640a45489af55e7ec820b53a71f3fd,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_803,66e830b9b66c6e8929d120737f709c33,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora,NA,NA
+sv_804,018c156c8ad323389cd614ee5744ae19,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_805,6a873db417ac06fbc9db346efe457e5b,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_806,27cc5fb395d22f7e2bf57ec49a3f1535,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00177
+sv_807,6d867cd33cf516898a4ccbe880b5ee7c,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Wirsel OTU4, VTX00086
+sv_808,412cdfe7a1edd98bbb385c26b1259f23,Archaeosporomycetes, Archaeosporales, Archaeosporaceae, Archaeospora,NA,NA
+sv_809,2bf2ce0da1c2575758c7bae8e434a2be,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora, Scutellospora Scut1, VTX00049
+sv_810,e48f9713903b0605b2839d8270b904e9,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00159
+sv_811,534366a79c764c16db183cbc03e97d10,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_812,a8daf5fb78b3cf3b2317130acc9959df,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G22, VTX00125
+sv_813,73aa8627464594157b475c4461a8e828,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_814,8711acec94245fc9ba450adf356cc6b9,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus acnaGlo7, VTX00057
+sv_815,0450e25141b6c37c29eb2617b9596c5c,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_816,47a46ea2199fa6cb3ef21e51847004df,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_817,2d2e8779befa84549290f5f4b2b26b5b,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora,NA,NA
+sv_818,dccb980b8c8af23de63630a0e83977b5,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus Glo54, VTX00216
+sv_819,7c06990bb9229acb83f6ae7f25670602,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_820,57bcab92ad762ec4985da19f684616e6,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_821,cdc6ff2eeb78b7fa0b5c567a9a0785b3,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G15, VTX00135
+sv_822,4c2a50368c09c27c903297b39d558580,Paraglomeromycetes, Paraglomerales, Paraglomeraceae, Paraglomus, Paraglomus IS-Pg1, VTX00446
+sv_823,aee3836745a487feb1eb7cfe49b9add3,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_824,75486f70a2f90ca4506d218b37569c53,Archaeosporomycetes, Archaeosporales, Archaeosporaceae, Archaeospora, Archaeospora Other1, VTX00005
+sv_825,5c953e89e2c97505479bf375baad063a,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora,NA,NA
+sv_826,453d63a8e74328bda0af0b44fae9f37b,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora,NA,NA
+sv_827,8d393b50e0c324d6702f7a874f7b2943,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_828,50636bf4c034ef26f19977ac9b772c45,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G31, VTX00191
+sv_829,3d8c7b8e2c190ab201c5227d0f6b6a5b,Glomeromycetes, Diversisporales, Diversisporaceae, Diversispora, Diversispora MO-GC1, VTX00060
+sv_830,5a0a6a27aecd192c61e0fe70c7c7aacc,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_831,fc8c0d7b24b60530162a14dceb0f081b,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_832,ecf54ab959a264c99d6534e1e27ae90d,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus,NA,NA
+sv_833,0bfc89ca7e04de18837f96ab69238000,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora, Scutellospora castanea, VTX00041
+sv_834,24474ec2e792299e25e7285b583b88c3,Glomeromycetes, Diversisporales, Acaulosporaceae, Acaulospora, Acaulospora MO-A5, VTX00026
+sv_835,51d37962f44aac9e88a714b7a2694107,Glomeromycetes, Glomerales, Claroideoglomeraceae, Claroideoglomus, Claroideoglomus Glo58, VTX00225
+sv_836,2853350d05210913ce4d782ba8659c19,Glomeromycetes, Glomerales, Glomeraceae, Glomus,NA,NA
+sv_837,5883690cd5ab82cd56698d73a248f608,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora, Scutellospora Scut1, VTX00049
+sv_838,44c418ab559ae6713c95dc9658059d26,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus viscosum, VTX00063
+sv_839,589514cac88952d9bd95674d6a6caa54,Archaeosporomycetes, Archaeosporales, Archaeosporaceae, Archaeospora,NA,NA
+sv_840,aaa752492e454cd9f9325d9e96706e77,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora, Scutellospora castanea, VTX00041
+sv_841,43fb2d5d8ca6288feab28b8f744a132e,Glomeromycetes, Diversisporales, Gigasporaceae, Scutellospora, Scutellospora castanea, VTX00041
+sv_842,37f6b51eeeb40dcca7a8a21a016de1fd,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus MO-G14, VTX00083
+sv_843,e1be4128c7453b21423435ce53d5c910,Glomeromycetes, Diversisporales, Acaulosporaceae, Acaulospora, Acaulospora Acau10, VTX00028
+sv_844,4482309ccd19fc4522a075c2a55c5d68,Glomeromycetes, Glomerales, Glomeraceae, Glomus, Glomus sp., VTX00234
