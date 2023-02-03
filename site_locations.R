@@ -16,6 +16,7 @@
 #' Other raster data, like climate data, are also be processed here.
 #' Precipitation data was downloaded from [PRISM](https://prism.oregonstate.edu/) on 2022-01-06 
 #' following this [tutorial](https://rpubs.com/collnell/get_prism).
+#' 
 #' - Raw (downloaded) data is stored locally; site level data was processed into .csv files 
 #' and included in this repository. 
 #' - 30-year normal from 1991-2020 was attempted.
@@ -56,7 +57,7 @@ conflict_prefer("extract", "raster")
 # Cleanplot PCA (Borcard et al.)
 source("/Users/blarkin/Library/CloudStorage/Egnyte-mpgcloud/Private/blarkin/ΩMiscellaneous/R_global/Cleanplot_pca.txt")
 #'
-#' # Data, ETL
+#' # Data and ETL
 #' ## Sites
 #' Field type "oldfield" is not considered because they were only available in one region.
 sites <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALSE) %>% 
@@ -68,6 +69,7 @@ sites <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALS
 #' the working directory and included in this repository. 
 #' 
 #' ### Normals
+#' Download archive rasters
 # prism_set_dl_dir(paste0(getwd(), "/prism_rasters/normals/ppt"))
 # get_prism_normals(type = 'ppt', resolution = '4km', annual = TRUE, keepZip = FALSE)
 # prism_archive_ls()
@@ -79,11 +81,14 @@ sites <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALS
 #         data = sites,
 #         proj4string = CRS("+proj=longlat +ellps=WGS84 +no_defs")
 #     )
+#' Extract locations from archive rasters
 # sites_ppt <- raster::extract(RS, sites_spdf, fun = mean, na.rm = TRUE, sp = TRUE)@data %>% 
 #     rename(ppt_mm = PRISM_ppt_30yr_normal_4kmM3_annual_bil)
+#' Create data table `site_precip_normal.csv`
 # write_csv(sites_ppt %>% select(site_key, ppt_mm), paste0(getwd(), "/clean_data/site_precip_normal.csv"))
 #'
 #' ### Monthly climate data
+#' Download archive rasters
 #' The following script was run once each for ppt, tmin, and tmax
 # prism_set_dl_dir(paste0(getwd(), "/prism_rasters/monthly/tmax"))
 # get_prism_monthlys(type = "tmax", years = 2007:2016, mon = 1:12, keepZip = FALSE)
@@ -96,6 +101,7 @@ sites <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALS
 #         data = sites,
 #         proj4string = CRS("+proj=longlat +ellps=WGS84 +no_defs")
 #     )
+#' Extract locations from archive rasters
 # sites_tmax_month <- raster::extract(RS, sites_spdf, fun = mean, na.rm = TRUE, sp = TRUE)@data
 # sites_ppt_month[, c(2,10,11)]
 # sites_tmin_month[, c(2,10,11)]
@@ -117,6 +123,7 @@ sites <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALS
 #     mutate(date = ym(date_str), year = year(date), month = month(date)) %>% 
 #     select(site_name, year, month, ppt_mm, tmin_C, tmax_C) %>% 
 #     glimpse()
+#' Create data table `clim.csv`
 # write_csv(tgr_clim, paste0(getwd(), "/clean_data/clim.csv"))
 # yrs <- unique(tgr_clim$year)
 # sites <- unique(tgr_clim$site_name)
@@ -130,6 +137,7 @@ sites <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALS
 #     tgr_bioclim[[i]] <- 
 #         bind_rows(lapply(site_list, function(x){data.frame(biovars(x$ppt_mm, x$tmin_C, x$tmax_C))}), .id = "site")
 # }
+#' Create data table `bioclim.csv`
 # bind_rows(tgr_bioclim, .id = "year") %>% 
 #     pivot_longer(starts_with("bio"), names_to = "biovar", values_to = "value") %>% 
 #     group_by(site, biovar) %>% 
@@ -140,9 +148,14 @@ sites <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALS
 #' # Results 
 #' ## Site types
 #' How many sites are in each field type?
-kable(table(sites$region, sites$site_type), format = "pandoc", caption = "Field types by region:\nBM = Blue Mounds, FG = Faville Grove,\nFL = Fermilab, LP = Lake Petite")
-#' 
+kable(table(sites$region, sites$site_type),
+      format = "pandoc",
+      caption = "Field types by region: BM = Blue Mounds, FG = Faville Grove, FL = Fermilab, LP = Lake Petite")
+#'
 #' ## Site map
+#' MAP NEEDS A CAPTION AND DESCRIPTIVE TEXT
+#' CONSIDER CONVEX POLYGON AREAS OF SITES TOO
+#' CONSIDER JUST PLACEMARK LABELS ON THE MAP
 #+ site_map,message=FALSE
 map <- ggmap(
     get_stamenmap(
@@ -182,6 +195,8 @@ ggplot(sites_ppt, aes(x = region, y = ppt_mm)) +
     theme_bw()
 #' 
 #' Bioclim variables from 2007-2016
+#' Need to explain the significance of this effort...was it to choose the most important variables? 
+#' If it isn't used in the research, ditch it!!!
 bioclim <- read_csv(paste0(getwd(), "/clean_data/bioclim.csv"), show_col_types = FALSE)
 bioclim_pca <- rda(data.frame(bioclim, row.names = 1), scale = TRUE)
 summary(bioclim_pca, display = NULL)

@@ -8,7 +8,7 @@ Last updated: 02 February, 2023
 - <a href="#package-and-library-installation"
   id="toc-package-and-library-installation">Package and library
   installation</a>
-- <a href="#data-etl" id="toc-data-etl">Data, ETL</a>
+- <a href="#data-and-etl" id="toc-data-and-etl">Data and ETL</a>
   - <a href="#sites" id="toc-sites">Sites</a>
   - <a href="#climate-data" id="toc-climate-data">Climate data</a>
     - <a href="#normals" id="toc-normals">Normals</a>
@@ -25,11 +25,13 @@ Last updated: 02 February, 2023
 Site locations, maps, and metadata are produced here. Other raster data,
 like climate data, are also be processed here. Precipitation data was
 downloaded from [PRISM](https://prism.oregonstate.edu/) on 2022-01-06
-following this [tutorial](https://rpubs.com/collnell/get_prism). - Raw
-(downloaded) data is stored locally; site level data was processed into
-.csv files and included in this repository. - 30-year normal from
-1991-2020 was attempted. - Also monthly data from 2007-2016 were
-downloaded and converted into BIOCLIM variables.
+following this [tutorial](https://rpubs.com/collnell/get_prism).
+
+- Raw (downloaded) data is stored locally; site level data was processed
+  into .csv files and included in this repository.
+- 30-year normal from 1991-2020 was attempted.
+- Also monthly data from 2007-2016 were downloaded and converted into
+  BIOCLIM variables.
 
 Note that in this script, messages and verbose outputs are often
 suppressed for brevity.
@@ -76,7 +78,7 @@ conflict_prefer("extract", "raster")
 source("/Users/blarkin/Library/CloudStorage/Egnyte-mpgcloud/Private/blarkin/ΩMiscellaneous/R_global/Cleanplot_pca.txt")
 ```
 
-# Data, ETL
+# Data and ETL
 
 ## Sites
 
@@ -110,6 +112,8 @@ working directory and included in this repository.
 
 ### Normals
 
+Download archive rasters
+
 ``` r
 # prism_set_dl_dir(paste0(getwd(), "/prism_rasters/normals/ppt"))
 # get_prism_normals(type = 'ppt', resolution = '4km', annual = TRUE, keepZip = FALSE)
@@ -122,14 +126,25 @@ working directory and included in this repository.
 #         data = sites,
 #         proj4string = CRS("+proj=longlat +ellps=WGS84 +no_defs")
 #     )
+```
+
+Extract locations from archive rasters
+
+``` r
 # sites_ppt <- raster::extract(RS, sites_spdf, fun = mean, na.rm = TRUE, sp = TRUE)@data %>% 
 #     rename(ppt_mm = PRISM_ppt_30yr_normal_4kmM3_annual_bil)
+```
+
+Create data table `site_precip_normal.csv`
+
+``` r
 # write_csv(sites_ppt %>% select(site_key, ppt_mm), paste0(getwd(), "/clean_data/site_precip_normal.csv"))
 ```
 
 ### Monthly climate data
 
-The following script was run once each for ppt, tmin, and tmax
+Download archive rasters The following script was run once each for ppt,
+tmin, and tmax
 
 ``` r
 # prism_set_dl_dir(paste0(getwd(), "/prism_rasters/monthly/tmax"))
@@ -143,6 +158,11 @@ The following script was run once each for ppt, tmin, and tmax
 #         data = sites,
 #         proj4string = CRS("+proj=longlat +ellps=WGS84 +no_defs")
 #     )
+```
+
+Extract locations from archive rasters
+
+``` r
 # sites_tmax_month <- raster::extract(RS, sites_spdf, fun = mean, na.rm = TRUE, sp = TRUE)@data
 # sites_ppt_month[, c(2,10,11)]
 # sites_tmin_month[, c(2,10,11)]
@@ -168,6 +188,11 @@ Transform extracted data to facilitate later analysis
 #     mutate(date = ym(date_str), year = year(date), month = month(date)) %>% 
 #     select(site_name, year, month, ppt_mm, tmin_C, tmax_C) %>% 
 #     glimpse()
+```
+
+Create data table `clim.csv`
+
+``` r
 # write_csv(tgr_clim, paste0(getwd(), "/clean_data/clim.csv"))
 # yrs <- unique(tgr_clim$year)
 # sites <- unique(tgr_clim$site_name)
@@ -181,6 +206,11 @@ Transform extracted data to facilitate later analysis
 #     tgr_bioclim[[i]] <- 
 #         bind_rows(lapply(site_list, function(x){data.frame(biovars(x$ppt_mm, x$tmin_C, x$tmax_C))}), .id = "site")
 # }
+```
+
+Create data table `bioclim.csv`
+
+``` r
 # bind_rows(tgr_bioclim, .id = "year") %>% 
 #     pivot_longer(starts_with("bio"), names_to = "biovar", values_to = "value") %>% 
 #     group_by(site, biovar) %>% 
@@ -196,7 +226,9 @@ Transform extracted data to facilitate later analysis
 How many sites are in each field type?
 
 ``` r
-kable(table(sites$region, sites$site_type), format = "pandoc", caption = "Field types by region:\nBM = Blue Mounds, FG = Faville Grove,\nFL = Fermilab, LP = Lake Petite")
+kable(table(sites$region, sites$site_type),
+      format = "pandoc",
+      caption = "Field types by region: BM = Blue Mounds, FG = Faville Grove, FL = Fermilab, LP = Lake Petite")
 ```
 
 |     | corn | remnant | restored |
@@ -210,6 +242,9 @@ Field types by region: BM = Blue Mounds, FG = Faville Grove, FL =
 Fermilab, LP = Lake Petite
 
 ## Site map
+
+MAP NEEDS A CAPTION AND DESCRIPTIVE TEXT CONSIDER CONVEX POLYGON AREAS
+OF SITES TOO CONSIDER JUST PLACEMARK LABELS ON THE MAP
 
 ``` r
 map <- ggmap(
@@ -261,7 +296,9 @@ ggplot(sites_ppt, aes(x = region, y = ppt_mm)) +
 
 ![](site_locations_files/figure-gfm/normals_plot-1.png)<!-- -->
 
-Bioclim variables from 2007-2016
+Bioclim variables from 2007-2016 Need to explain the significance of
+this effort…was it to choose the most important variables? If it isn’t
+used in the research, ditch it!!!
 
 ``` r
 bioclim <- read_csv(paste0(getwd(), "/clean_data/bioclim.csv"), show_col_types = FALSE)
@@ -299,13 +336,13 @@ summary(bioclim_pca, display = NULL)
 screeplot(bioclim_pca, bstick = TRUE)
 ```
 
-![](site_locations_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](site_locations_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 ``` r
 cleanplot.pca(bioclim_pca)
 ```
 
-![](site_locations_files/figure-gfm/unnamed-chunk-8-2.png)<!-- -->![](site_locations_files/figure-gfm/unnamed-chunk-8-3.png)<!-- -->
+![](site_locations_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->![](site_locations_files/figure-gfm/unnamed-chunk-13-3.png)<!-- -->
 
 Component loadings (correlations)
 
