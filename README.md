@@ -5,4 +5,4 @@ Agricultural practices in cropland, like soil tillage and fertilizer application
 Raw source data were output from QIIME. These are relatively large files, some of which are binaries (e.g., .xlsx) and not compatible with GitHub. To save space and avoid compatibility complications, they are not included in this repository. ETL of these files is accomplished in **this file**, which produces clean .csv files which are included in this here and available for use.
 
 ## Site Data
-Description TBD
+The file [site_locations.md](site_locations.md) shows locations of regions and sites and displays associated metadata. Climate data (precipitation) are also downloaded, processed, and displayed by this script. 
