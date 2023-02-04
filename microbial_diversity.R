@@ -92,8 +92,16 @@ sites   <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FA
 
 
 
+# do it this way. It's possible you
+# could even wrap the models and figures into this...
+spe_avg_temp <- list(
+    div_its_otu = its_otu_avg,
+    div_its_sv = its_sv_avg,
+    div_amf_otu = amf_otu_avg,
+    div_amf_sv = amf_sv_avg
+)
 
-
+lapply(spe_avg_temp, calc_diversity)
 
 
 
@@ -124,7 +132,7 @@ calc_diversity <- function(spe) {
 }
 
 ## Diversity series on species data (ITS, 97% OTUs, abundances averaged in sites)
-div_its_otu <- calc_diversity(its_otu) %>% glimpse()
+div_its_otu <- calc_diversity(its_otu_avg) %>% glimpse()
 # Interaction?
 ggplot(
     div_its_otu %>% 
