@@ -13,16 +13,24 @@
 #' Microbial data include site-species tables derived from high-throughput sequencing 
 #' and PLFA/NLFA extractions and measurement. Lipid workflow was completed by Ylva Lekberg. 
 #' 
-#' The overview here presents basic statistics and visualizations of the 
+#' The overview here presents basic statistics and visualizations of diversity in the  
 #' microbial species data. 
 #' 
-#' - Hill's numbers
-#' - Abundances in guilds
-#' - Summary of pathogens and AMF
-#' - Basic visualizations
+#' - Diversity and evenness of microbial communities
+#' - Interpretation of differences in diversity among regions and field types, and over years.
 #' 
 #' # Packages and libraries
-packages_needed = c("rsq", "lme4", "multcomp", "tidyverse", "vegan", "ggbeeswarm", "knitr", "conflicted")
+packages_needed = c(
+    "rsq",
+    "lme4",
+    "multcomp",
+    "tidyverse",
+    "vegan",
+    "ggbeeswarm",
+    "knitr",
+    "conflicted",
+    "colorspace"
+)
 packages_installed = packages_needed %in% rownames(installed.packages())
 #+ packages,message=FALSE
 if (any(!packages_installed)) {
@@ -39,10 +47,14 @@ conflict_prefer("select", "dplyr")
 #' # Data
 #' ## Sites-species tables
 #' CSV files were produced in `process_data.R`
-its_otu_all <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_siteSpeMatrix_allReps.csv"), show_col_types = FALSE)
-its_sv_all  <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_sv_siteSpeMatrix_allReps.csv"), show_col_types = FALSE)
-amf_otu_all <- read_csv(paste0(getwd(), "/clean_data/spe_18S_otu_siteSpeMatrix_allReps.csv"), show_col_types = FALSE)
-amf_sv_all  <- read_csv(paste0(getwd(), "/clean_data/spe_18S_sv_siteSpeMatrix_allReps.csv"), show_col_types = FALSE)
+its_otu_all <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_siteSpeMatrix_allReps.csv"), 
+                        show_col_types = FALSE)
+its_sv_all  <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_sv_siteSpeMatrix_allReps.csv"), 
+                        show_col_types = FALSE)
+amf_otu_all <- read_csv(paste0(getwd(), "/clean_data/spe_18S_otu_siteSpeMatrix_allReps.csv"), 
+                        show_col_types = FALSE)
+amf_sv_all  <- read_csv(paste0(getwd(), "/clean_data/spe_18S_sv_siteSpeMatrix_allReps.csv"), 
+                        show_col_types = FALSE)
 #' 
 #' ## Average sequence abundances in each field
 #' We examine diversity at the field level, so diversity obtained at samples should be averaged 
@@ -63,44 +75,46 @@ resample_fields <- function(data, min, cluster_type) {
 #' 
 #' - ITS = 8 samples
 #' - 18S = 7 samples
-#' And with this we can run the function for each dataset:
+#' 
+#' With this, we can run the function for each dataset:
 its_otu_avg <- resample_fields(its_otu_all, 8, "otu")
 its_sv_avg  <- resample_fields(its_sv_all,  8, "sv")
 amf_otu_avg <- resample_fields(amf_otu_all, 7, "otu")
 amf_sv_avg  <- resample_fields(amf_sv_all,  7, "sv")
 #' 
-#' ## Species metadata
-#' Load guild data
-its_otu_guild <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_funGuild.csv"), show_col_types = FALSE)
-its_sv_guild  <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_sv_funGuild.csv"), show_col_types = FALSE)
-#' Load taxonomy data
-amf_otu_tax <- read_csv(paste0(getwd(), "/clean_data/spe_18S_otu_taxonomy.csv"), show_col_types = FALSE)
-amf_sv_tax  <- read_csv(paste0(getwd(), "/clean_data/spe_18S_sv_taxonomy.csv"), show_col_types = FALSE)
-#'
 #' ## Site metadata and design
-#' Choose 50 years as the age of remnants to facilitate plotting and modeling. Ultimately,
-#' an age of 50 years for remnants is difficult to justify, but for now it will help reveal 
-#' trends. 
+#' Set remnants to 50 years old as a placeholder. This number will not be used in 
+#' a quantitative sense, for example in models. 
+#' Oldfields are filtered out because they could not be replicated in regions. 
 rem_age <- 50
 sites   <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALSE) %>% 
-    filter(site_type != "oldfield") %>% 
     mutate(site_type = factor(site_type, ordered = TRUE, levels = c("corn", "restored", "remnant")),
-           yr_since = replace(yr_since, which(site_type == "remnant"), rem_age))
+           yr_since = replace(yr_since, which(site_type == "remnant"), rem_age)) %>% 
+    filter(site_type != "oldfield") %>% 
+    rename(field_type = site_type)
 #' 
 #' # Analysis and Results
 #' ## Diversity
-#' In this section, microbial diversity is considered for each dataset: OTU or SV clustering for 18S or ITS gene 
-#' sequencing. For each set, Hill's numbers are produced ([Hill 1973(http://doi.wiley.com/10.2307/1934352)], 
+#' Microbial diversity is considered for each of four datasets: OTU or SV clustering for 18S or ITS gene 
+#' sequencing. For each set, Hill's numbers are produced ([Hill 1973](http://doi.wiley.com/10.2307/1934352), 
 #' [Borcard and Legendere 2018, p. 373](http://link.springer.com/10.1007/978-3-319-71404-2)) and plotted,
-#' with means differences tested using mixed-effects linear models in `lmer` ([Bates et al. 2015[(https://doi.org/10.18637/jss.v067.i01)]]).
+#' with means differences tested using mixed-effects linear models in `lmer` ([Bates et al. 2015](https://doi.org/10.18637/jss.v067.i01)).
 #' Correlations are then produced to visualize change in diversity trends over time, 
 #' with similar mixed-effects tests performed. 
 #' 
-#' ### Functions
+#' Hill's numbers, brief description:
+#' 
+#' - $N_{0}$  = species richness
+#' - $N_{1}$  = Shannon's diversity ($e^H$; excludes rarest species, considers the number of "functional" species)
+#' - $N_{2}$  = Simpson's diversity ($1 / \lambda$; number of "codominant" species)
+#' - $E_{10}$ = Shannon's evenness (Hill's ratio $N_{1} / N_{0}$)
+#' - $E_{20}$ = Simpson's evenness (Hill's ratio $N_{2} / N_{0}$)
+#' 
+#' ### Functions and variables
 #' The following functions are used to streamline code and reduce errors:
 #' 
-#' 
-# Function: calculate diversity series from species matrix
+#' #### Calculate Hill's series on a samples-species matrix
+#+ calc_diversity_function
 calc_diversity <- function(spe) {
     spe_mat <- data.frame(spe, row.names = 1)
     
@@ -114,375 +128,175 @@ calc_diversity <- function(spe) {
         data.frame(N0, N1, N2, E10, E20) %>%
             rownames_to_column(var = "site_key") %>%
             mutate(site_key = as.integer(site_key)) %>%
-            left_join(sites %>% select(starts_with("site"), region, yr_rank, yr_since), by = "site_key") %>% 
-            pivot_longer(cols = N0:E20, names_to = "hill_index", values_to = "value") %>% 
-            mutate(hill_index = factor(hill_index, ordered = TRUE, levels = c("N0", "N1", "N2", "E10", "E20")))
+            left_join(
+                sites %>% select(starts_with("site"), field_type, region, yr_rank, yr_since),
+                by = "site_key"
+            ) %>%
+            pivot_longer(
+                cols = N0:E20,
+                names_to = "hill_index",
+                values_to = "value"
+            ) %>%
+            mutate(hill_index = factor(
+                hill_index,
+                ordered = TRUE,
+                levels = c("N0", "N1", "N2", "E10", "E20")
+            ))
     )
 }
-
-
-
-
-spe_avg_temp <- list(
-    div_its_otu = its_otu_avg,
-    div_its_sv = its_sv_avg,
-    div_amf_otu = amf_otu_avg,
-    div_amf_sv = amf_sv_avg
-)
-
-lapply(spe_avg_temp, calc_diversity)
-
-
-
-
-
-
-
-
-## Diversity series on species data (ITS, 97% OTUs, abundances averaged in sites)
-div_its_otu <- calc_diversity(its_otu_avg) %>% glimpse()
-# Interaction?
-ggplot(
-    div_its_otu %>% 
-        group_by(site_type, region, hill_index) %>% 
-        summarize(avg_value = mean(value), .groups = "drop"),
-    aes(x = site_type, y = avg_value, group = region)) +
-    facet_wrap(vars(hill_index), scales = "free_y") +
-    geom_line(aes(linetype = region)) +
-    geom_point(aes(color = region)) +
-    labs(x = "", y = "Average value", title = "Interaction plot of Hill's numbers") +
-    theme_bw()
-# Test diversity measures across site types with mixed model
-hills <- levels(div_its_otu$hill_index)
-for(i in 1:length(hills)) {
-    print(hills[i])
-    mod_data <- div_its_otu %>% 
-        filter(hill_index == hills[i]) %>% 
-        mutate(site_type = factor(site_type, ordered = FALSE))
-    mmod <- lmer(value ~ site_type + (1 | region), data = mod_data, REML = FALSE)
-    mmod_null <- lmer(value ~ 1 + (1 | region), data = mod_data, REML = FALSE)
-    print(anova(mmod, mmod_null))
-    mod_tuk <- glht(mmod, linfct = mcp(site_type = "Tukey"), test = adjusted("holm"))
-    print(mod_tuk)
-    print(cld(mod_tuk))
+#' 
+#' #### Test diversity measures across site types with mixed model
+#+ test_diversity_function
+test_diversity <- function(data) {
+    hills <- levels(data$hill_index)
+    for(i in 1:length(hills)) {
+        print(hills[i])
+        mod_data <- data %>% 
+            filter(hill_index == hills[i]) %>% 
+            mutate(field_type = factor(field_type, ordered = FALSE))
+        mmod <- lmer(value ~ field_type + (1 | region), data = mod_data, REML = FALSE)
+        mmod_null <- lmer(value ~ 1 + (1 | region), data = mod_data, REML = FALSE)
+        print(anova(mmod, mmod_null))
+        mod_tuk <- glht(mmod, linfct = mcp(field_type = "Tukey"), test = adjusted("holm"))
+        print(mod_tuk)
+        print(cld(mod_tuk))
+    }
 }
-# Diversity in field types, figure
-sig_labs_otu <- data.frame(
+#' #### Change in diversity over time 
+#' Do Hill's numbers correlate with years since restoration?
+#' This is only appropriate to attempt in the Blue Mounds region, and even there, it will be difficult
+#' to justify that the area meets the criteria for a chronosequence. 
+test_age <- function(data, caption=NULL) {
+    temp_df <-
+        data %>%
+        filter(field_type == "restored", region == "BM") %>%
+        pivot_wider(names_from = hill_index, values_from = value) %>%
+        select(-starts_with("site"),-field_type,-region,-yr_rank)
+    lapply(temp_df %>% select(-yr_since), function(z) {
+        test <-
+            cor.test(temp_df$yr_since,
+                     z,
+                     alternative = "two.sided",
+                     method = "pearson")
+        return(data.frame(
+            cor = round(test$estimate, 2),
+            R2 = round(test$estimate^2, 2),
+            pval = round(test$p.value, 3)
+        ))
+    }) %>%
+        bind_rows(.id = "hill_num") %>%
+        remove_rownames() %>%
+        mutate(sig = case_when(pval <= 0.05 ~ "*", TRUE ~ "")) %>%
+        kable(format = "pandoc", caption = caption)
+}
+#' 
+#' #### Calculate diversity of all samples-species matrices
+#' Create list of matrices and process with `calc_diversity()`. Naming list objects as
+#' their desired output names will enhance understanding later. 
+#+ spe_avg_temp_list
+spe_list <- list(
+    its_otu = its_otu_avg,
+    its_sv = its_sv_avg,
+    amf_otu = amf_otu_avg,
+    amf_sv = amf_sv_avg
+)
+#+ diversity_calculations
+div <- lapply(spe_list, calc_diversity)
+#' 
+#' ### Fungi (ITS gene) in OTU clusters, averaged to 8 samples per field.
+#' Run the linear model and test differences among field types for diversity.
+#+ test_div_its_otu
+test_diversity(div$its_otu)
+#' Key model results depend on which sites were sampled using `resample_fields()` above. 
+#' Changing the value of `set.seed()` in that function may alter the results of this model. 
+#' 
+#' - $N_{0}$: field type is significant by likelihood ratio test at p<0.001 with region as
+#' a random effect. Species richness in corn fields was less than restored or remnants, which 
+#' didn't differ at p=0.05. 
+#' - $N_{1}$: model fit is questionable due to singular fit, but field type is significant
+#' by likelihood ratio test at p<0.01 with region as a random effect. Species richness in corn fields was less 
+#' than restored or remnants, which didn't differ at p=0.05. 
+#' - $N_{2}$, $E_{10}$, and $E_{20}$: model fits for both null and full models were singular and NS at p<0.05.
+#' 
+#' Figure labels are generated and the diversity data are plotted below. An interaction plot follows, 
+#' and is useful to consider what the model can and cannot say about differences in regions and field types. 
+#+ div_its_otu_labs
+labs_its_otu <- data.frame(
     hill_index = factor(c(rep("N0", 3), rep("N1", 3)), ordered = TRUE, levels = c("N0", "N1", "N2", "E10", "E20")),
     lab = c("a", "b", "b", "a", "b", "b"),
     xpos = rep(c(1,2,3), 2),
     ypos = rep(c(620, 170), each = 3)
 )
-ggplot(div_its_otu, aes(x = site_type, y = value)) +
+#+ plot_div_its_otu,fig.width=9,fig.height=7
+ggplot(div$its_otu, aes(x = field_type, y = value)) +
     facet_wrap(vars(hill_index), scales = "free_y") +
     geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
-    geom_beeswarm(aes(color = region), dodge.width = 0.2) +
-    geom_text(data = sig_labs_otu, aes(x = xpos, y = ypos, label = lab)) +
+    geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
+    geom_text(data = labs_its_otu, aes(x = xpos, y = ypos, label = lab)) +
     labs(x = "", y = "Index value", title = "TGP microbial diversity (Hill's), ITS, 97% OTU",
          caption = "N0-richness, N1-e^Shannon, N2-Simpson, E10=N1/N0, E20=N2/N0, width=n") +
+    scale_fill_discrete_qualitative(palette = "Dark3") +
     theme_bw()
-# Test diversity and age relationship with mixed model
-for(i in 1:length(hills)) {
-    print(hills[i])
-    mod_data <- div_its_otu %>% filter(hill_index == hills[i], site_type == "restored")
-    mmod <- lmer(value ~ yr_since + (1 | region), data = mod_data)
-    mmod_null <- lmer(value ~ 1 + (1 | region), data = mod_data)
-    print(anova(mmod, mmod_null))
-    print(rsq.lmm(mmod))
-}
-# Diversity correlated with restoration age
-ggplot(div_its_otu, aes(x = yr_since, y = value)) +
+#' Richness and evenness parameters increase from corn, to restored, to remnant fields, and some 
+#' support exists for this pattern to occur across regions. 
+#+ plot_div_its_otu_interaction,fig.width=9,fig.height=7
+ggplot(
+    div$its_otu %>% 
+        group_by(field_type, region, hill_index) %>% 
+        summarize(avg_value = mean(value), .groups = "drop"),
+    aes(x = field_type, y = avg_value, group = region)) +
     facet_wrap(vars(hill_index), scales = "free_y") +
-    geom_point(aes(color = site_type)) +
+    geom_line(aes(linetype = region)) +
+    geom_point(aes(fill = region), size = 2, shape = 21) +
+    labs(x = "", y = "Average value", title = "Interaction plot of Hill's numbers, ITS, 97% OTU") +
+    scale_fill_discrete_qualitative(palette = "Dark3") +
+    theme_bw()
+#' 
+#' Key observations:
+#' 
+#' - The restored field at LP contains very high diversity, co-dominance, and evenness of fungi.
+#' - The restored field at FG contains low diversity, co-dominance, and evenness. 
+#' - Interactions are less an issue with $N_{0}$ and $N_{1}$
+#' 
+#' Next, trends in diversity are correlated with years since restoration, with 0 used for corn fields 
+#' and 50 used for remnants. Statistical testing of this relationship is not valid because the ages for 
+#' corn and remnant aren't justified, and the fields aren't justifiable as a chronosequence. 
+#+ plot_yrs_since_resto,fig.width=9,fig.height=7
+ggplot(div$its_otu, aes(x = yr_since, y = value)) +
+facet_wrap(vars(hill_index), scales = "free_y") +
+    geom_point(aes(fill = region, shape = field_type), size = 2) +
     labs(x = "Years since restoration", y = "index value", title = "Change in TGP microbial diversity (Hill's), ITS, 97% OTU",
          caption = "N0-richness, N1-e^Shannon, N2-Simpson, E10=N1/N0, E20=N2/N0") +
+    scale_shape_manual(name = "field type", values = c(21:23)) +
+    scale_fill_discrete_qualitative(name = "region", palette = "Dark3") +
+    guides(fill = guide_legend(override.aes = list(shape = 21)),
+           shape = guide_legend(override.aes = list(fill = NA))) +
     theme_bw()
-# Produce correlation statistics for restored sites only (diversity indexes ~ restoration age)
-cor_its_otu <-     
-    div_its_otu %>% 
-    filter(site_type == "restored") %>% 
-    pivot_wider(names_from = hill_index, values_from = value) %>% 
-    select(-starts_with("site"), -region, -yr_rank)
-lapply(cor_its_otu, function(z) {
-    test <-
-        cor.test(cor_its_otu$yr_since,
-                 z,
-                 alternative = "less",
-                 method = "pearson")
-    return(c(test$estimate, test$p.value))
-})
-
-
-
-
-
-
-## Diversity series on species data (ITS, 100% SVs, abundances averages in sites)
-div_its_sv  <- calc_diversity(its_sv)
-# Test diversity measures across site types with mixed model
-hills <- levels(div_its_sv$hill_index)
-for(i in 1:length(hills)) {
-    print(hills[i])
-    mod_data <- div_its_sv %>% 
-        filter(hill_index == hills[i]) %>% 
-        mutate(site_type = factor(site_type, ordered = FALSE)) %>% 
-        arrange(site_type, region, value)
-    mmod <- lmer(value ~ site_type + (1 | region), data = mod_data)
-    mmod_null <- lmer(value ~ 1 + (1 | region), data = mod_data)
-    print(anova(mmod, mmod_null))
-    mod_tuk <- glht(mmod, linfct = mcp(site_type = "Tukey"), test = adjusted("holm"))
-    print(summary(mod_tuk))
-    print(cld(mod_tuk))
-}
-# Diversity in field types, figure
-sig_labs_sv <- data.frame(
-    hill_index = factor(c(rep("N0", 3), rep("N1", 3)), ordered = TRUE, levels = c("N0", "N1", "N2", "E10", "E20")),
-    lab = c("a", "b", "b", "a", "b", "b"),
-    xpos = rep(c(1,2,3), 2),
-    ypos = rep(c(820, 260), each = 3)
-)
-ggplot(div_its_sv, aes(x = site_type, y = value)) +
-    facet_wrap(vars(hill_index), scales = "free_y") +
-    geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
-    geom_beeswarm(aes(color = region), dodge.width = 0.2) +
-    geom_text(data = sig_labs_sv, aes(x = xpos, y = ypos, label = lab)) +
-    labs(x = "", y = "Index value", title = "TGP microbial diversity (Hill's), ITS, 97% OTU",
-         caption = "N0-richness, N1-e^Shannon, N2-Simpson, E10=N1/N0, E20=N2/N0, width=n") +
-    theme_bw()
-# Test diversity and age relationship with mixed model
-for(i in 1:length(hills)) {
-    print(hills[i])
-    mod_data <- div_its_sv %>% filter(hill_index == hills[i], site_type == "restored", region %in% c("BM", "FL"))
-    mmod <- lmer(value ~ yr_since + (1 | region), data = mod_data)
-    mmod_null <- lmer(value ~ 1 + (1 | region), data = mod_data)
-    print(anova(mmod, mmod_null))
-    print(rsq.lmm(mmod))
-}
-# Diversity correlated with restoration age
-ggplot(div_its_sv, aes(x = yr_since, y = value)) +
-    facet_wrap(vars(hill_index), scales = "free_y") +
-    geom_point(aes(color = site_type)) +
-    labs(x = "Years since restoration", y = "index value", title = "Change in TGP microbial diversity (Hill's), ITS, 100% SV",
-         caption = "N0-richness, N1-e^Shannon, N2-Simpson, E10=N1/N0, E20=N2/N0") +
-    theme_bw()
-
-
-# __Trophic Modes, Guilds and Taxonomy ----------------------
-# Do any species register 0 abundance across all sites?
-which(apply(its_otu, MARGIN = 2, FUN = sum) == 0) # No
-which(apply(its_sv,  MARGIN = 2, FUN = sum) == 0) # No
-# Function to clean up Qiime taxomomy from guilds files
-process_taxa <- function(data) {
-    data %>% 
-        separate(
-            taxonomy,
-            into = c(
-                "kingdom",
-                "phylum",
-                "class",
-                "order",
-                "family",
-                "genus",
-                "species"
-            ),
-            sep = "; ",
-            remove = TRUE,
-            fill = "right"
-        ) %>% 
-        mutate(kingdom = str_sub(kingdom, 4, nchar(kingdom)),
-               phylum  = str_sub(phylum,  4, nchar(phylum)),
-               class   = str_sub(class,   4, nchar(class)),
-               order   = str_sub(order,   4, nchar(order)),
-               family  = str_sub(family,  4, nchar(family)),
-               genus   = str_sub(genus,   4, nchar(genus)),
-               species = str_sub(species, 4, nchar(species)))
-}
-# Need a unified OTU and OTU-based metadata table to analyze taxonomy and guilds
-# These unified tables will also be necessary to filter species and produce ordinations
-# Note: function process_taxa() embedded in this function
-join_spe_meta <- function(spe, meta, filter_char = "otu", clust_name = "otu_num", abund_name = "seq_abund") {
-    spe %>%
-        na_if(., 0) %>% 
-        pivot_longer(starts_with(filter_char), names_to = clust_name, values_to = abund_name) %>% 
-        drop_na() %>% 
-        left_join(process_taxa(meta) %>% select(-otu_ID, -trait, -notes, -citation), by = clust_name) %>% 
-        left_join(sites %>% select(starts_with("site"), region, yr_rank, yr_since), by = "site_key")
-}
-
-# With these functions in hand, we are ready to summarize and explore the data. 
-# FunGuild identifies the level of taxonomy assignment, the trophic mode, and the confidence
-# of assignment. View the [README.md](https://github.com/UMNFuN/FUNGuild) on GitHub.
-# Note on confidence ranking: I don't know what this refers to. Is it the taxonomic assignment,
-# guild/trophic mode, or all data? This is not explained. 
-# 
-# To conduct summaries of FunGuild metadata, it would seem appropriate to choose OTUs with
-# higher confidence rankings and more specific taxonomic assignments. 
-
-# ____Summary Analysis of ITS OTU data ----------------------
-# Create the summary data using functions; write csv for use in other scripts
-its_otu_spe_meta <- join_spe_meta(its_otu, its_otu_guild) %>% glimpse()
-write_csv(its_otu_spe_meta, paste0(getwd(), "/clean_data/speMeta_ITS_otu.csv"))
-# Filter for quality of taxa assignment and investigate NAs
-taxon_level <- 9
-its_otu_spe_meta %>% 
-    filter(taxon_level >= taxon_level & confidence %in% c("Highly Probable", "Probable")) %>% 
-    filter(is.na(species))
-# What is the distribution among site types at the class level?
-its_otu_spe_meta %>%
-    filter(taxon_level >= taxon_level & confidence %in% c("Highly Probable", "Probable")) %>%
-    group_by(phylum, class, site_type, site_name) %>% 
-    summarize(abund = sum(seq_abund), .groups = "drop") %>% 
-    group_by(phylum, class, site_type) %>% 
-    summarize(median = median(abund) %>% round(., 1), .groups = "drop") %>% 
-    pivot_wider(names_from = site_type, values_from = median, values_fill = 0) %>% 
-    rownames_to_column(var = "number") %>% 
-    select(number, phylum, class, corn, restored, remnant) %>%
-    arrange(-remnant) %>% 
-    kable(format = "pandoc", caption = "Distribution of OTUs in classes, median by site")
-# What is the distribution of trophic modes among site types?
-its_otu_spe_meta %>% 
-    filter(taxon_level >= taxon_level & confidence %in% c("Highly Probable", "Probable")) %>% 
-    group_by(trophic_mode, site_type, site_name) %>% 
-    summarize(abund = sum(seq_abund), .groups = "drop") %>% 
-    group_by(trophic_mode, site_type) %>% 
-    summarize(median = round(median(abund), 1), .groups = "drop") %>% 
-    pivot_wider(names_from = site_type, values_from = median, values_fill = 0) %>% 
-    rownames_to_column(var = "number") %>% 
-    select(number, trophic_mode, corn, restored, remnant) %>%
-    kable(format = "pandoc", caption = "Distribution of OTUs by trophic traits, median by site")
-# Guilds are more specific than trophic modes. Filter to plant pathogens and AMF.
-guilds <- c("Arbuscular Mycorrhizal", "Plant Pathogen")
-for(i in 1:length(guilds)) {
-    print(guilds[i])
-    mod_data <- its_otu_spe_meta %>% 
-        filter(taxon_level >= taxon_level & 
-                   confidence %in% c("Highly Probable", "Probable") &
-                   guild == guilds[i]) %>% 
-        count(site_type, region, site_name, guild)
-    mmod <- lmer(n ~ site_type + (1 | region), data = mod_data)
-    mmod_null <- lmer(n ~ 1 + (1 | region), data = mod_data)
-    print(anova(mmod, mmod_null))
-    mod_tuk <- glht(mmod, linfct = mcp(site_type = "Tukey"), test = adjusted("holm"))
-    print(summary(mod_tuk))
-    print(cld(mod_tuk))
-}
-# Significance labels needed for plot
-sig_labs_otu <- data.frame(
-    guild = rep("Arbuscular Mycorrhizal", 3),
-    lab = c("a", "b", "ab"),
-    xpos = c(1,2,3),
-    ypos = rep(46, 3)
-)
-its_otu_spe_meta %>% 
-    filter(taxon_level >= taxon_level & 
-               confidence %in% c("Highly Probable", "Probable") &
-               guild %in% c("Plant Pathogen", "Arbuscular Mycorrhizal")) %>% 
-    count(site_type, region, site_name, guild) %>% 
-    ggplot(aes(x = site_type, y = n)) +
-    facet_wrap(vars(guild), scales = "free_y") +
-    geom_boxplot(fill = "gray90", varwidth = TRUE, outlier.shape = NA) +
-    geom_beeswarm(aes(color = region), dodge.width = 0.2) +
-    geom_text(data = sig_labs_otu, aes(x = xpos, y = ypos, label = lab)) +
-    labs(x = "", y = "Richness", caption = "OTUs at 97% similarity; mixed linear model with region as a random effect.") +
-    theme_bw()
-# It's possible that species richness can't be compared in these guilds if there are 
-# too few species identified. Sites with low richness may just not have enough
-# species detections. Check the rarefaction in these guilds and consider plotting
-# the number of sequences per OTU rather than the count of OTUs.
-amf_otu <- 
-    its_otu_spe_meta %>% 
-    filter(taxon_level >= taxon_level & 
-               confidence %in% c("Highly Probable", "Probable") &
-               guild == "Arbuscular Mycorrhizal") %>% 
-    left_join(read_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_samples.csv"))) %>% 
-    mutate(seqs = as.integer(seq_abund * samples)) %>% 
-    select(site_name, otu_num, seqs) %>% 
-    pivot_wider(names_from = otu_num, values_from = seqs, values_fill = 0)
-rarecurve(data.frame(amf_otu, row.names = 1), step = 1, label = TRUE, col = "blue", xlab = "Sequences", ylab = "AMF OTUs")
-# Number of sequences is indeed very uneven, meaning that comparing species richness isn't appropriate
-# Examine boxplots of sequence abundance for differences from richness plots
-data.frame(
-    site_name = amf_otu[, 1],
-    seqs = apply(amf_otu[, -1], MARGIN = 1, sum)
-) %>% 
-    left_join(sites) %>% 
-    ggplot(aes(x = site_type, y = seqs)) +
-    geom_boxplot(fill = "gray90", varwidth = TRUE, outlier.shape = NA) +
-    geom_beeswarm(aes(color = region), dodge.width = 0.2) +
-    theme_bw()
-# Some rank order changes, honestly I don't think the story would change at all
-
-
-# ____Summary Analysis of ITS SV data ----------------------
-# Use functions to produce table; write csv to wd for use in other scripts
-its_sv_spe_meta <- join_spe_meta(its_sv, its_sv_guild, filter_char = "sv", clust_name = "sv_num") %>% glimpse()
-write_csv(its_sv_spe_meta, paste0(getwd(), "/clean_data/speMeta_ITS_sv.csv"))
-# Highest quality data are with specific taxon level (13), and good confidence
-# All NAs in this filtered quality set are from no specific identification. All are identified to genus
-taxon_level <- 9
-its_sv_spe_meta %>% 
-    filter(taxon_level >= taxon_level & confidence %in% c("Highly Probable", "Probable")) %>% 
-    filter(is.na(species))
-its_sv_spe_meta %>% 
-    filter(taxon_level >= taxon_level & confidence %in% c("Highly Probable", "Probable")) %>% 
-    filter(is.na(genus))
-# What is the distribution among site types at the class level?
-its_sv_spe_meta %>% 
-    filter(taxon_level >= taxon_level & confidence %in% c("Highly Probable", "Probable")) %>% 
-    group_by(phylum, class, site_type, site_name) %>% 
-    summarize(abund = sum(seq_abund), .groups = "drop") %>% 
-    group_by(phylum, class, site_type) %>% 
-    summarize(median = round(median(abund), 1), .groups = "drop") %>% 
-    pivot_wider(names_from = site_type, values_from = median, values_fill = 0) %>% 
-    rownames_to_column(var = "number") %>% 
-    select(number, phylum, class, corn, restored, remnant) %>%
-    kable(format = "pandoc", caption = "Distribution of SVs in classes, median by site")
-# What is the distribution of guilds among site types?
-its_sv_spe_meta %>% 
-    filter(taxon_level >= taxon_level & confidence %in% c("Highly Probable", "Probable")) %>% 
-    group_by(trophic_mode, site_type, site_name) %>% 
-    summarize(abund = sum(seq_abund), .groups = "drop") %>% 
-    group_by(trophic_mode, site_type) %>% 
-    summarize(median = round(median(abund), 1), .groups = "drop") %>% 
-    pivot_wider(names_from = site_type, values_from = median, values_fill = 0) %>% 
-    rownames_to_column(var = "number") %>% 
-    select(number, trophic_mode, corn, restored, remnant) %>%
-    kable(format = "pandoc", caption = "Distribution of SVs by trophic traits, median by site")
-# Guilds are more specific than trophic modes. Filter to plant pathogens and AMF.
-guilds <- c("Arbuscular Mycorrhizal", "Plant Pathogen")
-for(i in 1:length(guilds)) {
-    print(guilds[i])
-    mod_data <- its_sv_spe_meta %>% 
-        filter(taxon_level >= taxon_level & 
-                   confidence %in% c("Highly Probable", "Probable") &
-                   guild == guilds[i]) %>% 
-        count(site_type, region, site_name, guild)
-    mmod <- lmer(n ~ site_type + (1 | region), data = mod_data)
-    mmod_null <- lmer(n ~ 1 + (1 | region), data = mod_data)
-    print(anova(mmod, mmod_null))
-    mod_tuk <- glht(mmod, linfct = mcp(site_type = "Tukey"), test = adjusted("holm"))
-    print(summary(mod_tuk))
-    print(cld(mod_tuk))
-}
-its_sv_spe_meta %>% 
-    filter(taxon_level >= taxon_level & 
-               confidence %in% c("Highly Probable", "Probable") &
-               guild %in% c("Plant Pathogen", "Arbuscular Mycorrhizal")) %>% 
-    count(site_type, region, site_name, guild) %>% 
-    ggplot(aes(x = site_type, y = n)) +
-    facet_wrap(vars(guild), scales = "free_y") +
-    geom_boxplot(fill = "gray90", varwidth = TRUE) +
-    geom_beeswarm(aes(color = region), dodge.width = 0.2) +
-    labs(x = "", y = "Richness", caption = "SVs at 100% similarity") +
-    theme_bw()
-# Look at change over time in guilds...
-its_sv_spe_meta %>% 
-    filter(taxon_level >= taxon_level & 
-               confidence %in% c("Highly Probable", "Probable") &
-               guild %in% c("Plant Pathogen", "Arbuscular Mycorrhizal")) %>% 
-    count(site_type, region, site_name, guild) %>% 
-    left_join(its_sv_spe_meta %>% select(site_name, yr_since), by = "site_name") %>% 
-    ggplot(aes(x = yr_since, y = n)) +
-    facet_wrap(vars(guild), scales = "free_y") +
-    geom_point(aes(color = region, shape = site_type)) +
-    theme_bw()
+#' 
+#' Possibly, it's justified to correlate restoration age with diversity at Blue Mounds only, 
+#' and with restored fields only. A Pearson's correlation is used:
+#+ test_age_its_otu
+test_age(div$its_otu, caption = "Correlation between Hill's numbers and field age in the Blue Mounds region")
+#' 
+#' Hill's $N_{1}$ decreases with age since restoration in the Blue Mounds area ($R^2$=0.60, p<0.05). 
+#' This is odd and points to a confounding effect driven by difference in restoration strategy over time.
+#' It's also possible that site differences (soils, etc.) also confound this relationship. It's possible
+#' that we cannot attempt to present this as a time-based result at all. 
+#' 
+#' In any case, let's take a look at Shannon's diversity over time in Blue Mounds's restored fields.
+#+ bm_test_age,fig.width=7,fig.height=6,fig.align="center"
+div$its_otu %>% 
+    filter(region == "BM", field_type == "restored", hill_index == "N1") %>% 
+    ggplot(aes(x = yr_since, y = value)) +
+    geom_text(aes(label = site_name)) +
+    labs(x = "Years since restoration", y = expression("Shannon's diversity"~(N[1]))) +
+    theme_classic()
+#' Karla Ott's field was almost exclusively dominated by big bluestem, possibly leading to
+#' a simpler microbial community. Right now, my interpretation is that restoration strategies changed 
+#' over time and although restored plant communities persisted, microbial communities simplified over time.
+#' Immediately after restoration, microbial diversity increased rapidly and was not sustained 
+#' because the soil properties ultimately didn't change very much. 
+#' 
+#' Site factors (soil type) are hard to tease out, but in later analyses we will try using measured 
+#' soil chemical properties. 
+    

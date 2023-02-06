@@ -1,0 +1,556 @@
+Microbial data: overview of data, diversity statistics
+================
+Beau Larkin
+
+Last updated: 06 February, 2023
+
+- <a href="#description" id="toc-description">Description</a>
+- <a href="#packages-and-libraries"
+  id="toc-packages-and-libraries">Packages and libraries</a>
+- <a href="#data" id="toc-data">Data</a>
+  - <a href="#sites-species-tables"
+    id="toc-sites-species-tables">Sites-species tables</a>
+  - <a href="#average-sequence-abundances-in-each-field"
+    id="toc-average-sequence-abundances-in-each-field">Average sequence
+    abundances in each field</a>
+  - <a href="#site-metadata-and-design"
+    id="toc-site-metadata-and-design">Site metadata and design</a>
+- <a href="#analysis-and-results" id="toc-analysis-and-results">Analysis
+  and Results</a>
+  - <a href="#diversity" id="toc-diversity">Diversity</a>
+    - <a href="#functions-and-variables"
+      id="toc-functions-and-variables">Functions and variables</a>
+    - <a
+      href="#fungi-its-gene-in-otu-clusters-averaged-to-8-samples-per-field"
+      id="toc-fungi-its-gene-in-otu-clusters-averaged-to-8-samples-per-field">Fungi
+      (ITS gene) in OTU clusters, averaged to 8 samples per field.</a>
+
+# Description
+
+Microbial data include site-species tables derived from high-throughput
+sequencing and PLFA/NLFA extractions and measurement. Lipid workflow was
+completed by Ylva Lekberg.
+
+The overview here presents basic statistics and visualizations of
+diversity in the  
+microbial species data.
+
+- Diversity and evenness of microbial communities
+- Interpretation of differences in diversity among regions and field
+  types, and over years.
+
+# Packages and libraries
+
+``` r
+packages_needed = c(
+    "rsq",
+    "lme4",
+    "multcomp",
+    "tidyverse",
+    "vegan",
+    "ggbeeswarm",
+    "knitr",
+    "conflicted",
+    "colorspace"
+)
+packages_installed = packages_needed %in% rownames(installed.packages())
+```
+
+``` r
+if (any(!packages_installed)) {
+    install.packages(packages_needed[!packages_installed])
+}
+```
+
+``` r
+for (i in 1:length(packages_needed)) {
+    library(packages_needed[i], character.only = T)
+}
+```
+
+``` r
+conflict_prefer("filter", "dplyr")
+conflict_prefer("select", "dplyr")
+```
+
+# Data
+
+## Sites-species tables
+
+CSV files were produced in `process_data.R`
+
+``` r
+its_otu_all <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_siteSpeMatrix_allReps.csv"), 
+                        show_col_types = FALSE)
+its_sv_all  <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_sv_siteSpeMatrix_allReps.csv"), 
+                        show_col_types = FALSE)
+amf_otu_all <- read_csv(paste0(getwd(), "/clean_data/spe_18S_otu_siteSpeMatrix_allReps.csv"), 
+                        show_col_types = FALSE)
+amf_sv_all  <- read_csv(paste0(getwd(), "/clean_data/spe_18S_sv_siteSpeMatrix_allReps.csv"), 
+                        show_col_types = FALSE)
+```
+
+## Average sequence abundances in each field
+
+We examine diversity at the field level, so diversity obtained at
+samples should be averaged for each field. We collected ten samples from
+each field, but processing failed for some samples at one step or
+another in the pipeline. Samples must be randomly resampled to the
+smallest number obtained in a series to produce comparable diversity
+metrics. The following function will resample the site-species data to
+the correct number of samples.
+
+``` r
+resample_fields <- function(data, min, cluster_type) {
+    set.seed(482)
+    data %>% 
+        group_by(site_key) %>% 
+        slice_sample(n = min) %>%
+        summarize(across(starts_with(cluster_type), list(avg = mean)))
+}
+```
+
+The minimum number of samples in a field for each gene is:
+
+- ITS = 8 samples
+- 18S = 7 samples
+
+With this, we can run the function for each dataset:
+
+``` r
+its_otu_avg <- resample_fields(its_otu_all, 8, "otu")
+its_sv_avg  <- resample_fields(its_sv_all,  8, "sv")
+amf_otu_avg <- resample_fields(amf_otu_all, 7, "otu")
+amf_sv_avg  <- resample_fields(amf_sv_all,  7, "sv")
+```
+
+## Site metadata and design
+
+Set remnants to 50 years old as a placeholder. This number will not be
+used in a quantitative sense, for example in models. Oldfields are
+filtered out because they could not be replicated in regions.
+
+``` r
+rem_age <- 50
+sites   <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALSE) %>% 
+    mutate(site_type = factor(site_type, ordered = TRUE, levels = c("corn", "restored", "remnant")),
+           yr_since = replace(yr_since, which(site_type == "remnant"), rem_age)) %>% 
+    filter(site_type != "oldfield") %>% 
+    rename(field_type = site_type)
+```
+
+# Analysis and Results
+
+## Diversity
+
+Microbial diversity is considered for each of four datasets: OTU or SV
+clustering for 18S or ITS gene sequencing. For each set, Hill’s numbers
+are produced ([Hill 1973](http://doi.wiley.com/10.2307/1934352),
+[Borcard and Legendere 2018,
+p. 373](http://link.springer.com/10.1007/978-3-319-71404-2)) and
+plotted, with means differences tested using mixed-effects linear models
+in `lmer` ([Bates et al. 2015](https://doi.org/10.18637/jss.v067.i01)).
+Correlations are then produced to visualize change in diversity trends
+over time, with similar mixed-effects tests performed.
+
+Hill’s numbers, brief description:
+
+- $N_{0}$ = species richness
+- $N_{1}$ = Shannon’s diversity ($e^H$; excludes rarest species,
+  considers the number of “functional” species)
+- $N_{2}$ = Simpson’s diversity ($1 / \lambda$; number of “codominant”
+  species)
+- $E_{10}$ = Shannon’s evenness (Hill’s ratio $N_{1} / N_{0}$)
+- $E_{20}$ = Simpson’s evenness (Hill’s ratio $N_{2} / N_{0}$)
+
+### Functions and variables
+
+The following functions are used to streamline code and reduce errors:
+
+#### Calculate Hill’s series on a samples-species matrix
+
+``` r
+calc_diversity <- function(spe) {
+    spe_mat <- data.frame(spe, row.names = 1)
+    
+    N0  <- apply(spe_mat > 0, MARGIN = 1, FUN = sum)
+    N1  <- exp(diversity(spe_mat))
+    N2  <- diversity(spe_mat, "inv")
+    E10 <- N1 / N0
+    E20 <- N2 / N0
+    
+    return(
+        data.frame(N0, N1, N2, E10, E20) %>%
+            rownames_to_column(var = "site_key") %>%
+            mutate(site_key = as.integer(site_key)) %>%
+            left_join(
+                sites %>% select(starts_with("site"), field_type, region, yr_rank, yr_since),
+                by = "site_key"
+            ) %>%
+            pivot_longer(
+                cols = N0:E20,
+                names_to = "hill_index",
+                values_to = "value"
+            ) %>%
+            mutate(hill_index = factor(
+                hill_index,
+                ordered = TRUE,
+                levels = c("N0", "N1", "N2", "E10", "E20")
+            ))
+    )
+}
+```
+
+#### Test diversity measures across site types with mixed model
+
+``` r
+test_diversity <- function(data) {
+    hills <- levels(data$hill_index)
+    for(i in 1:length(hills)) {
+        print(hills[i])
+        mod_data <- data %>% 
+            filter(hill_index == hills[i]) %>% 
+            mutate(field_type = factor(field_type, ordered = FALSE))
+        mmod <- lmer(value ~ field_type + (1 | region), data = mod_data, REML = FALSE)
+        mmod_null <- lmer(value ~ 1 + (1 | region), data = mod_data, REML = FALSE)
+        print(anova(mmod, mmod_null))
+        mod_tuk <- glht(mmod, linfct = mcp(field_type = "Tukey"), test = adjusted("holm"))
+        print(mod_tuk)
+        print(cld(mod_tuk))
+    }
+}
+```
+
+#### Change in diversity over time
+
+Do Hill’s numbers correlate with years since restoration? This is only
+appropriate to attempt in the Blue Mounds region, and even there, it
+will be difficult to justify that the area meets the criteria for a
+chronosequence.
+
+``` r
+test_age <- function(data, caption=NULL) {
+    temp_df <-
+        data %>%
+        filter(field_type == "restored", region == "BM") %>%
+        pivot_wider(names_from = hill_index, values_from = value) %>%
+        select(-starts_with("site"),-field_type,-region,-yr_rank)
+    lapply(temp_df %>% select(-yr_since), function(z) {
+        test <-
+            cor.test(temp_df$yr_since,
+                     z,
+                     alternative = "two.sided",
+                     method = "pearson")
+        return(data.frame(
+            cor = round(test$estimate, 2),
+            R2 = round(test$estimate^2, 2),
+            pval = round(test$p.value, 3)
+        ))
+    }) %>%
+        bind_rows(.id = "hill_num") %>%
+        remove_rownames() %>%
+        mutate(sig = case_when(pval <= 0.05 ~ "*", TRUE ~ "")) %>%
+        kable(format = "pandoc", caption = caption)
+}
+```
+
+#### Calculate diversity of all samples-species matrices
+
+Create list of matrices and process with `calc_diversity()`. Naming list
+objects as their desired output names will enhance understanding later.
+
+``` r
+spe_list <- list(
+    its_otu = its_otu_avg,
+    its_sv = its_sv_avg,
+    amf_otu = amf_otu_avg,
+    amf_sv = amf_sv_avg
+)
+```
+
+``` r
+div <- lapply(spe_list, calc_diversity)
+```
+
+### Fungi (ITS gene) in OTU clusters, averaged to 8 samples per field.
+
+Run the linear model and test differences among field types for
+diversity.
+
+``` r
+test_diversity(div$its_otu)
+```
+
+    ## [1] "N0"
+    ## Data: mod_data
+    ## Models:
+    ## mmod_null: value ~ 1 + (1 | region)
+    ## mmod: value ~ field_type + (1 | region)
+    ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)    
+    ## mmod_null    3 276.44 280.09 -135.22   270.44                         
+    ## mmod         5 257.78 263.87 -123.89   247.78 22.659  2  1.201e-05 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ##   General Linear Hypotheses
+    ## 
+    ## Multiple Comparisons of Means: Tukey Contrasts
+    ## 
+    ## 
+    ## Linear Hypotheses:
+    ##                         Estimate
+    ## restored - corn == 0       85.04
+    ## remnant - corn == 0       123.37
+    ## remnant - restored == 0    38.34
+    ## 
+    ##     corn restored  remnant 
+    ##      "a"      "b"      "b" 
+    ## [1] "N1"
+
+    ## boundary (singular) fit: see help('isSingular')
+
+    ## Data: mod_data
+    ## Models:
+    ## mmod_null: value ~ 1 + (1 | region)
+    ## mmod: value ~ field_type + (1 | region)
+    ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)   
+    ## mmod_null    3 230.66 234.31 -112.33   224.66                        
+    ## mmod         5 223.03 229.12 -106.52   213.03 11.627  2   0.002987 **
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ##   General Linear Hypotheses
+    ## 
+    ## Multiple Comparisons of Means: Tukey Contrasts
+    ## 
+    ## 
+    ## Linear Hypotheses:
+    ##                         Estimate
+    ## restored - corn == 0      30.332
+    ## remnant - corn == 0       38.955
+    ## remnant - restored == 0    8.623
+    ## 
+    ##     corn restored  remnant 
+    ##      "a"      "b"      "b" 
+    ## [1] "N2"
+
+    ## boundary (singular) fit: see help('isSingular')
+    ## boundary (singular) fit: see help('isSingular')
+
+    ## Data: mod_data
+    ## Models:
+    ## mmod_null: value ~ 1 + (1 | region)
+    ## mmod: value ~ field_type + (1 | region)
+    ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)  
+    ## mmod_null    3 205.32 208.97 -99.658   199.32                       
+    ## mmod         5 203.36 209.46 -96.682   193.36 5.9523  2    0.05099 .
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ##   General Linear Hypotheses
+    ## 
+    ## Multiple Comparisons of Means: Tukey Contrasts
+    ## 
+    ## 
+    ## Linear Hypotheses:
+    ##                         Estimate
+    ## restored - corn == 0      14.017
+    ## remnant - corn == 0       17.384
+    ## remnant - restored == 0    3.367
+    ## 
+    ##     corn restored  remnant 
+    ##      "a"      "b"     "ab" 
+    ## [1] "E10"
+
+    ## boundary (singular) fit: see help('isSingular')
+    ## boundary (singular) fit: see help('isSingular')
+
+    ## Data: mod_data
+    ## Models:
+    ## mmod_null: value ~ 1 + (1 | region)
+    ## mmod: value ~ field_type + (1 | region)
+    ##           npar     AIC     BIC logLik deviance  Chisq Df Pr(>Chisq)
+    ## mmod_null    3 -91.419 -87.762 48.709  -97.419                     
+    ## mmod         5 -89.983 -83.889 49.992  -99.983 2.5645  2     0.2774
+    ## 
+    ##   General Linear Hypotheses
+    ## 
+    ## Multiple Comparisons of Means: Tukey Contrasts
+    ## 
+    ## 
+    ## Linear Hypotheses:
+    ##                         Estimate
+    ## restored - corn == 0     0.02614
+    ## remnant - corn == 0      0.02930
+    ## remnant - restored == 0  0.00316
+    ## 
+    ##     corn restored  remnant 
+    ##      "a"      "a"      "a" 
+    ## [1] "E20"
+
+    ## boundary (singular) fit: see help('isSingular')
+    ## boundary (singular) fit: see help('isSingular')
+
+    ## Data: mod_data
+    ## Models:
+    ## mmod_null: value ~ 1 + (1 | region)
+    ## mmod: value ~ field_type + (1 | region)
+    ##           npar     AIC      BIC logLik deviance  Chisq Df Pr(>Chisq)
+    ## mmod_null    3 -107.37 -103.715 56.686  -113.37                     
+    ## mmod         5 -104.23  -98.139 57.116  -114.23 0.8617  2       0.65
+    ## 
+    ##   General Linear Hypotheses
+    ## 
+    ## Multiple Comparisons of Means: Tukey Contrasts
+    ## 
+    ## 
+    ## Linear Hypotheses:
+    ##                         Estimate
+    ## restored - corn == 0    0.011252
+    ## remnant - corn == 0     0.012419
+    ## remnant - restored == 0 0.001167
+    ## 
+    ##     corn restored  remnant 
+    ##      "a"      "a"      "a"
+
+Key model results depend on which sites were sampled using
+`resample_fields()` above. Changing the value of `set.seed()` in that
+function may alter the results of this model.
+
+- $N_{0}$: field type is significant by likelihood ratio test at
+  p\<0.001 with region as a random effect. Species richness in corn
+  fields was less than restored or remnants, which didn’t differ at
+  p=0.05.
+- $N_{1}$: model fit is questionable due to singular fit, but field type
+  is significant by likelihood ratio test at p\<0.01 with region as a
+  random effect. Species richness in corn fields was less than restored
+  or remnants, which didn’t differ at p=0.05.
+- $N_{2}$, $E_{10}$, and $E_{20}$: model fits for both null and full
+  models were singular and NS at p\<0.05.
+
+Figure labels are generated and the diversity data are plotted below. An
+interaction plot follows, and is useful to consider what the model can
+and cannot say about differences in regions and field types.
+
+``` r
+labs_its_otu <- data.frame(
+    hill_index = factor(c(rep("N0", 3), rep("N1", 3)), ordered = TRUE, levels = c("N0", "N1", "N2", "E10", "E20")),
+    lab = c("a", "b", "b", "a", "b", "b"),
+    xpos = rep(c(1,2,3), 2),
+    ypos = rep(c(620, 170), each = 3)
+)
+```
+
+``` r
+ggplot(div$its_otu, aes(x = field_type, y = value)) +
+    facet_wrap(vars(hill_index), scales = "free_y") +
+    geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
+    geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
+    geom_text(data = labs_its_otu, aes(x = xpos, y = ypos, label = lab)) +
+    labs(x = "", y = "Index value", title = "TGP microbial diversity (Hill's), ITS, 97% OTU",
+         caption = "N0-richness, N1-e^Shannon, N2-Simpson, E10=N1/N0, E20=N2/N0, width=n") +
+    scale_fill_discrete_qualitative(palette = "Dark3") +
+    theme_bw()
+```
+
+![](microbial_diversity_files/figure-gfm/plot_div_its_otu-1.png)<!-- -->
+
+Richness and evenness parameters increase from corn, to restored, to
+remnant fields, and some support exists for this pattern to occur across
+regions.
+
+``` r
+ggplot(
+    div$its_otu %>% 
+        group_by(field_type, region, hill_index) %>% 
+        summarize(avg_value = mean(value), .groups = "drop"),
+    aes(x = field_type, y = avg_value, group = region)) +
+    facet_wrap(vars(hill_index), scales = "free_y") +
+    geom_line(aes(linetype = region)) +
+    geom_point(aes(fill = region), size = 2, shape = 21) +
+    labs(x = "", y = "Average value", title = "Interaction plot of Hill's numbers, ITS, 97% OTU") +
+    scale_fill_discrete_qualitative(palette = "Dark3") +
+    theme_bw()
+```
+
+![](microbial_diversity_files/figure-gfm/plot_div_its_otu_interaction-1.png)<!-- -->
+
+Key observations:
+
+- The restored field at LP contains very high diversity, co-dominance,
+  and evenness of fungi.
+- The restored field at FG contains low diversity, co-dominance, and
+  evenness.
+- Interactions are less an issue with $N_{0}$ and $N_{1}$
+
+Next, trends in diversity are correlated with years since restoration,
+with 0 used for corn fields and 50 used for remnants. Statistical
+testing of this relationship is not valid because the ages for corn and
+remnant aren’t justified, and the fields aren’t justifiable as a
+chronosequence.
+
+``` r
+ggplot(div$its_otu, aes(x = yr_since, y = value)) +
+facet_wrap(vars(hill_index), scales = "free_y") +
+    geom_point(aes(fill = region, shape = field_type), size = 2) +
+    labs(x = "Years since restoration", y = "index value", title = "Change in TGP microbial diversity (Hill's), ITS, 97% OTU",
+         caption = "N0-richness, N1-e^Shannon, N2-Simpson, E10=N1/N0, E20=N2/N0") +
+    scale_shape_manual(name = "field type", values = c(21:23)) +
+    scale_fill_discrete_qualitative(name = "region", palette = "Dark3") +
+    guides(fill = guide_legend(override.aes = list(shape = 21)),
+           shape = guide_legend(override.aes = list(fill = NA))) +
+    theme_bw()
+```
+
+![](microbial_diversity_files/figure-gfm/plot_yrs_since_resto-1.png)<!-- -->
+
+Possibly, it’s justified to correlate restoration age with diversity at
+Blue Mounds only, and with restored fields only. A Pearson’s correlation
+is used:
+
+``` r
+test_age(div$its_otu, caption = "Correlation between Hill's numbers and field age in the Blue Mounds region")
+```
+
+| hill_num |   cor |   R2 |  pval | sig |
+|:---------|------:|-----:|------:|:----|
+| N0       | -0.32 | 0.10 | 0.484 |     |
+| N1       | -0.77 | 0.60 | 0.041 | \*  |
+| N2       | -0.66 | 0.44 | 0.103 |     |
+| E10      | -0.70 | 0.48 | 0.083 |     |
+| E20      | -0.58 | 0.33 | 0.177 |     |
+
+Correlation between Hill’s numbers and field age in the Blue Mounds
+region
+
+Hill’s $N_{1}$ decreases with age since restoration in the Blue Mounds
+area ($R^2$=0.60, p\<0.05). This is odd and points to a confounding
+effect driven by difference in restoration strategy over time. It’s also
+possible that site differences (soils, etc.) also confound this
+relationship. It’s possible that we cannot attempt to present this as a
+time-based result at all.
+
+In any case, let’s take a look at Shannon’s diversity over time in Blue
+Mounds’s restored fields.
+
+``` r
+div$its_otu %>% 
+    filter(region == "BM", field_type == "restored", hill_index == "N1") %>% 
+    ggplot(aes(x = yr_since, y = value)) +
+    geom_text(aes(label = site_name)) +
+    labs(x = "Years since restoration", y = expression("Shannon's diversity"~(N[1]))) +
+    theme_classic()
+```
+
+<img src="microbial_diversity_files/figure-gfm/bm_test_age-1.png" style="display: block; margin: auto;" />
+
+Karla Ott’s field was almost exclusively dominated by big bluestem,
+possibly leading to a simpler microbial community. Right now, my
+interpretation is that restoration strategies changed over time and
+although restored plant communities persisted, microbial communities
+simplified over time. Immediately after restoration, microbial diversity
+increased rapidly and was not sustained because the soil properties
+ultimately didn’t change very much.
+
+Site factors (soil type) are hard to tease out, but in later analyses we
+will try using measured soil chemical properties.
