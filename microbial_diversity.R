@@ -52,6 +52,7 @@ amf_sv_all  <- read_csv(paste0(getwd(), "/clean_data/spe_18S_sv_siteSpeMatrix_al
 #' will resample the site-species data to the correct number of samples. 
 #+ resample_fields_function 
 resample_fields <- function(data, min, cluster_type) {
+    set.seed(482)
     data %>% 
         group_by(site_key) %>% 
         slice_sample(n = min) %>%
@@ -77,40 +78,28 @@ amf_otu_tax <- read_csv(paste0(getwd(), "/clean_data/spe_18S_otu_taxonomy.csv"),
 amf_sv_tax  <- read_csv(paste0(getwd(), "/clean_data/spe_18S_sv_taxonomy.csv"), show_col_types = FALSE)
 #'
 #' ## Site metadata and design
-#' Choose 50 years as the age of remnants to facilitate plotting and modeling. 
+#' Choose 50 years as the age of remnants to facilitate plotting and modeling. Ultimately,
+#' an age of 50 years for remnants is difficult to justify, but for now it will help reveal 
+#' trends. 
 rem_age <- 50
 sites   <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALSE) %>% 
     filter(site_type != "oldfield") %>% 
     mutate(site_type = factor(site_type, ordered = TRUE, levels = c("corn", "restored", "remnant")),
            yr_since = replace(yr_since, which(site_type == "remnant"), rem_age))
-
-
-# SET THIS UP TO DO ALL THE OTU ANALYSIS FIRST SO WE DON'T HAVE TO USE SVs AT ALL
-
-
-
-
-
-
-# do it this way. It's possible you
-# could even wrap the models and figures into this...
-spe_avg_temp <- list(
-    div_its_otu = its_otu_avg,
-    div_its_sv = its_sv_avg,
-    div_amf_otu = amf_otu_avg,
-    div_amf_sv = amf_sv_avg
-)
-
-lapply(spe_avg_temp, calc_diversity)
-
-
-
-
-
-
-# Analysis and Results -------------
-# ——————————————————————————————————
-# __Diversity ----------------------
+#' 
+#' # Analysis and Results
+#' ## Diversity
+#' In this section, microbial diversity is considered for each dataset: OTU or SV clustering for 18S or ITS gene 
+#' sequencing. For each set, Hill's numbers are produced ([Hill 1973(http://doi.wiley.com/10.2307/1934352)], 
+#' [Borcard and Legendere 2018, p. 373](http://link.springer.com/10.1007/978-3-319-71404-2)) and plotted,
+#' with means differences tested using mixed-effects linear models in `lmer` ([Bates et al. 2015[(https://doi.org/10.18637/jss.v067.i01)]]).
+#' Correlations are then produced to visualize change in diversity trends over time, 
+#' with similar mixed-effects tests performed. 
+#' 
+#' ### Functions
+#' The following functions are used to streamline code and reduce errors:
+#' 
+#' 
 # Function: calculate diversity series from species matrix
 calc_diversity <- function(spe) {
     spe_mat <- data.frame(spe, row.names = 1)
@@ -130,6 +119,25 @@ calc_diversity <- function(spe) {
             mutate(hill_index = factor(hill_index, ordered = TRUE, levels = c("N0", "N1", "N2", "E10", "E20")))
     )
 }
+
+
+
+
+spe_avg_temp <- list(
+    div_its_otu = its_otu_avg,
+    div_its_sv = its_sv_avg,
+    div_amf_otu = amf_otu_avg,
+    div_amf_sv = amf_sv_avg
+)
+
+lapply(spe_avg_temp, calc_diversity)
+
+
+
+
+
+
+
 
 ## Diversity series on species data (ITS, 97% OTUs, abundances averaged in sites)
 div_its_otu <- calc_diversity(its_otu_avg) %>% glimpse()
@@ -151,8 +159,8 @@ for(i in 1:length(hills)) {
     mod_data <- div_its_otu %>% 
         filter(hill_index == hills[i]) %>% 
         mutate(site_type = factor(site_type, ordered = FALSE))
-    mmod <- lmer(value ~ site_type + (1 | region), data = mod_data)
-    mmod_null <- lmer(value ~ 1 + (1 | region), data = mod_data)
+    mmod <- lmer(value ~ site_type + (1 | region), data = mod_data, REML = FALSE)
+    mmod_null <- lmer(value ~ 1 + (1 | region), data = mod_data, REML = FALSE)
     print(anova(mmod, mmod_null))
     mod_tuk <- glht(mmod, linfct = mcp(site_type = "Tukey"), test = adjusted("holm"))
     print(mod_tuk)
@@ -203,6 +211,11 @@ lapply(cor_its_otu, function(z) {
                  method = "pearson")
     return(c(test$estimate, test$p.value))
 })
+
+
+
+
+
 
 ## Diversity series on species data (ITS, 100% SVs, abundances averages in sites)
 div_its_sv  <- calc_diversity(its_sv)
