@@ -86,13 +86,12 @@ Last updated: 07 February, 2023
 
 # Description
 
-Microbial data include site-species tables derived from high-throughput
-sequencing and PLFA/NLFA extractions and measurement. Lipid workflow was
-completed by Ylva Lekberg.
-
-The overview here presents basic statistics and visualizations of
-diversity in the  
-microbial species data.
+Microbial data analyzed here include site-species tables derived from
+high-throughput sequencing of ITS and 18S genes and clustering into 97%
+similar OTUs and 100% similar SVs. This report presents basic statistics
+and visualizations of species richness, Shannon’s diversity/evenness,
+and Simpson’s diversity/evenness in the microbial species data across
+field types.
 
 - Diversity and evenness of microbial communities
 - Interpretation of differences in diversity among regions and field

@@ -1,11 +1,57 @@
-# guilds and taxonomy.....
-
-
+#' ---
+#' title: "Microbial data: microbial guilds and taxonomy"
+#' author: "Beau Larkin\n"
+#' date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
+#' output:
+#'   github_document:
+#'     toc: true
+#'     toc_depth: 3
+#'     df_print: paged
+#' ---
+#'
+#' # Description
+#' 
+#' 
+#' 
+#' 
+#' 
+#' 
+#' 
+#' 
+#' 
+#' 
+#' # Packages and libraries
+packages_needed = c(
+    "tidyverse"
+)
+packages_installed = packages_needed %in% rownames(installed.packages())
+#+ packages,message=FALSE
+if (any(!packages_installed)) {
+    install.packages(packages_needed[!packages_installed])
+}
+#+ libraries,message=FALSE
+for (i in 1:length(packages_needed)) {
+    library(packages_needed[i], character.only = T)
+}
+#' 
+#' # Data
+#' ## Sites-species tables
+#' CSV files were produced in `process_data.R`
+spe_all <- list(
+    its_otu_all <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_siteSpeMatrix_allReps.csv"), 
+                            show_col_types = FALSE),
+    its_sv_all  <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_sv_siteSpeMatrix_allReps.csv"), 
+                            show_col_types = FALSE),
+    amf_otu_all <- read_csv(paste0(getwd(), "/clean_data/spe_18S_otu_siteSpeMatrix_allReps.csv"), 
+                            show_col_types = FALSE),
+    amf_sv_all  <- read_csv(paste0(getwd(), "/clean_data/spe_18S_sv_siteSpeMatrix_allReps.csv"), 
+                            show_col_types = FALSE)
+)
 #' ## Species metadata
-#' Load guild data
+#' Load guild and taxonomy data (ITS sequences)
 its_otu_guild <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_funGuild.csv"), show_col_types = FALSE)
 its_sv_guild  <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_sv_funGuild.csv"), show_col_types = FALSE)
-#' Load taxonomy data
+#' Load taxonomy data (AMF/18S sequences)
 amf_otu_tax <- read_csv(paste0(getwd(), "/clean_data/spe_18S_otu_taxonomy.csv"), show_col_types = FALSE)
 amf_sv_tax  <- read_csv(paste0(getwd(), "/clean_data/spe_18S_sv_taxonomy.csv"), show_col_types = FALSE)
 #'
@@ -15,8 +61,16 @@ amf_sv_tax  <- read_csv(paste0(getwd(), "/clean_data/spe_18S_sv_taxonomy.csv"), 
 
 # __Trophic Modes, Guilds and Taxonomy ----------------------
 # Do any species register 0 abundance across all sites?
-which(apply(its_otu, MARGIN = 2, FUN = sum) == 0) # No
-which(apply(its_sv,  MARGIN = 2, FUN = sum) == 0) # No
+zero_ab <- function(data) {
+    which(apply(data, MARGIN = 2, FUN = sum) == 0)
+}
+lapply(spe_all, zero_ab)
+# no
+
+
+
+
+
 # Function to clean up Qiime taxomomy from guilds files
 process_taxa <- function(data) {
     data %>% 
@@ -54,6 +108,11 @@ join_spe_meta <- function(spe, meta, filter_char = "otu", clust_name = "otu_num"
         left_join(process_taxa(meta) %>% select(-otu_ID, -trait, -notes, -citation), by = clust_name) %>% 
         left_join(sites %>% select(starts_with("site"), region, yr_rank, yr_since), by = "site_key")
 }
+
+
+
+
+
 
 # With these functions in hand, we are ready to summarize and explore the data. 
 # FunGuild identifies the level of taxonomy assignment, the trophic mode, and the confidence
