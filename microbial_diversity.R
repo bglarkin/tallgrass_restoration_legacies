@@ -300,3 +300,99 @@ div$its_otu %>%
 #' Site factors (soil type) are hard to tease out, but in later analyses we will try using measured 
 #' soil chemical properties. 
     
+
+
+div
+
+
+
+
+
+#' ### Fungi (ITS gene) in sequence-variant (SV) clusters, averaged to 8 samples per field.
+#' Run the linear model and test differences among field types for diversity.
+#+ test_div_its_otu
+test_diversity(div$its_otu)
+#' Key model results depend on which sites were sampled using `resample_fields()` above. 
+#' Changing the value of `set.seed()` in that function may alter the results of this model. 
+#' 
+#' - $N_{0}$: field type is significant by likelihood ratio test at p<0.001 with region as
+#' a random effect. Species richness in corn fields was less than restored or remnants, which 
+#' didn't differ at p=0.05. 
+#' - $N_{1}$: model fit is questionable due to singular fit, but field type is significant
+#' by likelihood ratio test at p<0.01 with region as a random effect. Species richness in corn fields was less 
+#' than restored or remnants, which didn't differ at p=0.05. 
+#' - $N_{2}$, $E_{10}$, and $E_{20}$: model fits for both null and full models were singular and NS at p<0.05.
+#' 
+#' Figure labels are generated and the diversity data are plotted below. An interaction plot follows, 
+#' and is useful to consider what the model can and cannot say about differences in regions and field types. 
+#+ div_its_otu_labs
+labs_its_otu <- data.frame(
+    hill_index = factor(c(rep("N0", 3), rep("N1", 3)), ordered = TRUE, levels = c("N0", "N1", "N2", "E10", "E20")),
+    lab = c("a", "b", "b", "a", "b", "b"),
+    xpos = rep(c(1,2,3), 2),
+    ypos = rep(c(620, 170), each = 3)
+)
+#+ plot_div_its_otu,fig.width=9,fig.height=7
+ggplot(div$its_otu, aes(x = field_type, y = value)) +
+    facet_wrap(vars(hill_index), scales = "free_y") +
+    geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
+    geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
+    geom_text(data = labs_its_otu, aes(x = xpos, y = ypos, label = lab)) +
+    labs(x = "", y = "Index value", title = "TGP microbial diversity (Hill's), ITS, 97% OTU",
+         caption = "N0-richness, N1-e^Shannon, N2-Simpson, E10=N1/N0, E20=N2/N0, width=n") +
+    scale_fill_discrete_qualitative(palette = "Dark3") +
+    theme_bw()
+#' Richness and evenness parameters increase from corn, to restored, to remnant fields, and some 
+#' support exists for this pattern to occur across regions. 
+#+ plot_div_its_otu_interaction,fig.width=9,fig.height=7
+ggplot(
+    div$its_otu %>% 
+        group_by(field_type, region, hill_index) %>% 
+        summarize(avg_value = mean(value), .groups = "drop"),
+    aes(x = field_type, y = avg_value, group = region)) +
+    facet_wrap(vars(hill_index), scales = "free_y") +
+    geom_line(aes(linetype = region)) +
+    geom_point(aes(fill = region), size = 2, shape = 21) +
+    labs(x = "", y = "Average value", title = "Interaction plot of Hill's numbers, ITS, 97% OTU") +
+    scale_fill_discrete_qualitative(palette = "Dark3") +
+    theme_bw()
+#' 
+#' Key observations:
+#' 
+#' - The restored field at LP contains very high diversity, co-dominance, and evenness of fungi.
+#' - The restored field at FG contains low diversity, co-dominance, and evenness. 
+#' - Interactions are less an issue with $N_{0}$ and $N_{1}$
+#' 
+#' Next, trends in diversity are correlated with years since restoration, with 0 used for corn fields 
+#' and 50 used for remnants. Statistical testing of this relationship is not valid because the ages for 
+#' corn and remnant aren't justified, and the fields aren't justifiable as a chronosequence. 
+#+ plot_yrs_since_resto,fig.width=9,fig.height=7
+ggplot(div$its_otu, aes(x = yr_since, y = value)) +
+    facet_wrap(vars(hill_index), scales = "free_y") +
+    geom_point(aes(fill = region, shape = field_type), size = 2) +
+    labs(x = "Years since restoration", y = "index value", title = "Change in TGP microbial diversity (Hill's), ITS, 97% OTU",
+         caption = "N0-richness, N1-e^Shannon, N2-Simpson, E10=N1/N0, E20=N2/N0") +
+    scale_shape_manual(name = "field type", values = c(21:23)) +
+    scale_fill_discrete_qualitative(name = "region", palette = "Dark3") +
+    guides(fill = guide_legend(override.aes = list(shape = 21)),
+           shape = guide_legend(override.aes = list(fill = NA))) +
+    theme_bw()
+#' 
+#' Possibly, it's justified to correlate restoration age with diversity at Blue Mounds only, 
+#' and with restored fields only. A Pearson's correlation is used:
+#+ test_age_its_otu
+test_age(div$its_otu, caption = "Correlation between Hill's numbers and field age in the Blue Mounds region")
+#' 
+#' Hill's $N_{1}$ decreases with age since restoration in the Blue Mounds area ($R^2$=0.60, p<0.05). 
+#' This is odd and points to a confounding effect driven by difference in restoration strategy over time.
+#' It's also possible that site differences (soils, etc.) also confound this relationship. It's possible
+#' that we cannot attempt to present this as a time-based result at all. 
+#' 
+#' In any case, let's take a look at Shannon's diversity over time in Blue Mounds's restored fields.
+#+ bm_test_age,fig.width=7,fig.height=6,fig.align="center"
+div$its_otu %>% 
+    filter(region == "BM", field_type == "restored", hill_index == "N1") %>% 
+    ggplot(aes(x = yr_since, y = value)) +
+    geom_text(aes(label = site_name)) +
+    labs(x = "Years since restoration", y = expression("Shannon's diversity"~(N[1]))) +
+    theme_classic()
