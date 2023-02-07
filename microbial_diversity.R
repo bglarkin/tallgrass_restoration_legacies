@@ -220,7 +220,7 @@ test_diversity(div$its_otu)
 #' a random effect. Species richness in corn fields was less than restored or remnants, which 
 #' didn't differ at p=0.05. 
 #' - $N_{1}$: model fit is questionable due to [singular](https://rdrr.io/cran/lme4/man/isSingular.html) fit, but field type is significant
-#' by likelihood ratio test at p<0.01 with region as a random effect. Species richness in corn fields was less 
+#' by likelihood ratio test at p<0.01 with region as a random effect. Shannon's diversity in corn fields was less 
 #' than restored or remnants, which didn't differ at p=0.05. 
 #' - $N_{2}$, $E_{10}$, and $E_{20}$: model fits for both null and full models were singular and NS at p<0.05.
 #' 
@@ -308,7 +308,8 @@ div$its_otu %>%
 #' 
 #' Site factors (soil type) are hard to tease out, but in later analyses we will try using measured 
 #' soil chemical properties. 
-#'
+#' 
+#' 
 #' ## Fungi (ITS gene) in sequence-variant (SV) clusters, averaged to 8 samples per field.
 #' Run the linear model and test differences among field types for diversity.
 #+ test_div_its_sv
@@ -321,7 +322,7 @@ test_diversity(div$its_sv)
 #' didn't differ at p=0.05. 
 #' - $N_{1}$: model fit is questionable due to [singular](https://rdrr.io/cran/lme4/man/isSingular.html) fit, 
 #' of both the null and parameterized models, but field type is significant
-#' by likelihood ratio test at p<0.01 with region as a random effect. Species richness in corn fields was less 
+#' by likelihood ratio test at p<0.01 with region as a random effect. Shannon's diversity in corn fields was less 
 #' than restored or remnants, which didn't differ at p=0.05. 
 #' - $N_{2}$, $E_{10}$, and $E_{20}$: model fits for both null and full models were singular and NS at p<0.05.
 #' 
@@ -405,3 +406,192 @@ div$its_sv %>%
     labs(x = "Years since restoration", y = expression("Shannon's diversity"~(N[1]))) +
     theme_classic()
 #' The pattern and rank order of sites is the same as was seen with ITS-based OTUs.
+#' 
+#' 
+#' ## AMF (18S gene) in operational taxonomic unit (97% similar OTUs) clusters, averaged to 7 samples per field.
+#' Run the linear model and test differences among field types for diversity.
+#+ test_div_amf_otu
+test_diversity(div$amf_otu)
+#' Model results depend a little on which sites were sampled using `resample_fields()` above. 
+#' Changing the value of `set.seed()` in that function may alter the results of this model.
+#' 
+#' Despite apparent trends across field types, variances are large and interactions apparent. All
+#' model fits are questionable due to [singularity](https://rdrr.io/cran/lme4/man/isSingular.html). 
+#' The following results and plots are provisional and included here for consideration only.  
+#' 
+#' - $N_{0}$: Species richness differences by field type are significant by likelihood ratio test at p<0.005 with region as
+#' a random effect. Species richness in corn fields was less than restored or remnants, which 
+#' didn't differ at p=0.05. 
+#' - $N_{1}$: field type is significant by likelihood ratio test at p<0.001 with region as a random effect. 
+#' Shannon's diversity in corn fields was less than restored or remnants, which didn't differ at p=0.05. 
+#' - $N_{2}$: field type is significant by likelihood ratio test at p<0.001 with region as a random effect.
+#' Restored and remnant fields host a larger group of co-dominant AMF than are found in cornfields 
+#' (p=0.05).
+#' - $E_{10}$: field type is significant by likelihood ratio test at p<0.05 with region as a random effect. 
+#' Weak support for higher evenness of functionally abundant species in restored and remnant fields was found 
+#' (p=0.05).
+#' - $E_{20}$: Similar trend as $E_{10}$ but NS (p>0.05). 
+#' 
+#' Figure labels are generated and the diversity data are plotted below. An interaction plot follows, 
+#' and is useful to consider what the model can and cannot say about differences in regions and field types. 
+#+ div_amf_otu_labs
+labs_amf_otu <- data.frame(
+    hill_index = factor(c(rep("N0", 3), rep("N1", 3), rep("N2", 3), rep("E10", 3)), 
+                        ordered = TRUE, 
+                        levels = c("N0", "N1", "N2", "E10", "E20")),
+    lab = rep(c("a", "b", "b"), 4),
+    xpos = rep(c(1,2,3), 4),
+    ypos = rep(c(60, 30, 20, 0.55), each = 3)
+)
+#+ plot_div_amf_otu,fig.width=9,fig.height=7
+ggplot(div$amf_otu, aes(x = field_type, y = value)) +
+    facet_wrap(vars(hill_index), scales = "free_y") +
+    geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
+    geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
+    geom_text(data = labs_amf_otu, aes(x = xpos, y = ypos, label = lab)) +
+    labs(x = "", y = "Index value", title = "TGP microbial diversity (Hill's), AMF (18S), 97% OTU",
+         caption = "N0-richness, N1-e^Shannon, N2-Simpson, E10=N1/N0, E20=N2/N0, width=n") +
+    scale_fill_discrete_qualitative(palette = "Dark3") +
+    theme_bw()
+#' Richness increases from corn, to restored, to remnant fields, and some 
+#' support exists for this pattern to occur across regions. The trend is weakest with $N_{0}$, suggesting
+#' that both restored and remnant soils contain more functionally abundant and co-dominant species than are found in cornfields, 
+#' but some cornfields have "long tails" of rare species. Wide variances stifle inferences. The 
+#' trend detected in evenness suggests that a few weedy AMF species dominate cornfields but most restored 
+#' fields host more balanced communities that are more similar to remnants. 
+#+ plot_div_amf_otu_interaction,fig.width=9,fig.height=7
+ggplot(
+    div$amf_otu %>% 
+        group_by(field_type, region, hill_index) %>% 
+        summarize(avg_value = mean(value), .groups = "drop"),
+    aes(x = field_type, y = avg_value, group = region)) +
+    facet_wrap(vars(hill_index), scales = "free_y") +
+    geom_line(aes(linetype = region)) +
+    geom_point(aes(fill = region), size = 2, shape = 21) +
+    labs(x = "", y = "Average value", title = "Interaction plot of Hill's numbers, AMF (18S), 97% OTU") +
+    scale_fill_discrete_qualitative(palette = "Dark3") +
+    theme_bw()
+#' 
+#' ### Key observations:
+#' 
+#' - Cornfields differ from restored and remnant fields, with lower richness, fewer dominant species,
+#' and greater dominance of those species. 
+#' - Differences between restored and remnant fields change directions based on region, with FL
+#' and LP matching the hypothesized pattern but BM and FG reversing it. 
+#' - Particular species may be strong interactors here. 
+#' 
+#' ### Diversity over time (18S-based OTUs) 
+#' Next, trends in diversity are correlated with years since restoration, with 0 used for corn fields 
+#' and 50 used for remnants. Statistical testing of this relationship is not valid because the ages for 
+#' corn and remnant aren't justified, and the fields aren't justifiable as a chronosequence. 
+#+ plot_yrs_since_resto_amf_otu,fig.width=9,fig.height=7
+ggplot(div$amf_otu, aes(x = yr_since, y = value)) +
+    facet_wrap(vars(hill_index), scales = "free_y") +
+    geom_point(aes(fill = region, shape = field_type), size = 2) +
+    labs(x = "Years since restoration", y = "index value", title = "Change in TGP microbial diversity (Hill's), AMF (18S), 97% OTU",
+         caption = "N0-richness, N1-e^Shannon, N2-Simpson, E10=N1/N0, E20=N2/N0") +
+    scale_shape_manual(name = "field type", values = c(21:23)) +
+    scale_fill_discrete_qualitative(name = "region", palette = "Dark3") +
+    guides(fill = guide_legend(override.aes = list(shape = 21)),
+           shape = guide_legend(override.aes = list(fill = NA))) +
+    theme_bw()
+#' 
+#' ### Diversity over time at Blue Mounds (ITS-based SVs)
+#' Possibly, it's justified to correlate restoration age with diversity at Blue Mounds only, 
+#' and with restored fields only. A Pearson's correlation is used:
+#+ test_age_amf_otu
+test_age(div$amf_otu, caption = "Correlation between Hill's numbers and field age in the Blue Mounds region: AMF (18S), 97% OTU")
+#' 
+#' The relationships are too weak to examine further. 
+#' 
+#' 
+#' ## AMF (18S gene) in sequence variants (100% SVs) clusters, averaged to 7 samples per field.
+#' Run the linear model and test differences among field types for diversity.
+#+ test_div_amf_sv
+test_diversity(div$amf_sv)
+#' Model results depend a little on which sites were sampled using `resample_fields()` above. 
+#' Changing the value of `set.seed()` in that function may alter the results of this model.
+#' 
+#' Despite apparent trends across field types, variances are large and interactions apparent. All
+#' model fits are questionable due to [singularity](https://rdrr.io/cran/lme4/man/isSingular.html). 
+#' The following results and plots are provisional and included here for consideration only.  
+#' 
+#' - $N_{0}$: Species richness differences by field type are significant by likelihood ratio test at p<0.05 with region as
+#' a random effect. Species richness in corn fields was less than restored or remnants, which 
+#' didn't differ at p=0.05. Weak result. 
+#' - $N_{1}$: field type is significant by likelihood ratio test at p<0.01 with region as a random effect. 
+#' Shannon's diversity in corn fields was less than restored or remnants, which didn't differ at p=0.05. 
+#' Weak result. 
+#' - $N_{2}$: field type is significant by likelihood ratio test at p<0.05 with region as a random effect.
+#' Restored and remnant fields host a larger group of co-dominant AMF than are found in cornfields 
+#' (p=0.05). Weak result. 
+#' - $E_{10}$, $E_{20}$: No trend observed. 
+#' 
+#' Figure labels are generated and the diversity data are plotted below. An interaction plot follows, 
+#' and is useful to consider what the model can and cannot say about differences in regions and field types. 
+#+ div_amf_sv_labs
+labs_amf_sv <- data.frame(
+    hill_index = factor(c(rep("N0", 3), rep("N1", 3), rep("N2", 3)), 
+                        ordered = TRUE, 
+                        levels = c("N0", "N1", "N2", "E10", "E20")),
+    lab = c(rep(c("a", "b", "b"), 2), "a", "ab", "b"),
+    xpos = rep(c(1,2,3), 3),
+    ypos = rep(c(160, 78, 45), each = 3)
+)
+#+ plot_div_amf_sv,fig.width=9,fig.height=7
+ggplot(div$amf_sv, aes(x = field_type, y = value)) +
+    facet_wrap(vars(hill_index), scales = "free_y") +
+    geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
+    geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
+    geom_text(data = labs_amf_sv, aes(x = xpos, y = ypos, label = lab)) +
+    labs(x = "", y = "Index value", title = "TGP microbial diversity (Hill's), AMF (18S), 100% SV",
+         caption = "N0-richness, N1-e^Shannon, N2-Simpson, E10=N1/N0, E20=N2/N0, width=n") +
+    scale_fill_discrete_qualitative(palette = "Dark3") +
+    theme_bw()
+#' Richness and diversity increase from corn, to restored, to remnant fields, and some 
+#' support exists for this pattern to occur across regions. The trend is generally weak due to high variance
+#' among regions.  
+#+ plot_div_amf_sv_interaction,fig.width=9,fig.height=7
+ggplot(
+    div$amf_sv %>% 
+        group_by(field_type, region, hill_index) %>% 
+        summarize(avg_value = mean(value), .groups = "drop"),
+    aes(x = field_type, y = avg_value, group = region)) +
+    facet_wrap(vars(hill_index), scales = "free_y") +
+    geom_line(aes(linetype = region)) +
+    geom_point(aes(fill = region), size = 2, shape = 21) +
+    labs(x = "", y = "Average value", title = "Interaction plot of Hill's numbers, AMF (18S), 100% SV") +
+    scale_fill_discrete_qualitative(palette = "Dark3") +
+    theme_bw()
+#' 
+#' ### Key observations:
+#' 
+#' - Cornfields differ from restored and remnant fields, with lower richness, fewer dominant species,
+#' and greater dominance of those species. 
+#' - Differences between restored and remnant fields change directions based on region, with FL
+#' and LP matching the hypothesized pattern but BM and FG reversing it. 
+#' - Particular species may be strong interactors here. 
+#' 
+#' ### Diversity over time (18S-based OTUs) 
+#' Next, trends in diversity are correlated with years since restoration, with 0 used for corn fields 
+#' and 50 used for remnants. Statistical testing of this relationship is not valid because the ages for 
+#' corn and remnant aren't justified, and the fields aren't justifiable as a chronosequence. 
+#+ plot_yrs_since_resto_amf_sv,fig.width=9,fig.height=7
+ggplot(div$amf_sv, aes(x = yr_since, y = value)) +
+    facet_wrap(vars(hill_index), scales = "free_y") +
+    geom_point(aes(fill = region, shape = field_type), size = 2) +
+    labs(x = "Years since restoration", y = "index value", title = "Change in TGP microbial diversity (Hill's), AMF (18S), 100% SV",
+         caption = "N0-richness, N1-e^Shannon, N2-Simpson, E10=N1/N0, E20=N2/N0") +
+    scale_shape_manual(name = "field type", values = c(21:23)) +
+    scale_fill_discrete_qualitative(name = "region", palette = "Dark3") +
+    guides(fill = guide_legend(override.aes = list(shape = 21)),
+           shape = guide_legend(override.aes = list(fill = NA))) +
+    theme_bw()
+#' 
+#' ### Diversity over time at Blue Mounds (ITS-based SVs)
+#' Possibly, it's justified to correlate restoration age with diversity at Blue Mounds only, 
+#' and with restored fields only. A Pearson's correlation is used:
+#+ test_age_amf_sv
+test_age(div$amf_sv, caption = "Correlation between Hill's numbers and field age in the Blue Mounds region: AMF (18S), 100% SV")
+#' 
+#' The relationships are too weak to examine further. 
