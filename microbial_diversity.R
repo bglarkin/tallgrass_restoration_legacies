@@ -94,7 +94,6 @@ sites   <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FA
     rename(field_type = site_type)
 #' 
 #' # Analysis and Results
-#' ## Diversity
 #' Microbial diversity is considered for each of four datasets: OTU or SV clustering for 18S or ITS gene 
 #' sequencing. For each set, Hill's numbers are produced ([Hill 1973](http://doi.wiley.com/10.2307/1934352), 
 #' [Borcard and Legendere 2018, p. 373](http://link.springer.com/10.1007/978-3-319-71404-2)) and plotted,
@@ -110,10 +109,10 @@ sites   <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FA
 #' - $E_{10}$ = Shannon's evenness (Hill's ratio $N_{1} / N_{0}$)
 #' - $E_{20}$ = Simpson's evenness (Hill's ratio $N_{2} / N_{0}$)
 #' 
-#' ### Functions and variables
+#' ## Functions and variables
 #' The following functions are used to streamline code and reduce errors:
 #' 
-#' #### Calculate Hill's series on a samples-species matrix
+#' ### Calculate Hill's series on a samples-species matrix
 #+ calc_diversity_function
 calc_diversity <- function(spe) {
     spe_mat <- data.frame(spe, row.names = 1)
@@ -145,12 +144,14 @@ calc_diversity <- function(spe) {
     )
 }
 #' 
-#' #### Test diversity measures across site types with mixed model
+#' ### Test diversity measures across site types with mixed model
 #+ test_diversity_function
 test_diversity <- function(data) {
     hills <- levels(data$hill_index)
     for(i in 1:length(hills)) {
+        cat("---------------------------------\n")
         print(hills[i])
+        cat("---------------------------------\n\n")
         mod_data <- data %>% 
             filter(hill_index == hills[i]) %>% 
             mutate(field_type = factor(field_type, ordered = FALSE))
@@ -158,13 +159,15 @@ test_diversity <- function(data) {
         print(mmod)
         mmod_null <- lmer(value ~ 1 + (1 | region), data = mod_data, REML = FALSE)
         print(mmod_null)
+        cat("\n---------------------------------\n\n")
         print(anova(mmod, mmod_null))
         mod_tuk <- glht(mmod, linfct = mcp(field_type = "Tukey"), test = adjusted("holm"))
         print(mod_tuk)
         print(cld(mod_tuk))
+        cat("\n\n\n")
     }
 }
-#' #### Change in diversity over time 
+#' ### Change in diversity over time 
 #' Do Hill's numbers correlate with years since restoration?
 #' This is only appropriate to attempt in the Blue Mounds region, and even there, it will be difficult
 #' to justify that the area meets the criteria for a chronosequence. 
@@ -192,7 +195,7 @@ test_age <- function(data, caption=NULL) {
         kable(format = "pandoc", caption = caption)
 }
 #' 
-#' #### Calculate diversity of all samples-species matrices
+#' ### Calculate diversity of all samples-species matrices
 #' Create list of matrices and process with `calc_diversity()`. Naming list objects as
 #' their desired output names will enhance understanding later. 
 #+ spe_avg_temp_list
@@ -205,8 +208,8 @@ spe_list <- list(
 #+ diversity_calculations
 div <- lapply(spe_list, calc_diversity)
 #' 
-#' ### Fungi (ITS gene) in OTU clusters, averaged to 8 samples per field.
-#' #### Diversity across field types
+#' ## Fungi (ITS gene) in OTU clusters, averaged to 8 samples per field.
+#' ### Diversity across field types
 #' Run the linear model and test differences among field types for diversity.
 #+ test_div_its_otu
 test_diversity(div$its_otu)
@@ -255,13 +258,13 @@ ggplot(
     scale_fill_discrete_qualitative(palette = "Dark3") +
     theme_bw()
 #' 
-#' #### Key observations:
+#' ### Key observations:
 #' 
 #' - The restored field at LP contains very high diversity, co-dominance, and evenness of fungi.
 #' - The restored field at FG contains low diversity, co-dominance, and evenness. 
 #' - Interactions are less an issue with $N_{0}$ and $N_{1}$
 #' 
-#' #### Diversity over time (ITS-based OTUs) 
+#' ### Diversity over time (ITS-based OTUs) 
 #' Next, trends in diversity are correlated with years since restoration, with 0 used for corn fields 
 #' and 50 used for remnants. Statistical testing of this relationship is not valid because the ages for 
 #' corn and remnant aren't justified, and the fields aren't justifiable as a chronosequence. 
@@ -277,7 +280,7 @@ facet_wrap(vars(hill_index), scales = "free_y") +
            shape = guide_legend(override.aes = list(fill = NA))) +
     theme_bw()
 #' 
-#' #### Diversity over time at Blue Mounds (ITS-based OTUs)
+#' ### Diversity over time at Blue Mounds (ITS-based OTUs)
 #' Possibly, it's justified to correlate restoration age with diversity at Blue Mounds only, 
 #' and with restored fields only. A Pearson's correlation is used:
 #+ test_age_its_otu
@@ -293,7 +296,8 @@ test_age(div$its_otu, caption = "Correlation between Hill's numbers and field ag
 div$its_otu %>% 
     filter(region == "BM", field_type == "restored", hill_index == "N1") %>% 
     ggplot(aes(x = yr_since, y = value)) +
-    geom_text(aes(label = site_name)) +
+    geom_smooth(method = "lm", se = TRUE, linewidth = 0.8, fill = "gray70") +
+    geom_label(aes(label = site_name)) +
     labs(x = "Years since restoration", y = expression("Shannon's diversity"~(N[1]))) +
     theme_classic()
 #' Karla Ott's field was almost exclusively dominated by big bluestem, possibly leading to
@@ -304,16 +308,8 @@ div$its_otu %>%
 #' 
 #' Site factors (soil type) are hard to tease out, but in later analyses we will try using measured 
 #' soil chemical properties. 
-    
-
-
-names(div)
-
-
-
-
-
-#' ### Fungi (ITS gene) in sequence-variant (SV) clusters, averaged to 8 samples per field.
+#'
+#' ## Fungi (ITS gene) in sequence-variant (SV) clusters, averaged to 8 samples per field.
 #' Run the linear model and test differences among field types for diversity.
 #+ test_div_its_sv
 test_diversity(div$its_sv)
@@ -367,12 +363,13 @@ ggplot(
     scale_fill_discrete_qualitative(palette = "Dark3") +
     theme_bw()
 #' 
-#' Key observations:
+#' ### Key observations:
 #' 
 #' - The restored field at LP contains very high diversity, co-dominance, and evenness of fungi.
 #' - The restored field at FG contains low diversity, co-dominance, and evenness. 
 #' - Interactions are less an issue with $N_{0}$ and $N_{1}$
 #' 
+#' ### Diversity over time (ITS-based SVs) 
 #' Next, trends in diversity are correlated with years since restoration, with 0 used for corn fields 
 #' and 50 used for remnants. Statistical testing of this relationship is not valid because the ages for 
 #' corn and remnant aren't justified, and the fields aren't justifiable as a chronosequence. 
@@ -388,12 +385,13 @@ ggplot(div$its_sv, aes(x = yr_since, y = value)) +
            shape = guide_legend(override.aes = list(fill = NA))) +
     theme_bw()
 #' 
+#' ### Diversity over time at Blue Mounds (ITS-based SVs)
 #' Possibly, it's justified to correlate restoration age with diversity at Blue Mounds only, 
 #' and with restored fields only. A Pearson's correlation is used:
 #+ test_age_its_sv
 test_age(div$its_sv, caption = "Correlation between Hill's numbers and field age in the Blue Mounds region: ITS, 100% SV")
 #' 
-#' Correlaations are once again negative but none are significant. Negative correlations are
+#' Correlations are once again negative but none are significant. Negative correlations are
 #' odd odd and point to a confounding effect driven by difference in restoration strategy over time.
 #' It's possible that site differences (soils, etc.) also confound this relationship. It's possible
 #' that we cannot attempt to present this as a time-based result at all. 
@@ -403,7 +401,7 @@ test_age(div$its_sv, caption = "Correlation between Hill's numbers and field age
 div$its_sv %>% 
     filter(region == "BM", field_type == "restored", hill_index == "N1") %>% 
     ggplot(aes(x = yr_since, y = value)) +
-    geom_text(aes(label = site_name)) +
+    geom_label(aes(label = site_name)) +
     labs(x = "Years since restoration", y = expression("Shannon's diversity"~(N[1]))) +
     theme_classic()
-#' The pattern and rank order of sites is the same as was seen with 
+#' The pattern and rank order of sites is the same as was seen with ITS-based OTUs.
