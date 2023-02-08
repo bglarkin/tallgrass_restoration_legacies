@@ -154,10 +154,9 @@ filtered out because they could not be replicated in regions.
 ``` r
 rem_age <- 50
 sites   <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALSE) %>% 
-    mutate(site_type = factor(site_type, ordered = TRUE, levels = c("corn", "restored", "remnant")),
+    mutate(field_type = factor(site_type, ordered = TRUE, levels = c("corn", "restored", "remnant")),
            yr_since = replace(yr_since, which(site_type == "remnant"), rem_age)) %>% 
-    filter(site_type != "oldfield") %>% 
-    rename(field_type = site_type)
+    filter(site_type != "oldfield")
 ```
 
 # Analysis and Results
