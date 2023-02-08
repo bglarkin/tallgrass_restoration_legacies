@@ -32,7 +32,8 @@
 #' For each raw table, the metadata must be separated from the species abundances.
 #' Species OTU codes must be aligned with short, unique keys, and then species
 #' tables must be transposed into sites-species matrices. Rownames must be cleaned 
-#' to align with site metadata files. A function is used to streamline the pipeline and to reduce errors.
+#' to align with site metadata files. Taxonomy strings must be parsed and unnecessary characters
+#' removed. A function is used to streamline the pipeline and to reduce errors.
 #' 
 #' # Resources
 #' ## Packages and libraries

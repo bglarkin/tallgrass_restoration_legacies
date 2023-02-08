@@ -2,7 +2,7 @@ Database assembly: species data
 ================
 Beau Larkin
 
-Last updated: 03 February, 2023
+Last updated: 08 February, 2023
 
 - <a href="#description" id="toc-description">Description</a>
   - <a href="#its-data-all-fungi" id="toc-its-data-all-fungi">ITS data (all
@@ -49,8 +49,9 @@ non-weighted is based on presence/absence.
 For each raw table, the metadata must be separated from the species
 abundances. Species OTU codes must be aligned with short, unique keys,
 and then species tables must be transposed into sites-species matrices.
-Rownames must be cleaned to align with site metadata files. A function
-is used to streamline the pipeline and to reduce errors.
+Rownames must be cleaned to align with site metadata files. Taxonomy
+strings must be parsed and unnecessary characters removed. A function is
+used to streamline the pipeline and to reduce errors.
 
 # Resources
 
@@ -114,7 +115,29 @@ process_qiime <- function(data, varname, gene, cluster_type, colname_prefix, fol
                 notes = Notes,
                 citation = `Citation/Source`
             ) %>% 
-            select(!!varname, everything())
+            select(!!varname, everything()) %>% 
+            separate(
+                taxonomy,
+                into = c(
+                    "kingdom",
+                    "phylum",
+                    "class",
+                    "order",
+                    "family",
+                    "genus",
+                    "species"
+                ),
+                sep = "; ",
+                remove = TRUE,
+                fill = "right"
+            ) %>% 
+            mutate(kingdom = str_sub(kingdom, 4, nchar(kingdom)),
+                   phylum  = str_sub(phylum,  4, nchar(phylum)),
+                   class   = str_sub(class,   4, nchar(class)),
+                   order   = str_sub(order,   4, nchar(order)),
+                   family  = str_sub(family,  4, nchar(family)),
+                   genus   = str_sub(genus,   4, nchar(genus)),
+                   species = str_sub(species, 4, nchar(species)))
         write_csv(meta, 
                   paste0(getwd(), folder, "/spe_", gene, "_", cluster_type, "_funGuild.csv"))
     } else {
