@@ -37,80 +37,63 @@ for (i in 1:length(packages_needed)) {
 #' # Data
 #' ## Sites-species tables
 #' CSV files were produced in `process_data.R`
-spe_all <- list(
-    its_otu_all <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_siteSpeMatrix_allReps.csv"), 
+spe <- list(
+    its_otu = read_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_siteSpeMatrix_avg.csv"), 
                             show_col_types = FALSE),
-    its_sv_all  <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_sv_siteSpeMatrix_allReps.csv"), 
+    its_sv  = read_csv(paste0(getwd(), "/clean_data/spe_ITS_sv_siteSpeMatrix_avg.csv"), 
                             show_col_types = FALSE),
-    amf_otu_all <- read_csv(paste0(getwd(), "/clean_data/spe_18S_otu_siteSpeMatrix_allReps.csv"), 
+    amf_otu = read_csv(paste0(getwd(), "/clean_data/spe_18S_otu_siteSpeMatrix_avg.csv"), 
                             show_col_types = FALSE),
-    amf_sv_all  <- read_csv(paste0(getwd(), "/clean_data/spe_18S_sv_siteSpeMatrix_allReps.csv"), 
+    amf_sv  = read_csv(paste0(getwd(), "/clean_data/spe_18S_sv_siteSpeMatrix_avg.csv"), 
                             show_col_types = FALSE)
 )
 #' ## Species metadata
 #' Load guild and taxonomy data (ITS sequences)
-its_otu_guild <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_funGuild.csv"), show_col_types = FALSE)
-its_sv_guild  <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_sv_funGuild.csv"), show_col_types = FALSE)
+guild <- list(
+    its_otu =
+        read_csv(
+            paste0(getwd(), "/clean_data/spe_ITS_otu_funGuild.csv"),
+            show_col_types = FALSE
+        ),
+    its_sv  =
+        read_csv(
+            paste0(getwd(), "/clean_data/spe_ITS_sv_funGuild.csv"),
+            show_col_types = FALSE
+        )
+)
 #' Load taxonomy data (AMF/18S sequences)
-amf_otu_tax <- read_csv(paste0(getwd(), "/clean_data/spe_18S_otu_taxonomy.csv"), show_col_types = FALSE)
-amf_sv_tax  <- read_csv(paste0(getwd(), "/clean_data/spe_18S_sv_taxonomy.csv"), show_col_types = FALSE)
+taxonomy <- list(
+    amf_otu =
+        read_csv(
+            paste0(getwd(), "/clean_data/spe_18S_otu_taxonomy.csv"),
+            show_col_types = FALSE
+        ),
+    amf_sv  =
+        read_csv(
+            paste0(getwd(), "/clean_data/spe_18S_sv_taxonomy.csv"),
+            show_col_types = FALSE
+        )
+)
 #'
 
 
 
-
-# __Trophic Modes, Guilds and Taxonomy ----------------------
-# Do any species register 0 abundance across all sites?
-zero_ab <- function(data) {
-    which(apply(data, MARGIN = 2, FUN = sum) == 0)
-}
-lapply(spe_all, zero_ab)
-# no
-
-
-
-
-
-# Function to clean up Qiime taxomomy from guilds files
-process_taxa <- function(data) {
-    data %>% 
-        separate(
-            taxonomy,
-            into = c(
-                "kingdom",
-                "phylum",
-                "class",
-                "order",
-                "family",
-                "genus",
-                "species"
-            ),
-            sep = "; ",
-            remove = TRUE,
-            fill = "right"
-        ) %>% 
-        mutate(kingdom = str_sub(kingdom, 4, nchar(kingdom)),
-               phylum  = str_sub(phylum,  4, nchar(phylum)),
-               class   = str_sub(class,   4, nchar(class)),
-               order   = str_sub(order,   4, nchar(order)),
-               family  = str_sub(family,  4, nchar(family)),
-               genus   = str_sub(genus,   4, nchar(genus)),
-               species = str_sub(species, 4, nchar(species)))
-}
 # Need a unified OTU and OTU-based metadata table to analyze taxonomy and guilds
 # These unified tables will also be necessary to filter species and produce ordinations
 # Note: function process_taxa() embedded in this function
 join_spe_meta <- function(spe, meta, filter_char = "otu", clust_name = "otu_num", abund_name = "seq_abund") {
     spe %>%
-        na_if(., 0) %>% 
         pivot_longer(starts_with(filter_char), names_to = clust_name, values_to = abund_name) %>% 
         drop_na() %>% 
-        left_join(process_taxa(meta) %>% select(-otu_ID, -trait, -notes, -citation), by = clust_name) %>% 
-        left_join(sites %>% select(starts_with("site"), region, yr_rank, yr_since), by = "site_key")
+        left_join(meta, by = clust_name) %>% 
+        left_join(sites %>% select(-lat, -long, -yr_restore), by = "site_key")
 }
 
-
-
+its_otu_spe_meta <- join_spe_meta(spe$its_otu, guild$its_otu, filter_char = "otu", clust_name = "otu_num") %>% 
+    select(-otu_ID, -trait, -notes, -citation)
+its_sv_spe_meta
+amf_otu_spe_meta
+amf_sv_spe_meta
 
 
 

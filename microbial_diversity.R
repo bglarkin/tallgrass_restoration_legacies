@@ -46,40 +46,14 @@ conflict_prefer("select", "dplyr")
 #' # Data
 #' ## Sites-species tables
 #' CSV files were produced in `process_data.R`
-its_otu_all <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_siteSpeMatrix_allReps.csv"), 
+its_otu_avg <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_siteSpeMatrix_avg.csv"), 
                         show_col_types = FALSE)
-its_sv_all  <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_sv_siteSpeMatrix_allReps.csv"), 
+its_sv_avg  <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_sv_siteSpeMatrix_avg.csv"), 
                         show_col_types = FALSE)
-amf_otu_all <- read_csv(paste0(getwd(), "/clean_data/spe_18S_otu_siteSpeMatrix_allReps.csv"), 
+amf_otu_avg <- read_csv(paste0(getwd(), "/clean_data/spe_18S_otu_siteSpeMatrix_avg.csv"), 
                         show_col_types = FALSE)
-amf_sv_all  <- read_csv(paste0(getwd(), "/clean_data/spe_18S_sv_siteSpeMatrix_allReps.csv"), 
+amf_sv_avg  <- read_csv(paste0(getwd(), "/clean_data/spe_18S_sv_siteSpeMatrix_avg.csv"), 
                         show_col_types = FALSE)
-#' 
-#' ## Average sequence abundances in each field
-#' We examine diversity at the field level, so diversity obtained at samples should be averaged 
-#' for each field. We collected ten samples from each field, but processing failed for some samples
-#' at one step or another in the pipeline. Samples must be randomly resampled to the smallest 
-#' number obtained in a series to produce comparable diversity metrics. The following function 
-#' will resample the site-species data to the correct number of samples. 
-#+ resample_fields_function 
-resample_fields <- function(data, min, cluster_type) {
-    set.seed(482)
-    data %>% 
-        group_by(site_key) %>% 
-        slice_sample(n = min) %>%
-        summarize(across(starts_with(cluster_type), list(avg = mean)))
-}
-#' 
-#' The minimum number of samples in a field for each gene is:
-#' 
-#' - ITS = 8 samples
-#' - 18S = 7 samples
-#' 
-#' With this, we can run the function for each dataset:
-its_otu_avg <- resample_fields(its_otu_all, 8, "otu")
-its_sv_avg  <- resample_fields(its_sv_all,  8, "sv")
-amf_otu_avg <- resample_fields(amf_otu_all, 7, "otu")
-amf_sv_avg  <- resample_fields(amf_sv_all,  7, "sv")
 #' 
 #' ## Site metadata and design
 #' Set remnants to 50 years old as a placeholder. This number will not be used in 
@@ -593,4 +567,4 @@ ggplot(div$amf_sv, aes(x = yr_since, y = value)) +
 #+ test_age_amf_sv
 test_age(div$amf_sv, caption = "Correlation between Hill's numbers and field age in the Blue Mounds region: AMF (18S), 100% SV")
 #' 
-#' The relationships are too weak to examine further. 
+#' The relationships are too weak to examine further.

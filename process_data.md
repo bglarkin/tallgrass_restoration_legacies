@@ -19,6 +19,11 @@ Last updated: 08 February, 2023
   - <a href="#import-files" id="toc-import-files">Import files</a>
   - <a href="#etl-using-process_qiime" id="toc-etl-using-process_qiime">ETL
     using <code>process_qiime()</code></a>
+  - <a href="#resample-and-produce-field-averages"
+    id="toc-resample-and-produce-field-averages">Resample and produce field
+    averages</a>
+    - <a href="#import-sites-species-tables"
+      id="toc-import-sites-species-tables">Import sites-species tables</a>
 
 # Description
 
@@ -213,4 +218,61 @@ process_qiime(otu_18s, otu_num, "18S", "otu", "X18S_TGP_", "/clean_data")
 
 ``` r
 process_qiime(sv_18s,  sv_num,  "18S", "sv",  "X18S_TGP_", "/clean_data")
+```
+
+## Resample and produce field averages
+
+We examine diversity at the field level, so diversity obtained at
+samples should be averaged for each field. We collected ten samples from
+each field, but processing failed for some samples at one step or
+another in the pipeline. Samples must be randomly resampled to the
+smallest number obtained in a series to produce comparable diversity
+metrics. Some OTUs or SVs may be “lost” as a result, these were rare.
+Resultant zero sum columns will be removed. The following function will
+resample the site-species data to the correct number of samples and
+remove zero sum columns.
+
+### Import sites-species tables
+
+``` r
+its_otu_all <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_siteSpeMatrix_allReps.csv"), 
+                        show_col_types = FALSE)
+its_sv_all  <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_sv_siteSpeMatrix_allReps.csv"), 
+                        show_col_types = FALSE)
+amf_otu_all <- read_csv(paste0(getwd(), "/clean_data/spe_18S_otu_siteSpeMatrix_allReps.csv"), 
+                        show_col_types = FALSE)
+amf_sv_all  <- read_csv(paste0(getwd(), "/clean_data/spe_18S_sv_siteSpeMatrix_allReps.csv"), 
+                        show_col_types = FALSE)
+```
+
+``` r
+resample_fields <- function(data, min, cluster_type) {
+    set.seed(482)
+    avg_df <-
+        data %>%
+        group_by(site_key) %>%
+        slice_sample(n = min) %>%
+        summarize(across(starts_with(cluster_type), ~ mean(.x, na.rm = TRUE)))
+    null_spe <- which(apply(avg_df, 2, sum) == 0)
+    out <- avg_df[,-null_spe]
+    return(out)
+}
+```
+
+The minimum number of samples in a field for each gene is:
+
+- ITS = 8 samples
+- 18S = 7 samples
+
+With this, we can run the function for each dataset:
+
+``` r
+its_otu_avg <- resample_fields(its_otu_all, 8, "otu") %>% 
+    write_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_siteSpeMatrix_avg.csv"))
+its_sv_avg  <- resample_fields(its_sv_all,  8, "sv") %>% 
+    write_csv(paste0(getwd(), "/clean_data/spe_ITS_sv_siteSpeMatrix_avg.csv"))
+amf_otu_avg <- resample_fields(amf_otu_all, 7, "otu") %>% 
+    write_csv(paste0(getwd(), "/clean_data/spe_18S_otu_siteSpeMatrix_avg.csv"))
+amf_sv_avg  <- resample_fields(amf_sv_all,  7, "sv") %>% 
+    write_csv(paste0(getwd(), "/clean_data/spe_18S_sv_siteSpeMatrix_avg.csv"))
 ```
