@@ -86,7 +86,29 @@ process_qiime <- function(data, varname, gene, cluster_type, colname_prefix, fol
                 notes = Notes,
                 citation = `Citation/Source`
             ) %>% 
-            select(!!varname, everything())
+            select(!!varname, everything()) %>% 
+            separate(
+                taxonomy,
+                into = c(
+                    "kingdom",
+                    "phylum",
+                    "class",
+                    "order",
+                    "family",
+                    "genus",
+                    "species"
+                ),
+                sep = "; ",
+                remove = TRUE,
+                fill = "right"
+            ) %>% 
+            mutate(kingdom = str_sub(kingdom, 4, nchar(kingdom)),
+                   phylum  = str_sub(phylum,  4, nchar(phylum)),
+                   class   = str_sub(class,   4, nchar(class)),
+                   order   = str_sub(order,   4, nchar(order)),
+                   family  = str_sub(family,  4, nchar(family)),
+                   genus   = str_sub(genus,   4, nchar(genus)),
+                   species = str_sub(species, 4, nchar(species)))
         write_csv(meta, 
                   paste0(getwd(), folder, "/spe_", gene, "_", cluster_type, "_funGuild.csv"))
     } else {
