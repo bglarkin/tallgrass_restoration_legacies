@@ -63,7 +63,8 @@ rem_age <- 50
 sites   <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALSE) %>% 
     mutate(field_type = factor(site_type, ordered = TRUE, levels = c("corn", "restored", "remnant")),
            yr_since = replace(yr_since, which(site_type == "remnant"), rem_age)) %>% 
-    filter(site_type != "oldfield")
+    filter(site_type != "oldfield") %>% 
+    select(-lat, -long, -yr_restore, -site_type)
 #' 
 #' # Analysis and Results
 #' Microbial diversity is considered for each of four datasets: OTU or SV clustering for 18S or ITS gene 

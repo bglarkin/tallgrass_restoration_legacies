@@ -2,7 +2,7 @@ Microbial data: overview of data, diversity statistics
 ================
 Beau Larkin
 
-Last updated: 08 February, 2023
+Last updated: 09 February, 2023
 
 - <a href="#description" id="toc-description">Description</a>
 - <a href="#packages-and-libraries"
@@ -156,7 +156,8 @@ rem_age <- 50
 sites   <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALSE) %>% 
     mutate(field_type = factor(site_type, ordered = TRUE, levels = c("corn", "restored", "remnant")),
            yr_since = replace(yr_since, which(site_type == "remnant"), rem_age)) %>% 
-    filter(site_type != "oldfield")
+    filter(site_type != "oldfield") %>% 
+    select(-lat, -long, -yr_restore, -site_type)
 ```
 
 # Analysis and Results

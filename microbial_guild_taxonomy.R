@@ -22,6 +22,8 @@
 #'
 #' # Packages and libraries
 packages_needed = c("tidyverse",
+                    "knitr",
+                    "conflicted",
                     "rsq",
                     "lme4",
                     "multcomp")
@@ -34,6 +36,10 @@ if (any(!packages_installed)) {
 for (i in 1:length(packages_needed)) {
     library(packages_needed[i], character.only = T)
 }
+#+ conflicts,message=FALSE
+conflict_prefer("filter", "dplyr")
+conflict_prefer("select", "dplyr")
+#'
 #'
 #' # Data
 #' ## Sites-species tables
@@ -84,16 +90,24 @@ taxonomy <- list(
         )
 )
 #' ## Site metadata and design
-#' Oldfields are filtered out because they could not be replicated in regions. 
-#' Set remnants to 50 years old as a placeholder. This number will not be used in 
-#' a quantitative sense, for example in models. 
-#' Oldfields are filtered out because they could not be replicated in regions. 
+#' Oldfields are filtered out because they could not be replicated in regions.
+#' Set remnants to 50 years old as a placeholder. This number will not be used in
+#' a quantitative sense, for example in models.
+#' Oldfields are filtered out because they could not be replicated in regions.
 rem_age <- 50
-sites   <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALSE) %>% 
-    mutate(field_type = factor(site_type, ordered = TRUE, levels = c("corn", "restored", "remnant")),
-           yr_since = replace(yr_since, which(site_type == "remnant"), rem_age)) %>% 
-    filter(site_type != "oldfield")
-#' 
+sites   <-
+    read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALSE) %>%
+    mutate(
+        field_type = factor(
+            site_type,
+            ordered = TRUE,
+            levels = c("corn", "restored", "remnant")
+        ),
+        yr_since = replace(yr_since, which(site_type == "remnant"), rem_age)
+    ) %>%
+    filter(field_type != "oldfield") %>% 
+    select(-lat, -long, -yr_restore, -site_type)
+#'
 
 
 # Need a unified OTU and OTU-based metadata table to analyze taxonomy and guilds
@@ -111,7 +125,7 @@ join_spe_meta <-
                          values_to = abund_name) %>%
             filter(seq_abund != 0) %>%
             left_join(meta, by = clust_name) %>%
-            left_join(sites %>% select(-lat,-long,-yr_restore), by = "site_key")
+            left_join(sites, by = "site_key")
     }
 
 
@@ -124,7 +138,7 @@ spe_meta <- list(
             filter_char = "otu",
             clust_name = "otu_num"
         ) %>%
-        select(-otu_ID, -trait, -notes, -citation) %>%
+        select(-otu_ID,-trait,-notes,-citation) %>%
         write_csv(paste0(
             getwd(), "/clean_data/speGuild_ITS_otu.csv"
         )),
@@ -135,7 +149,7 @@ spe_meta <- list(
             filter_char = "sv",
             clust_name = "sv_num"
         ) %>%
-        select(-otu_ID, -trait, -notes, -citation) %>%
+        select(-otu_ID,-trait,-notes,-citation) %>%
         write_csv(paste0(
             getwd(), "/clean_data/speGuild_ITS_sv.csv"
         )),
@@ -146,7 +160,7 @@ spe_meta <- list(
             filter_char = "otu",
             clust_name = "otu_num"
         ) %>%
-        select(-otu_ID, -accession) %>%
+        select(-otu_ID,-accession) %>%
         write_csv(paste0(
             getwd(), "/clean_data/speTaxa_18S_otu.csv"
         )),
@@ -157,68 +171,147 @@ spe_meta <- list(
             filter_char = "sv",
             clust_name = "sv_num"
         ) %>%
-        select(-otu_ID, -accession) %>%
+        select(-otu_ID,-accession) %>%
         write_csv(paste0(
             getwd(), "/clean_data/speTaxa_18S_sv.csv"
         ))
 )
 
-# we are ready to summarize and explore the data. 
+# we are ready to summarize and explore the data.
 # FunGuild identifies the level of taxonomy assignment, the trophic mode, and the confidence
 # of assignment. View the [README.md](https://github.com/UMNFuN/FUNGuild) on GitHub.
 # Note on confidence ranking: I don't know what this refers to. Is it the taxonomic assignment,
-# guild/trophic mode, or all data? This is not explained. 
-# 
+# guild/trophic mode, or all data? This is not explained.
+#
 # To conduct summaries of FunGuild metadata, it would seem appropriate to choose OTUs with
-# higher confidence rankings and more specific taxonomic assignments. 
+# higher confidence rankings and more specific taxonomic assignments.
 
 # ____Summary Analysis of ITS OTU data ----------------------
 
 
-# CONSIDER A FUNCTION FOR THESE...
-# Filter for quality of taxa assignment
-taxon_level <- 9
-# What is the distribution among site types at the class level?
-spe_meta$its_otu %>%
-    filter(taxon_level >= taxon_level & confidence %in% c("Highly Probable", "Probable")) %>%
-    group_by(phylum, class, field_type, site_name) %>% 
-    summarize(abund = sum(seq_abund), .groups = "drop") %>% 
-    group_by(phylum, class, field_type) %>% 
-    summarize(median = median(abund) %>% round(., 1), .groups = "drop") %>% 
-    pivot_wider(names_from = field_type, values_from = median, values_fill = 0) %>% 
-    select(phylum, class, corn, restored, remnant) %>%
-    arrange(-remnant) %>% 
-    kable(format = "pandoc", caption = "Distribution of OTUs in classes, median sequence abundance by field type")
-# What is the distribution of trophic modes among site types?
-spe_meta$its_otu %>% 
-    filter(taxon_level >= taxon_level & confidence %in% c("Highly Probable", "Probable")) %>% 
-    group_by(trophic_mode, field_type, site_name) %>% 
-    summarize(abund = sum(seq_abund), .groups = "drop") %>% 
-    group_by(trophic_mode, field_type) %>% 
-    summarize(median = round(median(abund), 1), .groups = "drop") %>% 
-    pivot_wider(names_from = field_type, values_from = median, values_fill = 0) %>% 
-    select(trophic_mode, corn, restored, remnant) %>%
-    arrange(-remnant) %>% 
-    kable(format = "pandoc", caption = "Distribution of OTUs by trophic traits, median sequence abundance by field type")
+its_tax_trophic <- function(data, taxon_level = 9, cluster_type) {
+    # What is the distribution among site types at the class level?
+    taxonomy_df <-
+        data %>%
+        filter(taxon_level >= taxon_level &
+                   confidence %in% c("Highly Probable", "Probable")) %>%
+        group_by(phylum, class, field_type, site_name) %>%
+        summarize(abund = sum(seq_abund), .groups = "drop") %>%
+        group_by(phylum, class, field_type) %>%
+        summarize(median = median(abund) %>% round(., 1),
+                  .groups = "drop") %>%
+        pivot_wider(
+            names_from = field_type,
+            values_from = median,
+            values_fill = 0
+        ) %>%
+        select(phylum, class, corn, restored, remnant) %>%
+        arrange(-remnant)
+    print(kable(
+        taxonomy_df,
+        format = "pandoc",
+        caption = paste(
+            "Distribution of",
+            cluster_type,
+            "clusters in classes, median sequence abundance by field type"
+        )
+    ))
+    # What is the distribution of trophic modes among site types?
+    trophic_df <-
+        data %>%
+        filter(taxon_level >= taxon_level &
+                   confidence %in% c("Highly Probable", "Probable")) %>%
+        group_by(trophic_mode, field_type, site_name) %>%
+        summarize(abund = sum(seq_abund), .groups = "drop") %>%
+        group_by(trophic_mode, field_type) %>%
+        summarize(median = round(median(abund), 1), .groups = "drop") %>%
+        pivot_wider(
+            names_from = field_type,
+            values_from = median,
+            values_fill = 0
+        ) %>%
+        select(trophic_mode, corn, restored, remnant) %>%
+        arrange(-remnant)
+    print(kable(
+        trophic_df,
+        format = "pandoc",
+        caption = paste(
+            "Distribution of",
+            cluster_type,
+            "clusters in classes, median sequence abundance by field type"
+        )
+    ))
+    
+}
 
 
 # NEEDS TO BE SEQUENCE ABNDANCE INSTEAD OF RICHNESS; CONSIDER A FUNCTION HERE...
 # Guilds are more specific than trophic modes. Filter to plant pathogens and AMF.
-guilds <- c("Arbuscular Mycorrhizal", "Plant Pathogen")
-for(i in 1:length(guilds)) {
-    print(guilds[i])
-    mod_data <- its_otu_spe_meta %>% 
-        filter(taxon_level >= taxon_level & 
-                   confidence %in% c("Highly Probable", "Probable") &
-                   guild == guilds[i]) %>% 
-        count(field_type, region, site_name, guild)
-    mmod <- lmer(n ~ field_type + (1 | region), data = mod_data)
-    mmod_null <- lmer(n ~ 1 + (1 | region), data = mod_data)
-    print(anova(mmod, mmod_null))
-    mod_tuk <- glht(mmod, linfct = mcp(field_type = "Tukey"), test = adjusted("holm"))
-    print(summary(mod_tuk))
-    print(cld(mod_tuk))
+
+
+its_guilds <- function(data) {
+    guilds <-
+        c("Arbuscular Mycorrhizal",
+          "Plant Pathogen",
+          "Undefined Saprotroph")
+    for (i in 1:length(guilds)) {
+        cat("---------------------------------\n")
+        print(guilds[i])
+        cat("---------------------------------\n")
+        mod_data <- data %>%
+            filter(
+                taxon_level >= 9 &
+                    confidence %in% c("Highly Probable", "Probable") &
+                    guild == guilds[i]
+            ) %>%
+            group_by(field_type, region, site_name, guild) %>%
+            summarize(seq_sum = sum(seq_abund), .groups = "drop")
+        print(kable(mod_data %>% arrange(-seq_sum), format = "pandoc"))
+        cat("----------------------------------------------------\n\n")
+        mmod <-
+            lmer(seq_sum ~ field_type + (1 | region),
+                 data = mod_data,
+                 REML = FALSE)
+        print(mmod)
+        cat("----------------------------------------------------\n\n")
+        mmod_null <-
+            lmer(seq_sum ~ 1 + (1 |
+                                    region),
+                 data = mod_data,
+                 REML = FALSE)
+        print(mmod_null)
+        cat("----------------------------------------------------\n\n")
+        print(anova(mmod, mmod_null))
+        cat("----------------------------------------------------\n\n")
+        mod_tuk <-
+            glht(mmod,
+                 linfct = mcp(field_type = "Tukey"),
+                 test = adjusted("holm"))
+        print(summary(mod_tuk))
+        print(cld(mod_tuk))
+        cat("\n\n\n")
+    }
 }
+
+
+# ITS OTU
+its_tax_trophic(spe_meta$its_otu, cluster_type = "OTU")
+its_guilds(spe_meta$its_otu)
+# all NS
+# CHECK THE USE OF SUMS...DIFFERENT NUMBER OF SITES FOR FIELD TYPES!
+# LOOK AT YEARS SINCE RESTORATION IN RESTORED FIELDS
+
+# ITS SV
+its_tax_trophic(spe_meta$its_sv, cluster_type = "SV")
+its_guilds(spe_meta$its_sv)
+# all NS
+
+# LOOK AT YEARS SINCE RESTORATION IN RESTORED FIELDS
+
+
+
+
+
 # Significance labels needed for plot
 sig_labs_otu <- data.frame(
     guild = rep("Arbuscular Mycorrhizal", 3),
@@ -238,30 +331,23 @@ its_otu_spe_meta %>%
     geom_text(data = sig_labs_otu, aes(x = xpos, y = ypos, label = lab)) +
     labs(x = "", y = "Richness", caption = "OTUs at 97% similarity; mixed linear model with region as a random effect.") +
     theme_bw()
-# It's possible that species richness can't be compared in these guilds if there are 
-# too few species identified. Sites with low richness may just not have enough
-# species detections. Check the rarefaction in these guilds and consider plotting
-# the number of sequences per OTU rather than the count of OTUs.
-amf_otu <- 
-    its_otu_spe_meta %>% 
-    filter(taxon_level >= taxon_level & 
-               confidence %in% c("Highly Probable", "Probable") &
-               guild == "Arbuscular Mycorrhizal") %>% 
-    left_join(read_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_samples.csv"))) %>% 
-    mutate(seqs = as.integer(seq_abund * samples)) %>% 
-    select(site_name, otu_num, seqs) %>% 
-    pivot_wider(names_from = otu_num, values_from = seqs, values_fill = 0)
-rarecurve(data.frame(amf_otu, row.names = 1), step = 1, label = TRUE, col = "blue", xlab = "Sequences", ylab = "AMF OTUs")
-# Number of sequences is indeed very uneven, meaning that comparing species richness isn't appropriate
-# Examine boxplots of sequence abundance for differences from richness plots
-data.frame(
-    site_name = amf_otu[, 1],
-    seqs = apply(amf_otu[, -1], MARGIN = 1, sum)
-) %>% 
-    left_join(sites) %>% 
-    ggplot(aes(x = field_type, y = seqs)) +
-    geom_boxplot(fill = "gray90", varwidth = TRUE, outlier.shape = NA) +
-    geom_beeswarm(aes(color = region), dodge.width = 0.2) +
-    theme_bw()
-# Some rank order changes, honestly I don't think the story would change at all
 
+
+
+
+
+
+
+# 18S
+spe_meta$amf_otu %>% glimpse()
+spe_meta$amf_otu %>% group_by(site_key) %>% summarize(sum = sum(seq_abund))
+apply(spe_meta$amf_otu, 2, unique)
+
+# Don't sum, different number of sites!
+spe_meta$amf_otu %>% 
+    group_by(genus, taxon, field_type) %>% 
+    summarize(seq_sum = sum(seq_abund) %>% round(., 1), .groups = "drop") %>% 
+    pivot_wider(names_from = field_type, values_from = seq_sum, names_sort = TRUE, values_fill = 0) %>% 
+    arrange(corn) %>%
+    kable(format = "pandoc")
+# 
