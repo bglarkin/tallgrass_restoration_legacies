@@ -24,6 +24,7 @@
 packages_needed = c("tidyverse",
                     "knitr",
                     "conflicted",
+                    "ggbeeswarm",
                     "rsq",
                     "lme4",
                     "multcomp")
@@ -188,7 +189,6 @@ spe_meta <- list(
 
 # ____Summary Analysis of ITS OTU data ----------------------
 
-
 its_tax_trophic <- function(data, taxon_level = 9, cluster_type) {
     # What is the distribution among site types at the class level?
     taxonomy_df <-
@@ -198,11 +198,11 @@ its_tax_trophic <- function(data, taxon_level = 9, cluster_type) {
         group_by(phylum, class, field_type, site_name) %>%
         summarize(abund = sum(seq_abund), .groups = "drop") %>%
         group_by(phylum, class, field_type) %>%
-        summarize(median = median(abund) %>% round(., 1),
+        summarize(mean = mean(abund) %>% round(., 2),
                   .groups = "drop") %>%
         pivot_wider(
             names_from = field_type,
-            values_from = median,
+            values_from = mean,
             values_fill = 0
         ) %>%
         select(phylum, class, corn, restored, remnant) %>%
@@ -213,9 +213,10 @@ its_tax_trophic <- function(data, taxon_level = 9, cluster_type) {
         caption = paste(
             "Distribution of",
             cluster_type,
-            "clusters in classes, median sequence abundance by field type"
+            "clusters in classes, mean sequence abundance by field type"
         )
     ))
+    write_csv(taxonomy_df, paste0(getwd(), "/microbial_diversity_files/its_", cluster_type, "_taxonomy.csv"))
     # What is the distribution of trophic modes among site types?
     trophic_df <-
         data %>%
@@ -224,10 +225,10 @@ its_tax_trophic <- function(data, taxon_level = 9, cluster_type) {
         group_by(trophic_mode, field_type, site_name) %>%
         summarize(abund = sum(seq_abund), .groups = "drop") %>%
         group_by(trophic_mode, field_type) %>%
-        summarize(median = round(median(abund), 1), .groups = "drop") %>%
+        summarize(mean = round(mean(abund), 1), .groups = "drop") %>%
         pivot_wider(
             names_from = field_type,
-            values_from = median,
+            values_from = mean,
             values_fill = 0
         ) %>%
         select(trophic_mode, corn, restored, remnant) %>%
@@ -238,7 +239,7 @@ its_tax_trophic <- function(data, taxon_level = 9, cluster_type) {
         caption = paste(
             "Distribution of",
             cluster_type,
-            "clusters in classes, median sequence abundance by field type"
+            "clusters in classes, mean sequence abundance by field type"
         )
     ))
     
@@ -249,13 +250,17 @@ its_tax_trophic <- function(data, taxon_level = 9, cluster_type) {
 # Guilds are more specific than trophic modes. Filter to plant pathogens and AMF.
 
 
+
+
+
 its_guilds <- function(data) {
     guilds <-
         c("Arbuscular Mycorrhizal",
           "Plant Pathogen",
           "Undefined Saprotroph")
+    df1 <- data.frame()
     for (i in 1:length(guilds)) {
-        cat("---------------------------------\n")
+        cat("\n---------------------------------\n")
         print(guilds[i])
         cat("---------------------------------\n")
         mod_data <- data %>%
@@ -264,7 +269,7 @@ its_guilds <- function(data) {
                     confidence %in% c("Highly Probable", "Probable") &
                     guild == guilds[i]
             ) %>%
-            group_by(field_type, region, site_name, guild) %>%
+            group_by(field_type, region, site_name, yr_since, guild) %>%
             summarize(seq_sum = sum(seq_abund), .groups = "drop")
         print(kable(mod_data %>% arrange(-seq_sum), format = "pandoc"))
         cat("----------------------------------------------------\n\n")
@@ -275,8 +280,7 @@ its_guilds <- function(data) {
         print(mmod)
         cat("----------------------------------------------------\n\n")
         mmod_null <-
-            lmer(seq_sum ~ 1 + (1 |
-                                    region),
+            lmer(seq_sum ~ 1 + (1 | region),
                  data = mod_data,
                  REML = FALSE)
         print(mmod_null)
@@ -289,65 +293,167 @@ its_guilds <- function(data) {
                  test = adjusted("holm"))
         print(summary(mod_tuk))
         print(cld(mod_tuk))
+        cat("----------------------------------------------------\n\n")
+        print(paste(
+            "Years since restoration and",
+            guilds[i],
+            "sequence abundance"
+        ))
+        mod_data2 <- mod_data %>%
+            filter(region == "BM", field_type == "restored")
+        print(summary(lm(seq_sum ~ yr_since,
+                         data = mod_data2)))
         cat("\n\n\n")
+        df1 <- rbind(df1, mod_data)
     }
+    return(df1)
 }
+
+
+
 
 
 # ITS OTU
 its_tax_trophic(spe_meta$its_otu, cluster_type = "OTU")
-its_guilds(spe_meta$its_otu)
-# all NS
-# CHECK THE USE OF SUMS...DIFFERENT NUMBER OF SITES FOR FIELD TYPES!
+its_otu_guilds <- its_guilds(spe_meta$its_otu)
+# all NS with field types
 # LOOK AT YEARS SINCE RESTORATION IN RESTORED FIELDS
+# ITS OTU plant pathogens correlate with restoration age
+its_otu_guilds %>% 
+    filter(field_type == "restored", guild == "Plant Pathogen", region == "BM") %>% 
+    ggplot(aes(x = yr_since, y = seq_sum)) +
+    geom_smooth(method = "lm", se = TRUE) +
+    geom_label(aes(label = site_name)) +
+    labs(x = "Years since restoration", y = "Sum of ITS sequences (97% OTUs)", caption = "R2adj=0.59, p<0.05", title = "Plant pathogen sequence abundance in restored fields") +
+    theme_classic()
+
 
 # ITS SV
 its_tax_trophic(spe_meta$its_sv, cluster_type = "SV")
-its_guilds(spe_meta$its_sv)
-# all NS
+its_sv_guilds <- its_guilds(spe_meta$its_sv)
+# all NS with field types
+# ITS SV plant pathogens correlate with restoration age
 
-# LOOK AT YEARS SINCE RESTORATION IN RESTORED FIELDS
+its_sv_guilds %>% 
+    filter(field_type == "restored", guild == "Plant Pathogen", region == "BM") %>% 
+    ggplot(aes(x = yr_since, y = seq_sum)) +
+    geom_smooth(method = "lm", se = TRUE) +
+    geom_label(aes(label = site_name)) +
+    labs(x = "Years since restoration", y = "Sum of ITS sequences (100% SVs)", caption = "R2adj=0.58, p<0.05", title = "Plant pathogen sequence abundance in restored fields") +
+    theme_classic()
 
 
 
 
 
-# Significance labels needed for plot
-sig_labs_otu <- data.frame(
-    guild = rep("Arbuscular Mycorrhizal", 3),
-    lab = c("a", "b", "ab"),
-    xpos = c(1,2,3),
-    ypos = rep(46, 3)
-)
-its_otu_spe_meta %>% 
-    filter(taxon_level >= taxon_level & 
-               confidence %in% c("Highly Probable", "Probable") &
-               guild %in% c("Plant Pathogen", "Arbuscular Mycorrhizal")) %>% 
-    count(field_type, region, site_name, guild) %>% 
-    ggplot(aes(x = field_type, y = n)) +
-    facet_wrap(vars(guild), scales = "free_y") +
-    geom_boxplot(fill = "gray90", varwidth = TRUE, outlier.shape = NA) +
-    geom_beeswarm(aes(color = region), dodge.width = 0.2) +
-    geom_text(data = sig_labs_otu, aes(x = xpos, y = ypos, label = lab)) +
-    labs(x = "", y = "Richness", caption = "OTUs at 97% similarity; mixed linear model with region as a random effect.") +
+
+
+amf_tax <- function(data, cluster_type) {
+    cat("\n---------------------------------\n")
+    print(paste("AMF", cluster_type))
+    cat("---------------------------------\n")
+    amf_df <-
+        data %>%
+        group_by(family, field_type, region, site_name, yr_since) %>%
+        summarize(seq_sum = sum(seq_abund) %>% round(., 1),
+                  .groups = "drop")
+    amf_df_summary <-
+        amf_df %>%
+        group_by(family, field_type) %>%
+        summarize(seq_avg = mean(seq_sum) %>% round(., 1),
+                  .groups = "drop") %>%
+        pivot_wider(
+            names_from = field_type,
+            values_from = seq_avg,
+            names_sort = TRUE,
+            values_fill = 0
+        ) %>%
+        arrange(-remnant)
+    print(kable(amf_df_summary, format = "pandoc"))
+    write_csv(
+        amf_df_summary,
+        paste0(
+            getwd(),
+            "/microbial_diversity_files/amf_",
+            cluster_type,
+            "_taxonomy.csv"
+        )
+    )
+    cat("\n---------------------------------\n")
+    print("Compare abundances across field types with mixed model")
+    cat("---------------------------------\n")
+    test_families <-
+        amf_df %>% 
+        count(region, family, field_type) %>% 
+        count(region, family) %>% 
+        filter(n == 3) %>% 
+        pull(family) %>% 
+        unique()
+    for (i in 1:length(test_families)) {
+        cat("\n---------------------------------\n")
+        print(test_families[i])
+        cat("---------------------------------\n")
+        mmod <-
+            lmer(
+                seq_sum ~ field_type + (1 | region),
+                data = amf_df %>% filter(family == test_families[i]),
+                REML = FALSE
+            )
+        print(mmod)
+        cat("----------------------------------------------------\n\n")
+        mmod_null <-
+            lmer(
+                seq_sum ~ 1 + (1 | region),
+                data = amf_df %>% filter(family == test_families[i]),
+                REML = FALSE
+            )
+        print(mmod_null)
+        cat("----------------------------------------------------\n\n")
+        print(anova(mmod, mmod_null))
+        cat("----------------------------------------------------\n\n")
+        mod_tuk <-
+            glht(mmod,
+                 linfct = mcp(field_type = "Tukey"),
+                 test = adjusted("holm"))
+        print(summary(mod_tuk))
+        print(cld(mod_tuk))
+        cat("\n")
+    }
+    cat("\n---------------------------------\n")
+    print("Test abundances with years since restoration")
+    cat("---------------------------------\n")
+    all7 <-
+        amf_df %>%
+        filter(field_type == "restored", region == "BM") %>%
+        count(family) %>%
+        filter(n == 7) %>%
+        pull(family)
+    mod_data <-
+        amf_df %>%
+        filter(field_type == "restored", region == "BM", family %in% all7)
+        for (i in 1:length(all7)) {
+        print(all7[i])
+        print(summary(lm(
+            seq_sum ~ yr_since, data = mod_data %>% filter(family == all7[i])
+        )))
+    }
+    return(amf_df)
+}
+
+amf_otu_taxa_tests <- amf_tax(spe_meta$amf_otu, "otu")
+amf_sv_taxa_tests  <- amf_tax(spe_meta$amf_sv,  "sv")
+
+
+
+
+amf_df %>% 
+    filter(field_type == "restored", region == "BM") %>% 
+    ggplot(aes(x = yr_since, y = seq_sum)) +
+    facet_wrap(vars(family), scales = "free_y") +
+    geom_smooth(method = "lm", se = FALSE) +
+    geom_label(aes(label = site_name)) +
     theme_bw()
 
 
 
 
-
-
-
-# 18S
-spe_meta$amf_otu %>% glimpse()
-spe_meta$amf_otu %>% group_by(site_key) %>% summarize(sum = sum(seq_abund))
-apply(spe_meta$amf_otu, 2, unique)
-
-# Don't sum, different number of sites!
-spe_meta$amf_otu %>% 
-    group_by(genus, taxon, field_type) %>% 
-    summarize(seq_sum = sum(seq_abund) %>% round(., 1), .groups = "drop") %>% 
-    pivot_wider(names_from = field_type, values_from = seq_sum, names_sort = TRUE, values_fill = 0) %>% 
-    arrange(corn) %>%
-    kable(format = "pandoc")
-# 
