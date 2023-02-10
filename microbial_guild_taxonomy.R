@@ -10,21 +10,16 @@
 #' ---
 #'
 #' # Description
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
+#' Sequence clusters identified in QIIME are annotated with taxonomic information and
+#' metadata from [FunGuild](https://github.com/UMNFuN/FUNGuild). In this report, sequence abundances
+#' in taxonomic groups or fungal guilds are compared across field types and with time
+#' since restoration.
 #' # Packages and libraries
 packages_needed = c("tidyverse",
                     "knitr",
                     "conflicted",
                     "ggbeeswarm",
+                    "colorspace",
                     "rsq",
                     "lme4",
                     "multcomp")
@@ -40,7 +35,6 @@ for (i in 1:length(packages_needed)) {
 #+ conflicts,message=FALSE
 conflict_prefer("filter", "dplyr")
 conflict_prefer("select", "dplyr")
-#'
 #'
 #' # Data
 #' ## Sites-species tables
@@ -94,7 +88,6 @@ taxonomy <- list(
 #' Oldfields are filtered out because they could not be replicated in regions.
 #' Set remnants to 50 years old as a placeholder. This number will not be used in
 #' a quantitative sense, for example in models.
-#' Oldfields are filtered out because they could not be replicated in regions.
 rem_age <- 50
 sites   <-
     read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALSE) %>%
@@ -108,12 +101,10 @@ sites   <-
     ) %>%
     filter(field_type != "oldfield") %>% 
     select(-lat, -long, -yr_restore, -site_type)
-#'
-
-
-# Need a unified OTU and OTU-based metadata table to analyze taxonomy and guilds
-# These unified tables will also be necessary to filter species and produce ordinations
-# Note: function process_taxa() embedded in this function
+#' 
+#' ## Joined species, metadata, and design tables
+#' Functions streamline this process
+#+ join_spe_meta
 join_spe_meta <-
     function(spe,
              meta,
@@ -128,9 +119,7 @@ join_spe_meta <-
             left_join(meta, by = clust_name) %>%
             left_join(sites, by = "site_key")
     }
-
-
-
+#+ spe_meta_list
 spe_meta <- list(
     its_otu =
         join_spe_meta(
@@ -177,18 +166,12 @@ spe_meta <- list(
             getwd(), "/clean_data/speTaxa_18S_sv.csv"
         ))
 )
-
-# we are ready to summarize and explore the data.
-# FunGuild identifies the level of taxonomy assignment, the trophic mode, and the confidence
-# of assignment. View the [README.md](https://github.com/UMNFuN/FUNGuild) on GitHub.
-# Note on confidence ranking: I don't know what this refers to. Is it the taxonomic assignment,
-# guild/trophic mode, or all data? This is not explained.
-#
-# To conduct summaries of FunGuild metadata, it would seem appropriate to choose OTUs with
-# higher confidence rankings and more specific taxonomic assignments.
-
-# ____Summary Analysis of ITS OTU data ----------------------
-
+#' 
+#' # Analysis and Results
+#' ## ITS-based data
+#' Functions streamline data processing, model fitting, and results output.
+#' ### Function: ITS taxonomy
+#+ its_tax_trophic
 its_tax_trophic <- function(data, taxon_level = 9, cluster_type) {
     # What is the distribution among site types at the class level?
     taxonomy_df <-
@@ -216,7 +199,8 @@ its_tax_trophic <- function(data, taxon_level = 9, cluster_type) {
             "clusters in classes, mean sequence abundance by field type"
         )
     ))
-    write_csv(taxonomy_df, paste0(getwd(), "/microbial_diversity_files/its_", cluster_type, "_taxonomy.csv"))
+    write_csv(taxonomy_df, 
+              paste0(getwd(), "/microbial_diversity_files/its_", cluster_type, "_taxonomy.csv"))
     # What is the distribution of trophic modes among site types?
     trophic_df <-
         data %>%
@@ -242,17 +226,20 @@ its_tax_trophic <- function(data, taxon_level = 9, cluster_type) {
             "clusters in classes, mean sequence abundance by field type"
         )
     ))
-    
 }
-
-
-# NEEDS TO BE SEQUENCE ABNDANCE INSTEAD OF RICHNESS; CONSIDER A FUNCTION HERE...
-# Guilds are more specific than trophic modes. Filter to plant pathogens and AMF.
-
-
-
-
-
+#' 
+#' ### Function: ITS and guilds
+#' Sequence abundances are analyzed in the guilds "Arbuscular Mycorrhizal", "Plant Pathogen",
+#' and "Undefined Saprotroph". Other guilds are inappropriate or contain few sequences. 
+#' 
+#' FunGuild identifies the level of taxonomy assignment, the trophic mode, and the confidence
+#' of assignment. View the [README](https://github.com/UMNFuN/FUNGuild) on GitHub.
+#' Note on confidence ranking: I don't know what this refers to. Is it the taxonomic assignment,
+#' guild/trophic mode, or all data? This is not explained.
+#' 
+#' To conduct summaries of FunGuild metadata, it would seem appropriate to choose OTUs with
+#' higher confidence rankings and more specific taxonomic assignments.
+#+ its_guilds
 its_guilds <- function(data) {
     guilds <-
         c("Arbuscular Mycorrhizal",
@@ -308,17 +295,18 @@ its_guilds <- function(data) {
     }
     return(df1)
 }
-
-
-
-
-
-# ITS OTU
+#' 
+#' ### ITS sequences in OTU clusters
+#' Function outputs are verbose, but details may be necessary later so they are displayed here.
+#+ its_tax_trophic_otu,message=FALSE
 its_tax_trophic(spe_meta$its_otu, cluster_type = "OTU")
+#' 
+#' All comparisions across field types are non-significant
+#+ its_guilds_otu,message=FALSE
 its_otu_guilds <- its_guilds(spe_meta$its_otu)
-# all NS with field types
-# LOOK AT YEARS SINCE RESTORATION IN RESTORED FIELDS
-# ITS OTU plant pathogens correlate with restoration age
+#' 
+#' Plant pathogens correlate with restoration age in Blue Mounds area. 
+#+ its_otu_pathogen_correlation,message=FALSE
 its_otu_guilds %>% 
     filter(field_type == "restored", guild == "Plant Pathogen", region == "BM") %>% 
     ggplot(aes(x = yr_since, y = seq_sum)) +
@@ -326,14 +314,18 @@ its_otu_guilds %>%
     geom_label(aes(label = site_name)) +
     labs(x = "Years since restoration", y = "Sum of ITS sequences (97% OTUs)", caption = "R2adj=0.59, p<0.05", title = "Plant pathogen sequence abundance in restored fields") +
     theme_classic()
-
-
-# ITS SV
+#' 
+#' ### ITS sequences in SV clusters
+#' Function outputs are verbose, but details may be necessary later so they are displayed here.
+#+ its_tax_trophic_sv,message=FALSE
 its_tax_trophic(spe_meta$its_sv, cluster_type = "SV")
+#' 
+#' All comparisions across field types are non-significant
+#+ its_guilds_sv,message=FALSE
 its_sv_guilds <- its_guilds(spe_meta$its_sv)
-# all NS with field types
-# ITS SV plant pathogens correlate with restoration age
-
+#' 
+#' Plant pathogens correlate with restoration age in Blue Mounds area. 
+#+ its_sv_pathogen_correlation,message=FALSE
 its_sv_guilds %>% 
     filter(field_type == "restored", guild == "Plant Pathogen", region == "BM") %>% 
     ggplot(aes(x = yr_since, y = seq_sum)) +
@@ -341,13 +333,10 @@ its_sv_guilds %>%
     geom_label(aes(label = site_name)) +
     labs(x = "Years since restoration", y = "Sum of ITS sequences (100% SVs)", caption = "R2adj=0.58, p<0.05", title = "Plant pathogen sequence abundance in restored fields") +
     theme_classic()
-
-
-
-
-
-
-
+#' 
+#' ## 18S-based data (AMF)
+#' A function streamlines analysis and results output.
+#+ amf_taxa_function
 amf_tax <- function(data, cluster_type) {
     cat("\n---------------------------------\n")
     print(paste("AMF", cluster_type))
@@ -439,21 +428,57 @@ amf_tax <- function(data, cluster_type) {
     }
     return(amf_df)
 }
-
-amf_otu_taxa_tests <- amf_tax(spe_meta$amf_otu, "otu")
-amf_sv_taxa_tests  <- amf_tax(spe_meta$amf_sv,  "sv")
-
-
-
-
-amf_df %>% 
-    filter(field_type == "restored", region == "BM") %>% 
+#' 
+#' ## AMF OTUs
+#' Function output is verbose but retained as explained previously.
+#+ amf_otu_summary,message=FALSE
+amf_otu_summary <- amf_tax(spe_meta$amf_otu, "otu")
+#' Claroideoglomeraceae differs across field types with a likelihood ratio test result p<0.01. 
+#' Tukey's post-hoc test with Holm correction performed, letters on the figure show differences.
+#+ claroideoglomeraceae_otu_fields_fig,message=FALSE
+amf_otu_summary %>% 
+    filter(family == "Claroideoglomeraceae") %>% 
+    ggplot(aes(x = field_type, y = seq_sum)) +
+    geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
+    geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
+    annotate("text", label = c("a", "b", "ab"), x = c(1,2,3), y = rep(350, 3)) +
+    labs(x = "", y = "Sequence abundance", title = "AMF variation in field types, 97% OTU",
+         caption = "Likelihood ratio test p<0.01, Tukey's post-hoc with Holm correction at p<0.05") +
+    scale_fill_discrete_qualitative(palette = "Dark3") +
+    theme_classic()
+#' Gigasporaceae increased with time since restoration by a simple linear regression, $R^2_{adj}$ = 0.81, p < 0.01
+#+ gigasporaceae_otu_time_fig,message=FALSE
+amf_otu_summary %>% 
+    filter(field_type == "restored", region == "BM", family == "Gigasporaceae") %>% 
     ggplot(aes(x = yr_since, y = seq_sum)) +
-    facet_wrap(vars(family), scales = "free_y") +
-    geom_smooth(method = "lm", se = FALSE) +
-    geom_label(aes(label = site_name)) +
-    theme_bw()
+    geom_smooth(method = "lm", linewidth = 0.4, se = FALSE) +
+    geom_point(size = 2, shape = 21, fill = "gray60") +
+    labs(x = "Years since restoration", y = "Sequence abundance", title = "Gigasporaceae abundance since restoration, 97% OTU",
+         caption = "R2Adj = 0.81, p<0.01") +
+    theme_classic()
 
 
 
 
+
+amf_sv_summary  <- amf_tax(spe_meta$amf_sv,  "sv")
+# Claroideoglomeraceae different in fields a, b, ab, test p<0.01
+# Gigasporaceae different over time R2adj 0.65, p<0.05
+amf_sv_summary %>% 
+    filter(family == "Claroideoglomeraceae") %>% 
+    ggplot(aes(x = field_type, y = seq_sum)) +
+    geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
+    geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
+    annotate("text", label = c("a", "b", "ab"), x = c(1,2,3), y = rep(350, 3)) +
+    labs(x = "", y = "Sequence abundance", title = "AMF variation in field types, 100% SV",
+         caption = "Likelihood ratio test p<0.01, Tukey's post-hoc with Holm correction at p<0.05") +
+    scale_fill_discrete_qualitative(palette = "Dark3") +
+    theme_classic()
+amf_sv_summary %>% 
+    filter(field_type == "restored", region == "BM", family == "Gigasporaceae") %>% 
+    ggplot(aes(x = yr_since, y = seq_sum)) +
+    geom_smooth(method = "lm", linewidth = 0.4, se = FALSE) +
+    geom_point(size = 2, shape = 21, fill = "gray60") +
+    labs(x = "Years since restoration", y = "Sequence abundance", title = "Gigasporaceae abundance since restoration, 100% SV",
+         caption = "R2Adj = 0.65, p<0.05") +
+    theme_classic()
