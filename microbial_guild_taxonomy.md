@@ -27,6 +27,7 @@ Last updated: 10 February, 2023
   - <a href="#18s-based-data-amf" id="toc-18s-based-data-amf">18S-based data
     (AMF)</a>
   - <a href="#amf-otus" id="toc-amf-otus">AMF OTUs</a>
+- <a href="#conclusions" id="toc-conclusions">Conclusions</a>
 
 # Description
 
@@ -310,7 +311,7 @@ its_guilds <- function(data) {
           "Undefined Saprotroph")
     df1 <- data.frame()
     for (i in 1:length(guilds)) {
-        cat("\n---------------------------------\n")
+        cat("---------------------------------\n")
         print(guilds[i])
         cat("---------------------------------\n")
         mod_data <- data %>%
@@ -429,7 +430,6 @@ All comparisions across field types are non-significant
 its_otu_guilds <- its_guilds(spe_meta$its_otu)
 ```
 
-    ## 
     ## ---------------------------------
     ## [1] "Arbuscular Mycorrhizal"
     ## ---------------------------------
@@ -517,7 +517,7 @@ its_otu_guilds <- its_guilds(spe_meta$its_otu)
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)  
     ## restored - corn == 0      21.099      8.956   2.356   0.0474 *
-    ## remnant - corn == 0       15.196     11.599   1.310   0.3851  
+    ## remnant - corn == 0       15.196     11.599   1.310   0.3850  
     ## remnant - restored == 0   -5.903      9.794  -0.603   0.8162  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -546,7 +546,6 @@ its_otu_guilds <- its_guilds(spe_meta$its_otu)
     ## Residual standard error: 20.21 on 5 degrees of freedom
     ## Multiple R-squared:  0.4367, Adjusted R-squared:  0.3241 
     ## F-statistic: 3.877 on 1 and 5 DF,  p-value: 0.1061
-    ## 
     ## 
     ## 
     ## 
@@ -663,7 +662,6 @@ its_otu_guilds <- its_guilds(spe_meta$its_otu)
     ## Residual standard error: 38.12 on 5 degrees of freedom
     ## Multiple R-squared:  0.6593, Adjusted R-squared:  0.5911 
     ## F-statistic: 9.674 on 1 and 5 DF,  p-value: 0.02654
-    ## 
     ## 
     ## 
     ## 
@@ -789,13 +787,13 @@ Plant pathogens correlate with restoration age in Blue Mounds area.
 its_otu_guilds %>% 
     filter(field_type == "restored", guild == "Plant Pathogen", region == "BM") %>% 
     ggplot(aes(x = yr_since, y = seq_sum)) +
-    geom_smooth(method = "lm", se = TRUE) +
-    geom_label(aes(label = site_name)) +
+    geom_smooth(method = "lm", linewidth = 0.4, se = FALSE) +
+    geom_point(size = 2, shape = 21, fill = "gray60") +
     labs(x = "Years since restoration", y = "Sum of ITS sequences (97% OTUs)", caption = "R2adj=0.59, p<0.05", title = "Plant pathogen sequence abundance in restored fields") +
     theme_classic()
 ```
 
-![](microbial_guild_taxonomy_files/figure-gfm/its_otu_pathogen_correlation-1.png)<!-- -->
+<img src="microbial_guild_taxonomy_files/figure-gfm/its_otu_pathogen_correlation_fig-1.png" style="display: block; margin: auto;" />
 
 ### ITS sequences in SV clusters
 
@@ -866,7 +864,6 @@ All comparisions across field types are non-significant
 its_sv_guilds <- its_guilds(spe_meta$its_sv)
 ```
 
-    ## 
     ## ---------------------------------
     ## [1] "Arbuscular Mycorrhizal"
     ## ---------------------------------
@@ -987,7 +984,6 @@ its_sv_guilds <- its_guilds(spe_meta$its_sv)
     ## 
     ## 
     ## 
-    ## 
     ## ---------------------------------
     ## [1] "Plant Pathogen"
     ## ---------------------------------
@@ -1100,7 +1096,6 @@ its_sv_guilds <- its_guilds(spe_meta$its_sv)
     ## Residual standard error: 38.33 on 5 degrees of freedom
     ## Multiple R-squared:  0.6469, Adjusted R-squared:  0.5763 
     ## F-statistic:  9.16 on 1 and 5 DF,  p-value: 0.02919
-    ## 
     ## 
     ## 
     ## 
@@ -1226,13 +1221,13 @@ Plant pathogens correlate with restoration age in Blue Mounds area.
 its_sv_guilds %>% 
     filter(field_type == "restored", guild == "Plant Pathogen", region == "BM") %>% 
     ggplot(aes(x = yr_since, y = seq_sum)) +
-    geom_smooth(method = "lm", se = TRUE) +
-    geom_label(aes(label = site_name)) +
+    geom_smooth(method = "lm", linewidth = 0.4, se = FALSE) +
+    geom_point(size = 2, shape = 21, fill = "gray60") +
     labs(x = "Years since restoration", y = "Sum of ITS sequences (100% SVs)", caption = "R2adj=0.58, p<0.05", title = "Plant pathogen sequence abundance in restored fields") +
     theme_classic()
 ```
 
-![](microbial_guild_taxonomy_files/figure-gfm/its_sv_pathogen_correlation-1.png)<!-- -->
+<img src="microbial_guild_taxonomy_files/figure-gfm/its_sv_pathogen_correlation_fig-1.png" style="display: block; margin: auto;" />
 
 ## 18S-based data (AMF)
 
@@ -1240,7 +1235,7 @@ A function streamlines analysis and results output.
 
 ``` r
 amf_tax <- function(data, cluster_type) {
-    cat("\n---------------------------------\n")
+    cat("---------------------------------\n")
     print(paste("AMF", cluster_type))
     cat("---------------------------------\n")
     amf_df <-
@@ -1340,7 +1335,6 @@ Function output is verbose but retained as explained previously.
 amf_otu_summary <- amf_tax(spe_meta$amf_otu, "otu")
 ```
 
-    ## 
     ## ---------------------------------
     ## [1] "AMF otu"
     ## ---------------------------------
@@ -1353,7 +1347,7 @@ amf_otu_summary <- amf_tax(spe_meta$amf_otu, "otu")
     ## Paraglomeraceae          85.1       62.1      27.6
     ## Diversisporaceae         54.1       28.1      19.9
     ## Acaulosporaceae           0.0        1.9       4.9
-    ## Gigasporaceae             1.0        7.6       3.8
+    ## Gigasporaceae             0.9        7.6       3.8
     ## Archaeosporaceae          0.0       10.5       3.1
     ## Ambisporaceae             0.0        0.0       0.1
     ## 
@@ -1399,9 +1393,9 @@ amf_otu_summary <- amf_tax(spe_meta$amf_otu, "otu")
     ## Models:
     ## mmod_null: seq_sum ~ 1 + (1 | region)
     ## mmod: seq_sum ~ field_type + (1 | region)
-    ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)   
-    ## mmod_null    3 287.67 291.33 -140.84   281.67                        
-    ## mmod         5 281.18 287.28 -135.59   271.18 10.491  2   0.005272 **
+    ##           npar    AIC    BIC  logLik deviance Chisq Df Pr(>Chisq)   
+    ## mmod_null    3 287.67 291.33 -140.84   281.67                       
+    ## mmod         5 281.18 287.28 -135.59   271.18 10.49  2   0.005272 **
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## ----------------------------------------------------
@@ -1417,9 +1411,9 @@ amf_otu_summary <- amf_tax(spe_meta$amf_otu, "otu")
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)    
-    ## restored - corn == 0      105.59      26.68   3.958 0.000212 ***
-    ## remnant - corn == 0        59.72      34.51   1.731 0.190556    
-    ## remnant - restored == 0   -45.87      29.19  -1.571 0.254392    
+    ## restored - corn == 0      105.59      26.68   3.958 0.000211 ***
+    ## remnant - corn == 0        59.72      34.51   1.731 0.190568    
+    ## remnant - restored == 0   -45.87      29.19  -1.571 0.254404    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## (Adjusted p values reported -- single-step method)
@@ -1805,7 +1799,7 @@ amf_otu_summary %>%
     theme_classic()
 ```
 
-![](microbial_guild_taxonomy_files/figure-gfm/claroideoglomeraceae_otu_fields_fig-1.png)<!-- -->
+<img src="microbial_guild_taxonomy_files/figure-gfm/claroideoglomeraceae_otu_fields_fig-1.png" style="display: block; margin: auto;" />
 
 Gigasporaceae increased with time since restoration by a simple linear
 regression, $R^2_{adj}$ = 0.81, p \< 0.01
@@ -1821,13 +1815,12 @@ amf_otu_summary %>%
     theme_classic()
 ```
 
-![](microbial_guild_taxonomy_files/figure-gfm/gigasporaceae_otu_time_fig-1.png)<!-- -->
+<img src="microbial_guild_taxonomy_files/figure-gfm/gigasporaceae_otu_time_fig-1.png" style="display: block; margin: auto;" />
 
 ``` r
 amf_sv_summary  <- amf_tax(spe_meta$amf_sv,  "sv")
 ```
 
-    ## 
     ## ---------------------------------
     ## [1] "AMF sv"
     ## ---------------------------------
@@ -1841,7 +1834,7 @@ amf_sv_summary  <- amf_tax(spe_meta$amf_sv,  "sv")
     ## Diversisporaceae         55.7       28.0      18.4
     ## Acaulosporaceae           0.1        2.1       5.2
     ## Gigasporaceae             1.1        7.7       3.5
-    ## Archaeosporaceae          0.0       11.0       2.4
+    ## Archaeosporaceae          0.0       11.0       2.5
     ## 
     ## ---------------------------------
     ## [1] "Compare abundances across field types with mixed model"
@@ -1903,9 +1896,9 @@ amf_sv_summary  <- amf_tax(spe_meta$amf_sv,  "sv")
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)    
-    ## restored - corn == 0      105.25      27.05   3.891 0.000324 ***
-    ## remnant - corn == 0        62.78      35.01   1.793 0.168851    
-    ## remnant - restored == 0   -42.46      29.59  -1.435 0.318528    
+    ## restored - corn == 0      105.25      27.05   3.891 0.000307 ***
+    ## remnant - corn == 0        62.78      35.01   1.793 0.168899    
+    ## remnant - restored == 0   -42.46      29.59  -1.435 0.318533    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## (Adjusted p values reported -- single-step method)
@@ -1986,7 +1979,7 @@ amf_sv_summary  <- amf_tax(spe_meta$amf_sv,  "sv")
     ##  312.7003  318.7947 -151.3502  302.7003        20 
     ## Random effects:
     ##  Groups   Name        Std.Dev. 
-    ##  region   (Intercept) 5.546e-06
+    ##  region   (Intercept) 5.499e-06
     ##  Residual             1.030e+02
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
@@ -2336,9 +2329,11 @@ amf_sv_summary  <- amf_tax(spe_meta$amf_sv,  "sv")
     ## Multiple R-squared:  0.0493, Adjusted R-squared:  -0.1408 
     ## F-statistic: 0.2593 on 1 and 5 DF,  p-value: 0.6323
 
+Claroideoglomeraceae differs across field types with a likelihood ratio
+test result p\<0.01. Tukey’s post-hoc test with Holm correction
+performed, letters on the figure show differences.
+
 ``` r
-# Claroideoglomeraceae different in fields a, b, ab, test p<0.01
-# Gigasporaceae different over time R2adj 0.65, p<0.05
 amf_sv_summary %>% 
     filter(family == "Claroideoglomeraceae") %>% 
     ggplot(aes(x = field_type, y = seq_sum)) +
@@ -2351,7 +2346,10 @@ amf_sv_summary %>%
     theme_classic()
 ```
 
-![](microbial_guild_taxonomy_files/figure-gfm/gigasporaceae_otu_time_fig-2.png)<!-- -->
+<img src="microbial_guild_taxonomy_files/figure-gfm/claroideoglomeraceae_sv_fields_fig-1.png" style="display: block; margin: auto;" />
+
+Gigasporaceae increased with time since restoration by a simple linear
+regression, $R^2_{adj}$ = 0.65, p \< 0.05
 
 ``` r
 amf_sv_summary %>% 
@@ -2364,4 +2362,13 @@ amf_sv_summary %>%
     theme_classic()
 ```
 
-![](microbial_guild_taxonomy_files/figure-gfm/gigasporaceae_otu_time_fig-3.png)<!-- -->
+<img src="microbial_guild_taxonomy_files/figure-gfm/gigasporaceae_sv_time_fig-1.png" style="display: block; margin: auto;" />
+
+# Conclusions
+
+Little variation exists here for ITS or AMF sequences among field types,
+although classes of fungi identified through ITS sequences remain to be
+closely examined. It’s striking that plant pathogens decline as
+restorations age while the AMF family *Gigasporaceae* increases, but
+this contrast was not found in any other group of AMF and the
+*Gigasporaceae* aren’t particularly abundant to begin with.

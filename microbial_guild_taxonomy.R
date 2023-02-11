@@ -7,6 +7,8 @@
 #'     toc: true
 #'     toc_depth: 3
 #'     df_print: paged
+#'     fig_width: 5.5
+#'     fig_height: 5
 #' ---
 #'
 #' # Description
@@ -247,7 +249,7 @@ its_guilds <- function(data) {
           "Undefined Saprotroph")
     df1 <- data.frame()
     for (i in 1:length(guilds)) {
-        cat("\n---------------------------------\n")
+        cat("---------------------------------\n")
         print(guilds[i])
         cat("---------------------------------\n")
         mod_data <- data %>%
@@ -306,12 +308,12 @@ its_tax_trophic(spe_meta$its_otu, cluster_type = "OTU")
 its_otu_guilds <- its_guilds(spe_meta$its_otu)
 #' 
 #' Plant pathogens correlate with restoration age in Blue Mounds area. 
-#+ its_otu_pathogen_correlation,message=FALSE
+#+ its_otu_pathogen_correlation_fig,message=FALSE,fig.align="center"
 its_otu_guilds %>% 
     filter(field_type == "restored", guild == "Plant Pathogen", region == "BM") %>% 
     ggplot(aes(x = yr_since, y = seq_sum)) +
-    geom_smooth(method = "lm", se = TRUE) +
-    geom_label(aes(label = site_name)) +
+    geom_smooth(method = "lm", linewidth = 0.4, se = FALSE) +
+    geom_point(size = 2, shape = 21, fill = "gray60") +
     labs(x = "Years since restoration", y = "Sum of ITS sequences (97% OTUs)", caption = "R2adj=0.59, p<0.05", title = "Plant pathogen sequence abundance in restored fields") +
     theme_classic()
 #' 
@@ -325,12 +327,12 @@ its_tax_trophic(spe_meta$its_sv, cluster_type = "SV")
 its_sv_guilds <- its_guilds(spe_meta$its_sv)
 #' 
 #' Plant pathogens correlate with restoration age in Blue Mounds area. 
-#+ its_sv_pathogen_correlation,message=FALSE
+#+ its_sv_pathogen_correlation_fig,message=FALSE,fig.align="center"
 its_sv_guilds %>% 
     filter(field_type == "restored", guild == "Plant Pathogen", region == "BM") %>% 
     ggplot(aes(x = yr_since, y = seq_sum)) +
-    geom_smooth(method = "lm", se = TRUE) +
-    geom_label(aes(label = site_name)) +
+    geom_smooth(method = "lm", linewidth = 0.4, se = FALSE) +
+    geom_point(size = 2, shape = 21, fill = "gray60") +
     labs(x = "Years since restoration", y = "Sum of ITS sequences (100% SVs)", caption = "R2adj=0.58, p<0.05", title = "Plant pathogen sequence abundance in restored fields") +
     theme_classic()
 #' 
@@ -338,7 +340,7 @@ its_sv_guilds %>%
 #' A function streamlines analysis and results output.
 #+ amf_taxa_function
 amf_tax <- function(data, cluster_type) {
-    cat("\n---------------------------------\n")
+    cat("---------------------------------\n")
     print(paste("AMF", cluster_type))
     cat("---------------------------------\n")
     amf_df <-
@@ -435,7 +437,7 @@ amf_tax <- function(data, cluster_type) {
 amf_otu_summary <- amf_tax(spe_meta$amf_otu, "otu")
 #' Claroideoglomeraceae differs across field types with a likelihood ratio test result p<0.01. 
 #' Tukey's post-hoc test with Holm correction performed, letters on the figure show differences.
-#+ claroideoglomeraceae_otu_fields_fig,message=FALSE
+#+ claroideoglomeraceae_otu_fields_fig,message=FALSE,fig.align="center"
 amf_otu_summary %>% 
     filter(family == "Claroideoglomeraceae") %>% 
     ggplot(aes(x = field_type, y = seq_sum)) +
@@ -446,8 +448,9 @@ amf_otu_summary %>%
          caption = "Likelihood ratio test p<0.01, Tukey's post-hoc with Holm correction at p<0.05") +
     scale_fill_discrete_qualitative(palette = "Dark3") +
     theme_classic()
-#' Gigasporaceae increased with time since restoration by a simple linear regression, $R^2_{adj}$ = 0.81, p < 0.01
-#+ gigasporaceae_otu_time_fig,message=FALSE
+#' Gigasporaceae increased with time since restoration by a simple linear regression, 
+#' $R^2_{adj}$ = 0.81, p < 0.01
+#+ gigasporaceae_otu_time_fig,message=FALSE,fig.align="center"
 amf_otu_summary %>% 
     filter(field_type == "restored", region == "BM", family == "Gigasporaceae") %>% 
     ggplot(aes(x = yr_since, y = seq_sum)) +
@@ -456,14 +459,11 @@ amf_otu_summary %>%
     labs(x = "Years since restoration", y = "Sequence abundance", title = "Gigasporaceae abundance since restoration, 97% OTU",
          caption = "R2Adj = 0.81, p<0.01") +
     theme_classic()
-
-
-
-
-
+#+ amf_sv_summary,message=FALSE
 amf_sv_summary  <- amf_tax(spe_meta$amf_sv,  "sv")
-# Claroideoglomeraceae different in fields a, b, ab, test p<0.01
-# Gigasporaceae different over time R2adj 0.65, p<0.05
+#' Claroideoglomeraceae differs across field types with a likelihood ratio test result p<0.01. 
+#' Tukey's post-hoc test with Holm correction performed, letters on the figure show differences.
+#+ claroideoglomeraceae_sv_fields_fig,message=FALSE,fig.align="center"
 amf_sv_summary %>% 
     filter(family == "Claroideoglomeraceae") %>% 
     ggplot(aes(x = field_type, y = seq_sum)) +
@@ -474,6 +474,9 @@ amf_sv_summary %>%
          caption = "Likelihood ratio test p<0.01, Tukey's post-hoc with Holm correction at p<0.05") +
     scale_fill_discrete_qualitative(palette = "Dark3") +
     theme_classic()
+#' Gigasporaceae increased with time since restoration by a simple linear regression, 
+#' $R^2_{adj}$ = 0.65, p < 0.05
+#+ gigasporaceae_sv_time_fig,message=FALSE,fig.align="center"
 amf_sv_summary %>% 
     filter(field_type == "restored", region == "BM", family == "Gigasporaceae") %>% 
     ggplot(aes(x = yr_since, y = seq_sum)) +
@@ -482,3 +485,10 @@ amf_sv_summary %>%
     labs(x = "Years since restoration", y = "Sequence abundance", title = "Gigasporaceae abundance since restoration, 100% SV",
          caption = "R2Adj = 0.65, p<0.05") +
     theme_classic()
+#' 
+#' # Conclusions
+#' Little variation exists here for ITS or AMF sequences among field types, although 
+#' classes of fungi identified through ITS sequences remain to be closely examined. 
+#' It's striking that plant pathogens decline as restorations age while 
+#' the AMF family *Gigasporaceae* increases, but this contrast was not found in any 
+#' other group of AMF and the *Gigasporaceae* aren't particularly abundant to begin with.
