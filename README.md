@@ -11,3 +11,9 @@ The file [site_locations.md](site_locations.md) shows locations of regions and s
 Microbial data analyzed here include site-species tables derived from high-throughput sequencing of ITS and 18S genes 
 and clustering into 97% similar OTUs and 100% similar SVs.
 The report [microbial_diversity.md](microbial_diversity.md) presents basic statistics and visualizations of species richness, Shannon's diversity/evenness, and Simpson's diversity/evenness in the microbial species data across field types. 
+
+## Microbial Taxonomy and Guilds
+Sequence clusters identified in QIIME are annotated with taxonomic information and
+metadata from [FunGuild](https://github.com/UMNFuN/FUNGuild). In [this report](microbial_guild_taxonomy.md), sequence abundances
+in taxonomic groups or fungal guilds are compared across field types and with time
+since restoration.
