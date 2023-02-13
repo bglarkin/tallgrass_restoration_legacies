@@ -202,7 +202,7 @@ its_tax_trophic <- function(data, taxon_level = 9, cluster_type) {
         )
     ))
     write_csv(taxonomy_df, 
-              paste0(getwd(), "/microbial_diversity_files/its_", cluster_type, "_taxonomy.csv"))
+              paste0(getwd(), "/microbial_guild_taxonomy_files/its_", cluster_type, "_taxonomy.csv"))
     # What is the distribution of trophic modes among site types?
     trophic_df <-
         data %>%
@@ -314,7 +314,10 @@ its_otu_guilds %>%
     ggplot(aes(x = yr_since, y = seq_sum)) +
     geom_smooth(method = "lm", linewidth = 0.4, se = FALSE) +
     geom_point(size = 2, shape = 21, fill = "gray60") +
-    labs(x = "Years since restoration", y = "Sum of ITS sequences (97% OTUs)", caption = "R2adj=0.59, p<0.05", title = "Plant pathogen sequence abundance in restored fields") +
+    labs(x = "Years since restoration", 
+         y = "Sum of ITS sequences (97% OTUs)", 
+         caption = "R2adj=0.59, p<0.05", 
+         title = "Plant pathogen sequence abundance in restored fields") +
     theme_classic()
 #' 
 #' ### ITS sequences in SV clusters
@@ -333,7 +336,10 @@ its_sv_guilds %>%
     ggplot(aes(x = yr_since, y = seq_sum)) +
     geom_smooth(method = "lm", linewidth = 0.4, se = FALSE) +
     geom_point(size = 2, shape = 21, fill = "gray60") +
-    labs(x = "Years since restoration", y = "Sum of ITS sequences (100% SVs)", caption = "R2adj=0.58, p<0.05", title = "Plant pathogen sequence abundance in restored fields") +
+    labs(x = "Years since restoration", 
+         y = "Sum of ITS sequences (100% SVs)", 
+         caption = "R2adj=0.58, p<0.05", 
+         title = "Plant pathogen sequence abundance in restored fields") +
     theme_classic()
 #' 
 #' ## 18S-based data (AMF)
@@ -365,7 +371,7 @@ amf_tax <- function(data, cluster_type) {
         amf_df_summary,
         paste0(
             getwd(),
-            "/microbial_diversity_files/amf_",
+            "/microbial_guild_taxonomy_files/amf_",
             cluster_type,
             "_taxonomy.csv"
         )
@@ -456,7 +462,9 @@ amf_otu_summary %>%
     ggplot(aes(x = yr_since, y = seq_sum)) +
     geom_smooth(method = "lm", linewidth = 0.4, se = FALSE) +
     geom_point(size = 2, shape = 21, fill = "gray60") +
-    labs(x = "Years since restoration", y = "Sequence abundance", title = "Gigasporaceae abundance since restoration, 97% OTU",
+    labs(x = "Years since restoration", 
+         y = "Sequence abundance", 
+         title = "Gigasporaceae abundance since restoration, 97% OTU",
          caption = "R2Adj = 0.81, p<0.01") +
     theme_classic()
 #+ amf_sv_summary,message=FALSE
@@ -482,7 +490,9 @@ amf_sv_summary %>%
     ggplot(aes(x = yr_since, y = seq_sum)) +
     geom_smooth(method = "lm", linewidth = 0.4, se = FALSE) +
     geom_point(size = 2, shape = 21, fill = "gray60") +
-    labs(x = "Years since restoration", y = "Sequence abundance", title = "Gigasporaceae abundance since restoration, 100% SV",
+    labs(x = "Years since restoration", 
+         y = "Sequence abundance", 
+         title = "Gigasporaceae abundance since restoration, 100% SV",
          caption = "R2Adj = 0.65, p<0.05") +
     theme_classic()
 #' 

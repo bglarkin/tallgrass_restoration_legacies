@@ -2,7 +2,7 @@ Microbial data: microbial guilds and taxonomy
 ================
 Beau Larkin
 
-Last updated: 10 February, 2023
+Last updated: 13 February, 2023
 
 - <a href="#description" id="toc-description">Description</a>
 - <a href="#data" id="toc-data">Data</a>
@@ -257,7 +257,7 @@ its_tax_trophic <- function(data, taxon_level = 9, cluster_type) {
         )
     ))
     write_csv(taxonomy_df, 
-              paste0(getwd(), "/microbial_diversity_files/its_", cluster_type, "_taxonomy.csv"))
+              paste0(getwd(), "/microbial_guild_taxonomy_files/its_", cluster_type, "_taxonomy.csv"))
     # What is the distribution of trophic modes among site types?
     trophic_df <-
         data %>%
@@ -789,7 +789,10 @@ its_otu_guilds %>%
     ggplot(aes(x = yr_since, y = seq_sum)) +
     geom_smooth(method = "lm", linewidth = 0.4, se = FALSE) +
     geom_point(size = 2, shape = 21, fill = "gray60") +
-    labs(x = "Years since restoration", y = "Sum of ITS sequences (97% OTUs)", caption = "R2adj=0.59, p<0.05", title = "Plant pathogen sequence abundance in restored fields") +
+    labs(x = "Years since restoration", 
+         y = "Sum of ITS sequences (97% OTUs)", 
+         caption = "R2adj=0.59, p<0.05", 
+         title = "Plant pathogen sequence abundance in restored fields") +
     theme_classic()
 ```
 
@@ -950,9 +953,9 @@ its_sv_guilds <- its_guilds(spe_meta$its_sv)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)  
-    ## restored - corn == 0      22.737      9.457   2.404    0.042 *
-    ## remnant - corn == 0       16.488     12.236   1.347    0.365  
-    ## remnant - restored == 0   -6.249     10.346  -0.604    0.816  
+    ## restored - corn == 0      22.737      9.457   2.404   0.0419 *
+    ## remnant - corn == 0       16.488     12.236   1.347   0.3646  
+    ## remnant - restored == 0   -6.249     10.346  -0.604   0.8156  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## (Adjusted p values reported -- single-step method)
@@ -1223,7 +1226,10 @@ its_sv_guilds %>%
     ggplot(aes(x = yr_since, y = seq_sum)) +
     geom_smooth(method = "lm", linewidth = 0.4, se = FALSE) +
     geom_point(size = 2, shape = 21, fill = "gray60") +
-    labs(x = "Years since restoration", y = "Sum of ITS sequences (100% SVs)", caption = "R2adj=0.58, p<0.05", title = "Plant pathogen sequence abundance in restored fields") +
+    labs(x = "Years since restoration", 
+         y = "Sum of ITS sequences (100% SVs)", 
+         caption = "R2adj=0.58, p<0.05", 
+         title = "Plant pathogen sequence abundance in restored fields") +
     theme_classic()
 ```
 
@@ -1260,7 +1266,7 @@ amf_tax <- function(data, cluster_type) {
         amf_df_summary,
         paste0(
             getwd(),
-            "/microbial_diversity_files/amf_",
+            "/microbial_guild_taxonomy_files/amf_",
             cluster_type,
             "_taxonomy.csv"
         )
@@ -1411,9 +1417,9 @@ amf_otu_summary <- amf_tax(spe_meta$amf_otu, "otu")
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)    
-    ## restored - corn == 0      105.59      26.68   3.958 0.000211 ***
-    ## remnant - corn == 0        59.72      34.51   1.731 0.190568    
-    ## remnant - restored == 0   -45.87      29.19  -1.571 0.254404    
+    ## restored - corn == 0      105.59      26.68   3.958 0.000231 ***
+    ## remnant - corn == 0        59.72      34.51   1.731 0.190552    
+    ## remnant - restored == 0   -45.87      29.19  -1.571 0.254378    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## (Adjusted p values reported -- single-step method)
@@ -1667,7 +1673,7 @@ amf_otu_summary <- amf_tax(spe_meta$amf_otu, "otu")
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)
-    ## restored - corn == 0       6.621      5.034   1.315    0.378
+    ## restored - corn == 0       6.621      5.034   1.315    0.379
     ## remnant - corn == 0        2.817      6.079   0.463    0.886
     ## remnant - restored == 0   -3.805      4.236  -0.898    0.634
     ## (Adjusted p values reported -- single-step method)
@@ -1810,7 +1816,9 @@ amf_otu_summary %>%
     ggplot(aes(x = yr_since, y = seq_sum)) +
     geom_smooth(method = "lm", linewidth = 0.4, se = FALSE) +
     geom_point(size = 2, shape = 21, fill = "gray60") +
-    labs(x = "Years since restoration", y = "Sequence abundance", title = "Gigasporaceae abundance since restoration, 97% OTU",
+    labs(x = "Years since restoration", 
+         y = "Sequence abundance", 
+         title = "Gigasporaceae abundance since restoration, 97% OTU",
          caption = "R2Adj = 0.81, p<0.01") +
     theme_classic()
 ```
@@ -1896,9 +1904,9 @@ amf_sv_summary  <- amf_tax(spe_meta$amf_sv,  "sv")
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)    
-    ## restored - corn == 0      105.25      27.05   3.891 0.000307 ***
-    ## remnant - corn == 0        62.78      35.01   1.793 0.168899    
-    ## remnant - restored == 0   -42.46      29.59  -1.435 0.318533    
+    ## restored - corn == 0      105.25      27.05   3.891 0.000263 ***
+    ## remnant - corn == 0        62.78      35.01   1.793 0.168890    
+    ## remnant - restored == 0   -42.46      29.59  -1.435 0.318576    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## (Adjusted p values reported -- single-step method)
@@ -2357,7 +2365,9 @@ amf_sv_summary %>%
     ggplot(aes(x = yr_since, y = seq_sum)) +
     geom_smooth(method = "lm", linewidth = 0.4, se = FALSE) +
     geom_point(size = 2, shape = 21, fill = "gray60") +
-    labs(x = "Years since restoration", y = "Sequence abundance", title = "Gigasporaceae abundance since restoration, 100% SV",
+    labs(x = "Years since restoration", 
+         y = "Sequence abundance", 
+         title = "Gigasporaceae abundance since restoration, 100% SV",
          caption = "R2Adj = 0.65, p<0.05") +
     theme_classic()
 ```
