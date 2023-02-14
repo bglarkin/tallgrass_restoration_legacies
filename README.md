@@ -7,6 +7,13 @@ Raw source data were output from QIIME. These are relatively large files, some o
 ## Site Data
 The file [site_locations.md](site_locations.md) shows locations of regions and sites and displays associated metadata. Climate data (precipitation) are also downloaded, processed, and displayed by this script. 
 
+### Additional Site Data
+The site data also include several tables which aren't wrangled in scripts, including:
+
+- [Soil chemical properties](clean_data/soil.csv)
+
+Sites are tested for autocorrelation between geographic distance and fungal species or soil chemical properties in [spatial_correlation.md](spatial_correlation.md). Mild or insignificant autocorrelation was found, particularly in the Blue Mounds restored fields, suggesting that we can at least present these fields as a pseudochronosequence. 
+
 ## Microbial Species Diversity
 Microbial data analyzed here include site-species tables derived from high-throughput sequencing of ITS and 18S genes 
 and clustering into 97% similar OTUs and 100% similar SVs.
