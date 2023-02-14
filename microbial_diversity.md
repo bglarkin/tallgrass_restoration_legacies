@@ -2,7 +2,7 @@ Microbial data: overview of data, diversity statistics
 ================
 Beau Larkin
 
-Last updated: 10 February, 2023
+Last updated: 14 February, 2023
 
 - <a href="#description" id="toc-description">Description</a>
 - <a href="#packages-and-libraries"
@@ -663,7 +663,7 @@ ggplot(div$its_otu, aes(x = field_type, y = value)) +
     theme_bw()
 ```
 
-![](microbial_diversity_files/figure-gfm/plot_div_its_otu-1.png)<!-- -->
+<img src="microbial_diversity_files/figure-gfm/plot_div_its_otu-1.png" style="display: block; margin: auto;" />
 
 Richness and evenness parameters increase from corn, to restored, to
 remnant fields, and some support exists for this pattern to occur across
@@ -683,7 +683,7 @@ ggplot(
     theme_bw()
 ```
 
-![](microbial_diversity_files/figure-gfm/plot_div_its_otu_interaction-1.png)<!-- -->
+<img src="microbial_diversity_files/figure-gfm/plot_div_its_otu_interaction-1.png" style="display: block; margin: auto;" />
 
 ### Key observations:
 
@@ -714,7 +714,7 @@ facet_wrap(vars(hill_index), scales = "free_y") +
     theme_bw()
 ```
 
-![](microbial_diversity_files/figure-gfm/plot_yrs_since_resto-1.png)<!-- -->
+<img src="microbial_diversity_files/figure-gfm/plot_yrs_since_resto-1.png" style="display: block; margin: auto;" />
 
 ### Diversity over time at Blue Mounds (ITS-based OTUs)
 
@@ -1138,7 +1138,7 @@ ggplot(div$its_sv, aes(x = field_type, y = value)) +
     theme_bw()
 ```
 
-![](microbial_diversity_files/figure-gfm/plot_div_its_sv-1.png)<!-- -->
+<img src="microbial_diversity_files/figure-gfm/plot_div_its_sv-1.png" style="display: block; margin: auto;" />
 
 Richness increases from corn, to restored, to remnant fields, and some
 support exists for this pattern to occur across regions. The trend
@@ -1164,7 +1164,7 @@ ggplot(
     theme_bw()
 ```
 
-![](microbial_diversity_files/figure-gfm/plot_div_its_sv_interaction-1.png)<!-- -->
+<img src="microbial_diversity_files/figure-gfm/plot_div_its_sv_interaction-1.png" style="display: block; margin: auto;" />
 
 ### Key observations:
 
@@ -1195,7 +1195,7 @@ ggplot(div$its_sv, aes(x = yr_since, y = value)) +
     theme_bw()
 ```
 
-![](microbial_diversity_files/figure-gfm/plot_yrs_since_resto_its_sv-1.png)<!-- -->
+<img src="microbial_diversity_files/figure-gfm/plot_yrs_since_resto_its_sv-1.png" style="display: block; margin: auto;" />
 
 ### Diversity over time at Blue Mounds (ITS-based SVs)
 
@@ -1630,7 +1630,7 @@ ggplot(div$amf_otu, aes(x = field_type, y = value)) +
     theme_bw()
 ```
 
-![](microbial_diversity_files/figure-gfm/plot_div_amf_otu-1.png)<!-- -->
+<img src="microbial_diversity_files/figure-gfm/plot_div_amf_otu-1.png" style="display: block; margin: auto;" />
 
 Richness increases from corn, to restored, to remnant fields, and some
 support exists for this pattern to occur across regions. The trend is
@@ -1656,7 +1656,7 @@ ggplot(
     theme_bw()
 ```
 
-![](microbial_diversity_files/figure-gfm/plot_div_amf_otu_interaction-1.png)<!-- -->
+<img src="microbial_diversity_files/figure-gfm/plot_div_amf_otu_interaction-1.png" style="display: block; margin: auto;" />
 
 ### Key observations:
 
@@ -1689,7 +1689,7 @@ ggplot(div$amf_otu, aes(x = yr_since, y = value)) +
     theme_bw()
 ```
 
-![](microbial_diversity_files/figure-gfm/plot_yrs_since_resto_amf_otu-1.png)<!-- -->
+<img src="microbial_diversity_files/figure-gfm/plot_yrs_since_resto_amf_otu-1.png" style="display: block; margin: auto;" />
 
 ### Diversity over time at Blue Mounds (ITS-based SVs)
 
@@ -2098,7 +2098,7 @@ ggplot(div$amf_sv, aes(x = field_type, y = value)) +
     theme_bw()
 ```
 
-![](microbial_diversity_files/figure-gfm/plot_div_amf_sv-1.png)<!-- -->
+<img src="microbial_diversity_files/figure-gfm/plot_div_amf_sv-1.png" style="display: block; margin: auto;" />
 
 Richness and diversity increase from corn, to restored, to remnant
 fields, and some support exists for this pattern to occur across
@@ -2118,7 +2118,7 @@ ggplot(
     theme_bw()
 ```
 
-![](microbial_diversity_files/figure-gfm/plot_div_amf_sv_interaction-1.png)<!-- -->
+<img src="microbial_diversity_files/figure-gfm/plot_div_amf_sv_interaction-1.png" style="display: block; margin: auto;" />
 
 ### Key observations:
 
@@ -2151,7 +2151,7 @@ ggplot(div$amf_sv, aes(x = yr_since, y = value)) +
     theme_bw()
 ```
 
-![](microbial_diversity_files/figure-gfm/plot_yrs_since_resto_amf_sv-1.png)<!-- -->
+<img src="microbial_diversity_files/figure-gfm/plot_yrs_since_resto_amf_sv-1.png" style="display: block; margin: auto;" />
 
 ### Diversity over time at Blue Mounds (ITS-based SVs)
 

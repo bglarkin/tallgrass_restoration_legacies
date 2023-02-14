@@ -130,7 +130,7 @@ man_1_cor <-
         mult = "holm"
     )
 print(man_1_cor)
-#+ fig_man_1,fig.align="center"
+#+ fig_man_1,fig.align='center'
 plot(man_1_cor)
 #' 
 #' Global test fails to reject the null of autocorrelation, but barely. The correlation 

@@ -163,11 +163,11 @@ man_1 <-
     ## mantel(xdis = dist_spe, ydis = dist_geo, method = "spearman",      permutations = 9999, na.rm = TRUE) 
     ## 
     ## Mantel statistic r: 0.1016 
-    ##       Significance: 0.0454 
+    ##       Significance: 0.0474 
     ## 
     ## Upper quantiles of permutations (null model):
     ##    90%    95%  97.5%    99% 
-    ## 0.0693 0.0980 0.1258 0.1615 
+    ## 0.0705 0.0990 0.1275 0.1668 
     ## Permutation: free
     ## Number of permutations: 9999
 
@@ -193,16 +193,16 @@ print(man_1_cor)
     ## mantel.correlog(D.eco = dist_spe, D.geo = dist_geo, n.class = 0,      cutoff = FALSE, r.type = "spearman", nperm = 9999, mult = "holm") 
     ## 
     ##         class.index      n.dist  Mantel.cor Pr(Mantel) Pr(corrected)  
-    ## D.cl.1   9.4645e+03  1.2000e+02  9.3724e-02     0.0824        0.0824 .
-    ## D.cl.2   2.8242e+04  3.6000e+01  1.9125e-02     0.3953        0.3953  
-    ## D.cl.3   4.7019e+04  4.0000e+00 -2.3176e-02     0.3617        0.7234  
-    ## D.cl.4   6.5796e+04  2.6000e+01 -4.0077e-02     0.2897        0.8691  
-    ## D.cl.5   8.4574e+04  1.1200e+02 -2.3362e-02     0.3771        1.0000  
-    ## D.cl.6   1.0335e+05  3.6000e+01  1.8071e-02     0.3847        1.0000  
-    ## D.cl.7   1.2213e+05  4.8000e+01  6.5618e-02     0.2038        1.0000  
+    ## D.cl.1   9.4645e+03  1.2000e+02  9.3724e-02     0.0777        0.0777 .
+    ## D.cl.2   2.8242e+04  3.6000e+01  1.9125e-02     0.4023        0.4023  
+    ## D.cl.3   4.7019e+04  4.0000e+00 -2.3176e-02     0.3589        0.7178  
+    ## D.cl.4   6.5796e+04  2.6000e+01 -4.0077e-02     0.2882        0.8646  
+    ## D.cl.5   8.4574e+04  1.1200e+02 -2.3362e-02     0.3742        1.0000  
+    ## D.cl.6   1.0335e+05  3.6000e+01  1.8071e-02     0.3920        1.0000  
+    ## D.cl.7   1.2213e+05  4.8000e+01  6.5618e-02     0.2006        1.0000  
     ## D.cl.8   1.4091e+05  0.0000e+00          NA         NA            NA  
-    ## D.cl.9   1.5968e+05  9.0000e+01 -1.6320e-01     0.0249        0.1992  
-    ## D.cl.10  1.7846e+05  1.2600e+02  1.9089e-02     0.4074            NA  
+    ## D.cl.9   1.5968e+05  9.0000e+01 -1.6320e-01     0.0268        0.2144  
+    ## D.cl.10  1.7846e+05  1.2600e+02  1.9089e-02     0.4041            NA  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -255,11 +255,11 @@ man_2 <-
     ## mantel(xdis = dist_spe_bm, ydis = dist_geo_bm, method = "spearman",      na.rm = TRUE) 
     ## 
     ## Mantel statistic r: -0.3299 
-    ##       Significance: 0.933 
+    ##       Significance: 0.939 
     ## 
     ## Upper quantiles of permutations (null model):
     ##   90%   95% 97.5%   99% 
-    ## 0.306 0.395 0.478 0.621 
+    ## 0.291 0.389 0.478 0.634 
     ## Permutation: free
     ## Number of permutations: 5039
 
@@ -290,11 +290,11 @@ man_3
     ## mantel(xdis = dist_soil, ydis = dist_geo_bm, method = "spearman",      na.rm = TRUE) 
     ## 
     ## Mantel statistic r: 0.1052 
-    ##       Significance: 0.311 
+    ##       Significance: 0.331 
     ## 
     ## Upper quantiles of permutations (null model):
     ##   90%   95% 97.5%   99% 
-    ## 0.306 0.407 0.487 0.551 
+    ## 0.309 0.405 0.481 0.576 
     ## Permutation: free
     ## Number of permutations: 5039
 

@@ -2,7 +2,7 @@ Microbial data: microbial guilds and taxonomy
 ================
 Beau Larkin
 
-Last updated: 13 February, 2023
+Last updated: 14 February, 2023
 
 - <a href="#description" id="toc-description">Description</a>
 - <a href="#data" id="toc-data">Data</a>
@@ -516,7 +516,7 @@ its_otu_guilds <- its_guilds(spe_meta$its_otu)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)  
-    ## restored - corn == 0      21.099      8.956   2.356   0.0474 *
+    ## restored - corn == 0      21.099      8.956   2.356   0.0475 *
     ## remnant - corn == 0       15.196     11.599   1.310   0.3850  
     ## remnant - restored == 0   -5.903      9.794  -0.603   0.8162  
     ## ---
@@ -954,7 +954,7 @@ its_sv_guilds <- its_guilds(spe_meta$its_sv)
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)  
     ## restored - corn == 0      22.737      9.457   2.404   0.0419 *
-    ## remnant - corn == 0       16.488     12.236   1.347   0.3646  
+    ## remnant - corn == 0       16.488     12.236   1.347   0.3645  
     ## remnant - restored == 0   -6.249     10.346  -0.604   0.8156  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -1353,7 +1353,7 @@ amf_otu_summary <- amf_tax(spe_meta$amf_otu, "otu")
     ## Paraglomeraceae          85.1       62.1      27.6
     ## Diversisporaceae         54.1       28.1      19.9
     ## Acaulosporaceae           0.0        1.9       4.9
-    ## Gigasporaceae             0.9        7.6       3.8
+    ## Gigasporaceae             1.0        7.6       3.8
     ## Archaeosporaceae          0.0       10.5       3.1
     ## Ambisporaceae             0.0        0.0       0.1
     ## 
@@ -1399,9 +1399,9 @@ amf_otu_summary <- amf_tax(spe_meta$amf_otu, "otu")
     ## Models:
     ## mmod_null: seq_sum ~ 1 + (1 | region)
     ## mmod: seq_sum ~ field_type + (1 | region)
-    ##           npar    AIC    BIC  logLik deviance Chisq Df Pr(>Chisq)   
-    ## mmod_null    3 287.67 291.33 -140.84   281.67                       
-    ## mmod         5 281.18 287.28 -135.59   271.18 10.49  2   0.005272 **
+    ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)   
+    ## mmod_null    3 287.67 291.33 -140.84   281.67                        
+    ## mmod         5 281.18 287.28 -135.59   271.18 10.491  2   0.005272 **
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## ----------------------------------------------------
@@ -1417,9 +1417,9 @@ amf_otu_summary <- amf_tax(spe_meta$amf_otu, "otu")
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)    
-    ## restored - corn == 0      105.59      26.68   3.958 0.000231 ***
-    ## remnant - corn == 0        59.72      34.51   1.731 0.190552    
-    ## remnant - restored == 0   -45.87      29.19  -1.571 0.254378    
+    ## restored - corn == 0      105.59      26.68   3.958   <0.001 ***
+    ## remnant - corn == 0        59.72      34.51   1.731    0.191    
+    ## remnant - restored == 0   -45.87      29.19  -1.571    0.254    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## (Adjusted p values reported -- single-step method)
@@ -1673,7 +1673,7 @@ amf_otu_summary <- amf_tax(spe_meta$amf_otu, "otu")
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)
-    ## restored - corn == 0       6.621      5.034   1.315    0.379
+    ## restored - corn == 0       6.621      5.034   1.315    0.378
     ## remnant - corn == 0        2.817      6.079   0.463    0.886
     ## remnant - restored == 0   -3.805      4.236  -0.898    0.634
     ## (Adjusted p values reported -- single-step method)
@@ -1842,7 +1842,7 @@ amf_sv_summary  <- amf_tax(spe_meta$amf_sv,  "sv")
     ## Diversisporaceae         55.7       28.0      18.4
     ## Acaulosporaceae           0.1        2.1       5.2
     ## Gigasporaceae             1.1        7.7       3.5
-    ## Archaeosporaceae          0.0       11.0       2.5
+    ## Archaeosporaceae          0.0       11.0       2.4
     ## 
     ## ---------------------------------
     ## [1] "Compare abundances across field types with mixed model"
@@ -1904,9 +1904,9 @@ amf_sv_summary  <- amf_tax(spe_meta$amf_sv,  "sv")
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)    
-    ## restored - corn == 0      105.25      27.05   3.891 0.000263 ***
-    ## remnant - corn == 0        62.78      35.01   1.793 0.168890    
-    ## remnant - restored == 0   -42.46      29.59  -1.435 0.318576    
+    ## restored - corn == 0      105.25      27.05   3.891   0.0003 ***
+    ## remnant - corn == 0        62.78      35.01   1.793   0.1690    
+    ## remnant - restored == 0   -42.46      29.59  -1.435   0.3185    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## (Adjusted p values reported -- single-step method)
@@ -1987,7 +1987,7 @@ amf_sv_summary  <- amf_tax(spe_meta$amf_sv,  "sv")
     ##  312.7003  318.7947 -151.3502  302.7003        20 
     ## Random effects:
     ##  Groups   Name        Std.Dev. 
-    ##  region   (Intercept) 5.499e-06
+    ##  region   (Intercept) 5.546e-06
     ##  Residual             1.030e+02
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:

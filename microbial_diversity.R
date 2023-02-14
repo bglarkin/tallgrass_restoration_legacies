@@ -206,7 +206,7 @@ labs_its_otu <- data.frame(
     xpos = rep(c(1,2,3), 2),
     ypos = rep(c(620, 170), each = 3)
 )
-#+ plot_div_its_otu,fig.width=9,fig.height=7
+#+ plot_div_its_otu,fig.width=9,fig.height=7,fig.align='center'
 ggplot(div$its_otu, aes(x = field_type, y = value)) +
     facet_wrap(vars(hill_index), scales = "free_y") +
     geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
@@ -218,7 +218,7 @@ ggplot(div$its_otu, aes(x = field_type, y = value)) +
     theme_bw()
 #' Richness and evenness parameters increase from corn, to restored, to remnant fields, and some 
 #' support exists for this pattern to occur across regions. 
-#+ plot_div_its_otu_interaction,fig.width=9,fig.height=7
+#+ plot_div_its_otu_interaction,fig.width=9,fig.height=7,fig.align='center'
 ggplot(
     div$its_otu %>% 
         group_by(field_type, region, hill_index) %>% 
@@ -241,7 +241,7 @@ ggplot(
 #' Next, trends in diversity are correlated with years since restoration, with 0 used for corn fields 
 #' and 50 used for remnants. Statistical testing of this relationship is not valid because the ages for 
 #' corn and remnant aren't justified, and the fields aren't justifiable as a chronosequence. 
-#+ plot_yrs_since_resto,fig.width=9,fig.height=7
+#+ plot_yrs_since_resto,fig.width=9,fig.height=7,fig.align='center'
 ggplot(div$its_otu, aes(x = yr_since, y = value)) +
 facet_wrap(vars(hill_index), scales = "free_y") +
     geom_point(aes(fill = region, shape = field_type), size = 2) +
@@ -265,7 +265,7 @@ test_age(div$its_otu, caption = "Correlation between Hill's numbers and field ag
 #' that we cannot attempt to present this as a time-based result at all. 
 #' 
 #' In any case, let's take a look at Shannon's diversity over time in Blue Mounds's restored fields.
-#+ bm_test_age,fig.width=7,fig.height=6,fig.align="center"
+#+ bm_test_age,fig.width=7,fig.height=6,fig.align='center'
 div$its_otu %>% 
     filter(region == "BM", field_type == "restored", hill_index == "N1") %>% 
     ggplot(aes(x = yr_since, y = value)) +
@@ -308,7 +308,7 @@ labs_its_sv <- data.frame(
     xpos = rep(c(1,2,3), 2),
     ypos = rep(c(740, 230), each = 3)
 )
-#+ plot_div_its_sv,fig.width=9,fig.height=7
+#+ plot_div_its_sv,fig.width=9,fig.height=7,fig.align='center'
 ggplot(div$its_sv, aes(x = field_type, y = value)) +
     facet_wrap(vars(hill_index), scales = "free_y") +
     geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
@@ -324,7 +324,7 @@ ggplot(div$its_sv, aes(x = field_type, y = value)) +
 #' both remnants and restored fields contain a similar amount of "functionally abundant" and co-dominant species. The 
 #' slight trend detected in evenness suggests that the long tail of rare species in remnants isn't very abundant, and that 
 #' co-dominant species are similarly distributed in all field types. 
-#+ plot_div_its_sv_interaction,fig.width=9,fig.height=7
+#+ plot_div_its_sv_interaction,fig.width=9,fig.height=7,fig.align='center'
 ggplot(
     div$its_otu %>% 
         group_by(field_type, region, hill_index) %>% 
@@ -347,7 +347,7 @@ ggplot(
 #' Next, trends in diversity are correlated with years since restoration, with 0 used for corn fields 
 #' and 50 used for remnants. Statistical testing of this relationship is not valid because the ages for 
 #' corn and remnant aren't justified, and the fields aren't justifiable as a chronosequence. 
-#+ plot_yrs_since_resto_its_sv,fig.width=9,fig.height=7
+#+ plot_yrs_since_resto_its_sv,fig.width=9,fig.height=7,fig.align='center'
 ggplot(div$its_sv, aes(x = yr_since, y = value)) +
     facet_wrap(vars(hill_index), scales = "free_y") +
     geom_point(aes(fill = region, shape = field_type), size = 2) +
@@ -371,7 +371,7 @@ test_age(div$its_sv, caption = "Correlation between Hill's numbers and field age
 #' that we cannot attempt to present this as a time-based result at all. 
 #' 
 #' In any case, let's take a look at Shannon's diversity over time in Blue Mounds's restored fields.
-#+ bm_test_age_its_sv,fig.width=7,fig.height=6,fig.align="center"
+#+ bm_test_age_its_sv,fig.width=7,fig.height=6,fig.align='center'
 div$its_sv %>% 
     filter(region == "BM", field_type == "restored", hill_index == "N1") %>% 
     ggplot(aes(x = yr_since, y = value)) +
@@ -416,7 +416,7 @@ labs_amf_otu <- data.frame(
     xpos = rep(c(1,2,3), 4),
     ypos = rep(c(60, 30, 20, 0.55), each = 3)
 )
-#+ plot_div_amf_otu,fig.width=9,fig.height=7
+#+ plot_div_amf_otu,fig.width=9,fig.height=7,fig.align='center'
 ggplot(div$amf_otu, aes(x = field_type, y = value)) +
     facet_wrap(vars(hill_index), scales = "free_y") +
     geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
@@ -432,7 +432,7 @@ ggplot(div$amf_otu, aes(x = field_type, y = value)) +
 #' but some cornfields have "long tails" of rare species. Wide variances stifle inferences. The 
 #' trend detected in evenness suggests that a few weedy AMF species dominate cornfields but most restored 
 #' fields host more balanced communities that are more similar to remnants. 
-#+ plot_div_amf_otu_interaction,fig.width=9,fig.height=7
+#+ plot_div_amf_otu_interaction,fig.width=9,fig.height=7,fig.align='center'
 ggplot(
     div$amf_otu %>% 
         group_by(field_type, region, hill_index) %>% 
@@ -457,7 +457,7 @@ ggplot(
 #' Next, trends in diversity are correlated with years since restoration, with 0 used for corn fields 
 #' and 50 used for remnants. Statistical testing of this relationship is not valid because the ages for 
 #' corn and remnant aren't justified, and the fields aren't justifiable as a chronosequence. 
-#+ plot_yrs_since_resto_amf_otu,fig.width=9,fig.height=7
+#+ plot_yrs_since_resto_amf_otu,fig.width=9,fig.height=7,fig.align='center'
 ggplot(div$amf_otu, aes(x = yr_since, y = value)) +
     facet_wrap(vars(hill_index), scales = "free_y") +
     geom_point(aes(fill = region, shape = field_type), size = 2) +
@@ -511,7 +511,7 @@ labs_amf_sv <- data.frame(
     xpos = rep(c(1,2,3), 3),
     ypos = rep(c(160, 78, 45), each = 3)
 )
-#+ plot_div_amf_sv,fig.width=9,fig.height=7
+#+ plot_div_amf_sv,fig.width=9,fig.height=7,fig.align='center'
 ggplot(div$amf_sv, aes(x = field_type, y = value)) +
     facet_wrap(vars(hill_index), scales = "free_y") +
     geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
@@ -524,7 +524,7 @@ ggplot(div$amf_sv, aes(x = field_type, y = value)) +
 #' Richness and diversity increase from corn, to restored, to remnant fields, and some 
 #' support exists for this pattern to occur across regions. The trend is generally weak due to high variance
 #' among regions.  
-#+ plot_div_amf_sv_interaction,fig.width=9,fig.height=7
+#+ plot_div_amf_sv_interaction,fig.width=9,fig.height=7,fig.align='center'
 ggplot(
     div$amf_sv %>% 
         group_by(field_type, region, hill_index) %>% 
@@ -549,7 +549,7 @@ ggplot(
 #' Next, trends in diversity are correlated with years since restoration, with 0 used for corn fields 
 #' and 50 used for remnants. Statistical testing of this relationship is not valid because the ages for 
 #' corn and remnant aren't justified, and the fields aren't justifiable as a chronosequence. 
-#+ plot_yrs_since_resto_amf_sv,fig.width=9,fig.height=7
+#+ plot_yrs_since_resto_amf_sv,fig.width=9,fig.height=7,fig.align='center'
 ggplot(div$amf_sv, aes(x = yr_since, y = value)) +
     facet_wrap(vars(hill_index), scales = "free_y") +
     geom_point(aes(fill = region, shape = field_type), size = 2) +

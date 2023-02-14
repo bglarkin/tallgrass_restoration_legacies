@@ -308,7 +308,7 @@ its_tax_trophic(spe_meta$its_otu, cluster_type = "OTU")
 its_otu_guilds <- its_guilds(spe_meta$its_otu)
 #' 
 #' Plant pathogens correlate with restoration age in Blue Mounds area. 
-#+ its_otu_pathogen_correlation_fig,message=FALSE,fig.align="center"
+#+ its_otu_pathogen_correlation_fig,message=FALSE,fig.align='center'
 its_otu_guilds %>% 
     filter(field_type == "restored", guild == "Plant Pathogen", region == "BM") %>% 
     ggplot(aes(x = yr_since, y = seq_sum)) +
@@ -330,7 +330,7 @@ its_tax_trophic(spe_meta$its_sv, cluster_type = "SV")
 its_sv_guilds <- its_guilds(spe_meta$its_sv)
 #' 
 #' Plant pathogens correlate with restoration age in Blue Mounds area. 
-#+ its_sv_pathogen_correlation_fig,message=FALSE,fig.align="center"
+#+ its_sv_pathogen_correlation_fig,message=FALSE,fig.align='center'
 its_sv_guilds %>% 
     filter(field_type == "restored", guild == "Plant Pathogen", region == "BM") %>% 
     ggplot(aes(x = yr_since, y = seq_sum)) +
@@ -443,7 +443,7 @@ amf_tax <- function(data, cluster_type) {
 amf_otu_summary <- amf_tax(spe_meta$amf_otu, "otu")
 #' Claroideoglomeraceae differs across field types with a likelihood ratio test result p<0.01. 
 #' Tukey's post-hoc test with Holm correction performed, letters on the figure show differences.
-#+ claroideoglomeraceae_otu_fields_fig,message=FALSE,fig.align="center"
+#+ claroideoglomeraceae_otu_fields_fig,message=FALSE,fig.align='center'
 amf_otu_summary %>% 
     filter(family == "Claroideoglomeraceae") %>% 
     ggplot(aes(x = field_type, y = seq_sum)) +
@@ -456,7 +456,7 @@ amf_otu_summary %>%
     theme_classic()
 #' Gigasporaceae increased with time since restoration by a simple linear regression, 
 #' $R^2_{adj}$ = 0.81, p < 0.01
-#+ gigasporaceae_otu_time_fig,message=FALSE,fig.align="center"
+#+ gigasporaceae_otu_time_fig,message=FALSE,fig.align='center'
 amf_otu_summary %>% 
     filter(field_type == "restored", region == "BM", family == "Gigasporaceae") %>% 
     ggplot(aes(x = yr_since, y = seq_sum)) +
@@ -471,7 +471,7 @@ amf_otu_summary %>%
 amf_sv_summary  <- amf_tax(spe_meta$amf_sv,  "sv")
 #' Claroideoglomeraceae differs across field types with a likelihood ratio test result p<0.01. 
 #' Tukey's post-hoc test with Holm correction performed, letters on the figure show differences.
-#+ claroideoglomeraceae_sv_fields_fig,message=FALSE,fig.align="center"
+#+ claroideoglomeraceae_sv_fields_fig,message=FALSE,fig.align='center'
 amf_sv_summary %>% 
     filter(family == "Claroideoglomeraceae") %>% 
     ggplot(aes(x = field_type, y = seq_sum)) +
@@ -484,7 +484,7 @@ amf_sv_summary %>%
     theme_classic()
 #' Gigasporaceae increased with time since restoration by a simple linear regression, 
 #' $R^2_{adj}$ = 0.65, p < 0.05
-#+ gigasporaceae_sv_time_fig,message=FALSE,fig.align="center"
+#+ gigasporaceae_sv_time_fig,message=FALSE,fig.align='center'
 amf_sv_summary %>% 
     filter(field_type == "restored", region == "BM", family == "Gigasporaceae") %>% 
     ggplot(aes(x = yr_since, y = seq_sum)) +
