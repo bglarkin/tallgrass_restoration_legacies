@@ -2,7 +2,7 @@ Microbial data: overview of data, diversity statistics
 ================
 Beau Larkin
 
-Last updated: 14 February, 2023
+Last updated: 15 February, 2023
 
 - <a href="#description" id="toc-description">Description</a>
 - <a href="#packages-and-libraries"
@@ -715,6 +715,28 @@ facet_wrap(vars(hill_index), scales = "free_y") +
 ```
 
 <img src="microbial_diversity_files/figure-gfm/plot_yrs_since_resto-1.png" style="display: block; margin: auto;" />
+
+It’s also worth looking at diversity trends in restored fields only.
+$N_{1}$ declines with field age in the Blue Mounds area (relationship
+examined later in this report), so how far does this observation
+generalize?
+
+``` r
+div$its_otu %>% 
+    filter(field_type == "restored", 
+           hill_index %in% c("N0", "N1", "N2"),
+           region %in% c("BM", "FL")) %>% 
+    ggplot(aes(x = yr_since, y = value)) +
+    facet_grid(cols = vars(region), rows = vars(hill_index), scales = "free_y") +
+    geom_point(shape = 21, fill = "gray50", size = 2) +
+    labs(x = "Years since restoration", y = "index value", title = "TGP microbial diversity (Hill's) over time, ITS, 97% OTU",
+         caption = "N0-richness, N1-e^Shannon, N2-Simpson") +
+    theme_bw()
+```
+
+<img src="microbial_diversity_files/figure-gfm/plot_yrs_since_resto_allSites-1.png" style="display: block; margin: auto;" />
+
+The relationship certainly only exists in Blue Mounds.
 
 ### Diversity over time at Blue Mounds (ITS-based OTUs)
 
