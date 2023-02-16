@@ -66,7 +66,8 @@ spe <- list(
         show_col_types = FALSE
     )
 )
-#' ## Sites-species tables with guild/taxonomy metadata
+#' ## Species metadata
+#' Needed to make inset figures showing most important categories of species. 
 #' CSV files were produced in the [microbial diversity script](microbial_diversity.md)
 spe_meta <- list(
     its_otu =
@@ -90,34 +91,42 @@ spe_meta <- list(
             show_col_types = FALSE
         )
 )
+#' 
+#' ## Site metadata
+#' Needed for figure interpretation and permanova designs.
+sites <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALSE) %>% 
+    mutate(field_type = factor(site_type, ordered = TRUE, levels = c("corn", "restored", "remnant"))) %>% 
+    filter(site_type != "oldfield") %>% 
+    select(-lat, -long, -yr_restore, -site_type)
+#' 
+#' # Results
+#' ## Ordinations
+#' Bray-Curtis or Ruzicka distance are both appropriate, but Bray-Curtis has 
+#' produced axes with better explanatory power (Ruzicka is used with method="jaccard")
 
-
-
-
-
-
-
-# Ordinations ----------------------
-# Set method for calculating distance in ordinations. Bray-Curtis or Ruzicka are both
-# appropriate, but Bray-Curtis has produced axes with better explanatory power.
-# Ruzicka is used with method="jaccard"
-d_method <- "bray"
-# ——————————————————————————————————
-
-pcoa_fun <- function(data, ax, corr="none") {
-    # ax = number of axes desired in the output
-    p <- pcoa(data, correction = corr)
+#' In trial runs, no negative eigenvalues with these matrices (not shown). No 
+#' correction is needed for these ordinations.
+#' 
+#' A function handles the analysis and diagnostics, with outputs for output figures 
+#' saved to a list. 
+#+ pcoa_fun
+pcoa_fun <- function(data, corr="none", d_method="bray", df_name) {
+    d <- vegdist(data.frame(data, row.names = 1), d_method)
+    p <- pcoa(d, correction = corr)
     p_vals <- data.frame(p$values) %>% 
         rownames_to_column(var = "Dim") %>% 
         mutate(Dim = as.integer(Dim))
     p_vec <- data.frame(p$vectors)
+    g_perm
+    
     
     if(corr == "none" | ncol(p_vals) == 6) {
         p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
             geom_col(fill = "gray70", color = "gray30") + 
             geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
             geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", title = "PCoA Eigenvalues and Broken Stick Model") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
             theme_bw()
         p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
         print(p_bstick)
@@ -126,21 +135,38 @@ pcoa_fun <- function(data, ax, corr="none") {
             geom_col(fill = "gray70", color = "gray30") + 
             geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
             geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", title = "PCoA Eigenvalues and Broken Stick Model") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
             theme_bw()
         p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
         print(p_bstick)
     }
     
-    output <- list(values = p_vals[1:(ax+1), ], site_vectors = p_vec[, 1:ax],
-                   comp_exceed_bs = p_ncomp)
+    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
+    
+    output <- list(comp_exceed_bs = p_ncomp,
+                   values = p_vals[1:(ncomp+1), ], 
+                   site_vectors = p_vec[, 1:ncomp])
     return(output)
 }
+#' Execute the function
+#+ pcoa_spe_list
+pcoa_spe <- Map(pcoa_fun, spe, df_name=names(spe))
+
+
+p <- pcoa(vegdist(data.frame(spe$its_otu, row.names = 1)))
+
+set.seed <- 400
+adonis2(data.frame(spe$its_otu, row.names = 1) ~ field_type + region, data = sites, by = "margin", permutations = 199, method = "bray")
+# Marginal test good because of unbalanced design
+# Do a separate test for the interaction
+# Global test. Then interpret it. 
+
 
 # __Site-averaged abundances of 97% OTUs ----------------------
 # Bray-Curtis used. Ruzicka may be more appropriate, but changed nothing except reducing
 # the variance explained on axes. 
-its_otu_savg_bc <- vegdist(data.frame(its_otu_savg, row.names = 1), method = d_method)
+
 
 
 #PCoA
