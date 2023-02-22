@@ -61,10 +61,11 @@ for (i in 1:length(packages_needed)) {
 }
 #' 
 #' ## Functions
-process_qiime <- function(data, varname, gene, cluster_type, append="", colname_prefix, folder) {
+process_qiime <- function(data, traits=NULL, varname, gene, cluster_type, append="", colname_prefix, folder) {
     
     # Variable definitions
     # data            = Dataframe or tibble with Qiime and FunGuild output
+    # traits          = Additional dataframe of traits or guilds.
     # varname         = An unique key will be created to replace the cumbersome OTU key 
     #                   which is produced by Qiime. Varname is the desired column
     #                   name for this new OTU key. Unquoted. 
@@ -123,9 +124,11 @@ process_qiime <- function(data, varname, gene, cluster_type, append="", colname_
                    order   = str_sub(order,   4, nchar(order)),
                    family  = str_sub(family,  4, nchar(family)),
                    genus   = str_sub(genus,   4, nchar(genus)),
-                   species = str_sub(species, 4, nchar(species)))
+                   species = str_sub(species, 4, nchar(species))) %>% 
+            left_join(traits, by = join_by(phylum, class, order, family, genus)) %>% 
+            select(-otu_ID, -kingdom, -growth_morphology, -trait, -notes, -citation)
         write_csv(meta, 
-                  paste0(getwd(), folder, "/spe_", gene, append, "_funGuild.csv"))
+                  paste0(getwd(), folder, "/spe_", gene, append, "_guilds.csv"))
     } else {
         meta <-
             data %>%
@@ -164,12 +167,15 @@ process_qiime <- function(data, varname, gene, cluster_type, append="", colname_
 otu_its <- read_excel(paste0(getwd(), "/otu_tables/ITS/OTU_table_rrfd_3200_w_taxa.guilds.xlsx"), na = "-")
 otu_18S <- read_delim(paste0(getwd(), "/otu_tables/TGP_18S_tables_021722/OTUs_18S_TGP_table_rarefied.txt"), 
                       delim = "\t", show_col_types = FALSE)
+traits  <- read_excel(paste0(getwd(), "/otu_tables/13225_2020_466_MOESM4_ESM.xlsx"), sheet = "export_ver") %>% 
+    select(phylum:primary_lifestyle)
 #' 
 #' ## ETL using `process_qiime()`
 #' Schema: `process_qiime(data, varname, "gene", "cluster_type", "colname_prefix", "folder")`
 #+ otu_its
 process_qiime(
     data = otu_its,
+    traits = traits,
     varname = otu_num,
     gene = "ITS",
     cluster_type = "otu",
@@ -186,6 +192,9 @@ process_qiime(
     folder = "/clean_data"
 )
 #' 
+
+
+
 #' ## Resample and produce field averages
 #' We examine diversity at the field level, so diversity obtained at samples should be averaged 
 #' for each field. We collected ten samples from each field, but processing failed for some samples
@@ -230,3 +239,9 @@ amf_otu_avg <- resample_fields(amf_otu_all, 7, "otu") %>%
     write_csv(paste0(getwd(), "/clean_data/spe_18S_otu_siteSpeMatrix_avg.csv"))
 amf_sv_avg  <- resample_fields(amf_sv_all,  7, "sv") %>% 
     write_csv(paste0(getwd(), "/clean_data/spe_18S_sv_siteSpeMatrix_avg.csv"))
+
+
+
+
+
+# Unifrac
