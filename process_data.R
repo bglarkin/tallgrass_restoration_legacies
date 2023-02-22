@@ -17,14 +17,22 @@
 #' Lorinda included two datasets as of 2022-01-06. The first is a table of sequence
 #' variants (SVs), assigned based on 100% similarity of ITS sequences in each cluster. 
 #' The second is a table of operational taxonomic units (OTUs) based on 97% sequence 
-#' similarity. 
+#' similarity. Based on previous work, we've decided to use OTS-based data exclusively 
+#' in this project.
 #' Each table also includes various other data and metadata, including taxonomy,
 #' trophic guilds, and references. 
 #' 
+#' For later examinations of sequence abundances in guilds, we will need to rarefy abundances
+#' within guild subsets. The raw (un-rarefied) sequence data are loaded here for later use. 
+#' 
 #' ## 18S data (mycorrhizae)
 #' Created by Lorinda on 2022-02-14. As with the ITS data, files with 97% similar OTUs 
-#' and 100% similar SVs were created. Distance matrices for each were created, both 
-#' weighted and unweighted. UNIFRAC distance was used. UNIFRAC is different from BC and others in that it accounts for phylogenetic distance, 
+#' and 100% similar SVs were created. Based on previous work, we've decided to use OTS-based data exclusively 
+#' in this project. 
+#' 
+#' Weighted and unweighted UNIFRAC distance matrices were created. 
+#' UNIFRAC is different from Bray-Curtis 
+#' and others in that it accounts for phylogenetic distance, 
 #' which can be informative for 18s and 16S, but not so much for ITS. 
 #' Weighted UNIFRAC considers abundances where as non-weighted is based on presence/absence. 
 #' 
@@ -34,6 +42,10 @@
 #' tables must be transposed into sites-species matrices. Rownames must be cleaned 
 #' to align with site metadata files. Taxonomy strings must be parsed and unnecessary characters
 #' removed. A function is used to streamline the pipeline and to reduce errors.
+#' 
+#' UNIFRAC distances must be coerced to distance objects.
+#' 
+#' The Fungal Traits data needs basic ETL for ease of later use.
 #' 
 #' # Resources
 #' ## Packages and libraries
@@ -49,7 +61,7 @@ for (i in 1:length(packages_needed)) {
 }
 #' 
 #' ## Functions
-process_qiime <- function(data, varname, gene, cluster_type, colname_prefix, folder) {
+process_qiime <- function(data, varname, gene, cluster_type, append="", colname_prefix, folder) {
     
     # Variable definitions
     # data            = Dataframe or tibble with Qiime and FunGuild output
@@ -60,7 +72,9 @@ process_qiime <- function(data, varname, gene, cluster_type, colname_prefix, fol
     #                   Quoted. Used to select() column names, so must match text in 
     #                   column names. Also used to create distinct file names.
     # cluster_type    = Clustering algorithm output, e.g.: "otu", "sv". Quoted.
-    #                   Used to create filenames in output files. 
+    #                   Used to create simple cluster IDs. 
+    # append          = Additional text desired to differentiate among output files.
+    #                   Defaults to NULL (""). Lead the string with "_".
     # colname_prefix  = Prefix to text of OTU column names. The function removes
     #                   this prefix to make OTU names more concise. 
     # folder          = The function creates output files in the working directory by
@@ -111,7 +125,7 @@ process_qiime <- function(data, varname, gene, cluster_type, colname_prefix, fol
                    genus   = str_sub(genus,   4, nchar(genus)),
                    species = str_sub(species, 4, nchar(species)))
         write_csv(meta, 
-                  paste0(getwd(), folder, "/spe_", gene, "_", cluster_type, "_funGuild.csv"))
+                  paste0(getwd(), folder, "/spe_", gene, append, "_funGuild.csv"))
     } else {
         meta <-
             data %>%
@@ -123,7 +137,7 @@ process_qiime <- function(data, varname, gene, cluster_type, colname_prefix, fol
                      c("class", "order", "family", "genus", "taxon", "accession"), 
                      sep = ";", remove = TRUE, fill = "right")
         write_csv(meta, 
-                  paste0(getwd(), folder, "/spe_", gene, "_", cluster_type, "_taxonomy.csv"))
+                  paste0(getwd(), folder, "/spe_", gene, append, "_taxonomy.csv"))
     }
     
     spe_all <- 
@@ -141,36 +155,36 @@ process_qiime <- function(data, varname, gene, cluster_type, colname_prefix, fol
         select(site_key, sample, everything(), -rowname) %>% 
         arrange(as.numeric(site_key), as.numeric(sample))
     write_csv(spe_all, 
-              paste0(getwd(), folder, "/spe_", gene, "_", cluster_type, "_siteSpeMatrix_allReps.csv"))
+              paste0(getwd(), folder, "/spe_", gene, append, "_abund.csv"))
     
-    spe_count <- 
-        spe_all %>% 
-        group_by(site_key) %>% 
-        summarize(samples = n()) %>% 
-        arrange(as.numeric(site_key))
-    write_csv(spe_count, 
-              paste0(getwd(), folder, "/spe_", gene, "_", cluster_type, "_samples.csv"))
 }
 #'
 #' # Load and process data
 #' ## Import files
 otu_its <- read_excel(paste0(getwd(), "/otu_tables/ITS/OTU_table_rrfd_3200_w_taxa.guilds.xlsx"), na = "-")
-sv_its  <- read_excel(paste0(getwd(), "/otu_tables/ITS/SV_table_rrfd_3200.guilds.xlsx"), na = "-")
-otu_18s <- read_delim(paste0(getwd(), "/otu_tables/TGP_18S_tables_021722/OTUs_18S_TGP_table_rarefied.txt"), 
-                      delim = "\t", show_col_types = FALSE)
-sv_18s  <- read_delim(paste0(getwd(), "/otu_tables/TGP_18S_tables_021722/SVs_18S_TGP_rarefied_table.txt"), 
+otu_18S <- read_delim(paste0(getwd(), "/otu_tables/TGP_18S_tables_021722/OTUs_18S_TGP_table_rarefied.txt"), 
                       delim = "\t", show_col_types = FALSE)
 #' 
 #' ## ETL using `process_qiime()`
 #' Schema: `process_qiime(data, varname, "gene", "cluster_type", "colname_prefix", "folder")`
 #+ otu_its
-process_qiime(otu_its, otu_num, "ITS", "otu", "ITS_TGP_",  "/clean_data")
-#+ sv_its
-process_qiime(sv_its,  sv_num,  "ITS", "sv",  "ITS_TGP_",  "/clean_data")
+process_qiime(
+    data = otu_its,
+    varname = otu_num,
+    gene = "ITS",
+    cluster_type = "otu",
+    colname_prefix = "ITS_TGP_",
+    folder = "/clean_data"
+)
 #+ otu_18S
-process_qiime(otu_18s, otu_num, "18S", "otu", "X18S_TGP_", "/clean_data")
-#+ sv_18S
-process_qiime(sv_18s,  sv_num,  "18S", "sv",  "X18S_TGP_", "/clean_data")
+process_qiime(
+    data = otu_18S,
+    varname = otu_num,
+    gene = "18S",
+    cluster_type = "otu",
+    colname_prefix = "X18S_TGP_",
+    folder = "/clean_data"
+)
 #' 
 #' ## Resample and produce field averages
 #' We examine diversity at the field level, so diversity obtained at samples should be averaged 
