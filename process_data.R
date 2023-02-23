@@ -159,6 +159,11 @@ process_qiime <- function(data, traits=NULL, varname, gene, cluster_type, append
         arrange(as.numeric(site_key), as.numeric(sample))
     write_csv(spe_all, 
               paste0(getwd(), folder, "/spe_", gene, append, "_abund.csv"))
+    out <- list(
+        spe_meta = meta,
+        spe_all = spe_all
+    )
+    return(out)
     
 }
 #'
@@ -173,24 +178,26 @@ traits  <- read_excel(paste0(getwd(), "/otu_tables/13225_2020_466_MOESM4_ESM.xls
 #' ## ETL using `process_qiime()`
 #' Schema: `process_qiime(data, varname, "gene", "cluster_type", "colname_prefix", "folder")`
 #+ otu_its
-process_qiime(
-    data = otu_its,
-    traits = traits,
-    varname = otu_num,
-    gene = "ITS",
-    cluster_type = "otu",
-    colname_prefix = "ITS_TGP_",
-    folder = "/clean_data"
-)
+its <- 
+    process_qiime(
+        data = otu_its,
+        traits = traits,
+        varname = otu_num,
+        gene = "ITS",
+        cluster_type = "otu",
+        colname_prefix = "ITS_TGP_",
+        folder = "/clean_data"
+    )
 #+ otu_18S
-process_qiime(
-    data = otu_18S,
-    varname = otu_num,
-    gene = "18S",
-    cluster_type = "otu",
-    colname_prefix = "X18S_TGP_",
-    folder = "/clean_data"
-)
+amf <- 
+    process_qiime(
+        data = otu_18S,
+        varname = otu_num,
+        gene = "18S",
+        cluster_type = "otu",
+        colname_prefix = "X18S_TGP_",
+        folder = "/clean_data"
+    )
 #' 
 
 
@@ -202,16 +209,9 @@ process_qiime(
 #' number obtained in a series to produce comparable diversity metrics. Some OTUs or SVs may be "lost"
 #' as a result, these were rare. Resultant zero sum columns will be removed. The following function 
 #' will resample the site-species data to the correct number of samples and remove zero sum columns.
-#' 
-#' ### Import sites-species tables
-its_otu_all <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_siteSpeMatrix_allReps.csv"), 
-                        show_col_types = FALSE)
-its_sv_all  <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_sv_siteSpeMatrix_allReps.csv"), 
-                        show_col_types = FALSE)
-amf_otu_all <- read_csv(paste0(getwd(), "/clean_data/spe_18S_otu_siteSpeMatrix_allReps.csv"), 
-                        show_col_types = FALSE)
-amf_sv_all  <- read_csv(paste0(getwd(), "/clean_data/spe_18S_sv_siteSpeMatrix_allReps.csv"), 
-                        show_col_types = FALSE)
+
+
+
 #+ resample_fields_function 
 resample_fields <- function(data, min, cluster_type) {
     set.seed(482)
@@ -245,3 +245,10 @@ amf_sv_avg  <- resample_fields(amf_sv_all,  7, "sv") %>%
 
 
 # Unifrac
+
+
+# but before unifrac, you need to fix the site_key and sample columns; must be one column with a continuous numeric
+# that can join back to the sites table
+
+
+

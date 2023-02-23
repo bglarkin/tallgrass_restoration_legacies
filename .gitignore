@@ -17,3 +17,9 @@ SV_Unweighted_UNIFRAC.tsv
 SV_weighted_UNIFRAC_rrfd.tsv
 SVs_18S_TGP_rarefied_table.txt
 README.html
+18S
+18S_otu_raw.txt
+18S_otu_taxonomy.txt
+ITS
+ITS_otu_raw.txt
+ITS_otu_taxonomy.txt
