@@ -97,6 +97,9 @@ sites <- read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALS
 #' ## Functions
 #' A function handles the Principal Components Analysis (PCoA) diagnostics, with outputs and figures 
 #' saved to a list for later use. 
+#' 
+#' USE THE STRATA ARGUMENT IN ADONIS2
+#' 
 pcoa_fun <- function(data, env=sites, corr="none", d_method="bray", df_name, nperm=1999) {
     # Multivariate analysis
     d <- vegdist(data.frame(data, row.names = 1), d_method)
