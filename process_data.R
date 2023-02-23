@@ -10,46 +10,39 @@
 #' ---
 #'
 #' # Description
-#' The microbial species data included here were produced by Lorinda Bullington in 2022
-#' using QIIME II. See methods for details. 
+#' Microbial sequence abundances were produced by Lorinda Bullington in QIIME2. See methods for details. 
 #' 
 #' ## ITS data (all fungi)
-#' Lorinda included two datasets as of 2022-01-06. The first is a table of sequence
-#' variants (SVs), assigned based on 100% similarity of ITS sequences in each cluster. 
-#' The second is a table of operational taxonomic units (OTUs) based on 97% sequence 
-#' similarity. Based on previous work, we've decided to use OTS-based data exclusively 
-#' in this project.
-#' Each table also includes various other data and metadata, including taxonomy,
-#' trophic guilds, and references. 
+#' Sequence abundances in 97% similar OTUs in individual samples form the base data. 
+#' The abundances are raw (not rarefied).  
 #' 
-#' For later examinations of sequence abundances in guilds, we will need to rarefy abundances
-#' within guild subsets. The raw (un-rarefied) sequence data are loaded here for later use. 
+#' - ITS taxonomy are included in a separate file. 
 #' 
 #' ## 18S data (mycorrhizae)
-#' Created by Lorinda on 2022-02-14. As with the ITS data, files with 97% similar OTUs 
-#' and 100% similar SVs were created. Based on previous work, we've decided to use OTS-based data exclusively 
-#' in this project. 
+#' Sequence abundance in 97% similar OTUs in individual samples. The abundances are raw
+#' (not rarefied). 
 #' 
-#' Weighted and unweighted UNIFRAC distance matrices were created. 
-#' UNIFRAC is different from Bray-Curtis 
-#' and others in that it accounts for phylogenetic distance, 
-#' which can be informative for 18s and 16S, but not so much for ITS. 
-#' Weighted UNIFRAC considers abundances where as non-weighted is based on presence/absence. 
+#' - 18S taxonomy are included in a separate file.
+#' - A unifrac distance matrix will be created and included after sample selection and 
+#' sequence depth rarefaction.
 #' 
 #' ## Desired outcome
-#' For each raw table, the metadata must be separated from the species abundances.
-#' Species OTU codes must be aligned with short, unique keys, and then species
-#' tables must be transposed into sites-species matrices. Rownames must be cleaned 
-#' to align with site metadata files. Taxonomy strings must be parsed and unnecessary characters
-#' removed. A function is used to streamline the pipeline and to reduce errors.
+#' For each raw table, species OTU codes must be aligned with short, unique keys, and then species
+#' tables must be transposed into sites-species matrices. The six samples from each field with the 
+#' greatest total sequence abundance will be chosen, and sequences summed for each OTU within fields.
+#' Rarefaction of sequencing depth to the minimum total number of sequences will be applied.
 #' 
-#' UNIFRAC distances must be coerced to distance objects.
+#' For each taxonomy table, taxonomy strings must be parsed and unnecessary characters
+#' removed. A function is used to streamline the pipeline and to reduce errors. 
+#' [Fungal traits](https://link.springer.com/article/10.1007/s13225-020-00466-2) data will be joined
+#' with the ITS taxonomy
 #' 
-#' The Fungal Traits data needs basic ETL for ease of later use.
+#' For all tables, short and unique rownames must be created to allow for easy joining of species
+#' and metadata tables. 
 #' 
 #' # Resources
 #' ## Packages and libraries
-packages_needed = c("tidyverse", "readxl")
+packages_needed = c("tidyverse")
 packages_installed = packages_needed %in% rownames(installed.packages())
 #+ packages,message=FALSE
 if (any(!packages_installed)) {
@@ -61,22 +54,23 @@ for (i in 1:length(packages_needed)) {
 }
 #' 
 #' ## Functions
-process_qiime <- function(data, traits=NULL, varname, gene, cluster_type, append="", colname_prefix, folder) {
+process_qiime <- function(spe, taxa, traits=NULL, varname, gene, cluster_type, colname_prefix, folder) {
     
     # Variable definitions
-    # data            = Dataframe or tibble with Qiime and FunGuild output
+    # spe             = Dataframe or tibble with QIIME2 sequence abundances output, 
+    #                   OTUs in rows and samples in columns.
+    # taxa            = Dataframe or tibble with QIIME2 taxonomy outputs; OTUs in
+    #                   rows and metadata in columns. 
     # traits          = Additional dataframe of traits or guilds.
-    # varname         = An unique key will be created to replace the cumbersome OTU key 
-    #                   which is produced by Qiime. Varname is the desired column
-    #                   name for this new OTU key. Unquoted. 
+    # varname         = An unique key will be created to replace the cumbersome cluster 
+    #                   hash which is produced by QIIME2. Varname, a string, begins the
+    #                   column name for this new, short key. Unquoted. Example: otu_num
     # gene            = Gene region targeted in sequencing, e.g.: "ITS", "18S", "16S". 
     #                   Quoted. Used to select() column names, so must match text in 
     #                   column names. Also used to create distinct file names.
     # cluster_type    = Clustering algorithm output, e.g.: "otu", "sv". Quoted.
     #                   Used to create simple cluster IDs. 
-    # append          = Additional text desired to differentiate among output files.
-    #                   Defaults to NULL (""). Lead the string with "_".
-    # colname_prefix  = Prefix to text of OTU column names. The function removes
+    # colname_prefix  = Existing, verbose prefix to text of OTU column names. The function removes
     #                   this prefix to make OTU names more concise. 
     # folder          = The function creates output files in the working directory by
     #                   default. To use a subfolder, use this variable. Quoted. 
@@ -85,23 +79,14 @@ process_qiime <- function(data, traits=NULL, varname, gene, cluster_type, append
     
     varname <- enquo(varname)
     
+    data <- spe %>% left_join(taxa)
+    
     if(gene == "ITS") {
         meta <-
             data %>%
             mutate(!!varname := paste0(cluster_type, "_", row_number())) %>% 
             select(!starts_with(gene)) %>%
-            rename(
-                otu_ID = `#OTU ID`,
-                taxon = Taxon,
-                taxon_level = `Taxon Level`,
-                trophic_mode = `Trophic Mode`,
-                guild = Guild,
-                growth_morphology = `Growth Morphology`,
-                trait = Trait,
-                confidence = `Confidence Ranking`,
-                notes = Notes,
-                citation = `Citation/Source`
-            ) %>% 
+            rename(otu_ID = `#OTU ID`) %>% 
             select(!!varname, everything()) %>% 
             separate(
                 taxonomy,
@@ -126,9 +111,9 @@ process_qiime <- function(data, traits=NULL, varname, gene, cluster_type, append
                    genus   = str_sub(genus,   4, nchar(genus)),
                    species = str_sub(species, 4, nchar(species))) %>% 
             left_join(traits, by = join_by(phylum, class, order, family, genus)) %>% 
-            select(-otu_ID, -kingdom, -growth_morphology, -trait, -notes, -citation)
+            select(-otu_ID, -kingdom, -growth_morphology, -trait, -notes, -citation, -Confidence)
         write_csv(meta, 
-                  paste0(getwd(), folder, "/spe_", gene, append, "_guilds.csv"))
+                  paste0(getwd(), folder, "/spe_", gene, "_taxaguild.csv"))
     } else {
         meta <-
             data %>%
@@ -138,9 +123,10 @@ process_qiime <- function(data, traits=NULL, varname, gene, cluster_type, append
             select(!!varname, everything()) %>% 
             separate(taxonomy, 
                      c("class", "order", "family", "genus", "taxon", "accession"), 
-                     sep = ";", remove = TRUE, fill = "right")
+                     sep = ";", remove = TRUE, fill = "right") %>% 
+            select(-otu_ID, -Confidence)
         write_csv(meta, 
-                  paste0(getwd(), folder, "/spe_", gene, append, "_taxonomy.csv"))
+                  paste0(getwd(), folder, "/spe_", gene, "_taxonomy.csv"))
     }
     
     spe_all <- 
@@ -153,19 +139,44 @@ process_qiime <- function(data, traits=NULL, varname, gene, cluster_type, append
         t() %>% 
         as.data.frame() %>% 
         rownames_to_column() %>% 
-        mutate(site = str_remove(rowname, colname_prefix)) %>% 
-        separate(col = site, into = c("site_key", "sample"), sep = "_") %>% 
-        select(site_key, sample, everything(), -rowname) %>% 
-        arrange(as.numeric(site_key), as.numeric(sample))
+        mutate(field = str_remove(rowname, colname_prefix)) %>% 
+        separate(col = field, into = c("field_key", "sample"), sep = "_") %>% 
+        select(field_key, sample, everything(), -rowname) %>% 
+        # mutate(sum = rowSums(across(starts_with(cluster_type)))) %>% 
+        # group_by(field_key) %>% 
+        
     write_csv(spe_all, 
-              paste0(getwd(), folder, "/spe_", gene, append, "_abund.csv"))
+              paste0(getwd(), folder, "/spe_", gene, "_raw.csv"))
     out <- list(
         spe_meta = meta,
-        spe_all = spe_all
+        spe_all  = spe_all
     )
     return(out)
     
 }
+
+temp <- read_delim(paste0(getwd(), "/otu_tables/ITS/ITS_otu_raw.txt"))
+ttemp <- 
+data.frame(
+    temp %>% 
+        mutate(otu_num = paste0("otu_", row_number())) %>% 
+        select(otu_num, starts_with("ITS")),
+    row.names = 1
+) %>%
+    t() %>% 
+    as.data.frame() %>% 
+    rownames_to_column() %>% 
+    mutate(field = str_remove(rowname, "ITS_TGP_")) %>% 
+    separate(col = field, into = c("field_key", "sample"), sep = "_") %>% 
+    select(field_key, sample, everything(), -rowname) %>% 
+    arrange(as.numeric(field_key), as.numeric(sample))
+
+ttemp[1:30, 1:10] %>% 
+    mutate(sum = rowSums(across(starts_with("otu")))) %>% 
+    group_by(field_key) %>% 
+    slice_max(sum, n = 6)
+    
+
 #'
 #' # Load and process data
 #' ## Import files
