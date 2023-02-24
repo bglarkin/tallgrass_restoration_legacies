@@ -1,0 +1,1175 @@
+field_key,otu_num,seq_abund,otu_ID,class,order,family,genus,taxon,accession,field_name,region,field_type,yr_since
+1,otu_1,448,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,BBRP1,BM,restored,16
+1,otu_2,1449,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,BBRP1,BM,restored,16
+1,otu_3,1491,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,BBRP1,BM,restored,16
+1,otu_4,297,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,BBRP1,BM,restored,16
+1,otu_5,3244,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_6,680,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,BBRP1,BM,restored,16
+1,otu_7,946,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,BBRP1,BM,restored,16
+1,otu_8,2155,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,BBRP1,BM,restored,16
+1,otu_9,87,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,BBRP1,BM,restored,16
+1,otu_10,154,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,BBRP1,BM,restored,16
+1,otu_11,1485,fa34a5226112d5c3040a09e932c851d1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00177,BBRP1,BM,restored,16
+1,otu_12,8,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,BBRP1,BM,restored,16
+1,otu_13,79,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,BBRP1,BM,restored,16
+1,otu_15,541,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_16,6,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,BBRP1,BM,restored,16
+1,otu_17,233,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,BBRP1,BM,restored,16
+1,otu_18,12,e93219e3fa9866eaf244784446de5b40,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_19,221,d338b134f9f7963d5615f06009ce3895,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_20,48,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_23,109,663650390696ac576adf3531dddef4bb,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_24,21,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,BBRP1,BM,restored,16
+1,otu_25,27,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,BBRP1,BM,restored,16
+1,otu_28,394,8e0ab0341460216c742331e7dddae7b0,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Yamato2005 D,VTX00084,BBRP1,BM,restored,16
+1,otu_29,157,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_30,32,4fca16b49e27701e6b962c029d49f2eb,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,BBRP1,BM,restored,16
+1,otu_32,33,f0cc400dc0c00335b7f2c8c0cb93a1ca,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G20,VTX00143,BBRP1,BM,restored,16
+1,otu_34,267,9bb0bf8be08f0f8a3ab32d1c0c303bb3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00159,BBRP1,BM,restored,16
+1,otu_35,27,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,BBRP1,BM,restored,16
+1,otu_37,342,132ccfc0da746037dbbad52507f0a381,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_38,177,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,BBRP1,BM,restored,16
+1,otu_44,44,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,Paraglomus Pa 1,VTX00335,BBRP1,BM,restored,16
+1,otu_45,33,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,BBRP1,BM,restored,16
+1,otu_48,1783,f828480e27adb99df68b8915e059870c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_49,668,bac52c868e388432231dad7fdc96e705,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_50,11,34d1724d86abb5f79e61e137bcc90194,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_54,220,5ca01b9b9f0bd1b03f1a7a6b4ece2241,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,BBRP1,BM,restored,16
+1,otu_57,202,c7c2a3d8c977b70e837c661e58d815d6,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,BBRP1,BM,restored,16
+1,otu_58,47,b3775f39419d3aad768b1d51b5ccbe2a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_61,111,a71a96c90f3cba9d6e73c14799d30e05,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus INTA-4,VTX00445,BBRP1,BM,restored,16
+1,otu_63,93,dfd53448f81f23769e110f8d82e671f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_66,14,526e8b36d15995fadb620f1af1e9d3a2,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,BBRP1,BM,restored,16
+1,otu_68,132,1c30b29ba78048dbd12c10c32dec28a5,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_69,438,ba8591e93f3d4f7ad04d0710d021cb0a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_70,163,c1c6182be14bf9a4c95a3aebcdd3d78d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G14,VTX00083,BBRP1,BM,restored,16
+1,otu_74,51,ea10c65ee26bce92726facb7b0a6ea47,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU14,VTX00137,BBRP1,BM,restored,16
+1,otu_76,35,a13a2e299ffe54995287ecfa68b5c32f,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_78,32,9b0b928a4eeca97284d983cd2ff2ff37,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,BBRP1,BM,restored,16
+1,otu_82,24,a7b805211cefc561a19461b13a4d1480,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_85,154,a70a07eecf9558fb2b3daafa7ed8eb75,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_92,3,806f32d567abba563e8d16b5cd748f0b,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,Scutellospora castanea,VTX00041,BBRP1,BM,restored,16
+1,otu_93,14,b5ae5796f1869784414643399fb68c04,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_100,43,f0bbab98740c1818a1ec6f86b8643500,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,BBRP1,BM,restored,16
+1,otu_102,225,c943514b59575c269c5fba7e13915808,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_111,2,50ca642f13169240a16a7c81051da891,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,Archaeospora Other1,VTX00005,BBRP1,BM,restored,16
+1,otu_126,26,410102737abb8cc131162048a7c109a5,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Yamato2005 D,VTX00084,BBRP1,BM,restored,16
+1,otu_129,13,29daf882ef0787fd8e17882f109b82dd,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+1,otu_143,7,5a0a6a27aecd192c61e0fe70c7c7aacc,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,BBRP1,BM,restored,16
+2,otu_1,4071,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,ERRP1,BM,restored,3
+2,otu_2,25,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,ERRP1,BM,restored,3
+2,otu_3,8546,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,ERRP1,BM,restored,3
+2,otu_5,3449,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,ERRP1,BM,restored,3
+2,otu_6,1276,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,ERRP1,BM,restored,3
+2,otu_7,462,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,ERRP1,BM,restored,3
+2,otu_9,1400,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,ERRP1,BM,restored,3
+2,otu_10,1187,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,ERRP1,BM,restored,3
+2,otu_12,465,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,ERRP1,BM,restored,3
+2,otu_13,92,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,ERRP1,BM,restored,3
+2,otu_15,3388,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,ERRP1,BM,restored,3
+2,otu_16,1260,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,ERRP1,BM,restored,3
+2,otu_17,399,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,ERRP1,BM,restored,3
+2,otu_18,1183,e93219e3fa9866eaf244784446de5b40,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,ERRP1,BM,restored,3
+2,otu_20,67,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,ERRP1,BM,restored,3
+2,otu_23,59,663650390696ac576adf3531dddef4bb,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,ERRP1,BM,restored,3
+2,otu_24,861,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,ERRP1,BM,restored,3
+2,otu_25,731,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,ERRP1,BM,restored,3
+2,otu_26,378,8358caad260504807d38cd2898ca954d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus acnaGlo2,VTX00155,ERRP1,BM,restored,3
+2,otu_29,178,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,ERRP1,BM,restored,3
+2,otu_32,528,f0cc400dc0c00335b7f2c8c0cb93a1ca,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G20,VTX00143,ERRP1,BM,restored,3
+2,otu_34,6,9bb0bf8be08f0f8a3ab32d1c0c303bb3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00159,ERRP1,BM,restored,3
+2,otu_35,190,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,ERRP1,BM,restored,3
+2,otu_36,263,5bb0ff12f216fad2d9d3a9d1813d2fbe,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo8,VTX00175,ERRP1,BM,restored,3
+2,otu_38,40,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,ERRP1,BM,restored,3
+2,otu_39,144,e4cd5f7fd4cbb511e8f17b07d8df6cd4,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,ERRP1,BM,restored,3
+2,otu_42,172,57437b1275fc1f83d37f693788c54229,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus ORVIN GLO1E,VTX00151,ERRP1,BM,restored,3
+2,otu_44,35,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,Paraglomus Pa 1,VTX00335,ERRP1,BM,restored,3
+2,otu_45,16,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,ERRP1,BM,restored,3
+2,otu_46,1946,a9c8cf3d006c2910de635126e53e148d,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,Archaeospora Schechter08 Arch1,VTX00008,ERRP1,BM,restored,3
+2,otu_47,50,9265f06a3152925e254f443d6b0f0636,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo3b,VTX00069,ERRP1,BM,restored,3
+2,otu_52,37,e7b2a6ab746177d50fec392d92199d86,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,ERRP1,BM,restored,3
+2,otu_57,13,c7c2a3d8c977b70e837c661e58d815d6,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,ERRP1,BM,restored,3
+2,otu_60,15,eac18199c53aa01e7fe7e940900207a6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,ERRP1,BM,restored,3
+2,otu_78,8,9b0b928a4eeca97284d983cd2ff2ff37,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,ERRP1,BM,restored,3
+2,otu_80,339,5631da1f661c86ab203e82be06b1a957,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,Archaeospora sp.,VTX00009,ERRP1,BM,restored,3
+2,otu_82,159,a7b805211cefc561a19461b13a4d1480,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,ERRP1,BM,restored,3
+2,otu_84,35,02442d57427159988b9c1f8932e8c3ea,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00197,ERRP1,BM,restored,3
+2,otu_90,84,197869ce750dd76de93bc4d498552460,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo58,VTX00225,ERRP1,BM,restored,3
+2,otu_92,20,806f32d567abba563e8d16b5cd748f0b,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,Scutellospora castanea,VTX00041,ERRP1,BM,restored,3
+2,otu_98,26,ada190c46ba14302579a9c55ddc54bb5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,ERRP1,BM,restored,3
+2,otu_99,17,5829e4aa44843d8eb4667a58d80bc3ca,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,ERRP1,BM,restored,3
+2,otu_100,30,f0bbab98740c1818a1ec6f86b8643500,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,ERRP1,BM,restored,3
+2,otu_111,12,50ca642f13169240a16a7c81051da891,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,Archaeospora Other1,VTX00005,ERRP1,BM,restored,3
+2,otu_115,19,719992555d078877d5e555ade6af4977,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,ERRP1,BM,restored,3
+3,otu_1,44,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,FGC1,FG,corn,0
+3,otu_2,345,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,FGC1,FG,corn,0
+3,otu_3,31,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FGC1,FG,corn,0
+3,otu_4,3448,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,FGC1,FG,corn,0
+3,otu_5,1341,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGC1,FG,corn,0
+3,otu_6,555,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,FGC1,FG,corn,0
+3,otu_7,1489,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,FGC1,FG,corn,0
+3,otu_9,570,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,FGC1,FG,corn,0
+3,otu_10,25,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,FGC1,FG,corn,0
+3,otu_12,14,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,FGC1,FG,corn,0
+3,otu_13,3778,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,FGC1,FG,corn,0
+3,otu_17,415,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,FGC1,FG,corn,0
+3,otu_19,1090,d338b134f9f7963d5615f06009ce3895,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGC1,FG,corn,0
+3,otu_20,1536,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGC1,FG,corn,0
+3,otu_21,6293,140da1c9edd13ad241f781f1eeb2beb8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU16,VTX00156,FGC1,FG,corn,0
+3,otu_22,82,a737c9d64ea8567bd5fbd6694ced50b8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G8,VTX00130,FGC1,FG,corn,0
+3,otu_23,16,663650390696ac576adf3531dddef4bb,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGC1,FG,corn,0
+3,otu_25,7,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,FGC1,FG,corn,0
+3,otu_26,12,8358caad260504807d38cd2898ca954d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus acnaGlo2,VTX00155,FGC1,FG,corn,0
+3,otu_29,457,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGC1,FG,corn,0
+3,otu_31,208,011c425e4c3599f39f7d5fa04dc1686d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGC1,FG,corn,0
+3,otu_33,424,7bc067a6540c755cd1578b51202b746f,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FGC1,FG,corn,0
+3,otu_35,15,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,FGC1,FG,corn,0
+3,otu_36,734,5bb0ff12f216fad2d9d3a9d1813d2fbe,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo8,VTX00175,FGC1,FG,corn,0
+3,otu_38,171,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,FGC1,FG,corn,0
+3,otu_39,336,e4cd5f7fd4cbb511e8f17b07d8df6cd4,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGC1,FG,corn,0
+3,otu_41,487,a967c9fd2dee4876c959167ef691e63c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGC1,FG,corn,0
+3,otu_45,634,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,FGC1,FG,corn,0
+3,otu_52,26,e7b2a6ab746177d50fec392d92199d86,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGC1,FG,corn,0
+3,otu_55,37,5a09b75699b2224b3c13f44ade2dd158,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGC1,FG,corn,0
+3,otu_56,265,4b0ee396bf523c4e03fa8066d5eeb7c3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGC1,FG,corn,0
+3,otu_60,27,eac18199c53aa01e7fe7e940900207a6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,FGC1,FG,corn,0
+3,otu_73,599,2f630db47c452a18eb480206bdf9f2bb,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00301,FGC1,FG,corn,0
+3,otu_81,13,a80f4edc08e63f8edab2173fa430c72a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU12,VTX00188,FGC1,FG,corn,0
+3,otu_95,202,9976ee86295ca4108d23354c9d13a59f,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGC1,FG,corn,0
+3,otu_112,32,3842fe10d4b7f681d15b3dd699c9b199,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,FGC1,FG,corn,0
+3,otu_124,18,bd8f1375b6a4c6fc7954599731615aae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,FGC1,FG,corn,0
+4,otu_1,2493,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,FGREM1,FG,remnant,50
+4,otu_2,3480,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,FGREM1,FG,remnant,50
+4,otu_4,1223,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,FGREM1,FG,remnant,50
+4,otu_5,1109,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGREM1,FG,remnant,50
+4,otu_6,1222,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,FGREM1,FG,remnant,50
+4,otu_7,416,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,FGREM1,FG,remnant,50
+4,otu_8,1616,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,FGREM1,FG,remnant,50
+4,otu_9,4457,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,FGREM1,FG,remnant,50
+4,otu_10,1313,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,FGREM1,FG,remnant,50
+4,otu_11,565,fa34a5226112d5c3040a09e932c851d1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00177,FGREM1,FG,remnant,50
+4,otu_12,414,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,FGREM1,FG,remnant,50
+4,otu_13,1295,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,FGREM1,FG,remnant,50
+4,otu_14,41,3bbb6fe91b995807a605b6f5983446a4,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo59,VTX00276,FGREM1,FG,remnant,50
+4,otu_17,176,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,FGREM1,FG,remnant,50
+4,otu_18,552,e93219e3fa9866eaf244784446de5b40,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGREM1,FG,remnant,50
+4,otu_19,364,d338b134f9f7963d5615f06009ce3895,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGREM1,FG,remnant,50
+4,otu_20,684,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGREM1,FG,remnant,50
+4,otu_21,1140,140da1c9edd13ad241f781f1eeb2beb8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU16,VTX00156,FGREM1,FG,remnant,50
+4,otu_22,18,a737c9d64ea8567bd5fbd6694ced50b8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G8,VTX00130,FGREM1,FG,remnant,50
+4,otu_24,21,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,FGREM1,FG,remnant,50
+4,otu_25,61,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,FGREM1,FG,remnant,50
+4,otu_29,88,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGREM1,FG,remnant,50
+4,otu_30,292,4fca16b49e27701e6b962c029d49f2eb,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,FGREM1,FG,remnant,50
+4,otu_31,253,011c425e4c3599f39f7d5fa04dc1686d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGREM1,FG,remnant,50
+4,otu_34,172,9bb0bf8be08f0f8a3ab32d1c0c303bb3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00159,FGREM1,FG,remnant,50
+4,otu_35,87,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,FGREM1,FG,remnant,50
+4,otu_44,41,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,Paraglomus Pa 1,VTX00335,FGREM1,FG,remnant,50
+4,otu_45,293,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,FGREM1,FG,remnant,50
+4,otu_49,226,bac52c868e388432231dad7fdc96e705,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGREM1,FG,remnant,50
+4,otu_51,657,a9efcf7c14a3a7ea509f3d673cadffe1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGREM1,FG,remnant,50
+4,otu_52,415,e7b2a6ab746177d50fec392d92199d86,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGREM1,FG,remnant,50
+4,otu_53,1895,6240145e4e1f6e0a9ae2f546244d7f71,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus perpusillum,VTX00287,FGREM1,FG,remnant,50
+4,otu_55,1034,5a09b75699b2224b3c13f44ade2dd158,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGREM1,FG,remnant,50
+4,otu_60,157,eac18199c53aa01e7fe7e940900207a6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,FGREM1,FG,remnant,50
+4,otu_61,20,a71a96c90f3cba9d6e73c14799d30e05,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus INTA-4,VTX00445,FGREM1,FG,remnant,50
+4,otu_64,174,0b7958c5b182fae5e0cc9df7120b0982,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU13,VTX00140,FGREM1,FG,remnant,50
+4,otu_68,67,1c30b29ba78048dbd12c10c32dec28a5,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGREM1,FG,remnant,50
+4,otu_71,16,0821d4d0bbb899b071e8ec0498bf86b9,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora sp.,VTX00356,FGREM1,FG,remnant,50
+4,otu_75,77,4c2e509a1cf08962b28c3ce5578eebea,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus SS-G1,VTX00448,FGREM1,FG,remnant,50
+4,otu_76,15,a13a2e299ffe54995287ecfa68b5c32f,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGREM1,FG,remnant,50
+4,otu_79,21,3da54ff2ce11106909d66d60c5991b36,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo59,VTX00276,FGREM1,FG,remnant,50
+4,otu_81,428,a80f4edc08e63f8edab2173fa430c72a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU12,VTX00188,FGREM1,FG,remnant,50
+4,otu_83,18,7a7a89421895cd0c295232b41d690477,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGREM1,FG,remnant,50
+4,otu_95,163,9976ee86295ca4108d23354c9d13a59f,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGREM1,FG,remnant,50
+4,otu_101,4,8073e594fb4717e0cc9db165b9eeb023,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,FGREM1,FG,remnant,50
+4,otu_104,29,891209ae8cbbe5a8fc9b00658e0cf5e3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,FGREM1,FG,remnant,50
+4,otu_125,27,d2a4d6d3cfa6fcec402f313d8034c3fd,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGREM1,FG,remnant,50
+4,otu_133,3,a5fc2e467399f8e3f4fc272f543edf95,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo G8,VTX00340,FGREM1,FG,remnant,50
+4,otu_151,2,68541e8ecc19be051970a344794a0457,Archaeosporomycetes,Archaeosporales,Ambisporaceae,Ambispora,Ambispora fennica,VTX00283,FGREM1,FG,remnant,50
+5,otu_1,726,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,FGRP1,FG,restored,15
+5,otu_2,2861,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,FGRP1,FG,restored,15
+5,otu_3,27,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FGRP1,FG,restored,15
+5,otu_4,58,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,FGRP1,FG,restored,15
+5,otu_5,3854,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGRP1,FG,restored,15
+5,otu_6,1447,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,FGRP1,FG,restored,15
+5,otu_7,664,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,FGRP1,FG,restored,15
+5,otu_8,18,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,FGRP1,FG,restored,15
+5,otu_9,2196,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,FGRP1,FG,restored,15
+5,otu_10,2621,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,FGRP1,FG,restored,15
+5,otu_11,123,fa34a5226112d5c3040a09e932c851d1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00177,FGRP1,FG,restored,15
+5,otu_12,1158,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,FGRP1,FG,restored,15
+5,otu_13,303,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,FGRP1,FG,restored,15
+5,otu_14,5262,3bbb6fe91b995807a605b6f5983446a4,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo59,VTX00276,FGRP1,FG,restored,15
+5,otu_16,134,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,FGRP1,FG,restored,15
+5,otu_17,381,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,FGRP1,FG,restored,15
+5,otu_18,604,e93219e3fa9866eaf244784446de5b40,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGRP1,FG,restored,15
+5,otu_19,1471,d338b134f9f7963d5615f06009ce3895,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGRP1,FG,restored,15
+5,otu_20,170,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGRP1,FG,restored,15
+5,otu_21,896,140da1c9edd13ad241f781f1eeb2beb8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU16,VTX00156,FGRP1,FG,restored,15
+5,otu_22,3016,a737c9d64ea8567bd5fbd6694ced50b8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G8,VTX00130,FGRP1,FG,restored,15
+5,otu_24,257,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,FGRP1,FG,restored,15
+5,otu_25,132,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,FGRP1,FG,restored,15
+5,otu_26,54,8358caad260504807d38cd2898ca954d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus acnaGlo2,VTX00155,FGRP1,FG,restored,15
+5,otu_29,215,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGRP1,FG,restored,15
+5,otu_31,422,011c425e4c3599f39f7d5fa04dc1686d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGRP1,FG,restored,15
+5,otu_33,27,7bc067a6540c755cd1578b51202b746f,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FGRP1,FG,restored,15
+5,otu_35,38,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,FGRP1,FG,restored,15
+5,otu_36,1040,5bb0ff12f216fad2d9d3a9d1813d2fbe,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo8,VTX00175,FGRP1,FG,restored,15
+5,otu_38,204,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,FGRP1,FG,restored,15
+5,otu_39,884,e4cd5f7fd4cbb511e8f17b07d8df6cd4,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGRP1,FG,restored,15
+5,otu_42,287,57437b1275fc1f83d37f693788c54229,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus ORVIN GLO1E,VTX00151,FGRP1,FG,restored,15
+5,otu_44,32,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,Paraglomus Pa 1,VTX00335,FGRP1,FG,restored,15
+5,otu_45,90,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,FGRP1,FG,restored,15
+5,otu_46,65,a9c8cf3d006c2910de635126e53e148d,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,Archaeospora Schechter08 Arch1,VTX00008,FGRP1,FG,restored,15
+5,otu_47,109,9265f06a3152925e254f443d6b0f0636,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo3b,VTX00069,FGRP1,FG,restored,15
+5,otu_51,790,a9efcf7c14a3a7ea509f3d673cadffe1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGRP1,FG,restored,15
+5,otu_52,73,e7b2a6ab746177d50fec392d92199d86,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGRP1,FG,restored,15
+5,otu_55,13,5a09b75699b2224b3c13f44ade2dd158,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGRP1,FG,restored,15
+5,otu_56,32,4b0ee396bf523c4e03fa8066d5eeb7c3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGRP1,FG,restored,15
+5,otu_59,563,5f338f0f05339ee0f87410250babe2c3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGRP1,FG,restored,15
+5,otu_60,321,eac18199c53aa01e7fe7e940900207a6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,FGRP1,FG,restored,15
+5,otu_73,76,2f630db47c452a18eb480206bdf9f2bb,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00301,FGRP1,FG,restored,15
+5,otu_80,14,5631da1f661c86ab203e82be06b1a957,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,Archaeospora sp.,VTX00009,FGRP1,FG,restored,15
+5,otu_100,8,f0bbab98740c1818a1ec6f86b8643500,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,FGRP1,FG,restored,15
+5,otu_103,123,b6cddd96f450a7bf3c4950c2f2a06b83,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FGRP1,FG,restored,15
+5,otu_105,38,ee1d45ab77c9e6a144ace2ea8fa7db4d,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,FGRP1,FG,restored,15
+5,otu_112,40,3842fe10d4b7f681d15b3dd699c9b199,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,FGRP1,FG,restored,15
+5,otu_113,14,b8f0f9b1e9b1e776b3a0ed1124d1b6e3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FGRP1,FG,restored,15
+5,otu_116,17,a258991a4c7712ca7474808e101b491c,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,FGRP1,FG,restored,15
+6,otu_1,725,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,FLC1,FL,corn,0
+6,otu_2,125,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,FLC1,FL,corn,0
+6,otu_3,6271,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLC1,FL,corn,0
+6,otu_4,4679,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,FLC1,FL,corn,0
+6,otu_5,1467,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC1,FL,corn,0
+6,otu_6,965,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,FLC1,FL,corn,0
+6,otu_7,2782,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,FLC1,FL,corn,0
+6,otu_8,5,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,FLC1,FL,corn,0
+6,otu_9,725,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,FLC1,FL,corn,0
+6,otu_10,149,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,FLC1,FL,corn,0
+6,otu_11,6,fa34a5226112d5c3040a09e932c851d1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00177,FLC1,FL,corn,0
+6,otu_12,330,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,FLC1,FL,corn,0
+6,otu_13,599,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,FLC1,FL,corn,0
+6,otu_14,9,3bbb6fe91b995807a605b6f5983446a4,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo59,VTX00276,FLC1,FL,corn,0
+6,otu_15,13,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC1,FL,corn,0
+6,otu_16,128,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,FLC1,FL,corn,0
+6,otu_17,992,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,FLC1,FL,corn,0
+6,otu_18,64,e93219e3fa9866eaf244784446de5b40,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC1,FL,corn,0
+6,otu_19,72,d338b134f9f7963d5615f06009ce3895,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC1,FL,corn,0
+6,otu_20,279,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC1,FL,corn,0
+6,otu_21,57,140da1c9edd13ad241f781f1eeb2beb8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU16,VTX00156,FLC1,FL,corn,0
+6,otu_22,1645,a737c9d64ea8567bd5fbd6694ced50b8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G8,VTX00130,FLC1,FL,corn,0
+6,otu_23,519,663650390696ac576adf3531dddef4bb,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC1,FL,corn,0
+6,otu_24,61,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,FLC1,FL,corn,0
+6,otu_25,49,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,FLC1,FL,corn,0
+6,otu_26,82,8358caad260504807d38cd2898ca954d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus acnaGlo2,VTX00155,FLC1,FL,corn,0
+6,otu_27,2894,d283f71f493f433a53b0c3bbc3306dc8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,NA,FLC1,FL,corn,0
+6,otu_29,389,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC1,FL,corn,0
+6,otu_30,15,4fca16b49e27701e6b962c029d49f2eb,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,FLC1,FL,corn,0
+6,otu_31,57,011c425e4c3599f39f7d5fa04dc1686d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC1,FL,corn,0
+6,otu_33,1025,7bc067a6540c755cd1578b51202b746f,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLC1,FL,corn,0
+6,otu_35,77,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,FLC1,FL,corn,0
+6,otu_36,39,5bb0ff12f216fad2d9d3a9d1813d2fbe,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo8,VTX00175,FLC1,FL,corn,0
+6,otu_38,1519,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,FLC1,FL,corn,0
+6,otu_39,24,e4cd5f7fd4cbb511e8f17b07d8df6cd4,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC1,FL,corn,0
+6,otu_41,9,a967c9fd2dee4876c959167ef691e63c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC1,FL,corn,0
+6,otu_43,19,22674d53f20b0b70bd9f5486f7f60697,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC1,FL,corn,0
+6,otu_44,18,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,Paraglomus Pa 1,VTX00335,FLC1,FL,corn,0
+6,otu_45,103,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,FLC1,FL,corn,0
+6,otu_47,63,9265f06a3152925e254f443d6b0f0636,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo3b,VTX00069,FLC1,FL,corn,0
+6,otu_50,134,34d1724d86abb5f79e61e137bcc90194,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC1,FL,corn,0
+6,otu_52,13,e7b2a6ab746177d50fec392d92199d86,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC1,FL,corn,0
+6,otu_56,106,4b0ee396bf523c4e03fa8066d5eeb7c3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC1,FL,corn,0
+6,otu_57,164,c7c2a3d8c977b70e837c661e58d815d6,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLC1,FL,corn,0
+6,otu_59,119,5f338f0f05339ee0f87410250babe2c3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC1,FL,corn,0
+6,otu_60,43,eac18199c53aa01e7fe7e940900207a6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,FLC1,FL,corn,0
+6,otu_65,17,d048c8e92236a39c54b0d17f3fd4de87,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,FLC1,FL,corn,0
+6,otu_66,1306,526e8b36d15995fadb620f1af1e9d3a2,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLC1,FL,corn,0
+6,otu_84,17,02442d57427159988b9c1f8932e8c3ea,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00197,FLC1,FL,corn,0
+6,otu_92,21,806f32d567abba563e8d16b5cd748f0b,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,Scutellospora castanea,VTX00041,FLC1,FL,corn,0
+6,otu_93,9,b5ae5796f1869784414643399fb68c04,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC1,FL,corn,0
+6,otu_103,15,b6cddd96f450a7bf3c4950c2f2a06b83,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLC1,FL,corn,0
+6,otu_107,41,b45a529ff857d429e48e010c0fe02558,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus ORVIN GLO3D,VTX00310,FLC1,FL,corn,0
+6,otu_115,20,719992555d078877d5e555ade6af4977,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,FLC1,FL,corn,0
+6,otu_144,6,24474ec2e792299e25e7285b583b88c3,Glomeromycetes,Diversisporales,Acaulosporaceae,Acaulospora,Acaulospora MO-A5,VTX00026,FLC1,FL,corn,0
+7,otu_1,16,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,FLC2,FL,corn,0
+7,otu_3,1547,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLC2,FL,corn,0
+7,otu_4,1294,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,FLC2,FL,corn,0
+7,otu_5,5483,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC2,FL,corn,0
+7,otu_6,283,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,FLC2,FL,corn,0
+7,otu_7,67,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,FLC2,FL,corn,0
+7,otu_8,112,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,FLC2,FL,corn,0
+7,otu_9,67,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,FLC2,FL,corn,0
+7,otu_13,4078,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,FLC2,FL,corn,0
+7,otu_16,7,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,FLC2,FL,corn,0
+7,otu_17,104,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,FLC2,FL,corn,0
+7,otu_20,2604,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC2,FL,corn,0
+7,otu_21,1021,140da1c9edd13ad241f781f1eeb2beb8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU16,VTX00156,FLC2,FL,corn,0
+7,otu_22,124,a737c9d64ea8567bd5fbd6694ced50b8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G8,VTX00130,FLC2,FL,corn,0
+7,otu_27,23,d283f71f493f433a53b0c3bbc3306dc8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,NA,FLC2,FL,corn,0
+7,otu_29,19,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC2,FL,corn,0
+7,otu_33,391,7bc067a6540c755cd1578b51202b746f,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLC2,FL,corn,0
+7,otu_34,22,9bb0bf8be08f0f8a3ab32d1c0c303bb3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00159,FLC2,FL,corn,0
+7,otu_35,12,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,FLC2,FL,corn,0
+7,otu_36,53,5bb0ff12f216fad2d9d3a9d1813d2fbe,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo8,VTX00175,FLC2,FL,corn,0
+7,otu_38,1087,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,FLC2,FL,corn,0
+7,otu_41,1425,a967c9fd2dee4876c959167ef691e63c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC2,FL,corn,0
+7,otu_43,3624,22674d53f20b0b70bd9f5486f7f60697,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC2,FL,corn,0
+7,otu_44,215,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,Paraglomus Pa 1,VTX00335,FLC2,FL,corn,0
+7,otu_45,54,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,FLC2,FL,corn,0
+7,otu_55,119,5a09b75699b2224b3c13f44ade2dd158,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLC2,FL,corn,0
+7,otu_67,583,0f2987e222b120bc729dbb0b3691642d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo2,VTX00280,FLC2,FL,corn,0
+7,otu_78,21,9b0b928a4eeca97284d983cd2ff2ff37,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,FLC2,FL,corn,0
+7,otu_107,129,b45a529ff857d429e48e010c0fe02558,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus ORVIN GLO3D,VTX00310,FLC2,FL,corn,0
+8,otu_1,2082,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,FLREM1,FL,remnant,50
+8,otu_2,2001,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,FLREM1,FL,remnant,50
+8,otu_3,425,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLREM1,FL,remnant,50
+8,otu_4,624,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,FLREM1,FL,remnant,50
+8,otu_5,1657,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLREM1,FL,remnant,50
+8,otu_6,1503,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,FLREM1,FL,remnant,50
+8,otu_7,2228,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,FLREM1,FL,remnant,50
+8,otu_8,919,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,FLREM1,FL,remnant,50
+8,otu_9,941,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,FLREM1,FL,remnant,50
+8,otu_10,2343,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,FLREM1,FL,remnant,50
+8,otu_11,3033,fa34a5226112d5c3040a09e932c851d1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00177,FLREM1,FL,remnant,50
+8,otu_12,953,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,FLREM1,FL,remnant,50
+8,otu_13,334,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,FLREM1,FL,remnant,50
+8,otu_14,392,3bbb6fe91b995807a605b6f5983446a4,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo59,VTX00276,FLREM1,FL,remnant,50
+8,otu_15,234,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLREM1,FL,remnant,50
+8,otu_16,891,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,FLREM1,FL,remnant,50
+8,otu_17,904,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,FLREM1,FL,remnant,50
+8,otu_18,338,e93219e3fa9866eaf244784446de5b40,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLREM1,FL,remnant,50
+8,otu_19,162,d338b134f9f7963d5615f06009ce3895,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLREM1,FL,remnant,50
+8,otu_20,132,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLREM1,FL,remnant,50
+8,otu_21,1018,140da1c9edd13ad241f781f1eeb2beb8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU16,VTX00156,FLREM1,FL,remnant,50
+8,otu_22,1879,a737c9d64ea8567bd5fbd6694ced50b8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G8,VTX00130,FLREM1,FL,remnant,50
+8,otu_24,120,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,FLREM1,FL,remnant,50
+8,otu_25,423,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,FLREM1,FL,remnant,50
+8,otu_26,46,8358caad260504807d38cd2898ca954d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus acnaGlo2,VTX00155,FLREM1,FL,remnant,50
+8,otu_29,707,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLREM1,FL,remnant,50
+8,otu_30,609,4fca16b49e27701e6b962c029d49f2eb,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,FLREM1,FL,remnant,50
+8,otu_32,1310,f0cc400dc0c00335b7f2c8c0cb93a1ca,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G20,VTX00143,FLREM1,FL,remnant,50
+8,otu_33,57,7bc067a6540c755cd1578b51202b746f,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLREM1,FL,remnant,50
+8,otu_34,12,9bb0bf8be08f0f8a3ab32d1c0c303bb3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00159,FLREM1,FL,remnant,50
+8,otu_35,196,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,FLREM1,FL,remnant,50
+8,otu_36,490,5bb0ff12f216fad2d9d3a9d1813d2fbe,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo8,VTX00175,FLREM1,FL,remnant,50
+8,otu_38,320,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,FLREM1,FL,remnant,50
+8,otu_40,454,98107578c7eed00e95b2b89858397794,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo-D,VTX00103,FLREM1,FL,remnant,50
+8,otu_42,181,57437b1275fc1f83d37f693788c54229,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus ORVIN GLO1E,VTX00151,FLREM1,FL,remnant,50
+8,otu_44,79,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,Paraglomus Pa 1,VTX00335,FLREM1,FL,remnant,50
+8,otu_45,63,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,FLREM1,FL,remnant,50
+8,otu_46,40,a9c8cf3d006c2910de635126e53e148d,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,Archaeospora Schechter08 Arch1,VTX00008,FLREM1,FL,remnant,50
+8,otu_47,127,9265f06a3152925e254f443d6b0f0636,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo3b,VTX00069,FLREM1,FL,remnant,50
+8,otu_49,353,bac52c868e388432231dad7fdc96e705,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLREM1,FL,remnant,50
+8,otu_50,203,34d1724d86abb5f79e61e137bcc90194,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLREM1,FL,remnant,50
+8,otu_52,6,e7b2a6ab746177d50fec392d92199d86,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLREM1,FL,remnant,50
+8,otu_54,207,5ca01b9b9f0bd1b03f1a7a6b4ece2241,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,FLREM1,FL,remnant,50
+8,otu_55,61,5a09b75699b2224b3c13f44ade2dd158,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLREM1,FL,remnant,50
+8,otu_57,698,c7c2a3d8c977b70e837c661e58d815d6,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLREM1,FL,remnant,50
+8,otu_59,173,5f338f0f05339ee0f87410250babe2c3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLREM1,FL,remnant,50
+8,otu_64,26,0b7958c5b182fae5e0cc9df7120b0982,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU13,VTX00140,FLREM1,FL,remnant,50
+8,otu_68,77,1c30b29ba78048dbd12c10c32dec28a5,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLREM1,FL,remnant,50
+8,otu_70,300,c1c6182be14bf9a4c95a3aebcdd3d78d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G14,VTX00083,FLREM1,FL,remnant,50
+8,otu_78,31,9b0b928a4eeca97284d983cd2ff2ff37,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,FLREM1,FL,remnant,50
+8,otu_81,13,a80f4edc08e63f8edab2173fa430c72a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU12,VTX00188,FLREM1,FL,remnant,50
+8,otu_82,2,a7b805211cefc561a19461b13a4d1480,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLREM1,FL,remnant,50
+8,otu_89,132,24018d088e92d6604e9377a7e375d594,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU6,VTX00202,FLREM1,FL,remnant,50
+8,otu_100,77,f0bbab98740c1818a1ec6f86b8643500,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,FLREM1,FL,remnant,50
+8,otu_152,2,4f38f7088f3229ecdf22b4bb45696cc3,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,NA,NA,FLREM1,FL,remnant,50
+9,otu_1,629,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,FLRP1,FL,restored,40
+9,otu_2,2585,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,FLRP1,FL,restored,40
+9,otu_3,211,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLRP1,FL,restored,40
+9,otu_4,2490,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,FLRP1,FL,restored,40
+9,otu_5,487,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP1,FL,restored,40
+9,otu_6,452,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,FLRP1,FL,restored,40
+9,otu_7,1593,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,FLRP1,FL,restored,40
+9,otu_8,3743,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,FLRP1,FL,restored,40
+9,otu_9,1811,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,FLRP1,FL,restored,40
+9,otu_10,1380,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,FLRP1,FL,restored,40
+9,otu_11,4372,fa34a5226112d5c3040a09e932c851d1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00177,FLRP1,FL,restored,40
+9,otu_12,239,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,FLRP1,FL,restored,40
+9,otu_13,424,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,FLRP1,FL,restored,40
+9,otu_14,317,3bbb6fe91b995807a605b6f5983446a4,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo59,VTX00276,FLRP1,FL,restored,40
+9,otu_15,345,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP1,FL,restored,40
+9,otu_17,731,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,FLRP1,FL,restored,40
+9,otu_20,191,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP1,FL,restored,40
+9,otu_22,97,a737c9d64ea8567bd5fbd6694ced50b8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G8,VTX00130,FLRP1,FL,restored,40
+9,otu_24,59,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,FLRP1,FL,restored,40
+9,otu_25,65,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,FLRP1,FL,restored,40
+9,otu_29,378,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP1,FL,restored,40
+9,otu_30,55,4fca16b49e27701e6b962c029d49f2eb,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,FLRP1,FL,restored,40
+9,otu_34,404,9bb0bf8be08f0f8a3ab32d1c0c303bb3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00159,FLRP1,FL,restored,40
+9,otu_36,225,5bb0ff12f216fad2d9d3a9d1813d2fbe,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo8,VTX00175,FLRP1,FL,restored,40
+9,otu_37,584,132ccfc0da746037dbbad52507f0a381,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP1,FL,restored,40
+9,otu_38,73,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,FLRP1,FL,restored,40
+9,otu_39,59,e4cd5f7fd4cbb511e8f17b07d8df6cd4,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP1,FL,restored,40
+9,otu_40,215,98107578c7eed00e95b2b89858397794,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo-D,VTX00103,FLRP1,FL,restored,40
+9,otu_44,18,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,Paraglomus Pa 1,VTX00335,FLRP1,FL,restored,40
+9,otu_45,69,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,FLRP1,FL,restored,40
+9,otu_46,13,a9c8cf3d006c2910de635126e53e148d,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,Archaeospora Schechter08 Arch1,VTX00008,FLRP1,FL,restored,40
+9,otu_47,422,9265f06a3152925e254f443d6b0f0636,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo3b,VTX00069,FLRP1,FL,restored,40
+9,otu_49,442,bac52c868e388432231dad7fdc96e705,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP1,FL,restored,40
+9,otu_50,17,34d1724d86abb5f79e61e137bcc90194,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP1,FL,restored,40
+9,otu_54,8,5ca01b9b9f0bd1b03f1a7a6b4ece2241,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,FLRP1,FL,restored,40
+9,otu_55,677,5a09b75699b2224b3c13f44ade2dd158,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP1,FL,restored,40
+9,otu_57,61,c7c2a3d8c977b70e837c661e58d815d6,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLRP1,FL,restored,40
+9,otu_58,121,b3775f39419d3aad768b1d51b5ccbe2a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP1,FL,restored,40
+9,otu_60,273,eac18199c53aa01e7fe7e940900207a6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,FLRP1,FL,restored,40
+9,otu_61,14,a71a96c90f3cba9d6e73c14799d30e05,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus INTA-4,VTX00445,FLRP1,FL,restored,40
+9,otu_64,667,0b7958c5b182fae5e0cc9df7120b0982,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU13,VTX00140,FLRP1,FL,restored,40
+9,otu_68,71,1c30b29ba78048dbd12c10c32dec28a5,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP1,FL,restored,40
+9,otu_70,296,c1c6182be14bf9a4c95a3aebcdd3d78d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G14,VTX00083,FLRP1,FL,restored,40
+9,otu_72,59,97378037372343341a2bee79ce55bb75,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G16,VTX00072,FLRP1,FL,restored,40
+9,otu_75,471,4c2e509a1cf08962b28c3ce5578eebea,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus SS-G1,VTX00448,FLRP1,FL,restored,40
+9,otu_76,12,a13a2e299ffe54995287ecfa68b5c32f,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP1,FL,restored,40
+9,otu_79,67,3da54ff2ce11106909d66d60c5991b36,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo59,VTX00276,FLRP1,FL,restored,40
+9,otu_89,230,24018d088e92d6604e9377a7e375d594,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU6,VTX00202,FLRP1,FL,restored,40
+9,otu_100,60,f0bbab98740c1818a1ec6f86b8643500,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,FLRP1,FL,restored,40
+9,otu_101,27,8073e594fb4717e0cc9db165b9eeb023,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,FLRP1,FL,restored,40
+9,otu_114,48,24435da6fdb67ebdb6541e2de5498c1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP1,FL,restored,40
+9,otu_123,11,6af8e1fc1edec097339970fc5abe0e74,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU6,VTX00202,FLRP1,FL,restored,40
+10,otu_1,1829,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,FLRP4,FL,restored,36
+10,otu_2,1192,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,FLRP4,FL,restored,36
+10,otu_3,165,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLRP4,FL,restored,36
+10,otu_4,1596,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,FLRP4,FL,restored,36
+10,otu_5,96,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP4,FL,restored,36
+10,otu_6,649,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,FLRP4,FL,restored,36
+10,otu_7,1627,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,FLRP4,FL,restored,36
+10,otu_8,4344,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,FLRP4,FL,restored,36
+10,otu_9,228,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,FLRP4,FL,restored,36
+10,otu_10,730,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,FLRP4,FL,restored,36
+10,otu_11,1551,fa34a5226112d5c3040a09e932c851d1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00177,FLRP4,FL,restored,36
+10,otu_12,900,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,FLRP4,FL,restored,36
+10,otu_13,158,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,FLRP4,FL,restored,36
+10,otu_14,16,3bbb6fe91b995807a605b6f5983446a4,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo59,VTX00276,FLRP4,FL,restored,36
+10,otu_15,111,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP4,FL,restored,36
+10,otu_17,552,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,FLRP4,FL,restored,36
+10,otu_18,24,e93219e3fa9866eaf244784446de5b40,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP4,FL,restored,36
+10,otu_19,13,d338b134f9f7963d5615f06009ce3895,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP4,FL,restored,36
+10,otu_20,122,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP4,FL,restored,36
+10,otu_23,371,663650390696ac576adf3531dddef4bb,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP4,FL,restored,36
+10,otu_24,521,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,FLRP4,FL,restored,36
+10,otu_25,360,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,FLRP4,FL,restored,36
+10,otu_29,400,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP4,FL,restored,36
+10,otu_34,506,9bb0bf8be08f0f8a3ab32d1c0c303bb3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00159,FLRP4,FL,restored,36
+10,otu_35,10,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,FLRP4,FL,restored,36
+10,otu_37,970,132ccfc0da746037dbbad52507f0a381,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP4,FL,restored,36
+10,otu_40,433,98107578c7eed00e95b2b89858397794,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo-D,VTX00103,FLRP4,FL,restored,36
+10,otu_44,4,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,Paraglomus Pa 1,VTX00335,FLRP4,FL,restored,36
+10,otu_45,38,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,FLRP4,FL,restored,36
+10,otu_47,31,9265f06a3152925e254f443d6b0f0636,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo3b,VTX00069,FLRP4,FL,restored,36
+10,otu_49,349,bac52c868e388432231dad7fdc96e705,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP4,FL,restored,36
+10,otu_50,498,34d1724d86abb5f79e61e137bcc90194,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP4,FL,restored,36
+10,otu_54,97,5ca01b9b9f0bd1b03f1a7a6b4ece2241,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,FLRP4,FL,restored,36
+10,otu_55,300,5a09b75699b2224b3c13f44ade2dd158,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP4,FL,restored,36
+10,otu_58,167,b3775f39419d3aad768b1d51b5ccbe2a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP4,FL,restored,36
+10,otu_60,35,eac18199c53aa01e7fe7e940900207a6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,FLRP4,FL,restored,36
+10,otu_61,144,a71a96c90f3cba9d6e73c14799d30e05,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus INTA-4,VTX00445,FLRP4,FL,restored,36
+10,otu_63,272,dfd53448f81f23769e110f8d82e671f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP4,FL,restored,36
+10,otu_64,18,0b7958c5b182fae5e0cc9df7120b0982,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU13,VTX00140,FLRP4,FL,restored,36
+10,otu_68,39,1c30b29ba78048dbd12c10c32dec28a5,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP4,FL,restored,36
+10,otu_70,220,c1c6182be14bf9a4c95a3aebcdd3d78d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G14,VTX00083,FLRP4,FL,restored,36
+10,otu_71,10,0821d4d0bbb899b071e8ec0498bf86b9,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora sp.,VTX00356,FLRP4,FL,restored,36
+10,otu_72,102,97378037372343341a2bee79ce55bb75,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G16,VTX00072,FLRP4,FL,restored,36
+10,otu_74,86,ea10c65ee26bce92726facb7b0a6ea47,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU14,VTX00137,FLRP4,FL,restored,36
+10,otu_75,236,4c2e509a1cf08962b28c3ce5578eebea,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus SS-G1,VTX00448,FLRP4,FL,restored,36
+10,otu_76,34,a13a2e299ffe54995287ecfa68b5c32f,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP4,FL,restored,36
+10,otu_78,18,9b0b928a4eeca97284d983cd2ff2ff37,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,FLRP4,FL,restored,36
+10,otu_79,63,3da54ff2ce11106909d66d60c5991b36,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo59,VTX00276,FLRP4,FL,restored,36
+10,otu_81,36,a80f4edc08e63f8edab2173fa430c72a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU12,VTX00188,FLRP4,FL,restored,36
+10,otu_89,54,24018d088e92d6604e9377a7e375d594,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU6,VTX00202,FLRP4,FL,restored,36
+10,otu_97,64,ad167aa4faf19d14530477db46edb682,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP4,FL,restored,36
+10,otu_100,12,f0bbab98740c1818a1ec6f86b8643500,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,FLRP4,FL,restored,36
+11,otu_1,1179,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,FLRP5,FL,restored,35
+11,otu_2,1810,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,FLRP5,FL,restored,35
+11,otu_3,556,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLRP5,FL,restored,35
+11,otu_4,2893,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,FLRP5,FL,restored,35
+11,otu_5,526,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP5,FL,restored,35
+11,otu_6,813,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,FLRP5,FL,restored,35
+11,otu_7,1973,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,FLRP5,FL,restored,35
+11,otu_8,2387,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,FLRP5,FL,restored,35
+11,otu_9,1574,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,FLRP5,FL,restored,35
+11,otu_10,569,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,FLRP5,FL,restored,35
+11,otu_11,2613,fa34a5226112d5c3040a09e932c851d1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00177,FLRP5,FL,restored,35
+11,otu_12,271,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,FLRP5,FL,restored,35
+11,otu_13,416,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,FLRP5,FL,restored,35
+11,otu_14,211,3bbb6fe91b995807a605b6f5983446a4,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo59,VTX00276,FLRP5,FL,restored,35
+11,otu_15,102,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP5,FL,restored,35
+11,otu_16,39,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,FLRP5,FL,restored,35
+11,otu_17,881,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,FLRP5,FL,restored,35
+11,otu_18,42,e93219e3fa9866eaf244784446de5b40,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP5,FL,restored,35
+11,otu_19,106,d338b134f9f7963d5615f06009ce3895,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP5,FL,restored,35
+11,otu_20,211,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP5,FL,restored,35
+11,otu_22,445,a737c9d64ea8567bd5fbd6694ced50b8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G8,VTX00130,FLRP5,FL,restored,35
+11,otu_23,11,663650390696ac576adf3531dddef4bb,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP5,FL,restored,35
+11,otu_24,63,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,FLRP5,FL,restored,35
+11,otu_25,138,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,FLRP5,FL,restored,35
+11,otu_26,158,8358caad260504807d38cd2898ca954d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus acnaGlo2,VTX00155,FLRP5,FL,restored,35
+11,otu_29,378,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP5,FL,restored,35
+11,otu_30,201,4fca16b49e27701e6b962c029d49f2eb,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,FLRP5,FL,restored,35
+11,otu_34,179,9bb0bf8be08f0f8a3ab32d1c0c303bb3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00159,FLRP5,FL,restored,35
+11,otu_35,232,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,FLRP5,FL,restored,35
+11,otu_36,81,5bb0ff12f216fad2d9d3a9d1813d2fbe,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo8,VTX00175,FLRP5,FL,restored,35
+11,otu_37,348,132ccfc0da746037dbbad52507f0a381,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP5,FL,restored,35
+11,otu_38,210,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,FLRP5,FL,restored,35
+11,otu_39,81,e4cd5f7fd4cbb511e8f17b07d8df6cd4,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP5,FL,restored,35
+11,otu_40,501,98107578c7eed00e95b2b89858397794,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo-D,VTX00103,FLRP5,FL,restored,35
+11,otu_44,32,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,Paraglomus Pa 1,VTX00335,FLRP5,FL,restored,35
+11,otu_45,96,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,FLRP5,FL,restored,35
+11,otu_47,125,9265f06a3152925e254f443d6b0f0636,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo3b,VTX00069,FLRP5,FL,restored,35
+11,otu_49,52,bac52c868e388432231dad7fdc96e705,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP5,FL,restored,35
+11,otu_50,310,34d1724d86abb5f79e61e137bcc90194,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP5,FL,restored,35
+11,otu_51,82,a9efcf7c14a3a7ea509f3d673cadffe1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP5,FL,restored,35
+11,otu_53,102,6240145e4e1f6e0a9ae2f546244d7f71,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus perpusillum,VTX00287,FLRP5,FL,restored,35
+11,otu_54,64,5ca01b9b9f0bd1b03f1a7a6b4ece2241,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,FLRP5,FL,restored,35
+11,otu_55,24,5a09b75699b2224b3c13f44ade2dd158,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP5,FL,restored,35
+11,otu_58,64,b3775f39419d3aad768b1d51b5ccbe2a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP5,FL,restored,35
+11,otu_64,17,0b7958c5b182fae5e0cc9df7120b0982,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU13,VTX00140,FLRP5,FL,restored,35
+11,otu_68,10,1c30b29ba78048dbd12c10c32dec28a5,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP5,FL,restored,35
+11,otu_70,39,c1c6182be14bf9a4c95a3aebcdd3d78d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G14,VTX00083,FLRP5,FL,restored,35
+11,otu_72,236,97378037372343341a2bee79ce55bb75,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G16,VTX00072,FLRP5,FL,restored,35
+11,otu_78,21,9b0b928a4eeca97284d983cd2ff2ff37,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,FLRP5,FL,restored,35
+11,otu_79,155,3da54ff2ce11106909d66d60c5991b36,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo59,VTX00276,FLRP5,FL,restored,35
+11,otu_82,3,a7b805211cefc561a19461b13a4d1480,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP5,FL,restored,35
+11,otu_89,179,24018d088e92d6604e9377a7e375d594,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU6,VTX00202,FLRP5,FL,restored,35
+11,otu_90,45,197869ce750dd76de93bc4d498552460,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo58,VTX00225,FLRP5,FL,restored,35
+11,otu_93,24,b5ae5796f1869784414643399fb68c04,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP5,FL,restored,35
+11,otu_98,15,ada190c46ba14302579a9c55ddc54bb5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,FLRP5,FL,restored,35
+11,otu_103,21,b6cddd96f450a7bf3c4950c2f2a06b83,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLRP5,FL,restored,35
+11,otu_104,88,891209ae8cbbe5a8fc9b00658e0cf5e3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,FLRP5,FL,restored,35
+11,otu_114,17,24435da6fdb67ebdb6541e2de5498c1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRP5,FL,restored,35
+11,otu_123,18,6af8e1fc1edec097339970fc5abe0e74,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU6,VTX00202,FLRP5,FL,restored,35
+12,otu_1,2428,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,FLRSP1,FL,restored,10
+12,otu_2,2486,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,FLRSP1,FL,restored,10
+12,otu_3,2559,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLRSP1,FL,restored,10
+12,otu_4,25,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,FLRSP1,FL,restored,10
+12,otu_5,1457,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP1,FL,restored,10
+12,otu_6,1010,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,FLRSP1,FL,restored,10
+12,otu_7,2113,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,FLRSP1,FL,restored,10
+12,otu_8,1051,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,FLRSP1,FL,restored,10
+12,otu_9,503,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,FLRSP1,FL,restored,10
+12,otu_10,888,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,FLRSP1,FL,restored,10
+12,otu_11,674,fa34a5226112d5c3040a09e932c851d1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00177,FLRSP1,FL,restored,10
+12,otu_12,70,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,FLRSP1,FL,restored,10
+12,otu_15,519,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP1,FL,restored,10
+12,otu_16,410,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,FLRSP1,FL,restored,10
+12,otu_17,904,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,FLRSP1,FL,restored,10
+12,otu_18,152,e93219e3fa9866eaf244784446de5b40,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP1,FL,restored,10
+12,otu_20,19,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP1,FL,restored,10
+12,otu_23,348,663650390696ac576adf3531dddef4bb,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP1,FL,restored,10
+12,otu_24,758,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,FLRSP1,FL,restored,10
+12,otu_25,58,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,FLRSP1,FL,restored,10
+12,otu_29,419,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP1,FL,restored,10
+12,otu_30,1683,4fca16b49e27701e6b962c029d49f2eb,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,FLRSP1,FL,restored,10
+12,otu_34,108,9bb0bf8be08f0f8a3ab32d1c0c303bb3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00159,FLRSP1,FL,restored,10
+12,otu_35,94,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,FLRSP1,FL,restored,10
+12,otu_36,20,5bb0ff12f216fad2d9d3a9d1813d2fbe,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo8,VTX00175,FLRSP1,FL,restored,10
+12,otu_38,628,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,FLRSP1,FL,restored,10
+12,otu_40,347,98107578c7eed00e95b2b89858397794,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo-D,VTX00103,FLRSP1,FL,restored,10
+12,otu_44,19,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,Paraglomus Pa 1,VTX00335,FLRSP1,FL,restored,10
+12,otu_46,19,a9c8cf3d006c2910de635126e53e148d,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,Archaeospora Schechter08 Arch1,VTX00008,FLRSP1,FL,restored,10
+12,otu_50,160,34d1724d86abb5f79e61e137bcc90194,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP1,FL,restored,10
+12,otu_53,10,6240145e4e1f6e0a9ae2f546244d7f71,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus perpusillum,VTX00287,FLRSP1,FL,restored,10
+12,otu_54,77,5ca01b9b9f0bd1b03f1a7a6b4ece2241,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,FLRSP1,FL,restored,10
+12,otu_57,202,c7c2a3d8c977b70e837c661e58d815d6,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLRSP1,FL,restored,10
+12,otu_63,80,dfd53448f81f23769e110f8d82e671f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP1,FL,restored,10
+12,otu_65,132,d048c8e92236a39c54b0d17f3fd4de87,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,FLRSP1,FL,restored,10
+12,otu_71,536,0821d4d0bbb899b071e8ec0498bf86b9,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora sp.,VTX00356,FLRSP1,FL,restored,10
+12,otu_78,17,9b0b928a4eeca97284d983cd2ff2ff37,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,FLRSP1,FL,restored,10
+12,otu_80,6,5631da1f661c86ab203e82be06b1a957,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,Archaeospora sp.,VTX00009,FLRSP1,FL,restored,10
+12,otu_82,7,a7b805211cefc561a19461b13a4d1480,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP1,FL,restored,10
+12,otu_84,38,02442d57427159988b9c1f8932e8c3ea,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00197,FLRSP1,FL,restored,10
+12,otu_87,34,3a1eee95d0b5323bf50d67fe68b00360,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,FLRSP1,FL,restored,10
+12,otu_91,9,304459d0d445e5e97000e5279f40fb61,Glomeromycetes,Diversisporales,Acaulosporaceae,Acaulospora,Acaulospora Acau2,VTX00030,FLRSP1,FL,restored,10
+12,otu_97,49,ad167aa4faf19d14530477db46edb682,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP1,FL,restored,10
+12,otu_98,12,ada190c46ba14302579a9c55ddc54bb5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,FLRSP1,FL,restored,10
+12,otu_100,18,f0bbab98740c1818a1ec6f86b8643500,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,FLRSP1,FL,restored,10
+12,otu_108,46,77e1550b520cda41de3537566ecbbb7b,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora sp.,NA,FLRSP1,FL,restored,10
+12,otu_115,13,719992555d078877d5e555ade6af4977,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,FLRSP1,FL,restored,10
+12,otu_117,51,9dc45b7df51b549feddb088e7a451bea,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,FLRSP1,FL,restored,10
+12,otu_127,10,5fa71e16f2241ef15688ef0bd2d254fd,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP1,FL,restored,10
+12,otu_149,2,4482309ccd19fc4522a075c2a55c5d68,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00234,FLRSP1,FL,restored,10
+13,otu_1,2070,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,FLRSP2,FL,restored,10
+13,otu_2,2338,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,FLRSP2,FL,restored,10
+13,otu_3,1917,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLRSP2,FL,restored,10
+13,otu_4,778,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,FLRSP2,FL,restored,10
+13,otu_5,1718,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP2,FL,restored,10
+13,otu_6,1679,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,FLRSP2,FL,restored,10
+13,otu_7,2172,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,FLRSP2,FL,restored,10
+13,otu_8,2106,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,FLRSP2,FL,restored,10
+13,otu_9,18,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,FLRSP2,FL,restored,10
+13,otu_10,60,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,FLRSP2,FL,restored,10
+13,otu_11,473,fa34a5226112d5c3040a09e932c851d1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00177,FLRSP2,FL,restored,10
+13,otu_12,332,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,FLRSP2,FL,restored,10
+13,otu_13,11,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,FLRSP2,FL,restored,10
+13,otu_15,8,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP2,FL,restored,10
+13,otu_16,8,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,FLRSP2,FL,restored,10
+13,otu_17,904,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,FLRSP2,FL,restored,10
+13,otu_18,592,e93219e3fa9866eaf244784446de5b40,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP2,FL,restored,10
+13,otu_22,46,a737c9d64ea8567bd5fbd6694ced50b8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G8,VTX00130,FLRSP2,FL,restored,10
+13,otu_23,866,663650390696ac576adf3531dddef4bb,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP2,FL,restored,10
+13,otu_24,2800,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,FLRSP2,FL,restored,10
+13,otu_29,539,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP2,FL,restored,10
+13,otu_30,424,4fca16b49e27701e6b962c029d49f2eb,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,FLRSP2,FL,restored,10
+13,otu_34,395,9bb0bf8be08f0f8a3ab32d1c0c303bb3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00159,FLRSP2,FL,restored,10
+13,otu_37,852,132ccfc0da746037dbbad52507f0a381,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP2,FL,restored,10
+13,otu_38,452,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,FLRSP2,FL,restored,10
+13,otu_40,168,98107578c7eed00e95b2b89858397794,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo-D,VTX00103,FLRSP2,FL,restored,10
+13,otu_44,32,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,Paraglomus Pa 1,VTX00335,FLRSP2,FL,restored,10
+13,otu_48,469,f828480e27adb99df68b8915e059870c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP2,FL,restored,10
+13,otu_50,19,34d1724d86abb5f79e61e137bcc90194,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP2,FL,restored,10
+13,otu_54,582,5ca01b9b9f0bd1b03f1a7a6b4ece2241,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,FLRSP2,FL,restored,10
+13,otu_57,35,c7c2a3d8c977b70e837c661e58d815d6,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLRSP2,FL,restored,10
+13,otu_58,143,b3775f39419d3aad768b1d51b5ccbe2a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP2,FL,restored,10
+13,otu_61,36,a71a96c90f3cba9d6e73c14799d30e05,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus INTA-4,VTX00445,FLRSP2,FL,restored,10
+13,otu_63,207,dfd53448f81f23769e110f8d82e671f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP2,FL,restored,10
+13,otu_66,22,526e8b36d15995fadb620f1af1e9d3a2,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLRSP2,FL,restored,10
+13,otu_69,94,ba8591e93f3d4f7ad04d0710d021cb0a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP2,FL,restored,10
+13,otu_76,14,a13a2e299ffe54995287ecfa68b5c32f,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP2,FL,restored,10
+13,otu_78,122,9b0b928a4eeca97284d983cd2ff2ff37,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,FLRSP2,FL,restored,10
+13,otu_90,48,197869ce750dd76de93bc4d498552460,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo58,VTX00225,FLRSP2,FL,restored,10
+13,otu_97,47,ad167aa4faf19d14530477db46edb682,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP2,FL,restored,10
+13,otu_98,19,ada190c46ba14302579a9c55ddc54bb5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,FLRSP2,FL,restored,10
+13,otu_100,47,f0bbab98740c1818a1ec6f86b8643500,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,FLRSP2,FL,restored,10
+13,otu_101,5,8073e594fb4717e0cc9db165b9eeb023,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,FLRSP2,FL,restored,10
+13,otu_111,39,50ca642f13169240a16a7c81051da891,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,Archaeospora Other1,VTX00005,FLRSP2,FL,restored,10
+14,otu_1,1648,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,FLRSP3,FL,restored,10
+14,otu_2,1555,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,FLRSP3,FL,restored,10
+14,otu_3,2257,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLRSP3,FL,restored,10
+14,otu_4,117,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,FLRSP3,FL,restored,10
+14,otu_5,2670,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP3,FL,restored,10
+14,otu_6,1298,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,FLRSP3,FL,restored,10
+14,otu_7,2604,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,FLRSP3,FL,restored,10
+14,otu_8,1041,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,FLRSP3,FL,restored,10
+14,otu_9,581,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,FLRSP3,FL,restored,10
+14,otu_10,38,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,FLRSP3,FL,restored,10
+14,otu_12,93,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,FLRSP3,FL,restored,10
+14,otu_13,386,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,FLRSP3,FL,restored,10
+14,otu_14,39,3bbb6fe91b995807a605b6f5983446a4,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo59,VTX00276,FLRSP3,FL,restored,10
+14,otu_15,964,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP3,FL,restored,10
+14,otu_16,379,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,FLRSP3,FL,restored,10
+14,otu_17,944,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,FLRSP3,FL,restored,10
+14,otu_20,313,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP3,FL,restored,10
+14,otu_23,2330,663650390696ac576adf3531dddef4bb,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP3,FL,restored,10
+14,otu_24,1213,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,FLRSP3,FL,restored,10
+14,otu_25,91,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,FLRSP3,FL,restored,10
+14,otu_29,490,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP3,FL,restored,10
+14,otu_30,215,4fca16b49e27701e6b962c029d49f2eb,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,FLRSP3,FL,restored,10
+14,otu_34,216,9bb0bf8be08f0f8a3ab32d1c0c303bb3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00159,FLRSP3,FL,restored,10
+14,otu_35,231,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,FLRSP3,FL,restored,10
+14,otu_37,1213,132ccfc0da746037dbbad52507f0a381,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP3,FL,restored,10
+14,otu_38,437,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,FLRSP3,FL,restored,10
+14,otu_40,153,98107578c7eed00e95b2b89858397794,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo-D,VTX00103,FLRSP3,FL,restored,10
+14,otu_45,66,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,FLRSP3,FL,restored,10
+14,otu_50,26,34d1724d86abb5f79e61e137bcc90194,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP3,FL,restored,10
+14,otu_54,249,5ca01b9b9f0bd1b03f1a7a6b4ece2241,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,FLRSP3,FL,restored,10
+14,otu_57,53,c7c2a3d8c977b70e837c661e58d815d6,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,FLRSP3,FL,restored,10
+14,otu_58,168,b3775f39419d3aad768b1d51b5ccbe2a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP3,FL,restored,10
+14,otu_61,71,a71a96c90f3cba9d6e73c14799d30e05,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus INTA-4,VTX00445,FLRSP3,FL,restored,10
+14,otu_63,359,dfd53448f81f23769e110f8d82e671f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP3,FL,restored,10
+14,otu_69,9,ba8591e93f3d4f7ad04d0710d021cb0a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP3,FL,restored,10
+14,otu_71,147,0821d4d0bbb899b071e8ec0498bf86b9,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora sp.,VTX00356,FLRSP3,FL,restored,10
+14,otu_74,27,ea10c65ee26bce92726facb7b0a6ea47,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU14,VTX00137,FLRSP3,FL,restored,10
+14,otu_76,29,a13a2e299ffe54995287ecfa68b5c32f,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP3,FL,restored,10
+14,otu_78,28,9b0b928a4eeca97284d983cd2ff2ff37,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,FLRSP3,FL,restored,10
+14,otu_82,29,a7b805211cefc561a19461b13a4d1480,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP3,FL,restored,10
+14,otu_91,76,304459d0d445e5e97000e5279f40fb61,Glomeromycetes,Diversisporales,Acaulosporaceae,Acaulospora,Acaulospora Acau2,VTX00030,FLRSP3,FL,restored,10
+14,otu_97,29,ad167aa4faf19d14530477db46edb682,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP3,FL,restored,10
+14,otu_100,36,f0bbab98740c1818a1ec6f86b8643500,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,FLRSP3,FL,restored,10
+14,otu_101,80,8073e594fb4717e0cc9db165b9eeb023,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,FLRSP3,FL,restored,10
+14,otu_115,31,719992555d078877d5e555ade6af4977,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,FLRSP3,FL,restored,10
+14,otu_127,16,5fa71e16f2241ef15688ef0bd2d254fd,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,FLRSP3,FL,restored,10
+15,otu_1,1657,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,KORP1,BM,restored,28
+15,otu_2,3066,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,KORP1,BM,restored,28
+15,otu_3,971,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,KORP1,BM,restored,28
+15,otu_4,628,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,KORP1,BM,restored,28
+15,otu_5,444,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,KORP1,BM,restored,28
+15,otu_6,203,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,KORP1,BM,restored,28
+15,otu_7,520,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,KORP1,BM,restored,28
+15,otu_8,7623,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,KORP1,BM,restored,28
+15,otu_9,283,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,KORP1,BM,restored,28
+15,otu_10,305,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,KORP1,BM,restored,28
+15,otu_11,7682,fa34a5226112d5c3040a09e932c851d1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00177,KORP1,BM,restored,28
+15,otu_12,436,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,KORP1,BM,restored,28
+15,otu_13,95,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,KORP1,BM,restored,28
+15,otu_15,52,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,KORP1,BM,restored,28
+15,otu_16,231,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,KORP1,BM,restored,28
+15,otu_17,237,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,KORP1,BM,restored,28
+15,otu_18,314,e93219e3fa9866eaf244784446de5b40,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,KORP1,BM,restored,28
+15,otu_19,400,d338b134f9f7963d5615f06009ce3895,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,KORP1,BM,restored,28
+15,otu_20,45,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,KORP1,BM,restored,28
+15,otu_21,359,140da1c9edd13ad241f781f1eeb2beb8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU16,VTX00156,KORP1,BM,restored,28
+15,otu_22,223,a737c9d64ea8567bd5fbd6694ced50b8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G8,VTX00130,KORP1,BM,restored,28
+15,otu_23,19,663650390696ac576adf3531dddef4bb,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,KORP1,BM,restored,28
+15,otu_24,12,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,KORP1,BM,restored,28
+15,otu_25,418,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,KORP1,BM,restored,28
+15,otu_28,28,8e0ab0341460216c742331e7dddae7b0,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Yamato2005 D,VTX00084,KORP1,BM,restored,28
+15,otu_29,148,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,KORP1,BM,restored,28
+15,otu_30,12,4fca16b49e27701e6b962c029d49f2eb,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,KORP1,BM,restored,28
+15,otu_34,759,9bb0bf8be08f0f8a3ab32d1c0c303bb3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00159,KORP1,BM,restored,28
+15,otu_36,13,5bb0ff12f216fad2d9d3a9d1813d2fbe,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo8,VTX00175,KORP1,BM,restored,28
+15,otu_37,1166,132ccfc0da746037dbbad52507f0a381,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,KORP1,BM,restored,28
+15,otu_38,462,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,KORP1,BM,restored,28
+15,otu_39,16,e4cd5f7fd4cbb511e8f17b07d8df6cd4,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,KORP1,BM,restored,28
+15,otu_42,50,57437b1275fc1f83d37f693788c54229,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus ORVIN GLO1E,VTX00151,KORP1,BM,restored,28
+15,otu_44,44,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,Paraglomus Pa 1,VTX00335,KORP1,BM,restored,28
+15,otu_45,31,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,KORP1,BM,restored,28
+15,otu_49,427,bac52c868e388432231dad7fdc96e705,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,KORP1,BM,restored,28
+15,otu_50,142,34d1724d86abb5f79e61e137bcc90194,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,KORP1,BM,restored,28
+15,otu_51,415,a9efcf7c14a3a7ea509f3d673cadffe1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,KORP1,BM,restored,28
+15,otu_52,34,e7b2a6ab746177d50fec392d92199d86,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,KORP1,BM,restored,28
+15,otu_53,681,6240145e4e1f6e0a9ae2f546244d7f71,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus perpusillum,VTX00287,KORP1,BM,restored,28
+15,otu_54,273,5ca01b9b9f0bd1b03f1a7a6b4ece2241,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,KORP1,BM,restored,28
+15,otu_58,152,b3775f39419d3aad768b1d51b5ccbe2a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,KORP1,BM,restored,28
+15,otu_68,82,1c30b29ba78048dbd12c10c32dec28a5,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,KORP1,BM,restored,28
+15,otu_69,85,ba8591e93f3d4f7ad04d0710d021cb0a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,KORP1,BM,restored,28
+15,otu_70,88,c1c6182be14bf9a4c95a3aebcdd3d78d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G14,VTX00083,KORP1,BM,restored,28
+15,otu_78,89,9b0b928a4eeca97284d983cd2ff2ff37,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,KORP1,BM,restored,28
+15,otu_83,46,7a7a89421895cd0c295232b41d690477,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,KORP1,BM,restored,28
+15,otu_87,16,3a1eee95d0b5323bf50d67fe68b00360,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,KORP1,BM,restored,28
+15,otu_100,66,f0bbab98740c1818a1ec6f86b8643500,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,KORP1,BM,restored,28
+15,otu_105,38,ee1d45ab77c9e6a144ace2ea8fa7db4d,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,KORP1,BM,restored,28
+15,otu_115,29,719992555d078877d5e555ade6af4977,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,KORP1,BM,restored,28
+15,otu_124,27,bd8f1375b6a4c6fc7954599731615aae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,KORP1,BM,restored,28
+16,otu_1,8,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,LPC1,LP,corn,0
+16,otu_3,1526,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,LPC1,LP,corn,0
+16,otu_4,1441,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,LPC1,LP,corn,0
+16,otu_5,2286,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPC1,LP,corn,0
+16,otu_6,785,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,LPC1,LP,corn,0
+16,otu_7,5743,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,LPC1,LP,corn,0
+16,otu_8,33,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,LPC1,LP,corn,0
+16,otu_9,391,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,LPC1,LP,corn,0
+16,otu_10,8,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,LPC1,LP,corn,0
+16,otu_12,185,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,LPC1,LP,corn,0
+16,otu_13,3853,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,LPC1,LP,corn,0
+16,otu_15,14,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPC1,LP,corn,0
+16,otu_16,167,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,LPC1,LP,corn,0
+16,otu_17,2194,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,LPC1,LP,corn,0
+16,otu_20,1459,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPC1,LP,corn,0
+16,otu_21,566,140da1c9edd13ad241f781f1eeb2beb8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU16,VTX00156,LPC1,LP,corn,0
+16,otu_22,834,a737c9d64ea8567bd5fbd6694ced50b8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G8,VTX00130,LPC1,LP,corn,0
+16,otu_26,16,8358caad260504807d38cd2898ca954d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus acnaGlo2,VTX00155,LPC1,LP,corn,0
+16,otu_29,873,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPC1,LP,corn,0
+16,otu_31,1948,011c425e4c3599f39f7d5fa04dc1686d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPC1,LP,corn,0
+16,otu_33,819,7bc067a6540c755cd1578b51202b746f,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,LPC1,LP,corn,0
+16,otu_35,114,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,LPC1,LP,corn,0
+16,otu_38,1645,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,LPC1,LP,corn,0
+16,otu_41,138,a967c9fd2dee4876c959167ef691e63c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPC1,LP,corn,0
+16,otu_42,80,57437b1275fc1f83d37f693788c54229,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus ORVIN GLO1E,VTX00151,LPC1,LP,corn,0
+16,otu_43,63,22674d53f20b0b70bd9f5486f7f60697,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPC1,LP,corn,0
+16,otu_45,751,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,LPC1,LP,corn,0
+16,otu_47,880,9265f06a3152925e254f443d6b0f0636,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo3b,VTX00069,LPC1,LP,corn,0
+16,otu_49,17,bac52c868e388432231dad7fdc96e705,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPC1,LP,corn,0
+16,otu_59,48,5f338f0f05339ee0f87410250babe2c3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPC1,LP,corn,0
+16,otu_70,19,c1c6182be14bf9a4c95a3aebcdd3d78d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G14,VTX00083,LPC1,LP,corn,0
+16,otu_92,121,806f32d567abba563e8d16b5cd748f0b,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,Scutellospora castanea,VTX00041,LPC1,LP,corn,0
+16,otu_139,12,66e830b9b66c6e8929d120737f709c33,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,LPC1,LP,corn,0
+17,otu_1,2784,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,LPREM1,LP,remnant,50
+17,otu_2,1342,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,LPREM1,LP,remnant,50
+17,otu_3,412,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,LPREM1,LP,remnant,50
+17,otu_4,850,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,LPREM1,LP,remnant,50
+17,otu_5,2281,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPREM1,LP,remnant,50
+17,otu_6,561,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,LPREM1,LP,remnant,50
+17,otu_7,3491,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,LPREM1,LP,remnant,50
+17,otu_9,637,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,LPREM1,LP,remnant,50
+17,otu_10,1135,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,LPREM1,LP,remnant,50
+17,otu_12,2105,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,LPREM1,LP,remnant,50
+17,otu_13,184,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,LPREM1,LP,remnant,50
+17,otu_15,612,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPREM1,LP,remnant,50
+17,otu_16,524,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,LPREM1,LP,remnant,50
+17,otu_17,1446,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,LPREM1,LP,remnant,50
+17,otu_18,979,e93219e3fa9866eaf244784446de5b40,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPREM1,LP,remnant,50
+17,otu_20,163,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPREM1,LP,remnant,50
+17,otu_21,260,140da1c9edd13ad241f781f1eeb2beb8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU16,VTX00156,LPREM1,LP,remnant,50
+17,otu_23,378,663650390696ac576adf3531dddef4bb,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPREM1,LP,remnant,50
+17,otu_24,865,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,LPREM1,LP,remnant,50
+17,otu_25,304,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,LPREM1,LP,remnant,50
+17,otu_28,986,8e0ab0341460216c742331e7dddae7b0,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Yamato2005 D,VTX00084,LPREM1,LP,remnant,50
+17,otu_29,920,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPREM1,LP,remnant,50
+17,otu_30,139,4fca16b49e27701e6b962c029d49f2eb,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,LPREM1,LP,remnant,50
+17,otu_32,38,f0cc400dc0c00335b7f2c8c0cb93a1ca,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G20,VTX00143,LPREM1,LP,remnant,50
+17,otu_35,278,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,LPREM1,LP,remnant,50
+17,otu_37,303,132ccfc0da746037dbbad52507f0a381,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPREM1,LP,remnant,50
+17,otu_38,58,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,LPREM1,LP,remnant,50
+17,otu_42,160,57437b1275fc1f83d37f693788c54229,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus ORVIN GLO1E,VTX00151,LPREM1,LP,remnant,50
+17,otu_44,530,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,Paraglomus Pa 1,VTX00335,LPREM1,LP,remnant,50
+17,otu_45,37,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,LPREM1,LP,remnant,50
+17,otu_54,85,5ca01b9b9f0bd1b03f1a7a6b4ece2241,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,LPREM1,LP,remnant,50
+17,otu_58,41,b3775f39419d3aad768b1d51b5ccbe2a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPREM1,LP,remnant,50
+17,otu_61,244,a71a96c90f3cba9d6e73c14799d30e05,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus INTA-4,VTX00445,LPREM1,LP,remnant,50
+17,otu_72,20,97378037372343341a2bee79ce55bb75,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G16,VTX00072,LPREM1,LP,remnant,50
+17,otu_74,98,ea10c65ee26bce92726facb7b0a6ea47,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU14,VTX00137,LPREM1,LP,remnant,50
+17,otu_76,86,a13a2e299ffe54995287ecfa68b5c32f,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPREM1,LP,remnant,50
+17,otu_78,41,9b0b928a4eeca97284d983cd2ff2ff37,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,LPREM1,LP,remnant,50
+17,otu_79,15,3da54ff2ce11106909d66d60c5991b36,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo59,VTX00276,LPREM1,LP,remnant,50
+17,otu_90,10,197869ce750dd76de93bc4d498552460,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo58,VTX00225,LPREM1,LP,remnant,50
+17,otu_91,101,304459d0d445e5e97000e5279f40fb61,Glomeromycetes,Diversisporales,Acaulosporaceae,Acaulospora,Acaulospora Acau2,VTX00030,LPREM1,LP,remnant,50
+17,otu_95,40,9976ee86295ca4108d23354c9d13a59f,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPREM1,LP,remnant,50
+17,otu_98,48,ada190c46ba14302579a9c55ddc54bb5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,LPREM1,LP,remnant,50
+17,otu_102,36,c943514b59575c269c5fba7e13915808,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPREM1,LP,remnant,50
+17,otu_111,12,50ca642f13169240a16a7c81051da891,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,Archaeospora Other1,VTX00005,LPREM1,LP,remnant,50
+17,otu_133,4,a5fc2e467399f8e3f4fc272f543edf95,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo G8,VTX00340,LPREM1,LP,remnant,50
+17,otu_150,2,2002d28dcb13d72be13467ad7f11c41a,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,NA,NA,LPREM1,LP,remnant,50
+18,otu_1,2300,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,LPRP1,LP,restored,4
+18,otu_2,405,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,LPRP1,LP,restored,4
+18,otu_3,122,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,LPRP1,LP,restored,4
+18,otu_4,1572,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,LPRP1,LP,restored,4
+18,otu_5,1228,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPRP1,LP,restored,4
+18,otu_6,2237,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,LPRP1,LP,restored,4
+18,otu_7,4419,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,LPRP1,LP,restored,4
+18,otu_8,391,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,LPRP1,LP,restored,4
+18,otu_9,2711,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,LPRP1,LP,restored,4
+18,otu_10,47,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,LPRP1,LP,restored,4
+18,otu_12,2601,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,LPRP1,LP,restored,4
+18,otu_13,308,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,LPRP1,LP,restored,4
+18,otu_15,1358,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPRP1,LP,restored,4
+18,otu_16,1252,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,LPRP1,LP,restored,4
+18,otu_17,2054,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,LPRP1,LP,restored,4
+18,otu_18,570,e93219e3fa9866eaf244784446de5b40,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPRP1,LP,restored,4
+18,otu_20,123,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPRP1,LP,restored,4
+18,otu_21,198,140da1c9edd13ad241f781f1eeb2beb8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU16,VTX00156,LPRP1,LP,restored,4
+18,otu_23,62,663650390696ac576adf3531dddef4bb,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPRP1,LP,restored,4
+18,otu_24,412,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,LPRP1,LP,restored,4
+18,otu_25,798,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,LPRP1,LP,restored,4
+18,otu_26,137,8358caad260504807d38cd2898ca954d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus acnaGlo2,VTX00155,LPRP1,LP,restored,4
+18,otu_29,1067,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPRP1,LP,restored,4
+18,otu_30,366,4fca16b49e27701e6b962c029d49f2eb,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,LPRP1,LP,restored,4
+18,otu_32,676,f0cc400dc0c00335b7f2c8c0cb93a1ca,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G20,VTX00143,LPRP1,LP,restored,4
+18,otu_33,365,7bc067a6540c755cd1578b51202b746f,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,LPRP1,LP,restored,4
+18,otu_35,619,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,LPRP1,LP,restored,4
+18,otu_38,619,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,LPRP1,LP,restored,4
+18,otu_44,894,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,Paraglomus Pa 1,VTX00335,LPRP1,LP,restored,4
+18,otu_45,88,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,LPRP1,LP,restored,4
+18,otu_59,60,5f338f0f05339ee0f87410250babe2c3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPRP1,LP,restored,4
+18,otu_66,11,526e8b36d15995fadb620f1af1e9d3a2,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,LPRP1,LP,restored,4
+18,otu_84,31,02442d57427159988b9c1f8932e8c3ea,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00197,LPRP1,LP,restored,4
+18,otu_90,119,197869ce750dd76de93bc4d498552460,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo58,VTX00225,LPRP1,LP,restored,4
+18,otu_109,9,e0d232e365520706d082838cabf68e1f,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo54,VTX00216,LPRP1,LP,restored,4
+18,otu_110,86,c0fe075c838635c40bfd2f65280ad177,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo59,VTX00276,LPRP1,LP,restored,4
+18,otu_137,13,8faa2642ec801c9a28863294eeca1429,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,LPRP1,LP,restored,4
+19,otu_1,3443,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,LPRP2,LP,restored,4
+19,otu_2,868,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,LPRP2,LP,restored,4
+19,otu_3,2962,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,LPRP2,LP,restored,4
+19,otu_4,177,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,LPRP2,LP,restored,4
+19,otu_5,564,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPRP2,LP,restored,4
+19,otu_6,986,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,LPRP2,LP,restored,4
+19,otu_7,2473,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,LPRP2,LP,restored,4
+19,otu_8,13,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,LPRP2,LP,restored,4
+19,otu_9,1606,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,LPRP2,LP,restored,4
+19,otu_10,1147,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,LPRP2,LP,restored,4
+19,otu_12,2570,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,LPRP2,LP,restored,4
+19,otu_13,238,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,LPRP2,LP,restored,4
+19,otu_15,1852,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPRP2,LP,restored,4
+19,otu_16,419,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,LPRP2,LP,restored,4
+19,otu_17,1248,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,LPRP2,LP,restored,4
+19,otu_18,456,e93219e3fa9866eaf244784446de5b40,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPRP2,LP,restored,4
+19,otu_20,88,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPRP2,LP,restored,4
+19,otu_23,183,663650390696ac576adf3531dddef4bb,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPRP2,LP,restored,4
+19,otu_24,530,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,LPRP2,LP,restored,4
+19,otu_25,110,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,LPRP2,LP,restored,4
+19,otu_26,266,8358caad260504807d38cd2898ca954d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus acnaGlo2,VTX00155,LPRP2,LP,restored,4
+19,otu_29,559,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPRP2,LP,restored,4
+19,otu_33,144,7bc067a6540c755cd1578b51202b746f,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,LPRP2,LP,restored,4
+19,otu_35,448,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,LPRP2,LP,restored,4
+19,otu_38,126,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,LPRP2,LP,restored,4
+19,otu_41,15,a967c9fd2dee4876c959167ef691e63c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPRP2,LP,restored,4
+19,otu_42,81,57437b1275fc1f83d37f693788c54229,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus ORVIN GLO1E,VTX00151,LPRP2,LP,restored,4
+19,otu_44,67,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,Paraglomus Pa 1,VTX00335,LPRP2,LP,restored,4
+19,otu_45,57,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,LPRP2,LP,restored,4
+19,otu_50,12,34d1724d86abb5f79e61e137bcc90194,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPRP2,LP,restored,4
+19,otu_53,147,6240145e4e1f6e0a9ae2f546244d7f71,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus perpusillum,VTX00287,LPRP2,LP,restored,4
+19,otu_61,241,a71a96c90f3cba9d6e73c14799d30e05,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus INTA-4,VTX00445,LPRP2,LP,restored,4
+19,otu_63,84,dfd53448f81f23769e110f8d82e671f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPRP2,LP,restored,4
+19,otu_65,225,d048c8e92236a39c54b0d17f3fd4de87,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,LPRP2,LP,restored,4
+19,otu_66,44,526e8b36d15995fadb620f1af1e9d3a2,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,LPRP2,LP,restored,4
+19,otu_74,83,ea10c65ee26bce92726facb7b0a6ea47,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU14,VTX00137,LPRP2,LP,restored,4
+19,otu_76,45,a13a2e299ffe54995287ecfa68b5c32f,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPRP2,LP,restored,4
+19,otu_87,153,3a1eee95d0b5323bf50d67fe68b00360,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,LPRP2,LP,restored,4
+19,otu_92,46,806f32d567abba563e8d16b5cd748f0b,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,Scutellospora castanea,VTX00041,LPRP2,LP,restored,4
+19,otu_93,152,b5ae5796f1869784414643399fb68c04,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPRP2,LP,restored,4
+19,otu_94,207,8a79e6d22f7b1c30e7dfb05aa0d51eeb,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,LPRP2,LP,restored,4
+19,otu_101,11,8073e594fb4717e0cc9db165b9eeb023,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,LPRP2,LP,restored,4
+19,otu_111,53,50ca642f13169240a16a7c81051da891,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,Archaeospora Other1,VTX00005,LPRP2,LP,restored,4
+19,otu_118,48,e6423bb1d53a6e9f2bf2f472674feb77,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,LPRP2,LP,restored,4
+19,otu_130,18,8d072e6a6a77ba63086c3eff70afc602,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus LER09,VTX00341,LPRP2,LP,restored,4
+19,otu_147,4,589514cac88952d9bd95674d6a6caa54,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,NA,NA,LPRP2,LP,restored,4
+20,otu_1,580,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,MBREM1,BM,remnant,50
+20,otu_2,1308,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,MBREM1,BM,remnant,50
+20,otu_3,279,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,MBREM1,BM,remnant,50
+20,otu_5,1956,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBREM1,BM,remnant,50
+20,otu_6,500,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,MBREM1,BM,remnant,50
+20,otu_7,1000,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,MBREM1,BM,remnant,50
+20,otu_8,2704,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,MBREM1,BM,remnant,50
+20,otu_10,94,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,MBREM1,BM,remnant,50
+20,otu_11,275,fa34a5226112d5c3040a09e932c851d1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00177,MBREM1,BM,remnant,50
+20,otu_15,827,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBREM1,BM,remnant,50
+20,otu_17,207,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,MBREM1,BM,remnant,50
+20,otu_23,650,663650390696ac576adf3531dddef4bb,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBREM1,BM,remnant,50
+20,otu_24,399,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,MBREM1,BM,remnant,50
+20,otu_25,198,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,MBREM1,BM,remnant,50
+20,otu_28,969,8e0ab0341460216c742331e7dddae7b0,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Yamato2005 D,VTX00084,MBREM1,BM,remnant,50
+20,otu_29,173,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBREM1,BM,remnant,50
+20,otu_30,66,4fca16b49e27701e6b962c029d49f2eb,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,MBREM1,BM,remnant,50
+20,otu_34,558,9bb0bf8be08f0f8a3ab32d1c0c303bb3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00159,MBREM1,BM,remnant,50
+20,otu_37,273,132ccfc0da746037dbbad52507f0a381,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBREM1,BM,remnant,50
+20,otu_38,148,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,MBREM1,BM,remnant,50
+20,otu_48,876,f828480e27adb99df68b8915e059870c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBREM1,BM,remnant,50
+20,otu_49,196,bac52c868e388432231dad7fdc96e705,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBREM1,BM,remnant,50
+20,otu_50,5,34d1724d86abb5f79e61e137bcc90194,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBREM1,BM,remnant,50
+20,otu_58,39,b3775f39419d3aad768b1d51b5ccbe2a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBREM1,BM,remnant,50
+20,otu_61,265,a71a96c90f3cba9d6e73c14799d30e05,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus INTA-4,VTX00445,MBREM1,BM,remnant,50
+20,otu_62,928,6767a5b097389223e7e3d8eacc7c9c12,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo3,VTX00074,MBREM1,BM,remnant,50
+20,otu_68,14,1c30b29ba78048dbd12c10c32dec28a5,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBREM1,BM,remnant,50
+20,otu_70,364,c1c6182be14bf9a4c95a3aebcdd3d78d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G14,VTX00083,MBREM1,BM,remnant,50
+20,otu_74,95,ea10c65ee26bce92726facb7b0a6ea47,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU14,VTX00137,MBREM1,BM,remnant,50
+20,otu_76,101,a13a2e299ffe54995287ecfa68b5c32f,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBREM1,BM,remnant,50
+20,otu_77,336,09acae69b7bae5a86276acc2281250ff,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBREM1,BM,remnant,50
+20,otu_84,50,02442d57427159988b9c1f8932e8c3ea,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00197,MBREM1,BM,remnant,50
+20,otu_85,100,a70a07eecf9558fb2b3daafa7ed8eb75,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBREM1,BM,remnant,50
+20,otu_86,546,c603446fcd07f3753f83fe2dbf86c2de,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Yamato2005 E,VTX00088,MBREM1,BM,remnant,50
+20,otu_101,26,8073e594fb4717e0cc9db165b9eeb023,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,MBREM1,BM,remnant,50
+20,otu_103,155,b6cddd96f450a7bf3c4950c2f2a06b83,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,MBREM1,BM,remnant,50
+20,otu_105,9,ee1d45ab77c9e6a144ace2ea8fa7db4d,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,MBREM1,BM,remnant,50
+20,otu_115,15,719992555d078877d5e555ade6af4977,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,MBREM1,BM,remnant,50
+20,otu_119,45,d80eb2d67de27cba579c1bc2bc17b2fe,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBREM1,BM,remnant,50
+20,otu_122,31,32a603f90902d09cba5b72b260d3815b,Glomeromycetes,Diversisporales,Acaulosporaceae,Acaulospora,Acaulospora Acau3,VTX00228,MBREM1,BM,remnant,50
+20,otu_135,3,ee91bcbd74a08c2480ec0e76ab69e267,Glomeromycetes,Diversisporales,Acaulosporaceae,Acaulospora,Acaulospora Acau10,VTX00028,MBREM1,BM,remnant,50
+20,otu_142,8,50636bf4c034ef26f19977ac9b772c45,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G31,VTX00191,MBREM1,BM,remnant,50
+20,otu_145,5,2853350d05210913ce4d782ba8659c19,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBREM1,BM,remnant,50
+21,otu_1,1306,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,MBRP1,BM,restored,18
+21,otu_2,751,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,MBRP1,BM,restored,18
+21,otu_3,686,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,MBRP1,BM,restored,18
+21,otu_5,1349,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBRP1,BM,restored,18
+21,otu_6,268,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,MBRP1,BM,restored,18
+21,otu_7,982,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,MBRP1,BM,restored,18
+21,otu_8,1484,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,MBRP1,BM,restored,18
+21,otu_9,803,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,MBRP1,BM,restored,18
+21,otu_10,770,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,MBRP1,BM,restored,18
+21,otu_11,253,fa34a5226112d5c3040a09e932c851d1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00177,MBRP1,BM,restored,18
+21,otu_12,201,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,MBRP1,BM,restored,18
+21,otu_13,50,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,MBRP1,BM,restored,18
+21,otu_15,439,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBRP1,BM,restored,18
+21,otu_16,318,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,MBRP1,BM,restored,18
+21,otu_17,382,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,MBRP1,BM,restored,18
+21,otu_20,43,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBRP1,BM,restored,18
+21,otu_22,275,a737c9d64ea8567bd5fbd6694ced50b8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G8,VTX00130,MBRP1,BM,restored,18
+21,otu_23,1068,663650390696ac576adf3531dddef4bb,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBRP1,BM,restored,18
+21,otu_24,749,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,MBRP1,BM,restored,18
+21,otu_25,65,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,MBRP1,BM,restored,18
+21,otu_28,2048,8e0ab0341460216c742331e7dddae7b0,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Yamato2005 D,VTX00084,MBRP1,BM,restored,18
+21,otu_29,211,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBRP1,BM,restored,18
+21,otu_30,286,4fca16b49e27701e6b962c029d49f2eb,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,MBRP1,BM,restored,18
+21,otu_33,6,7bc067a6540c755cd1578b51202b746f,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,MBRP1,BM,restored,18
+21,otu_34,154,9bb0bf8be08f0f8a3ab32d1c0c303bb3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00159,MBRP1,BM,restored,18
+21,otu_35,142,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,MBRP1,BM,restored,18
+21,otu_38,117,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,MBRP1,BM,restored,18
+21,otu_42,314,57437b1275fc1f83d37f693788c54229,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus ORVIN GLO1E,VTX00151,MBRP1,BM,restored,18
+21,otu_45,29,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,MBRP1,BM,restored,18
+21,otu_48,129,f828480e27adb99df68b8915e059870c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBRP1,BM,restored,18
+21,otu_54,49,5ca01b9b9f0bd1b03f1a7a6b4ece2241,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,MBRP1,BM,restored,18
+21,otu_55,21,5a09b75699b2224b3c13f44ade2dd158,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBRP1,BM,restored,18
+21,otu_61,175,a71a96c90f3cba9d6e73c14799d30e05,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus INTA-4,VTX00445,MBRP1,BM,restored,18
+21,otu_62,3,6767a5b097389223e7e3d8eacc7c9c12,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo3,VTX00074,MBRP1,BM,restored,18
+21,otu_63,84,dfd53448f81f23769e110f8d82e671f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBRP1,BM,restored,18
+21,otu_64,75,0b7958c5b182fae5e0cc9df7120b0982,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU13,VTX00140,MBRP1,BM,restored,18
+21,otu_74,68,ea10c65ee26bce92726facb7b0a6ea47,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU14,VTX00137,MBRP1,BM,restored,18
+21,otu_76,53,a13a2e299ffe54995287ecfa68b5c32f,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MBRP1,BM,restored,18
+21,otu_78,22,9b0b928a4eeca97284d983cd2ff2ff37,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,MBRP1,BM,restored,18
+21,otu_84,254,02442d57427159988b9c1f8932e8c3ea,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00197,MBRP1,BM,restored,18
+21,otu_90,9,197869ce750dd76de93bc4d498552460,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo58,VTX00225,MBRP1,BM,restored,18
+21,otu_92,20,806f32d567abba563e8d16b5cd748f0b,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,Scutellospora castanea,VTX00041,MBRP1,BM,restored,18
+21,otu_98,9,ada190c46ba14302579a9c55ddc54bb5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,MBRP1,BM,restored,18
+21,otu_105,12,ee1d45ab77c9e6a144ace2ea8fa7db4d,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,MBRP1,BM,restored,18
+21,otu_110,47,c0fe075c838635c40bfd2f65280ad177,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo59,VTX00276,MBRP1,BM,restored,18
+21,otu_135,15,ee91bcbd74a08c2480ec0e76ab69e267,Glomeromycetes,Diversisporales,Acaulosporaceae,Acaulospora,Acaulospora Acau10,VTX00028,MBRP1,BM,restored,18
+21,otu_137,6,8faa2642ec801c9a28863294eeca1429,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,MBRP1,BM,restored,18
+21,otu_140,11,e48f9713903b0605b2839d8270b904e9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00159,MBRP1,BM,restored,18
+22,otu_1,3260,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,MHRP1,BM,restored,7
+22,otu_2,1437,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,MHRP1,BM,restored,7
+22,otu_3,187,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,MHRP1,BM,restored,7
+22,otu_4,590,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,MHRP1,BM,restored,7
+22,otu_5,2942,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP1,BM,restored,7
+22,otu_6,398,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,MHRP1,BM,restored,7
+22,otu_7,3130,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,MHRP1,BM,restored,7
+22,otu_8,812,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,MHRP1,BM,restored,7
+22,otu_9,3111,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,MHRP1,BM,restored,7
+22,otu_10,1026,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,MHRP1,BM,restored,7
+22,otu_11,21,fa34a5226112d5c3040a09e932c851d1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00177,MHRP1,BM,restored,7
+22,otu_12,3911,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,MHRP1,BM,restored,7
+22,otu_13,472,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,MHRP1,BM,restored,7
+22,otu_14,668,3bbb6fe91b995807a605b6f5983446a4,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo59,VTX00276,MHRP1,BM,restored,7
+22,otu_16,336,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,MHRP1,BM,restored,7
+22,otu_17,1658,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,MHRP1,BM,restored,7
+22,otu_18,658,e93219e3fa9866eaf244784446de5b40,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP1,BM,restored,7
+22,otu_19,260,d338b134f9f7963d5615f06009ce3895,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP1,BM,restored,7
+22,otu_20,249,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP1,BM,restored,7
+22,otu_21,699,140da1c9edd13ad241f781f1eeb2beb8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU16,VTX00156,MHRP1,BM,restored,7
+22,otu_22,572,a737c9d64ea8567bd5fbd6694ced50b8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G8,VTX00130,MHRP1,BM,restored,7
+22,otu_24,896,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,MHRP1,BM,restored,7
+22,otu_25,344,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,MHRP1,BM,restored,7
+22,otu_26,1278,8358caad260504807d38cd2898ca954d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus acnaGlo2,VTX00155,MHRP1,BM,restored,7
+22,otu_29,801,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP1,BM,restored,7
+22,otu_30,293,4fca16b49e27701e6b962c029d49f2eb,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,MHRP1,BM,restored,7
+22,otu_31,113,011c425e4c3599f39f7d5fa04dc1686d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP1,BM,restored,7
+22,otu_32,70,f0cc400dc0c00335b7f2c8c0cb93a1ca,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G20,VTX00143,MHRP1,BM,restored,7
+22,otu_33,32,7bc067a6540c755cd1578b51202b746f,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,MHRP1,BM,restored,7
+22,otu_34,106,9bb0bf8be08f0f8a3ab32d1c0c303bb3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00159,MHRP1,BM,restored,7
+22,otu_36,60,5bb0ff12f216fad2d9d3a9d1813d2fbe,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo8,VTX00175,MHRP1,BM,restored,7
+22,otu_38,235,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,MHRP1,BM,restored,7
+22,otu_39,68,e4cd5f7fd4cbb511e8f17b07d8df6cd4,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP1,BM,restored,7
+22,otu_40,17,98107578c7eed00e95b2b89858397794,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo-D,VTX00103,MHRP1,BM,restored,7
+22,otu_42,605,57437b1275fc1f83d37f693788c54229,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus ORVIN GLO1E,VTX00151,MHRP1,BM,restored,7
+22,otu_44,385,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,Paraglomus Pa 1,VTX00335,MHRP1,BM,restored,7
+22,otu_45,122,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,MHRP1,BM,restored,7
+22,otu_46,153,a9c8cf3d006c2910de635126e53e148d,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,Archaeospora Schechter08 Arch1,VTX00008,MHRP1,BM,restored,7
+22,otu_47,341,9265f06a3152925e254f443d6b0f0636,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo3b,VTX00069,MHRP1,BM,restored,7
+22,otu_50,10,34d1724d86abb5f79e61e137bcc90194,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP1,BM,restored,7
+22,otu_52,234,e7b2a6ab746177d50fec392d92199d86,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP1,BM,restored,7
+22,otu_57,14,c7c2a3d8c977b70e837c661e58d815d6,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,MHRP1,BM,restored,7
+22,otu_59,63,5f338f0f05339ee0f87410250babe2c3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP1,BM,restored,7
+22,otu_60,34,eac18199c53aa01e7fe7e940900207a6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,MHRP1,BM,restored,7
+22,otu_66,7,526e8b36d15995fadb620f1af1e9d3a2,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,MHRP1,BM,restored,7
+22,otu_72,75,97378037372343341a2bee79ce55bb75,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G16,VTX00072,MHRP1,BM,restored,7
+22,otu_75,12,4c2e509a1cf08962b28c3ce5578eebea,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus SS-G1,VTX00448,MHRP1,BM,restored,7
+22,otu_80,24,5631da1f661c86ab203e82be06b1a957,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,Archaeospora sp.,VTX00009,MHRP1,BM,restored,7
+22,otu_87,27,3a1eee95d0b5323bf50d67fe68b00360,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,MHRP1,BM,restored,7
+22,otu_88,172,15720844479057271688cb5bb4bf2db7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,MHRP1,BM,restored,7
+22,otu_92,6,806f32d567abba563e8d16b5cd748f0b,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,Scutellospora castanea,VTX00041,MHRP1,BM,restored,7
+22,otu_99,25,5829e4aa44843d8eb4667a58d80bc3ca,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,MHRP1,BM,restored,7
+22,otu_100,20,f0bbab98740c1818a1ec6f86b8643500,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,MHRP1,BM,restored,7
+22,otu_101,19,8073e594fb4717e0cc9db165b9eeb023,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,MHRP1,BM,restored,7
+22,otu_116,18,a258991a4c7712ca7474808e101b491c,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,MHRP1,BM,restored,7
+22,otu_136,5,97f138234a41900f29467c8c0dc99868,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP1,BM,restored,7
+23,otu_1,2228,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,MHRP2,BM,restored,2
+23,otu_2,626,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,MHRP2,BM,restored,2
+23,otu_3,104,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,MHRP2,BM,restored,2
+23,otu_4,2952,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,MHRP2,BM,restored,2
+23,otu_5,2943,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP2,BM,restored,2
+23,otu_6,1818,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,MHRP2,BM,restored,2
+23,otu_7,1715,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,MHRP2,BM,restored,2
+23,otu_9,2887,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,MHRP2,BM,restored,2
+23,otu_10,1097,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,MHRP2,BM,restored,2
+23,otu_12,1528,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,MHRP2,BM,restored,2
+23,otu_13,913,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,MHRP2,BM,restored,2
+23,otu_16,88,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,MHRP2,BM,restored,2
+23,otu_17,933,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,MHRP2,BM,restored,2
+23,otu_18,570,e93219e3fa9866eaf244784446de5b40,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP2,BM,restored,2
+23,otu_19,149,d338b134f9f7963d5615f06009ce3895,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP2,BM,restored,2
+23,otu_20,652,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP2,BM,restored,2
+23,otu_21,346,140da1c9edd13ad241f781f1eeb2beb8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU16,VTX00156,MHRP2,BM,restored,2
+23,otu_22,64,a737c9d64ea8567bd5fbd6694ced50b8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G8,VTX00130,MHRP2,BM,restored,2
+23,otu_24,479,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,MHRP2,BM,restored,2
+23,otu_25,510,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,MHRP2,BM,restored,2
+23,otu_26,2774,8358caad260504807d38cd2898ca954d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus acnaGlo2,VTX00155,MHRP2,BM,restored,2
+23,otu_29,514,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP2,BM,restored,2
+23,otu_30,78,4fca16b49e27701e6b962c029d49f2eb,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,MHRP2,BM,restored,2
+23,otu_31,411,011c425e4c3599f39f7d5fa04dc1686d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP2,BM,restored,2
+23,otu_32,6,f0cc400dc0c00335b7f2c8c0cb93a1ca,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G20,VTX00143,MHRP2,BM,restored,2
+23,otu_33,88,7bc067a6540c755cd1578b51202b746f,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,MHRP2,BM,restored,2
+23,otu_35,135,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,MHRP2,BM,restored,2
+23,otu_36,222,5bb0ff12f216fad2d9d3a9d1813d2fbe,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo8,VTX00175,MHRP2,BM,restored,2
+23,otu_38,362,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,MHRP2,BM,restored,2
+23,otu_39,253,e4cd5f7fd4cbb511e8f17b07d8df6cd4,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP2,BM,restored,2
+23,otu_42,473,57437b1275fc1f83d37f693788c54229,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus ORVIN GLO1E,VTX00151,MHRP2,BM,restored,2
+23,otu_44,34,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,Paraglomus Pa 1,VTX00335,MHRP2,BM,restored,2
+23,otu_45,241,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,MHRP2,BM,restored,2
+23,otu_47,421,9265f06a3152925e254f443d6b0f0636,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo3b,VTX00069,MHRP2,BM,restored,2
+23,otu_48,55,f828480e27adb99df68b8915e059870c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP2,BM,restored,2
+23,otu_50,27,34d1724d86abb5f79e61e137bcc90194,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP2,BM,restored,2
+23,otu_51,15,a9efcf7c14a3a7ea509f3d673cadffe1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP2,BM,restored,2
+23,otu_52,307,e7b2a6ab746177d50fec392d92199d86,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP2,BM,restored,2
+23,otu_59,52,5f338f0f05339ee0f87410250babe2c3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP2,BM,restored,2
+23,otu_61,24,a71a96c90f3cba9d6e73c14799d30e05,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus INTA-4,VTX00445,MHRP2,BM,restored,2
+23,otu_74,18,ea10c65ee26bce92726facb7b0a6ea47,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU14,VTX00137,MHRP2,BM,restored,2
+23,otu_84,82,02442d57427159988b9c1f8932e8c3ea,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00197,MHRP2,BM,restored,2
+23,otu_92,15,806f32d567abba563e8d16b5cd748f0b,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,Scutellospora castanea,VTX00041,MHRP2,BM,restored,2
+23,otu_99,26,5829e4aa44843d8eb4667a58d80bc3ca,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,MHRP2,BM,restored,2
+23,otu_111,12,50ca642f13169240a16a7c81051da891,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,Archaeospora Other1,VTX00005,MHRP2,BM,restored,2
+23,otu_113,69,b8f0f9b1e9b1e776b3a0ed1124d1b6e3,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP2,BM,restored,2
+23,otu_115,21,719992555d078877d5e555ade6af4977,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,MHRP2,BM,restored,2
+23,otu_120,34,d078e0c8d3242c7e23f9e6a4ac40f3d8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP2,BM,restored,2
+23,otu_131,17,23ec2931636f142777b16564816efd38,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Alguacil10 Glo6,VTX00395,MHRP2,BM,restored,2
+23,otu_132,17,1346b02f7fba9db89b620ddcf7b6a6c2,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP2,BM,restored,2
+23,otu_134,16,6c7b1db7ada01a5caee481356f650ce9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,MHRP2,BM,restored,2
+23,otu_141,9,7c06990bb9229acb83f6ae7f25670602,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,MHRP2,BM,restored,2
+24,otu_2,86,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,PHC1,BM,corn,0
+24,otu_4,1821,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,PHC1,BM,corn,0
+24,otu_5,2127,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,PHC1,BM,corn,0
+24,otu_6,632,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,PHC1,BM,corn,0
+24,otu_7,4835,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,PHC1,BM,corn,0
+24,otu_8,13,0d508e08bf3048aa561e7c9d96e3bea9,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00315,PHC1,BM,corn,0
+24,otu_9,476,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,PHC1,BM,corn,0
+24,otu_10,104,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,PHC1,BM,corn,0
+24,otu_12,146,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,PHC1,BM,corn,0
+24,otu_13,4070,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,PHC1,BM,corn,0
+24,otu_15,22,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,PHC1,BM,corn,0
+24,otu_17,2190,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,PHC1,BM,corn,0
+24,otu_18,34,e93219e3fa9866eaf244784446de5b40,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,PHC1,BM,corn,0
+24,otu_19,59,d338b134f9f7963d5615f06009ce3895,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,PHC1,BM,corn,0
+24,otu_20,1224,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,PHC1,BM,corn,0
+24,otu_21,2697,140da1c9edd13ad241f781f1eeb2beb8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU16,VTX00156,PHC1,BM,corn,0
+24,otu_22,82,a737c9d64ea8567bd5fbd6694ced50b8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G8,VTX00130,PHC1,BM,corn,0
+24,otu_24,95,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,PHC1,BM,corn,0
+24,otu_25,30,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,PHC1,BM,corn,0
+24,otu_26,1926,8358caad260504807d38cd2898ca954d,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus acnaGlo2,VTX00155,PHC1,BM,corn,0
+24,otu_28,8,8e0ab0341460216c742331e7dddae7b0,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Yamato2005 D,VTX00084,PHC1,BM,corn,0
+24,otu_29,911,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,PHC1,BM,corn,0
+24,otu_32,47,f0cc400dc0c00335b7f2c8c0cb93a1ca,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G20,VTX00143,PHC1,BM,corn,0
+24,otu_33,173,7bc067a6540c755cd1578b51202b746f,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,PHC1,BM,corn,0
+24,otu_35,40,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,PHC1,BM,corn,0
+24,otu_38,297,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,PHC1,BM,corn,0
+24,otu_39,6,e4cd5f7fd4cbb511e8f17b07d8df6cd4,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,PHC1,BM,corn,0
+24,otu_41,132,a967c9fd2dee4876c959167ef691e63c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,PHC1,BM,corn,0
+24,otu_42,23,57437b1275fc1f83d37f693788c54229,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus ORVIN GLO1E,VTX00151,PHC1,BM,corn,0
+24,otu_45,857,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,PHC1,BM,corn,0
+24,otu_47,486,9265f06a3152925e254f443d6b0f0636,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo3b,VTX00069,PHC1,BM,corn,0
+24,otu_52,30,e7b2a6ab746177d50fec392d92199d86,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,PHC1,BM,corn,0
+24,otu_73,8,2f630db47c452a18eb480206bdf9f2bb,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00301,PHC1,BM,corn,0
+24,otu_84,16,02442d57427159988b9c1f8932e8c3ea,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00197,PHC1,BM,corn,0
+24,otu_88,24,15720844479057271688cb5bb4bf2db7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,PHC1,BM,corn,0
+24,otu_90,7,197869ce750dd76de93bc4d498552460,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo58,VTX00225,PHC1,BM,corn,0
+24,otu_96,196,9691157f2a061d7b5338478a7cce2f5e,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus acnaGlo2,VTX00155,PHC1,BM,corn,0
+24,otu_99,64,5829e4aa44843d8eb4667a58d80bc3ca,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,PHC1,BM,corn,0
+24,otu_124,27,bd8f1375b6a4c6fc7954599731615aae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,PHC1,BM,corn,0
+25,otu_1,2651,320f3edc7b48ba5691766ccc71b0d898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Douhan3,VTX00212,PHRP1,BM,restored,11
+25,otu_2,1832,97cefc055a2fa1b8caf5b81635b3fde7,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G15,VTX00135,PHRP1,BM,restored,11
+25,otu_3,401,2c47b9acb976f06611bddfe10f97e217,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,PHRP1,BM,restored,11
+25,otu_4,797,7487be824e0acea7ee8c22b94f1376ae,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Whitfield type 17,VTX00195,PHRP1,BM,restored,11
+25,otu_5,1019,e8cbf85e2f78be8ff21c0c3e0f509639,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,PHRP1,BM,restored,11
+25,otu_6,926,87ff74cc0f55f12dc4056a4a8a2c72bd,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,NA,NA,PHRP1,BM,restored,11
+25,otu_7,2035,f10a50b1220da2d3e275f9772b3c2898,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G23,VTX00222,PHRP1,BM,restored,11
+25,otu_9,3235,4a4251fdd8c94240584c5d4ff6aeb094,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo7,VTX00214,PHRP1,BM,restored,11
+25,otu_10,4100,210c71717f87c8e4912431ed98b553f5,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Douhan9,VTX00056,PHRP1,BM,restored,11
+25,otu_12,2336,6fc0542bf3adee7fec1babd2646ef8f6,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G18,VTX00064,PHRP1,BM,restored,11
+25,otu_13,394,4ae50c113ec66fe2cd07e20d0f611823,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus viscosum,VTX00063,PHRP1,BM,restored,11
+25,otu_15,1042,7a50583e4c0a2583573e8ebecf8fa907,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,PHRP1,BM,restored,11
+25,otu_16,702,3fa83787d65a490d928ea85a00a8c8bb,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus ORVIN GLO4,VTX00278,PHRP1,BM,restored,11
+25,otu_17,1175,3ea271a390b5f981a235cd62868e5989,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G22,VTX00125,PHRP1,BM,restored,11
+25,otu_18,1187,e93219e3fa9866eaf244784446de5b40,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,PHRP1,BM,restored,11
+25,otu_19,143,d338b134f9f7963d5615f06009ce3895,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,PHRP1,BM,restored,11
+25,otu_20,203,999d2bb3dd8b66d293b59b85d28836a1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,PHRP1,BM,restored,11
+25,otu_21,739,140da1c9edd13ad241f781f1eeb2beb8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU16,VTX00156,PHRP1,BM,restored,11
+25,otu_22,653,a737c9d64ea8567bd5fbd6694ced50b8,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G8,VTX00130,PHRP1,BM,restored,11
+25,otu_24,14,d378cada02b87539df6bbcf669dc4174,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G7,VTX00199,PHRP1,BM,restored,11
+25,otu_25,1054,fdfc6a9206fe11fdaf5bc50ca03180a7,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus acnaGlo7,VTX00057,PHRP1,BM,restored,11
+25,otu_29,636,61f1e4919d11bf8ae6a2e4a6b800585a,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,PHRP1,BM,restored,11
+25,otu_30,351,4fca16b49e27701e6b962c029d49f2eb,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,NA,NA,PHRP1,BM,restored,11
+25,otu_32,79,f0cc400dc0c00335b7f2c8c0cb93a1ca,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus MO-G20,VTX00143,PHRP1,BM,restored,11
+25,otu_33,232,7bc067a6540c755cd1578b51202b746f,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,NA,NA,PHRP1,BM,restored,11
+25,otu_35,350,90f0fdcfde69405c7ab111c1377a4757,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Wirsel OTU4,VTX00086,PHRP1,BM,restored,11
+25,otu_38,210,c4d165f96f77b93638cf89a9aaca0c0a,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,PHRP1,BM,restored,11
+25,otu_44,14,32b1888516bfdc3819374f1fc951889e,Paraglomeromycetes,Paraglomerales,Paraglomeraceae,Paraglomus,Paraglomus Pa 1,VTX00335,PHRP1,BM,restored,11
+25,otu_45,91,12d0f9c7a825be4eff5ea29fe1d8bb1c,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Torrecillas12b Glo G13,VTX00409,PHRP1,BM,restored,11
+25,otu_47,1327,9265f06a3152925e254f443d6b0f0636,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus Glo3b,VTX00069,PHRP1,BM,restored,11
+25,otu_51,437,a9efcf7c14a3a7ea509f3d673cadffe1,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,PHRP1,BM,restored,11
+25,otu_52,197,e7b2a6ab746177d50fec392d92199d86,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,PHRP1,BM,restored,11
+25,otu_53,79,6240145e4e1f6e0a9ae2f546244d7f71,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus perpusillum,VTX00287,PHRP1,BM,restored,11
+25,otu_54,20,5ca01b9b9f0bd1b03f1a7a6b4ece2241,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,NA,NA,PHRP1,BM,restored,11
+25,otu_75,9,4c2e509a1cf08962b28c3ce5578eebea,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus SS-G1,VTX00448,PHRP1,BM,restored,11
+25,otu_82,14,a7b805211cefc561a19461b13a4d1480,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,PHRP1,BM,restored,11
+25,otu_84,205,02442d57427159988b9c1f8932e8c3ea,Glomeromycetes,Glomerales,Glomeraceae,Glomus,Glomus sp.,VTX00197,PHRP1,BM,restored,11
+25,otu_92,29,806f32d567abba563e8d16b5cd748f0b,Glomeromycetes,Diversisporales,Gigasporaceae,Scutellospora,Scutellospora castanea,VTX00041,PHRP1,BM,restored,11
+25,otu_93,16,b5ae5796f1869784414643399fb68c04,Glomeromycetes,Glomerales,Glomeraceae,Glomus,NA,NA,PHRP1,BM,restored,11
+25,otu_100,13,f0bbab98740c1818a1ec6f86b8643500,Glomeromycetes,Diversisporales,Diversisporaceae,Diversispora,Diversispora MO-GC1,VTX00060,PHRP1,BM,restored,11
+25,otu_133,7,a5fc2e467399f8e3f4fc272f543edf95,Glomeromycetes,Glomerales,Claroideoglomeraceae,Claroideoglomus,Claroideoglomus Glo G8,VTX00340,PHRP1,BM,restored,11
+25,otu_146,5,cf5c0e038a25854e03befadeb9efd661,Archaeosporomycetes,Archaeosporales,Archaeosporaceae,Archaeospora,Archaeospora MO-Ar3,VTX00455,PHRP1,BM,restored,11

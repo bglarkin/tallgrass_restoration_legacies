@@ -23,6 +23,7 @@ The report [microbial_diversity.md](microbial_diversity.md) presents basic stati
 OTUs are annotated with taxonomic information, and ITS OTUs additionally are annotated with [Fungal traits](https://link.springer.com/article/10.1007/s13225-020-00466-2) "primary lifestyles" (aka guilds). 
 In [this report](microbial_guild_taxonomy.md), sequence abundances
 in taxonomic groups or fungal guilds are compared across field types and with time
-since restoration.
+since restoration. Indicator species analysis is also performed to identify particular species matches 
+with interesting stories. 
 
 ## Microbial Communities

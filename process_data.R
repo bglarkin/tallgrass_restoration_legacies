@@ -146,9 +146,10 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
         mutate(sum = rowSums(across(starts_with(cluster_type)))) %>%
         group_by(field_key) %>%
         slice_max(sum, n=samps) %>%
-        ungroup() %>% 
         select(-sum) %>%
-        mutate(field_key = as.numeric(field_key))
+        summarize(across(starts_with("otu"), ~ sum(.x)), .groups = "drop") %>%
+        mutate(field_key = as.numeric(field_key)) %>% 
+        arrange(field_key)
     zero_otu1 <- which(apply(spe_topn, 2, sum) == 0)
     spe_raw <- spe_topn[, -zero_otu1]
     
@@ -165,6 +166,7 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     spe_rfy <- data.frame(rfy$otu.tab.rff[, -zero_otu2]) %>%
         rownames_to_column(var = "field_key") %>%
         mutate(field_key = as.numeric(field_key)) %>% 
+        arrange(field_key) %>% 
         as_tibble()
     
     meta_raw <- meta %>% filter(!(otu_num %in% names(zero_otu1)))
