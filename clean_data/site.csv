@@ -1,4 +1,4 @@
-site_key,site_name,region,lat,long,site_type,yr_restore,yr_since,yr_rank
+field_key,field_name,region,lat,long,field_type,yr_restore,yr_since,yr_rank
 1,BBRP1,BM,43.09988516,-89.72517441,restored,2000,16,9
 2,ERRP1,BM,43.06588062,-89.80357781,restored,2013,3,3
 3,FGC1,FG,43.16086938,-88.89045361,corn,NA,0,1

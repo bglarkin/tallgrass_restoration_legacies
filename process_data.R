@@ -54,13 +54,14 @@ for (i in 1:length(packages_needed)) {
 }
 #' 
 #' ## Functions
-process_qiime <- function(spe, taxa, traits=NULL, varname, gene, cluster_type, colname_prefix, folder) {
+process_qiime <- function(spe, taxa, samps=6, traits=NULL, varname, gene, cluster_type, colname_prefix, folder) {
     
     # Variable definitions
     # spe             = Dataframe or tibble with QIIME2 sequence abundances output, 
     #                   OTUs in rows and samples in columns.
     # taxa            = Dataframe or tibble with QIIME2 taxonomy outputs; OTUs in
-    #                   rows and metadata in columns. 
+    #                   rows and metadata in columns.   
+    # samps           = Samples to keep from each field, default=6
     # traits          = Additional dataframe of traits or guilds.
     # varname         = An unique key will be created to replace the cumbersome cluster 
     #                   hash which is produced by QIIME2. Varname, a string, begins the
@@ -111,7 +112,7 @@ process_qiime <- function(spe, taxa, traits=NULL, varname, gene, cluster_type, c
                    genus   = str_sub(genus,   4, nchar(genus)),
                    species = str_sub(species, 4, nchar(species))) %>% 
             left_join(traits, by = join_by(phylum, class, order, family, genus)) %>% 
-            select(-otu_ID, -kingdom, -growth_morphology, -trait, -notes, -citation, -Confidence)
+            select(-otu_ID, -kingdom, -Confidence)
         write_csv(meta, 
                   paste0(getwd(), folder, "/spe_", gene, "_taxaguild.csv"))
     } else {
@@ -129,7 +130,7 @@ process_qiime <- function(spe, taxa, traits=NULL, varname, gene, cluster_type, c
                   paste0(getwd(), folder, "/spe_", gene, "_taxonomy.csv"))
     }
     
-    spe_all <- 
+    spe_topn <- 
         data.frame(
             data %>% 
                 mutate(!!varname := paste0(cluster_type, "_", row_number())) %>% 
@@ -140,11 +141,14 @@ process_qiime <- function(spe, taxa, traits=NULL, varname, gene, cluster_type, c
         as.data.frame() %>% 
         rownames_to_column() %>% 
         mutate(field = str_remove(rowname, colname_prefix)) %>% 
-        separate(col = field, into = c("field_key", "sample"), sep = "_") %>% 
+        separate_wider_delim(cols = field, delim = "_", names = c("field_key", "sample")) %>%
         select(field_key, sample, everything(), -rowname) %>% 
-        # mutate(sum = rowSums(across(starts_with(cluster_type)))) %>% 
-        # group_by(field_key) %>% 
-        
+        mutate(sum = rowSums(across(starts_with(cluster_type))),
+               across(where(is.character), as.numeric)) %>%
+        group_by(field_key) %>%
+        slice_max(sum, n=samps)
+    null_spe <- which(apply(spe_topn, 2, sum) == 0)
+    spe_all <- spe_topn[,-null_spe]
     write_csv(spe_all, 
               paste0(getwd(), folder, "/spe_", gene, "_raw.csv"))
     out <- list(
@@ -155,35 +159,18 @@ process_qiime <- function(spe, taxa, traits=NULL, varname, gene, cluster_type, c
     
 }
 
-temp <- read_delim(paste0(getwd(), "/otu_tables/ITS/ITS_otu_raw.txt"))
-ttemp <- 
-data.frame(
-    temp %>% 
-        mutate(otu_num = paste0("otu_", row_number())) %>% 
-        select(otu_num, starts_with("ITS")),
-    row.names = 1
-) %>%
-    t() %>% 
-    as.data.frame() %>% 
-    rownames_to_column() %>% 
-    mutate(field = str_remove(rowname, "ITS_TGP_")) %>% 
-    separate(col = field, into = c("field_key", "sample"), sep = "_") %>% 
-    select(field_key, sample, everything(), -rowname) %>% 
-    arrange(as.numeric(field_key), as.numeric(sample))
-
-ttemp[1:30, 1:10] %>% 
-    mutate(sum = rowSums(across(starts_with("otu")))) %>% 
-    group_by(field_key) %>% 
-    slice_max(sum, n = 6)
-    
 
 #'
 #' # Load and process data
 #' ## Import files
-otu_its <- read_excel(paste0(getwd(), "/otu_tables/ITS/OTU_table_rrfd_3200_w_taxa.guilds.xlsx"), na = "-")
-otu_18S <- read_delim(paste0(getwd(), "/otu_tables/TGP_18S_tables_021722/OTUs_18S_TGP_table_rarefied.txt"), 
-                      delim = "\t", show_col_types = FALSE)
-traits  <- read_excel(paste0(getwd(), "/otu_tables/13225_2020_466_MOESM4_ESM.xlsx"), sheet = "export_ver") %>% 
+its_otu <- read_delim(paste0(getwd(), "/otu_tables/ITS/ITS_otu_raw.txt"), 
+                      show_col_types = FALSE)
+its_taxa <- read_delim(paste0(getwd(), "/otu_tables/ITS/ITS_otu_taxonomy.txt"),
+                       show_col_types = FALSE)
+amf_otu <- 
+amf_taxa <- 
+traits  <- read_csv(paste0(getwd(), "/otu_tables/2023-02-23_fungal_traits.csv"),
+                      show_col_types = FALSE) %>% 
     select(phylum:primary_lifestyle)
 #' 
 #' ## ETL using `process_qiime()`
@@ -191,8 +178,9 @@ traits  <- read_excel(paste0(getwd(), "/otu_tables/13225_2020_466_MOESM4_ESM.xls
 #+ otu_its
 its <- 
     process_qiime(
-        data = otu_its,
-        traits = traits,
+        spe =   ,
+        taxa =   ,
+        traits = ,
         varname = otu_num,
         gene = "ITS",
         cluster_type = "otu",
