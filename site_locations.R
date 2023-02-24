@@ -51,10 +51,8 @@ for (i in 1:length(packages_needed)) {
 #'
 #' # Data and ETL
 #' ## Sites
-#' Field type "oldfield" is not considered because they were only available in one region.
 sites <-
-    read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALSE) %>%
-    filter(site_type != "oldfield") %>%
+    read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>%
     glimpse()
 #'
 #' ## Climate data
@@ -84,11 +82,12 @@ sites <-
 #' # Results
 #' ## Site types
 #' How many sites are in each field type?
-kable(table(sites$region, sites$site_type),
+kable(table(sites$region, sites$field_type),
       format = "pandoc",
       caption = "Field types by region: BM = Blue Mounds, FG = Faville Grove, FL = Fermilab, LP = Lake Petite")
 #'
 #' ## Regional map
+#' Citation *Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under ODbL.*
 #+ site_map,message=FALSE
 map <- ggmap(get_stamenmap(
     bbox = c(
@@ -101,7 +100,7 @@ map <- ggmap(get_stamenmap(
     maptype = c("toner-lite"),
     color = c("color")
 ))
-#+ map_metadata
+#+ map_metadata,fig.align='center'
 map +
     geom_label(
         data = sites %>% group_by(region) %>% summarize(
@@ -132,21 +131,23 @@ format = "pandoc")
 sites_ppt <-
     read_csv(paste0(getwd(), "/clean_data/site_precip_normal.csv"),
              show_col_types = FALSE) %>%
-    left_join(sites, by = "site_key")
+    left_join(sites, by = "field_key")
 #+ precipitation_normals_table
 kable(
     sites_ppt %>% 
-        select(region, site_name, site_type, ppt_mm) %>% 
+        select(region, field_name, field_type, ppt_mm) %>% 
         mutate(ppt_mm = round(ppt_mm, 0)) %>% 
-        arrange(region, site_type),
+        arrange(region, -ppt_mm),
     format = "pandoc"
 )
-#' See 30-year precipitation normals plotted by region and field type in the figure below:
-#+ normals_plot
+#' See 30-year precipitation normals plotted by region and field type in the figure below. Regions
+#' and fields within regions do differ in precipitation, but the differences are a tiny proportion
+#' of the total precipitation in any field. 
+#+ normals_plot,fig.align='center',fig.width=7,fig.height=5
 ggplot(sites_ppt, aes(x = region, y = ppt_mm)) +
     geom_beeswarm(
         aes(fill = factor(
-            site_type,
+            field_type,
             ordered = TRUE,
             levels = c("corn", "restored", "remnant")
         )),
@@ -155,5 +156,5 @@ ggplot(sites_ppt, aes(x = region, y = ppt_mm)) +
         size = 4
     ) +
     labs(x = "", y = "Precipitation (mm)") +
-    scale_fill_discrete_qualitative(name = "site_type", palette = "Harmonic") +
+    scale_fill_discrete_qualitative(name = "field_type", palette = "Harmonic") +
     theme_bw()

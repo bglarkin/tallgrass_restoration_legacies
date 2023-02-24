@@ -2,7 +2,7 @@ Site locations, metadata, and climate
 ================
 Beau Larkin
 
-Last updated: 10 February, 2023
+Last updated: 24 February, 2023
 
 - <a href="#description" id="toc-description">Description</a>
 - <a href="#package-and-library-installation"
@@ -75,24 +75,20 @@ for (i in 1:length(packages_needed)) {
 
 ## Sites
 
-Field type “oldfield” is not considered because they were only available
-in one region.
-
 ``` r
 sites <-
-    read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALSE) %>%
-    filter(site_type != "oldfield") %>%
+    read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>%
     glimpse()
 ```
 
     ## Rows: 25
     ## Columns: 9
-    ## $ site_key   <dbl> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, …
-    ## $ site_name  <chr> "BBRP1", "ERRP1", "FGC1", "FGREM1", "FGRP1", "FLC1", "FLC2"…
+    ## $ field_key  <dbl> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, …
+    ## $ field_name <chr> "BBRP1", "ERRP1", "FGC1", "FGREM1", "FGRP1", "FLC1", "FLC2"…
     ## $ region     <chr> "BM", "BM", "FG", "FG", "FG", "FL", "FL", "FL", "FL", "FL",…
     ## $ lat        <dbl> 43.09989, 43.06588, 43.16087, 43.16172, 43.14381, 41.85941,…
     ## $ long       <dbl> -89.72517, -89.80358, -88.89045, -88.88973, -88.88175, -88.…
-    ## $ site_type  <chr> "restored", "restored", "corn", "remnant", "restored", "cor…
+    ## $ field_type <chr> "restored", "restored", "corn", "remnant", "restored", "cor…
     ## $ yr_restore <dbl> 2000, 2013, NA, NA, 2001, NA, NA, NA, 1976, 1980, 1981, 200…
     ## $ yr_since   <dbl> 16, 3, 0, NA, 15, 0, 0, NA, 40, 36, 35, 10, 10, 10, 28, 0, …
     ## $ yr_rank    <dbl> 9, 3, 1, 16, 8, 1, 1, 16, 14, 13, 12, 6, 6, 6, 11, 1, 16, 4…
@@ -143,7 +139,7 @@ Create data table `site_precip_normal.csv`
 How many sites are in each field type?
 
 ``` r
-kable(table(sites$region, sites$site_type),
+kable(table(sites$region, sites$field_type),
       format = "pandoc",
       caption = "Field types by region: BM = Blue Mounds, FG = Faville Grove, FL = Fermilab, LP = Lake Petite")
 ```
@@ -159,6 +155,9 @@ Field types by region: BM = Blue Mounds, FG = Faville Grove, FL =
 Fermilab, LP = Lake Petite
 
 ## Regional map
+
+Citation *Map tiles by Stamen Design, under CC BY 3.0. Data by
+OpenStreetMap, under ODbL.*
 
 ``` r
 map <- ggmap(get_stamenmap(
@@ -189,7 +188,7 @@ map +
     theme_void()
 ```
 
-![](site_locations_files/figure-gfm/map_metadata-1.png)<!-- -->
+<img src="site_locations_files/figure-gfm/map_metadata-1.png" style="display: block; margin: auto;" />
 
 The map labels show centroids for each region: BM = Blue Mounds, FG =
 Faville Grove, FL = Fermilab, LP = Lake Petite. Map tiles by Stamen
@@ -224,55 +223,57 @@ table below. Some fields occupy the same 4km grid cell.
 sites_ppt <-
     read_csv(paste0(getwd(), "/clean_data/site_precip_normal.csv"),
              show_col_types = FALSE) %>%
-    left_join(sites, by = "site_key")
+    left_join(sites, by = "field_key")
 ```
 
 ``` r
 kable(
     sites_ppt %>% 
-        select(region, site_name, site_type, ppt_mm) %>% 
+        select(region, field_name, field_type, ppt_mm) %>% 
         mutate(ppt_mm = round(ppt_mm, 0)) %>% 
-        arrange(region, site_type),
+        arrange(region, -ppt_mm),
     format = "pandoc"
 )
 ```
 
-| region | site_name | site_type | ppt_mm |
-|:-------|:----------|:----------|-------:|
-| BM     | PHC1      | corn      |    976 |
-| BM     | MBREM1    | remnant   |    980 |
-| BM     | BBRP1     | restored  |    972 |
-| BM     | ERRP1     | restored  |    964 |
-| BM     | KORP1     | restored  |    972 |
-| BM     | MBRP1     | restored  |    980 |
-| BM     | MHRP1     | restored  |    957 |
-| BM     | MHRP2     | restored  |    957 |
-| BM     | PHRP1     | restored  |    976 |
-| FG     | FGC1      | corn      |    937 |
-| FG     | FGREM1    | remnant   |    937 |
-| FG     | FGRP1     | restored  |    940 |
-| FL     | FLC1      | corn      |    983 |
-| FL     | FLC2      | corn      |    991 |
-| FL     | FLREM1    | remnant   |    983 |
-| FL     | FLRP1     | restored  |    986 |
-| FL     | FLRP4     | restored  |    986 |
-| FL     | FLRP5     | restored  |    986 |
-| FL     | FLRSP1    | restored  |    986 |
-| FL     | FLRSP2    | restored  |    991 |
-| FL     | FLRSP3    | restored  |    986 |
-| LP     | LPC1      | corn      |    979 |
-| LP     | LPREM1    | remnant   |    979 |
-| LP     | LPRP1     | restored  |    979 |
-| LP     | LPRP2     | restored  |    979 |
+| region | field_name | field_type | ppt_mm |
+|:-------|:-----------|:-----------|-------:|
+| BM     | MBREM1     | remnant    |    980 |
+| BM     | MBRP1      | restored   |    980 |
+| BM     | PHC1       | corn       |    976 |
+| BM     | PHRP1      | restored   |    976 |
+| BM     | BBRP1      | restored   |    972 |
+| BM     | KORP1      | restored   |    972 |
+| BM     | ERRP1      | restored   |    964 |
+| BM     | MHRP1      | restored   |    957 |
+| BM     | MHRP2      | restored   |    957 |
+| FG     | FGRP1      | restored   |    940 |
+| FG     | FGC1       | corn       |    937 |
+| FG     | FGREM1     | remnant    |    937 |
+| FL     | FLC2       | corn       |    991 |
+| FL     | FLRSP2     | restored   |    991 |
+| FL     | FLRP1      | restored   |    986 |
+| FL     | FLRP4      | restored   |    986 |
+| FL     | FLRP5      | restored   |    986 |
+| FL     | FLRSP1     | restored   |    986 |
+| FL     | FLRSP3     | restored   |    986 |
+| FL     | FLC1       | corn       |    983 |
+| FL     | FLREM1     | remnant    |    983 |
+| LP     | LPC1       | corn       |    979 |
+| LP     | LPREM1     | remnant    |    979 |
+| LP     | LPRP1      | restored   |    979 |
+| LP     | LPRP2      | restored   |    979 |
 
 See 30-year precipitation normals plotted by region and field type in
-the figure below:
+the figure below. Regions and fields within regions do differ in
+precipitation, but the differences are a tiny proportion of the total
+precipitation in any field.
 
 ``` r
 ggplot(sites_ppt, aes(x = region, y = ppt_mm)) +
     geom_beeswarm(
         aes(fill = factor(
-            site_type,
+            field_type,
             ordered = TRUE,
             levels = c("corn", "restored", "remnant")
         )),
@@ -281,8 +282,8 @@ ggplot(sites_ppt, aes(x = region, y = ppt_mm)) +
         size = 4
     ) +
     labs(x = "", y = "Precipitation (mm)") +
-    scale_fill_discrete_qualitative(name = "site_type", palette = "Harmonic") +
+    scale_fill_discrete_qualitative(name = "field_type", palette = "Harmonic") +
     theme_bw()
 ```
 
-![](site_locations_files/figure-gfm/normals_plot-1.png)<!-- -->
+<img src="site_locations_files/figure-gfm/normals_plot-1.png" style="display: block; margin: auto;" />
