@@ -12,19 +12,17 @@
 #' ---
 #'
 #' # Description
-#' The sites sampled in this project lie in different soil types,
+#' The fields sampled in this project lie in different soil types,
 #' some at great distances from each other and some adjacent.
 #' Before attempting to characterize the sites as a chronosequence,
 #' or comparing results in corn, restored, and remnant sites,
 #' we must learn how important spatial autocorrelation is in these data.
 #'
 #' As an initial test, the microbial abundances determined from the ITS gene
-#' and clustered into 97% similar OTUs will be used. To make the mantel
-#' test easier, the species abundances will first be averaged among
-#' repeated measures at sites.
+#' and clustered into 97% similar OTUs and averaged by fields will be used.
 #'
 #' Depending on the results of this test, other tests may be performed. It must
-#' be checked whether Mantel tests are still appropriate for this kind of
+#' be confirmed whether Mantel tests are still appropriate for this kind of
 #' inference.
 #' 
 #' Spearman's Rho is used to test significance of correlations. The Sturges equation is
@@ -52,33 +50,32 @@ for (i in 1:length(packages_needed)) {
 #+ spe_its_otu
 spe <-
     data.frame(read_csv(
-        paste0(getwd(), "/clean_data/spe_ITS_otu_siteSpeMatrix_avg.csv"),
+        paste0(getwd(), "/clean_data/spe_ITS_rfy.csv"),
         show_col_types = FALSE
     ),
     row.names = 1)
 #' Site metadata and locations dataframe
 #+ sites_table
 sites <-
-    read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALSE) %>%
+    read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>%
     mutate(field_type = factor(
-        site_type,
+        field_type,
         ordered = TRUE,
         levels = c("corn", "restored", "remnant")
-    )) %>%
-    filter(field_type != "oldfield")
+    ))
 locs <-
-    data.frame(sites %>% select(site_key, long, lat),
+    data.frame(sites %>% select(field_key, long, lat),
                row.names = 1)
 #' Soil chemical properties, filtered to the Blue Mounds area and restored fields only
 #+ soil_chem
 soil <-
     data.frame(
         read_csv(paste0(getwd(), "/clean_data/soil.csv"), show_col_types = FALSE) %>%
-            left_join(sites %>% select(site_key, region, field_type), by = join_by(site_key)) %>%
+            left_join(sites %>% select(field_key, region, field_type), by = join_by(field_key)) %>%
             filter(region == "BM", field_type == "restored"),
         row.names = 1
     ) %>%
-    select(-site_name,-region,-field_type)
+    select(-field_name,-region,-field_type)
 bm_resto <- rownames(soil)
 #' Filter species and location data to the subset in Blue Mounds restored fields only. Also
 #' remove species that are zero abundance in these samples. 
@@ -105,7 +102,7 @@ dist_geo_bm <- as.dist(distm(locs_bm, fun = distGeo))
 dist_soil <- dist(decostand(soil, "standardize"))
 #'
 #' # Results
-#' ## Test 1
+#' ## Test 1: All Regions
 #' Test 1 is with ITS and OTU parameters on the species data from all regions and fields.  
 #+ mantel_1
 man_1 <-
@@ -152,7 +149,7 @@ plot(man_1_cor)
 #' It may also be important to test for autocorrelation using soil data. Let's do that in the
 #' next section, with only the Blue Mounds sites.
 #' 
-#' ## Test 2
+#' ## Test 2: Blue Mounds Region
 #' Actually two tests: location compared with species or soil chemical data to 
 #' test for autocorrelation within the restored Blue Mounds fields.
 #' 

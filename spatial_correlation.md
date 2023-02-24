@@ -2,15 +2,17 @@ Testing for autocorrelation among sites
 ================
 Beau Larkin
 
-Last updated: 14 February, 2023
+Last updated: 24 February, 2023
 
 - <a href="#description" id="toc-description">Description</a>
 - <a href="#packages-and-libraries"
   id="toc-packages-and-libraries">Packages and libraries</a>
 - <a href="#data" id="toc-data">Data</a>
 - <a href="#results" id="toc-results">Results</a>
-  - <a href="#test-1" id="toc-test-1">Test 1</a>
-  - <a href="#test-2" id="toc-test-2">Test 2</a>
+  - <a href="#test-1-all-regions" id="toc-test-1-all-regions">Test 1: All
+    Regions</a>
+  - <a href="#test-2-blue-mounds-region"
+    id="toc-test-2-blue-mounds-region">Test 2: Blue Mounds Region</a>
     - <a href="#autocorrelation-with-species-data"
       id="toc-autocorrelation-with-species-data">Autocorrelation with species
       data</a>
@@ -20,20 +22,19 @@ Last updated: 14 February, 2023
 
 # Description
 
-The sites sampled in this project lie in different soil types, some at
+The fields sampled in this project lie in different soil types, some at
 great distances from each other and some adjacent. Before attempting to
 characterize the sites as a chronosequence, or comparing results in
 corn, restored, and remnant sites, we must learn how important spatial
 autocorrelation is in these data.
 
 As an initial test, the microbial abundances determined from the ITS
-gene and clustered into 97% similar OTUs will be used. To make the
-mantel test easier, the species abundances will first be averaged among
-repeated measures at sites.
+gene and clustered into 97% similar OTUs and averaged by fields will be
+used.
 
 Depending on the results of this test, other tests may be performed. It
-must be checked whether Mantel tests are still appropriate for this kind
-of inference.
+must be confirmed whether Mantel tests are still appropriate for this
+kind of inference.
 
 Spearman’s Rho is used to test significance of correlations. The Sturges
 equation is used to determine the number of distance classes.
@@ -70,7 +71,7 @@ ITS-based species data
 ``` r
 spe <-
     data.frame(read_csv(
-        paste0(getwd(), "/clean_data/spe_ITS_otu_siteSpeMatrix_avg.csv"),
+        paste0(getwd(), "/clean_data/spe_ITS_rfy.csv"),
         show_col_types = FALSE
     ),
     row.names = 1)
@@ -80,15 +81,14 @@ Site metadata and locations dataframe
 
 ``` r
 sites <-
-    read_csv(paste0(getwd(), "/clean_data/site.csv"), show_col_types = FALSE) %>%
+    read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>%
     mutate(field_type = factor(
-        site_type,
+        field_type,
         ordered = TRUE,
         levels = c("corn", "restored", "remnant")
-    )) %>%
-    filter(field_type != "oldfield")
+    ))
 locs <-
-    data.frame(sites %>% select(site_key, long, lat),
+    data.frame(sites %>% select(field_key, long, lat),
                row.names = 1)
 ```
 
@@ -99,11 +99,11 @@ fields only
 soil <-
     data.frame(
         read_csv(paste0(getwd(), "/clean_data/soil.csv"), show_col_types = FALSE) %>%
-            left_join(sites %>% select(site_key, region, field_type), by = join_by(site_key)) %>%
+            left_join(sites %>% select(field_key, region, field_type), by = join_by(field_key)) %>%
             filter(region == "BM", field_type == "restored"),
         row.names = 1
     ) %>%
-    select(-site_name,-region,-field_type)
+    select(-field_name,-region,-field_type)
 bm_resto <- rownames(soil)
 ```
 
@@ -140,7 +140,7 @@ dist_soil <- dist(decostand(soil, "standardize"))
 
 # Results
 
-## Test 1
+## Test 1: All Regions
 
 Test 1 is with ITS and OTU parameters on the species data from all
 regions and fields.
@@ -162,12 +162,12 @@ man_1 <-
     ## Call:
     ## mantel(xdis = dist_spe, ydis = dist_geo, method = "spearman",      permutations = 9999, na.rm = TRUE) 
     ## 
-    ## Mantel statistic r: 0.1016 
-    ##       Significance: 0.0474 
+    ## Mantel statistic r: 0.1077 
+    ##       Significance: 0.0402 
     ## 
     ## Upper quantiles of permutations (null model):
     ##    90%    95%  97.5%    99% 
-    ## 0.0705 0.0990 0.1275 0.1668 
+    ## 0.0717 0.0988 0.1277 0.1662 
     ## Permutation: free
     ## Number of permutations: 9999
 
@@ -192,19 +192,17 @@ print(man_1_cor)
     ##  
     ## mantel.correlog(D.eco = dist_spe, D.geo = dist_geo, n.class = 0,      cutoff = FALSE, r.type = "spearman", nperm = 9999, mult = "holm") 
     ## 
-    ##         class.index      n.dist  Mantel.cor Pr(Mantel) Pr(corrected)  
-    ## D.cl.1   9.4645e+03  1.2000e+02  9.3724e-02     0.0777        0.0777 .
-    ## D.cl.2   2.8242e+04  3.6000e+01  1.9125e-02     0.4023        0.4023  
-    ## D.cl.3   4.7019e+04  4.0000e+00 -2.3176e-02     0.3589        0.7178  
-    ## D.cl.4   6.5796e+04  2.6000e+01 -4.0077e-02     0.2882        0.8646  
-    ## D.cl.5   8.4574e+04  1.1200e+02 -2.3362e-02     0.3742        1.0000  
-    ## D.cl.6   1.0335e+05  3.6000e+01  1.8071e-02     0.3920        1.0000  
-    ## D.cl.7   1.2213e+05  4.8000e+01  6.5618e-02     0.2006        1.0000  
-    ## D.cl.8   1.4091e+05  0.0000e+00          NA         NA            NA  
-    ## D.cl.9   1.5968e+05  9.0000e+01 -1.6320e-01     0.0268        0.2144  
-    ## D.cl.10  1.7846e+05  1.2600e+02  1.9089e-02     0.4041            NA  
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ##         class.index      n.dist  Mantel.cor Pr(Mantel) Pr(corrected)
+    ## D.cl.1   9.4645e+03  1.2000e+02  7.5393e-02     0.1228        0.1228
+    ## D.cl.2   2.8242e+04  3.6000e+01  4.9432e-02     0.2615        0.2615
+    ## D.cl.3   4.7019e+04  4.0000e+00  4.7299e-04     0.5020        0.5230
+    ## D.cl.4   6.5796e+04  2.6000e+01 -4.5937e-02     0.2624        0.7845
+    ## D.cl.5   8.4574e+04  1.1200e+02 -4.2378e-02     0.2904        1.0000
+    ## D.cl.6   1.0335e+05  3.6000e+01  5.2917e-02     0.2160        1.0000
+    ## D.cl.7   1.2213e+05  4.8000e+01  9.5554e-02     0.1120        0.7840
+    ## D.cl.8   1.4091e+05  0.0000e+00          NA         NA            NA
+    ## D.cl.9   1.5968e+05  9.0000e+01 -1.4267e-01     0.0415        0.3320
+    ## D.cl.10  1.7846e+05  1.2600e+02 -2.2349e-02     0.4043            NA
 
 ``` r
 plot(man_1_cor)
@@ -231,7 +229,7 @@ dimension to the project without reaching too far.
 It may also be important to test for autocorrelation using soil data.
 Let’s do that in the next section, with only the Blue Mounds sites.
 
-## Test 2
+## Test 2: Blue Mounds Region
 
 Actually two tests: location compared with species or soil chemical data
 to test for autocorrelation within the restored Blue Mounds fields.
@@ -254,12 +252,12 @@ man_2 <-
     ## Call:
     ## mantel(xdis = dist_spe_bm, ydis = dist_geo_bm, method = "spearman",      na.rm = TRUE) 
     ## 
-    ## Mantel statistic r: -0.3299 
-    ##       Significance: 0.939 
+    ## Mantel statistic r: -0.3779 
+    ##       Significance: 0.96 
     ## 
     ## Upper quantiles of permutations (null model):
     ##   90%   95% 97.5%   99% 
-    ## 0.291 0.389 0.478 0.634 
+    ## 0.299 0.387 0.466 0.596 
     ## Permutation: free
     ## Number of permutations: 5039
 
@@ -290,11 +288,11 @@ man_3
     ## mantel(xdis = dist_soil, ydis = dist_geo_bm, method = "spearman",      na.rm = TRUE) 
     ## 
     ## Mantel statistic r: 0.1052 
-    ##       Significance: 0.331 
+    ##       Significance: 0.321 
     ## 
     ## Upper quantiles of permutations (null model):
     ##   90%   95% 97.5%   99% 
-    ## 0.309 0.405 0.481 0.576 
+    ## 0.305 0.378 0.478 0.555 
     ## Permutation: free
     ## Number of permutations: 5039
 
