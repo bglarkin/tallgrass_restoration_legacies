@@ -24,5 +24,3 @@ field_key,field_name,region,lat,long,field_type,yr_restore,yr_since,yr_rank
 23,MHRP2,BM,42.78599722,-89.9289995,restored,2014,2,2
 24,PHC1,BM,42.93162776,-89.57203704,corn,NA,0,1
 25,PHRP1,BM,42.9303947,-89.57121368,restored,2005,11,7
-26,LPOF1,LP,42.51216464,-88.55408759,oldfield,NA,NA,15
-27,FLOF1,FL,41.84132379,-88.23580267,oldfield,NA,NA,15
