@@ -2,7 +2,7 @@ Database assembly: species data
 ================
 Beau Larkin
 
-Last updated: 10 February, 2023
+Last updated: 23 February, 2023
 
 - <a href="#description" id="toc-description">Description</a>
   - <a href="#its-data-all-fungi" id="toc-its-data-all-fungi">ITS data (all
@@ -22,48 +22,53 @@ Last updated: 10 February, 2023
   - <a href="#resample-and-produce-field-averages"
     id="toc-resample-and-produce-field-averages">Resample and produce field
     averages</a>
-    - <a href="#import-sites-species-tables"
-      id="toc-import-sites-species-tables">Import sites-species tables</a>
 
 # Description
 
-The microbial species data included here were produced by Lorinda
-Bullington in 2022 using QIIME II. See methods for details.
+Microbial sequence abundances were produced by Lorinda Bullington in
+QIIME2. ETL must be performed on output text files to allow downstream
+analysis.
 
 ## ITS data (all fungi)
 
-Lorinda included two datasets as of 2022-01-06. The first is a table of
-sequence variants (SVs), assigned based on 100% similarity of ITS
-sequences in each cluster. The second is a table of operational
-taxonomic units (OTUs) based on 97% sequence similarity. Each table also
-includes various other data and metadata, including taxonomy, trophic
-guilds, and references.
+Sequence abundances in 97% similar OTUs in individual samples form the
+base data. The abundances are raw (not rarefied).
+
+- ITS taxonomy are included in a separate file.
 
 ## 18S data (mycorrhizae)
 
-Created by Lorinda on 2022-02-14. As with the ITS data, files with 97%
-similar OTUs and 100% similar SVs were created. Distance matrices for
-each were created, both weighted and unweighted. UNIFRAC distance was
-used. UNIFRAC is different from BC and others in that it accounts for
-phylogenetic distance, which can be informative for 18s and 16S, but not
-so much for ITS. Weighted UNIFRAC considers abundances where as
-non-weighted is based on presence/absence.
+Sequence abundance in 97% similar OTUs in individual samples. The
+abundances are raw (not rarefied).
+
+- 18S taxonomy are included in a separate file.
+- A unifrac distance matrix will be created and included after sample
+  selection and sequence depth rarefaction.
 
 ## Desired outcome
 
-For each raw table, the metadata must be separated from the species
-abundances. Species OTU codes must be aligned with short, unique keys,
-and then species tables must be transposed into sites-species matrices.
-Rownames must be cleaned to align with site metadata files. Taxonomy
-strings must be parsed and unnecessary characters removed. A function is
-used to streamline the pipeline and to reduce errors.
+For each raw table, species OTU codes must be aligned with short, unique
+keys, and then species tables must be transposed into sites-species
+matrices. The six samples from each field with the greatest total
+sequence abundance will be chosen, and sequences summed for each OTU
+within fields. Rarefaction of sequencing depth to the minimum total
+number of sequences will be applied.
+
+For each taxonomy table, taxonomy strings must be parsed and unnecessary
+characters removed. A function is used to streamline the pipeline and to
+reduce errors. [Fungal
+traits](https://link.springer.com/article/10.1007/s13225-020-00466-2)
+data will be joined with the ITS taxonomy
+
+For all tables, short and unique rownames must be created to allow for
+easy joining of species and metadata tables.
 
 # Resources
 
 ## Packages and libraries
 
 ``` r
-packages_needed = c("tidyverse", "readxl")
+packages_needed = c("tidyverse")
 packages_installed = packages_needed %in% rownames(installed.packages())
 ```
 
@@ -82,19 +87,24 @@ for (i in 1:length(packages_needed)) {
 ## Functions
 
 ``` r
-process_qiime <- function(data, varname, gene, cluster_type, colname_prefix, folder) {
+process_qiime <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, colname_prefix, folder) {
     
     # Variable definitions
-    # data            = Dataframe or tibble with Qiime and FunGuild output
-    # varname         = An unique key will be created to replace the cumbersome OTU key 
-    #                   which is produced by Qiime. Varname is the desired column
-    #                   name for this new OTU key. Unquoted. 
+    # spe             = Dataframe or tibble with QIIME2 sequence abundances output, 
+    #                   OTUs in rows and samples in columns.
+    # taxa            = Dataframe or tibble with QIIME2 taxonomy outputs; OTUs in
+    #                   rows and metadata in columns.   
+    # samps           = Samples to keep from each field, default=6
+    # traits          = Additional dataframe of traits or guilds.
+    # varname         = An unique key will be created to replace the cumbersome cluster 
+    #                   hash which is produced by QIIME2. Varname, a string, begins the
+    #                   column name for this new, short key. Unquoted. Example: otu_num
     # gene            = Gene region targeted in sequencing, e.g.: "ITS", "18S", "16S". 
     #                   Quoted. Used to select() column names, so must match text in 
     #                   column names. Also used to create distinct file names.
     # cluster_type    = Clustering algorithm output, e.g.: "otu", "sv". Quoted.
-    #                   Used to create filenames in output files. 
-    # colname_prefix  = Prefix to text of OTU column names. The function removes
+    #                   Used to create simple cluster IDs. 
+    # colname_prefix  = Existing, verbose prefix to text of OTU column names. The function removes
     #                   this prefix to make OTU names more concise. 
     # folder          = The function creates output files in the working directory by
     #                   default. To use a subfolder, use this variable. Quoted. 
@@ -103,27 +113,19 @@ process_qiime <- function(data, varname, gene, cluster_type, colname_prefix, fol
     
     varname <- enquo(varname)
     
+    data <- spe %>% left_join(taxa, by = join_by(`#OTU ID`))
+    
     if(gene == "ITS") {
         meta <-
             data %>%
-            mutate(!!varname := paste0(cluster_type, "_", row_number())) %>% 
+            mutate(!!varname := paste0(cluster_type, "_", row_number())) %>%
             select(!starts_with(gene)) %>%
-            rename(
-                otu_ID = `#OTU ID`,
-                taxon = Taxon,
-                taxon_level = `Taxon Level`,
-                trophic_mode = `Trophic Mode`,
-                guild = Guild,
-                growth_morphology = `Growth Morphology`,
-                trait = Trait,
-                confidence = `Confidence Ranking`,
-                notes = Notes,
-                citation = `Citation/Source`
-            ) %>% 
-            select(!!varname, everything()) %>% 
-            separate(
+            rename(otu_ID = `#OTU ID`) %>%
+            select(!!varname, everything()) %>%
+            separate_wider_delim(
                 taxonomy,
-                into = c(
+                delim = ";",
+                names = c(
                     "kingdom",
                     "phylum",
                     "class",
@@ -132,57 +134,62 @@ process_qiime <- function(data, varname, gene, cluster_type, colname_prefix, fol
                     "genus",
                     "species"
                 ),
-                sep = "; ",
-                remove = TRUE,
-                fill = "right"
-            ) %>% 
+                cols_remove = TRUE,
+                too_few = "align_start"
+            ) %>%
             mutate(kingdom = str_sub(kingdom, 4, nchar(kingdom)),
                    phylum  = str_sub(phylum,  4, nchar(phylum)),
                    class   = str_sub(class,   4, nchar(class)),
                    order   = str_sub(order,   4, nchar(order)),
                    family  = str_sub(family,  4, nchar(family)),
                    genus   = str_sub(genus,   4, nchar(genus)),
-                   species = str_sub(species, 4, nchar(species)))
-        write_csv(meta, 
-                  paste0(getwd(), folder, "/spe_", gene, "_", cluster_type, "_funGuild.csv"))
+                   species = str_sub(species, 4, nchar(species))) %>%
+            left_join(traits, by = join_by(phylum, class, order, family, genus)) %>%
+            select(-otu_ID, -kingdom, -Confidence)
+        write_csv(meta,
+                  paste0(getwd(), folder, "/spe_", gene, "_taxaguild.csv"))
     } else {
         meta <-
             data %>%
-            mutate(!!varname := paste0(cluster_type, "_", row_number())) %>% 
+            mutate(!!varname := paste0(cluster_type, "_", row_number())) %>%
             select(!starts_with(gene)) %>%
-            rename(otu_ID = `#OTU ID`) %>% 
-            select(!!varname, everything()) %>% 
-            separate(taxonomy, 
-                     c("class", "order", "family", "genus", "taxon", "accession"), 
-                     sep = ";", remove = TRUE, fill = "right")
-        write_csv(meta, 
-                  paste0(getwd(), folder, "/spe_", gene, "_", cluster_type, "_taxonomy.csv"))
+            rename(otu_ID = `#OTU ID`) %>%
+            select(!!varname, everything()) %>%
+            separate(taxonomy,
+                     c("class", "order", "family", "genus", "taxon", "accession"),
+                     sep = ";", remove = TRUE, fill = "right") %>%
+            select(-otu_ID, -Confidence)
+        write_csv(meta,
+                  paste0(getwd(), folder, "/spe_", gene, "_taxonomy.csv"))
     }
-    
-    spe_all <- 
+
+    spe_topn <-
         data.frame(
-            data %>% 
-                mutate(!!varname := paste0(cluster_type, "_", row_number())) %>% 
+            data %>%
+                mutate(!!varname := paste0(cluster_type, "_", row_number())) %>%
                 select(!!varname, starts_with(gene)),
             row.names = 1
         ) %>%
-        t() %>% 
-        as.data.frame() %>% 
-        rownames_to_column() %>% 
-        mutate(site = str_remove(rowname, colname_prefix)) %>% 
-        separate(col = site, into = c("site_key", "sample"), sep = "_") %>% 
-        select(site_key, sample, everything(), -rowname) %>% 
-        arrange(as.numeric(site_key), as.numeric(sample))
-    write_csv(spe_all, 
-              paste0(getwd(), folder, "/spe_", gene, "_", cluster_type, "_siteSpeMatrix_allReps.csv"))
+        t() %>%
+        as.data.frame() %>%
+        rownames_to_column() %>%
+        mutate(rowname = str_remove(rowname, colname_prefix)) %>%
+        separate_wider_delim(cols = rowname, delim = "_", names = c("field_key", NA)) %>%
+        select(field_key, everything()) %>%
+        mutate(sum = rowSums(across(starts_with(cluster_type)))) %>%
+        group_by(field_key) %>%
+        slice_max(sum, n=samps) %>%
+        select(-sum) %>%
+        mutate(field_key = as.numeric(field_key))
+    null_spe <- which(apply(spe_topn, 2, sum) == 0)
+    spe_all <- spe_topn[,-null_spe]
+    write_csv(spe_all, paste0(getwd(), folder, "/spe_", gene, "_raw.csv"))
+    out <- list(
+        spe_meta = meta %>% filter(!(otu_num %in% names(null_spe))),
+        spe_all  = spe_all
+    )
+    return(out)
     
-    spe_count <- 
-        spe_all %>% 
-        group_by(site_key) %>% 
-        summarize(samples = n()) %>% 
-        arrange(as.numeric(site_key))
-    write_csv(spe_count, 
-              paste0(getwd(), folder, "/spe_", gene, "_", cluster_type, "_samples.csv"))
 }
 ```
 
@@ -191,12 +198,13 @@ process_qiime <- function(data, varname, gene, cluster_type, colname_prefix, fol
 ## Import files
 
 ``` r
-otu_its <- read_excel(paste0(getwd(), "/otu_tables/ITS/OTU_table_rrfd_3200_w_taxa.guilds.xlsx"), na = "-")
-sv_its  <- read_excel(paste0(getwd(), "/otu_tables/ITS/SV_table_rrfd_3200.guilds.xlsx"), na = "-")
-otu_18s <- read_delim(paste0(getwd(), "/otu_tables/TGP_18S_tables_021722/OTUs_18S_TGP_table_rarefied.txt"), 
-                      delim = "\t", show_col_types = FALSE)
-sv_18s  <- read_delim(paste0(getwd(), "/otu_tables/TGP_18S_tables_021722/SVs_18S_TGP_rarefied_table.txt"), 
-                      delim = "\t", show_col_types = FALSE)
+its_otu  <- read_delim(paste0(getwd(), "/otu_tables/ITS/ITS_otu_raw.txt"), show_col_types = FALSE)
+its_taxa <- read_delim(paste0(getwd(), "/otu_tables/ITS/ITS_otu_taxonomy.txt"), show_col_types = FALSE)
+# The 18S OTU file contains an unknown site label in the last column; remove it
+amf_otu  <- read_delim(paste0(getwd(), "/otu_tables/18S/18S_otu_raw.txt"), show_col_types = FALSE) %>% select(-last_col())
+amf_taxa <- read_delim(paste0(getwd(), "/otu_tables/18S/18S_otu_taxonomy.txt"), show_col_types = FALSE)
+traits   <- read_csv(paste0(getwd(),   "/otu_tables/2023-02-23_fungal_traits.csv"), show_col_types = FALSE) %>% 
+    select(phylum:primary_lifestyle)
 ```
 
 ## ETL using `process_qiime()`
@@ -205,19 +213,32 @@ Schema:
 `process_qiime(data, varname, "gene", "cluster_type", "colname_prefix", "folder")`
 
 ``` r
-process_qiime(otu_its, otu_num, "ITS", "otu", "ITS_TGP_",  "/clean_data")
+its <- 
+    process_qiime(
+        spe = its_otu,
+        taxa = its_taxa,
+        samps = 6,
+        traits = traits,
+        varname = otu_num,
+        gene = "ITS",
+        cluster_type = "otu",
+        colname_prefix = "ITS_TGP_",
+        folder = "/clean_data"
+    )
 ```
 
 ``` r
-process_qiime(sv_its,  sv_num,  "ITS", "sv",  "ITS_TGP_",  "/clean_data")
-```
-
-``` r
-process_qiime(otu_18s, otu_num, "18S", "otu", "X18S_TGP_", "/clean_data")
-```
-
-``` r
-process_qiime(sv_18s,  sv_num,  "18S", "sv",  "X18S_TGP_", "/clean_data")
+amf <- 
+    process_qiime(
+        spe = amf_otu,
+        taxa = amf_taxa,
+        samps = 6,
+        varname = otu_num,
+        gene = "18S",
+        cluster_type = "otu",
+        colname_prefix = "X18S_TGP_",
+        folder = "/clean_data"
+    )
 ```
 
 ## Resample and produce field averages
@@ -232,31 +253,18 @@ Resultant zero sum columns will be removed. The following function will
 resample the site-species data to the correct number of samples and
 remove zero sum columns.
 
-### Import sites-species tables
-
 ``` r
-its_otu_all <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_siteSpeMatrix_allReps.csv"), 
-                        show_col_types = FALSE)
-its_sv_all  <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_sv_siteSpeMatrix_allReps.csv"), 
-                        show_col_types = FALSE)
-amf_otu_all <- read_csv(paste0(getwd(), "/clean_data/spe_18S_otu_siteSpeMatrix_allReps.csv"), 
-                        show_col_types = FALSE)
-amf_sv_all  <- read_csv(paste0(getwd(), "/clean_data/spe_18S_sv_siteSpeMatrix_allReps.csv"), 
-                        show_col_types = FALSE)
-```
-
-``` r
-resample_fields <- function(data, min, cluster_type) {
-    set.seed(482)
-    avg_df <-
-        data %>%
-        group_by(site_key) %>%
-        slice_sample(n = min) %>%
-        summarize(across(starts_with(cluster_type), ~ mean(.x, na.rm = TRUE)))
-    null_spe <- which(apply(avg_df, 2, sum) == 0)
-    out <- avg_df[,-null_spe]
-    return(out)
-}
+# resample_fields <- function(data, min, cluster_type) {
+#     set.seed(482)
+#     avg_df <-
+#         data %>%
+#         group_by(site_key) %>%
+#         slice_sample(n = min) %>%
+#         summarize(across(starts_with(cluster_type), ~ mean(.x, na.rm = TRUE)))
+#     null_spe <- which(apply(avg_df, 2, sum) == 0)
+#     out <- avg_df[,-null_spe]
+#     return(out)
+# }
 ```
 
 The minimum number of samples in a field for each gene is:
@@ -267,12 +275,22 @@ The minimum number of samples in a field for each gene is:
 With this, we can run the function for each dataset:
 
 ``` r
-its_otu_avg <- resample_fields(its_otu_all, 8, "otu") %>% 
-    write_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_siteSpeMatrix_avg.csv"))
-its_sv_avg  <- resample_fields(its_sv_all,  8, "sv") %>% 
-    write_csv(paste0(getwd(), "/clean_data/spe_ITS_sv_siteSpeMatrix_avg.csv"))
-amf_otu_avg <- resample_fields(amf_otu_all, 7, "otu") %>% 
-    write_csv(paste0(getwd(), "/clean_data/spe_18S_otu_siteSpeMatrix_avg.csv"))
-amf_sv_avg  <- resample_fields(amf_sv_all,  7, "sv") %>% 
-    write_csv(paste0(getwd(), "/clean_data/spe_18S_sv_siteSpeMatrix_avg.csv"))
+# its_otu_avg <- resample_fields(its_otu_all, 8, "otu") %>% 
+#     write_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_siteSpeMatrix_avg.csv"))
+# its_sv_avg  <- resample_fields(its_sv_all,  8, "sv") %>% 
+#     write_csv(paste0(getwd(), "/clean_data/spe_ITS_sv_siteSpeMatrix_avg.csv"))
+# amf_otu_avg <- resample_fields(amf_otu_all, 7, "otu") %>% 
+#     write_csv(paste0(getwd(), "/clean_data/spe_18S_otu_siteSpeMatrix_avg.csv"))
+# amf_sv_avg  <- resample_fields(amf_sv_all,  7, "sv") %>% 
+#     write_csv(paste0(getwd(), "/clean_data/spe_18S_sv_siteSpeMatrix_avg.csv"))
+
+
+
+
+
+# Unifrac
+
+
+# but before unifrac, you need to fix the site_key and sample columns; must be one column with a continuous numeric
+# that can join back to the sites table
 ```

@@ -10,7 +10,8 @@
 #' ---
 #'
 #' # Description
-#' Microbial sequence abundances were produced by Lorinda Bullington in QIIME2. See methods for details. 
+#' Microbial sequence abundances were produced by Lorinda Bullington in QIIME2. ETL must
+#' be performed on output text files to allow downstream analysis. 
 #' 
 #' ## ITS data (all fungi)
 #' Sequence abundances in 97% similar OTUs in individual samples form the base data. 
@@ -54,7 +55,7 @@ for (i in 1:length(packages_needed)) {
 }
 #' 
 #' ## Functions
-process_qiime <- function(spe, taxa, samps=6, traits=NULL, varname, gene, cluster_type, colname_prefix, folder) {
+process_qiime <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, colname_prefix, folder) {
     
     # Variable definitions
     # spe             = Dataframe or tibble with QIIME2 sequence abundances output, 
@@ -80,18 +81,19 @@ process_qiime <- function(spe, taxa, samps=6, traits=NULL, varname, gene, cluste
     
     varname <- enquo(varname)
     
-    data <- spe %>% left_join(taxa)
+    data <- spe %>% left_join(taxa, by = join_by(`#OTU ID`))
     
     if(gene == "ITS") {
         meta <-
             data %>%
-            mutate(!!varname := paste0(cluster_type, "_", row_number())) %>% 
+            mutate(!!varname := paste0(cluster_type, "_", row_number())) %>%
             select(!starts_with(gene)) %>%
-            rename(otu_ID = `#OTU ID`) %>% 
-            select(!!varname, everything()) %>% 
-            separate(
+            rename(otu_ID = `#OTU ID`) %>%
+            select(!!varname, everything()) %>%
+            separate_wider_delim(
                 taxonomy,
-                into = c(
+                delim = ";",
+                names = c(
                     "kingdom",
                     "phylum",
                     "class",
@@ -100,59 +102,58 @@ process_qiime <- function(spe, taxa, samps=6, traits=NULL, varname, gene, cluste
                     "genus",
                     "species"
                 ),
-                sep = "; ",
-                remove = TRUE,
-                fill = "right"
-            ) %>% 
+                cols_remove = TRUE,
+                too_few = "align_start"
+            ) %>%
             mutate(kingdom = str_sub(kingdom, 4, nchar(kingdom)),
                    phylum  = str_sub(phylum,  4, nchar(phylum)),
                    class   = str_sub(class,   4, nchar(class)),
                    order   = str_sub(order,   4, nchar(order)),
                    family  = str_sub(family,  4, nchar(family)),
                    genus   = str_sub(genus,   4, nchar(genus)),
-                   species = str_sub(species, 4, nchar(species))) %>% 
-            left_join(traits, by = join_by(phylum, class, order, family, genus)) %>% 
+                   species = str_sub(species, 4, nchar(species))) %>%
+            left_join(traits, by = join_by(phylum, class, order, family, genus)) %>%
             select(-otu_ID, -kingdom, -Confidence)
-        write_csv(meta, 
+        write_csv(meta,
                   paste0(getwd(), folder, "/spe_", gene, "_taxaguild.csv"))
     } else {
         meta <-
             data %>%
-            mutate(!!varname := paste0(cluster_type, "_", row_number())) %>% 
+            mutate(!!varname := paste0(cluster_type, "_", row_number())) %>%
             select(!starts_with(gene)) %>%
-            rename(otu_ID = `#OTU ID`) %>% 
-            select(!!varname, everything()) %>% 
-            separate(taxonomy, 
-                     c("class", "order", "family", "genus", "taxon", "accession"), 
-                     sep = ";", remove = TRUE, fill = "right") %>% 
+            rename(otu_ID = `#OTU ID`) %>%
+            select(!!varname, everything()) %>%
+            separate(taxonomy,
+                     c("class", "order", "family", "genus", "taxon", "accession"),
+                     sep = ";", remove = TRUE, fill = "right") %>%
             select(-otu_ID, -Confidence)
-        write_csv(meta, 
+        write_csv(meta,
                   paste0(getwd(), folder, "/spe_", gene, "_taxonomy.csv"))
     }
-    
-    spe_topn <- 
+
+    spe_topn <-
         data.frame(
-            data %>% 
-                mutate(!!varname := paste0(cluster_type, "_", row_number())) %>% 
+            data %>%
+                mutate(!!varname := paste0(cluster_type, "_", row_number())) %>%
                 select(!!varname, starts_with(gene)),
             row.names = 1
         ) %>%
-        t() %>% 
-        as.data.frame() %>% 
-        rownames_to_column() %>% 
-        mutate(field = str_remove(rowname, colname_prefix)) %>% 
-        separate_wider_delim(cols = field, delim = "_", names = c("field_key", "sample")) %>%
-        select(field_key, sample, everything(), -rowname) %>% 
-        mutate(sum = rowSums(across(starts_with(cluster_type))),
-               across(where(is.character), as.numeric)) %>%
+        t() %>%
+        as.data.frame() %>%
+        rownames_to_column() %>%
+        mutate(rowname = str_remove(rowname, colname_prefix)) %>%
+        separate_wider_delim(cols = rowname, delim = "_", names = c("field_key", NA)) %>%
+        select(field_key, everything()) %>%
+        mutate(sum = rowSums(across(starts_with(cluster_type)))) %>%
         group_by(field_key) %>%
-        slice_max(sum, n=samps)
+        slice_max(sum, n=samps) %>%
+        select(-sum) %>%
+        mutate(field_key = as.numeric(field_key))
     null_spe <- which(apply(spe_topn, 2, sum) == 0)
     spe_all <- spe_topn[,-null_spe]
-    write_csv(spe_all, 
-              paste0(getwd(), folder, "/spe_", gene, "_raw.csv"))
+    write_csv(spe_all, paste0(getwd(), folder, "/spe_", gene, "_raw.csv"))
     out <- list(
-        spe_meta = meta,
+        spe_meta = meta %>% filter(!(otu_num %in% names(null_spe))),
         spe_all  = spe_all
     )
     return(out)
@@ -163,34 +164,35 @@ process_qiime <- function(spe, taxa, samps=6, traits=NULL, varname, gene, cluste
 #'
 #' # Load and process data
 #' ## Import files
-its_otu <- read_delim(paste0(getwd(), "/otu_tables/ITS/ITS_otu_raw.txt"), 
-                      show_col_types = FALSE)
-its_taxa <- read_delim(paste0(getwd(), "/otu_tables/ITS/ITS_otu_taxonomy.txt"),
-                       show_col_types = FALSE)
-amf_otu <- 
-amf_taxa <- 
-traits  <- read_csv(paste0(getwd(), "/otu_tables/2023-02-23_fungal_traits.csv"),
-                      show_col_types = FALSE) %>% 
+its_otu  <- read_delim(paste0(getwd(), "/otu_tables/ITS/ITS_otu_raw.txt"), show_col_types = FALSE)
+its_taxa <- read_delim(paste0(getwd(), "/otu_tables/ITS/ITS_otu_taxonomy.txt"), show_col_types = FALSE)
+# The 18S OTU file contains an unknown site label in the last column; remove it
+amf_otu  <- read_delim(paste0(getwd(), "/otu_tables/18S/18S_otu_raw.txt"), show_col_types = FALSE) %>% select(-last_col())
+amf_taxa <- read_delim(paste0(getwd(), "/otu_tables/18S/18S_otu_taxonomy.txt"), show_col_types = FALSE)
+traits   <- read_csv(paste0(getwd(),   "/otu_tables/2023-02-23_fungal_traits.csv"), show_col_types = FALSE) %>% 
     select(phylum:primary_lifestyle)
 #' 
 #' ## ETL using `process_qiime()`
 #' Schema: `process_qiime(data, varname, "gene", "cluster_type", "colname_prefix", "folder")`
-#+ otu_its
+#+ otu_its,message=FALSE
 its <- 
     process_qiime(
-        spe =   ,
-        taxa =   ,
-        traits = ,
+        spe = its_otu,
+        taxa = its_taxa,
+        samps = 6,
+        traits = traits,
         varname = otu_num,
         gene = "ITS",
         cluster_type = "otu",
         colname_prefix = "ITS_TGP_",
         folder = "/clean_data"
     )
-#+ otu_18S
+#+ otu_18S,message=FALSE
 amf <- 
     process_qiime(
-        data = otu_18S,
+        spe = amf_otu,
+        taxa = amf_taxa,
+        samps = 6,
         varname = otu_num,
         gene = "18S",
         cluster_type = "otu",
@@ -198,6 +200,10 @@ amf <-
         folder = "/clean_data"
     )
 #' 
+
+
+
+## Sum in fields, rarefy, and go
 
 
 
@@ -212,17 +218,17 @@ amf <-
 
 
 #+ resample_fields_function 
-resample_fields <- function(data, min, cluster_type) {
-    set.seed(482)
-    avg_df <-
-        data %>%
-        group_by(site_key) %>%
-        slice_sample(n = min) %>%
-        summarize(across(starts_with(cluster_type), ~ mean(.x, na.rm = TRUE)))
-    null_spe <- which(apply(avg_df, 2, sum) == 0)
-    out <- avg_df[,-null_spe]
-    return(out)
-}
+# resample_fields <- function(data, min, cluster_type) {
+#     set.seed(482)
+#     avg_df <-
+#         data %>%
+#         group_by(site_key) %>%
+#         slice_sample(n = min) %>%
+#         summarize(across(starts_with(cluster_type), ~ mean(.x, na.rm = TRUE)))
+#     null_spe <- which(apply(avg_df, 2, sum) == 0)
+#     out <- avg_df[,-null_spe]
+#     return(out)
+# }
 #' 
 #' The minimum number of samples in a field for each gene is:
 #' 
@@ -230,14 +236,14 @@ resample_fields <- function(data, min, cluster_type) {
 #' - 18S = 7 samples
 #' 
 #' With this, we can run the function for each dataset:
-its_otu_avg <- resample_fields(its_otu_all, 8, "otu") %>% 
-    write_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_siteSpeMatrix_avg.csv"))
-its_sv_avg  <- resample_fields(its_sv_all,  8, "sv") %>% 
-    write_csv(paste0(getwd(), "/clean_data/spe_ITS_sv_siteSpeMatrix_avg.csv"))
-amf_otu_avg <- resample_fields(amf_otu_all, 7, "otu") %>% 
-    write_csv(paste0(getwd(), "/clean_data/spe_18S_otu_siteSpeMatrix_avg.csv"))
-amf_sv_avg  <- resample_fields(amf_sv_all,  7, "sv") %>% 
-    write_csv(paste0(getwd(), "/clean_data/spe_18S_sv_siteSpeMatrix_avg.csv"))
+# its_otu_avg <- resample_fields(its_otu_all, 8, "otu") %>% 
+#     write_csv(paste0(getwd(), "/clean_data/spe_ITS_otu_siteSpeMatrix_avg.csv"))
+# its_sv_avg  <- resample_fields(its_sv_all,  8, "sv") %>% 
+#     write_csv(paste0(getwd(), "/clean_data/spe_ITS_sv_siteSpeMatrix_avg.csv"))
+# amf_otu_avg <- resample_fields(amf_otu_all, 7, "otu") %>% 
+#     write_csv(paste0(getwd(), "/clean_data/spe_18S_otu_siteSpeMatrix_avg.csv"))
+# amf_sv_avg  <- resample_fields(amf_sv_all,  7, "sv") %>% 
+#     write_csv(paste0(getwd(), "/clean_data/spe_18S_sv_siteSpeMatrix_avg.csv"))
 
 
 
