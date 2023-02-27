@@ -31,7 +31,9 @@ packages_needed = c("tidyverse",
                     "colorspace",
                     "rsq",
                     "lme4",
-                    "multcomp")
+                    "multcomp",
+                    "indicspecies",
+                    "GUniFrac")
 packages_installed = packages_needed %in% rownames(installed.packages())
 #+ packages,message=FALSE
 if (any(!packages_installed)) {
@@ -92,9 +94,6 @@ meta <- list(
         )
 )
 #' ## Site metadata and design
-#' Set remnants to 50 years old as a placeholder. This number will not be used in
-#' a quantitative sense, for example in models.
-rem_age <- 50
 sites   <-
     read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>%
     mutate(
@@ -102,10 +101,9 @@ sites   <-
             field_type,
             ordered = TRUE,
             levels = c("corn", "restored", "remnant")
-        ),
-        yr_since = replace(yr_since, which(field_type == "remnant"), rem_age)
-    ) %>%
-    select(-lat, -long, -yr_restore, -yr_rank)
+        )) %>%
+    select(-lat, -long, -yr_restore, -yr_rank) %>% 
+    arrange(field_key)
 #' 
 #' ## Joined species, metadata, and design tables
 #' Functions streamline this process
@@ -136,14 +134,11 @@ spe_meta <- list(
         write_csv(paste0( getwd(), "/clean_data/speTaxa_18S_rfy.csv" ))
 )
 #' 
-#' # Analysis and Results
-#' ## ITS-based data
-#' The first pass uses the entire rarefied tables for ITS or AMF. Interesting
-#' patterns can then be explored with the raw sequence abundance data, rarefied
-#' in particular guilds or taxa. 
-#' 
+#' # Functions 
 #' Functions streamline data processing, model fitting, and results output.
 #' ### Function: ITS taxonomy
+#' This function simplifies and displays the sequence distribution among taxa and
+#' across primary lifestyles.
 #+ its_tax_trophic
 its_taxaGuild <- function(data) {
     # What is the distribution among site types at the class level?
@@ -187,23 +182,14 @@ its_taxaGuild <- function(data) {
     ))
 }
 #' 
-
-
-
-
-
-
 #' ### Function: ITS and guilds
-#' Sequence abundances are analyzed in the guilds "Arbuscular Mycorrhizal", "Plant Pathogen",
-#' and "Undefined Saprotroph". Other guilds are inappropriate or contain few sequences. 
+#' Several primary lifestyles have been chosen from Fungal Traits for further
+#' examination. These lifestyles were the largest by sequence abundance and thought to be
+#' most informative given the habitat and questions applied. 
 #' 
-#' FunGuild identifies the level of taxonomy assignment, the trophic mode, and the confidence
-#' of assignment. View the [README](https://github.com/UMNFuN/FUNGuild) on GitHub.
-#' Note on confidence ranking: I don't know what this refers to. Is it the taxonomic assignment,
-#' guild/trophic mode, or all data? This is not explained.
-#' 
-#' To conduct summaries of FunGuild metadata, it would seem appropriate to choose OTUs with
-#' higher confidence rankings and more specific taxonomic assignments.
+#' This function filters those groups and tests them among field types. 
+#' These tests aren't technically valid due to pseudoreplication, but this analysis can
+#' help us find trends worthy of further study. 
 #+ its_guilds
 its_test_taxaGuild <- function(data) {
     pl <- c("soil_saprotroph", "wood_saprotroph", "litter_saprotroph", "plant_pathogen")
@@ -253,33 +239,11 @@ its_test_taxaGuild <- function(data) {
     }
     
     return(df1)
-
+    
 }
-
-
-
-
-#' 
-#' ### ITS sequences in OTU clusters
-#' Function outputs are verbose, but details may be necessary later so they are displayed here.
-#+ its_tax_trophic_otu,message=FALSE
-its_taxaGuild(spe_meta$its_rfy)
-#' 
-#+ its_guilds_otu,message=FALSE
-its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
-#' 
-#' Soil saprotroph increases with years since
-#' Wood saprotroph differs among field types and decreases with years since
-#' Plant pathogens decrease with years since
-#' Re-rarefy in just these groups, test, and make figures. 
-
-
-
-
-
 #' 
 #' ## 18S-based data (AMF)
-#' A function streamlines analysis and results output.
+#' This function simplifies and displays taxonomic information about the AMF OTUs. 
 #+ amf_taxa_function
 amf_tax <- function(data, cluster_type) {
     cat("---------------------------------\n")
@@ -364,7 +328,7 @@ amf_tax <- function(data, cluster_type) {
     mod_data <-
         amf_df %>%
         filter(field_type == "restored", region == "BM", family %in% all7)
-        for (i in 1:length(all7)) {
+    for (i in 1:length(all7)) {
         print(all7[i])
         print(summary(lm(
             seq_sum ~ yr_since, data = mod_data %>% filter(family == all7[i])
@@ -373,6 +337,214 @@ amf_tax <- function(data, cluster_type) {
     return(amf_df)
 }
 #' 
+#' ## Re-rarefy in guilds (or groups)
+#' To examine trends or differences within subgroups of OTUs, the raw sequence
+#' data should be re-rarefied within those groups. Otherwise, especially with low-abundance
+#' groups, data and sites may have been lost when the entire species matrix was 
+#' rarefied. This function automates the process.
+#' 
+#' Outputs are:
+#' 
+#' 1. Sequencing depth used for the subset of OTUs
+#' 1. Number of OTUs excluded by rarefying
+#' 1. The re-rarefied samples-species matrix
+#' 1. The OTU list in long form, with abundances, species, and site metadata
+#' 
+#+ rerare_function
+rerare <- function(spe, meta, grp_var, grp, site) {
+    # spe       = species matrix with raw abundances
+    # meta      = species metadata matching the OTU list with raw abundances
+    # grp_var   = variable name from `meta` desired for grouping and filtering
+    #             the OTUs (e.g., `primary_lifestyle`, `family`)
+    # grp       = string or factor level name of the group desired from `grp_var`
+    # site      = site metadata to combine with sequence abundance long-form
+    #             output table
+    
+    grp_var <- enquo(grp_var)
+    
+    data <- 
+        spe %>% 
+        column_to_rownames(var = "field_key") %>% 
+        t() %>% 
+        as.data.frame() %>% 
+        rownames_to_column(var = "otu_num") %>% 
+        as_tibble() %>% 
+        left_join(meta, by = join_by(otu_num)) %>% 
+        filter(!!grp_var == grp) %>% 
+        column_to_rownames(var = "otu_num") %>% 
+        select(-colnames(meta)[-1]) %>% 
+        t() %>% 
+        as.data.frame()
+    
+    depth <- min(rowSums(data))
+    rfy <- Rarefy(data)
+    zero_otu <- which(apply(rfy$otu.tab.rff, 2, sum) == 0)
+    rrfd <- data.frame(rfy$otu.tab.rff[, -zero_otu]) %>%
+        rownames_to_column(var = "field_key") %>%
+        mutate(field_key = as.numeric(field_key)) %>% 
+        arrange(field_key) %>% 
+        as_tibble()
+    
+    rrfd_speTaxa <- 
+        rrfd %>% 
+        pivot_longer(cols = starts_with("otu"), 
+                     names_to = "otu_num", 
+                     values_to = "seq_abund") %>% 
+        filter(seq_abund > 0) %>% 
+        left_join(meta, by = join_by(otu_num)) %>% 
+        left_join(site, by = join_by(field_key)) %>% 
+        select(-otu_ID)
+    
+    return(list(
+        seq_depth = depth,
+        zero_otu_num = length(zero_otu),
+        rrfd = rrfd,
+        rrfd_speTaxa = rrfd_speTaxa
+    ))
+    
+}
+#' 
+#' ## Perform Indicator Species Analysis
+#' Function `inspan()` takes a combined species and sites data frame and 
+#' wrangles it through the analysis to filter OTUs for indicators of field types. 
+#' The output is top candidate OTUs joined with species metadata for further analysis. 
+#+ inspan_function
+inspan <- function(data, np, meta) {
+    # data is the samples-species matrix joined with the sites data frame
+    # the join aligns the grouping vector with field numbers
+    # np is the desired number of permutations
+    # meta is the appropriate species metadata table for the original data
+    spe <- data.frame(
+        data %>% select(field_key, starts_with("otu")),
+        row.names = 1
+    )
+    grp = data$field_type
+    mp <- multipatt(
+        spe, 
+        grp, 
+        max.order = 1, 
+        control = how(nperm = np))
+    si <- mp$sign %>% 
+        select(index, stat, p.value) %>% 
+        mutate(field_type = case_when(index == 1 ~ "corn", 
+                                      index == 2 ~ "restored", 
+                                      index == 3 ~ "remnant")) %>% 
+        filter(p.value < 0.05) %>% 
+        rownames_to_column(var = "otu_num") %>%
+        select(-index) %>% 
+        as_tibble()
+    A  <- mp$A %>% 
+        as.data.frame() %>% 
+        rownames_to_column(var = "otu_num") %>% 
+        pivot_longer(cols = corn:remnant, 
+                     names_to = "field_type", 
+                     values_to = "A")
+    B <- mp$B %>% 
+        as.data.frame() %>% 
+        rownames_to_column(var = "otu_num") %>% 
+        pivot_longer(cols = corn:remnant, 
+                     names_to = "field_type", 
+                     values_to = "B")
+    out <- 
+        si %>% 
+        left_join(A, by = join_by(otu_num, field_type)) %>% 
+        left_join(B, by = join_by(otu_num, field_type)) %>% 
+        left_join(meta %>% select(-otu_ID), by = join_by(otu_num)) %>% 
+        select(otu_num, A, B, stat, p.value, 
+               field_type, primary_lifestyle, everything()) %>% 
+        arrange(field_type, -stat)
+    
+    return(out)
+    
+}
+#' 
+#' # Analysis and Results
+#' ## ITS sequences in OTU clusters
+#' Function outputs are verbose, but details may be necessary later so they are displayed here.
+#+ its_tax_trophic_otu,message=FALSE
+its_taxaGuild(spe_meta$its_rfy)
+#' 
+#+ its_guilds_otu,message=FALSE
+its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
+#' 
+#' Model tests on `field_type` are technically invalid due to pseudoreplication, but are included here
+#' to point out trends that we may be able to present in some other valid way. Trends 
+#' with restoration age in Blue Mounds are clearly justified. These trends are:
+#' 
+#' - Soil saprotroph increases with years since
+#' - Wood saprotroph differs among field types and decreases with years since
+#' - Plant pathogens decrease with years since
+#' 
+#' ## ITS-based indicators
+#' An indicator species analysis is warranted, identifying which species correlate strongly with `field_type`. 
+#' Performing this with all ITS data may identify 
+#' particular species to further examine. The analysis should also be done with data re-rarefied into 
+#' the guilds identified here, again to showcase particular species which seem to drive differences among
+#' field types. It's also of value because this approach avoids the problem we have with pseudoreplication.
+#' 
+#' With indicator species analysis performed using package [indicspecies](http://sites.google.com/site/miqueldecaceres/),
+#' the index values A and B show the specificity and fidelity components of the IndVal combined index. The 
+#' combined index value is noted as 'stat' in the output table below.  
+
+# whole dataset doesn't need to be rarefied
+its_inspan <- 
+    spe$its_rfy %>% 
+    left_join(sites, by = join_by(field_key)) %>% 
+    inspan(., 1999, meta$its_rfy)
+
+
+# soil saprotrophs, re-rarefy
+ssap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "soil_saprotroph", sites)
+ssap$rrfd_speTaxa %>% 
+    group_by(field_type, order, field_key) %>% 
+    summarize(seq_sum = sum(seq_abund)) %>% 
+    group_by(field_type, order) %>% 
+    summarize(seq_avg = mean(seq_sum)) %>% 
+    mutate(seq_max = max(seq_avg),
+           seq_prop = seq_avg / seq_max) %>% group_by(field_type) %>% summarize(sum = sum(seq_prop))
+# How to make the columns all the same height? 
+    ungroup() %>% 
+    filter(seq_prop >= 0.01) %>% 
+    ggplot(aes(x = field_type, y = seq_prop)) +
+    geom_col(aes(fill = order), color = "black") +
+    labs(x = "", y = "Proportion of sequence abundance") +
+    scale_fill_discrete_sequential(palette = "Viridis") +
+    theme_classic()
+    
+# recode the low abundance species to "other" so that the bars line up. 
+# finally, consider the other basic outputs you might want here
+
+ssap_inspan <- 
+    ssap$rrfd %>% 
+    left_join(sites, by = join_by(field_key)) %>% 
+    inspan(., 1999, meta$its_raw)
+
+
+
+
+
+
+
+
+
+
+wsap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "wood_saprotroph", sites)
+wsap_inspan <- 
+    wsap$rrfd %>% 
+    left_join(sites, by = join_by(field_key)) %>% 
+    inspan(., 1999, meta$its_raw)
+
+ppat <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "plant_pathogen", sites)
+ppat_inspan <- 
+    ppat$rrfd %>% 
+    left_join(sites, by = join_by(field_key)) %>% 
+    inspan(., 1999, meta$its_raw)
+
+
+
+
+
+
 #' ## AMF OTUs
 #' Function output is verbose but retained as explained previously.
 #+ amf_otu_summary,message=FALSE
