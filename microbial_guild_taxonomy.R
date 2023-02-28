@@ -486,7 +486,23 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
 #' the index values A and B show the specificity and fidelity components of the IndVal combined index. The 
 #' combined index value is noted as 'stat' in the output table below.  
 
-# whole dataset doesn't need to be rarefied
+spe_meta$its_rfy %>% 
+    filter(order != is.na(order), order != "unidentified") %>% 
+    group_by(field_type, order, field_key) %>% 
+    summarize(seq_sum = sum(seq_abund), .groups = "drop_last") %>% 
+    summarize(seq_avg = mean(seq_sum), .groups = "drop_last") %>% 
+    mutate(seq_comp = (seq_avg / sum(seq_avg)) * 100,
+           order = replace(order, which(seq_comp < 2), "Other")) %>% 
+    group_by(field_type, order) %>% 
+    summarize(seq_comp = sum(seq_comp), .groups = "drop") %>% 
+    ggplot(., aes(x = field_type, y = seq_comp)) +
+    geom_col(aes(fill = order), color = "black") +
+    labs(x = "", y = "Proportion of sequence abundance",
+         title = "Composition of fungi") +
+    scale_fill_discrete_sequential(name = "Order", palette = "Plasma") +
+    theme_classic()
+
+
 its_inspan <- 
     spe$its_rfy %>% 
     left_join(sites, by = join_by(field_key)) %>% 
@@ -495,29 +511,110 @@ its_inspan <-
 
 # soil saprotrophs, re-rarefy
 ssap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "soil_saprotroph", sites)
-ssap$rrfd_speTaxa %>% 
+ssap_stk_data <- 
+    ssap$rrfd_speTaxa %>% 
     group_by(field_type, order, field_key) %>% 
-    summarize(seq_sum = sum(seq_abund)) %>% 
+    summarize(seq_sum = sum(seq_abund), .groups = "drop_last") %>% 
+    summarize(seq_avg = mean(seq_sum), .groups = "drop_last") %>% 
+    mutate(seq_comp = (seq_avg / sum(seq_avg)) * 100,
+           order = replace(order, which(seq_comp < 1), "Other")) %>% 
     group_by(field_type, order) %>% 
-    summarize(seq_avg = mean(seq_sum)) %>% 
-    mutate(seq_max = max(seq_avg),
-           seq_prop = seq_avg / seq_max) %>% group_by(field_type) %>% summarize(sum = sum(seq_prop))
-# How to make the columns all the same height? 
-    ungroup() %>% 
-    filter(seq_prop >= 0.01) %>% 
-    ggplot(aes(x = field_type, y = seq_prop)) +
+    summarize(seq_comp = sum(seq_comp), .groups = "drop")
+ggplot(ssap_stk_data, aes(x = field_type, y = seq_comp)) +
     geom_col(aes(fill = order), color = "black") +
-    labs(x = "", y = "Proportion of sequence abundance") +
-    scale_fill_discrete_sequential(palette = "Viridis") +
+    labs(x = "", y = "Proportion of sequence abundance",
+         title = "Composition of soil saprotrophs") +
+    scale_fill_discrete_sequential(name = "Order",palette = "Plasma") +
     theme_classic()
     
-# recode the low abundance species to "other" so that the bars line up. 
-# finally, consider the other basic outputs you might want here
+#' Ideally we want to look for the trend found in the earlier model: soil saprotrophs
+#' were found to be increasing in restored Blue Mounds fields. The following plot isn't 
+#' very convincing.
+ssap$rrfd_speTaxa %>% 
+    filter(field_type == "restored", 
+           region %in% c("BM", "FL"),
+           order %in% ssap_stk_data$order) %>% 
+    group_by(order, region, field_name, yr_since) %>% 
+    summarize(seq_sum = sum(seq_abund), .groups = "drop") %>% 
+    ggplot(aes(x = yr_since, y = seq_sum)) +
+    facet_wrap(vars(order), scales = "free_y") +
+    geom_point(aes(fill = region), shape = 21) +
+    labs(x = "Years since restoration", 
+         y = "Sequence abundance (sum of rarefied)",
+         title = "Soil saprotroph abundance over time (rarefied in this group)") +
+    theme_bw()
+
+#' Partly, the difference is probably due to the fact that the data here have been re-rarefied
+#' into just the soil saprotrophs group. We'd like to see if these fungi change in abundance over 
+#' time as an entire group, but now we can't because sequences have been rarefied to field. To 
+#' do this, we have to use the data which were rarefied across all taxa. 
+
+speTaxa_its_rfy %>% 
+    filter(field_type == "restored", 
+           region %in% c("BM", "FL"),
+           order %in% ssap_stk_data$order) %>% 
+    group_by(order, field_key, yr_since, region) %>% 
+    summarize(seq_sum = sum(seq_abund), .groups = "drop") %>% 
+    ggplot(aes(x = yr_since, y = seq_sum)) +
+    facet_wrap(vars(order), scales = "free_y") +
+    geom_point(aes(fill = region), shape = 21) +
+    labs(x = "Years since restoration", 
+         y = "Sequence abundance (sum of rarefied)",
+         title = "Soil saprotroph abundance over time (rarefied across ITS-based OTUs)") +
+    theme_bw()
+#' The difference is hard to overstate. Which one is right????
+
+
+#' This allows us to look for the global trends in restored fields with all soil saprotrophs
+#' For now, only the subgroup identified earlier are used because the variable `primary_lifestyle`
+#' is not included in the speTaxa tables...
+spe_meta$its_rfy %>% 
+    filter(field_type == "restored", 
+           region %in% c("BM", "FL"),
+           primary_lifestyle == "soil_saprotroph") %>% 
+    group_by(field_key, yr_since, region) %>% 
+    summarize(seq_sum = sum(seq_abund), .groups = "drop") %>%
+    ggplot(aes(x = yr_since, y = seq_sum)) +
+    geom_point(aes(fill = region), shape = 21) +
+    labs(x = "Years since restoration", 
+         y = "Sequence abundance (sum of rarefied)",
+         title = "Soil saprotroph abundance over time (rarefied across ITS-based OTUs") +
+    theme_bw()
+    
+#' Why did the previous model show soil saprotrophs increasing in Blue Mounds???
+#' Here is the data used by that model:
+its_rfy_guilds
+#' And here is the data I think should be exactly the same:
+spe_meta$its_rfy %>% 
+    filter(field_type == "restored", 
+           region == "BM",
+           primary_lifestyle == "soil_saprotroph") %>% 
+    group_by(field_key, yr_since) %>% 
+    summarize(seq_sum = sum(seq_abund), .groups = "drop")
+#' Now they are the same because they start with data that were rarefied across groups.
+#' I can't make the same data frame to compare with from data rarefied in soil saprotrophs 
+#' only, because the totals would all be in fields and equal. 
+
+
+summary(lm(seq_sum ~ yr_since, 
+           data = spe_meta$its_rfy %>% 
+               filter(field_type == "restored", 
+                      region == "BM",
+                      primary_lifestyle == "soil_saprotroph") %>% 
+               group_by(field_key, yr_since) %>% 
+               summarize(seq_sum = sum(seq_abund), .groups = "drop")))
+
+
+
+
 
 ssap_inspan <- 
     ssap$rrfd %>% 
     left_join(sites, by = join_by(field_key)) %>% 
     inspan(., 1999, meta$its_raw)
+
+
+
 
 
 
