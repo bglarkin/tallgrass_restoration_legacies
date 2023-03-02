@@ -2,7 +2,7 @@ Site locations, metadata, and climate
 ================
 Beau Larkin
 
-Last updated: 24 February, 2023
+Last updated: 02 March, 2023
 
 - <a href="#description" id="toc-description">Description</a>
 - <a href="#package-and-library-installation"
@@ -97,16 +97,15 @@ sites <-
 
 Climate data was accessed and downloaded on 2022-01-06. The following
 script does not need to be run again and is commented out to prevent
-errors and overwrites. Raw downloaded data are stored locally, summary
-files were written to the working directory and included in this
-repository.
+errors and overwrites. Raw downloaded data and summary files were
+written to the working directory and included in this repository.
 
 ### Normals
 
 Download archive rasters
 
 ``` r
-# prism_set_dl_dir("~/Desktop/prism_temp")
+# prism_set_dl_dir(paste0(getwd(), "/prism/"))
 # get_prism_normals(type = "ppt", resolution = "4km", annual = TRUE, keepZip = FALSE)
 # prism_archive_ls()
 # RS <- pd_stack(prism_archive_ls())
@@ -123,13 +122,13 @@ Extract locations from archive rasters
 
 ``` r
 # sites_ppt <- raster::extract(RS, sites_spdf, fun = mean, na.rm = TRUE, sp = TRUE)@data %>%
-#     rename(ppt_mm = PRISM_ppt_30yr_normal_4kmM3_annual_bil)
+#     rename(ppt_mm = PRISM_ppt_30yr_normal_4kmM4_annual_bil)
 ```
 
 Create data table `site_precip_normal.csv`
 
 ``` r
-# write_csv(sites_ppt %>% select(site_key, ppt_mm), paste0(getwd(), "/clean_data/site_precip_normal.csv"))
+# write_csv(sites_ppt %>% select(field_key, ppt_mm), paste0(getwd(), "/clean_data/site_precip_normal.csv"))
 ```
 
 # Results
@@ -238,31 +237,31 @@ kable(
 
 | region | field_name | field_type | ppt_mm |
 |:-------|:-----------|:-----------|-------:|
-| BM     | MBREM1     | remnant    |    980 |
-| BM     | MBRP1      | restored   |    980 |
-| BM     | PHC1       | corn       |    976 |
-| BM     | PHRP1      | restored   |    976 |
-| BM     | BBRP1      | restored   |    972 |
-| BM     | KORP1      | restored   |    972 |
-| BM     | ERRP1      | restored   |    964 |
+| BM     | MBREM1     | remnant    |    978 |
+| BM     | MBRP1      | restored   |    978 |
+| BM     | KORP1      | restored   |    971 |
+| BM     | PHC1       | corn       |    970 |
+| BM     | PHRP1      | restored   |    970 |
+| BM     | BBRP1      | restored   |    958 |
 | BM     | MHRP1      | restored   |    957 |
 | BM     | MHRP2      | restored   |    957 |
-| FG     | FGRP1      | restored   |    940 |
-| FG     | FGC1       | corn       |    937 |
-| FG     | FGREM1     | remnant    |    937 |
-| FL     | FLC2       | corn       |    991 |
-| FL     | FLRSP2     | restored   |    991 |
-| FL     | FLRP1      | restored   |    986 |
-| FL     | FLRP4      | restored   |    986 |
-| FL     | FLRP5      | restored   |    986 |
-| FL     | FLRSP1     | restored   |    986 |
-| FL     | FLRSP3     | restored   |    986 |
-| FL     | FLC1       | corn       |    983 |
-| FL     | FLREM1     | remnant    |    983 |
-| LP     | LPC1       | corn       |    979 |
-| LP     | LPREM1     | remnant    |    979 |
-| LP     | LPRP1      | restored   |    979 |
-| LP     | LPRP2      | restored   |    979 |
+| BM     | ERRP1      | restored   |    950 |
+| FG     | FGRP1      | restored   |    935 |
+| FG     | FGC1       | corn       |    931 |
+| FG     | FGREM1     | remnant    |    931 |
+| FL     | FLC2       | corn       |    970 |
+| FL     | FLRSP2     | restored   |    970 |
+| FL     | FLC1       | corn       |    967 |
+| FL     | FLREM1     | remnant    |    967 |
+| FL     | FLRP1      | restored   |    965 |
+| FL     | FLRP4      | restored   |    965 |
+| FL     | FLRP5      | restored   |    965 |
+| FL     | FLRSP1     | restored   |    965 |
+| FL     | FLRSP3     | restored   |    965 |
+| LP     | LPC1       | corn       |    961 |
+| LP     | LPREM1     | remnant    |    961 |
+| LP     | LPRP1      | restored   |    961 |
+| LP     | LPRP2      | restored   |    961 |
 
 See 30-year precipitation normals plotted by region and field type in
 the figure below. Regions and fields within regions do differ in

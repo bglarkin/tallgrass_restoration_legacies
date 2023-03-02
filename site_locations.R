@@ -57,12 +57,12 @@ sites <-
 #'
 #' ## Climate data
 #' Climate data was accessed and downloaded on 2022-01-06. The following script does not need to be run
-#' again and is commented out to prevent errors and overwrites. Raw downloaded data are stored locally, summary files were written to
+#' again and is commented out to prevent errors and overwrites. Raw downloaded data and summary files were written to
 #' the working directory and included in this repository.
 #'
 #' ### Normals
 #' Download archive rasters
-# prism_set_dl_dir("~/Desktop/prism_temp")
+# prism_set_dl_dir(paste0(getwd(), "/prism/"))
 # get_prism_normals(type = "ppt", resolution = "4km", annual = TRUE, keepZip = FALSE)
 # prism_archive_ls()
 # RS <- pd_stack(prism_archive_ls())
@@ -75,9 +75,9 @@ sites <-
 #     )
 #' Extract locations from archive rasters
 # sites_ppt <- raster::extract(RS, sites_spdf, fun = mean, na.rm = TRUE, sp = TRUE)@data %>%
-#     rename(ppt_mm = PRISM_ppt_30yr_normal_4kmM3_annual_bil)
+#     rename(ppt_mm = PRISM_ppt_30yr_normal_4kmM4_annual_bil)
 #' Create data table `site_precip_normal.csv`
-# write_csv(sites_ppt %>% select(site_key, ppt_mm), paste0(getwd(), "/clean_data/site_precip_normal.csv"))
+# write_csv(sites_ppt %>% select(field_key, ppt_mm), paste0(getwd(), "/clean_data/site_precip_normal.csv"))
 #'
 #' # Results
 #' ## Site types
