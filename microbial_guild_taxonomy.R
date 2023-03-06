@@ -17,11 +17,10 @@
 #' In this report, sequence abundances in taxonomic groups or fungal guilds are compared 
 #' across field types and with time since restoration. 
 #' 
-#' The full sequence abundance tables were rarefied to make sequencing depth equvalent
-#' across fields. This can result in lower-abundance OTUs dropping to zero, making
-#' comparisons within guilds less informative. Here, the raw abundances are used, filtered
-#' into particular guilds, and then rarefied within those guilds to better reveal 
-#' trends.
+#' The full sequence abundance tables were rarefied to make sequencing depth equivalent
+#' across fields. This can result in lower-abundance OTUs dropping to zero. Here, when 
+#' richness and composition within guilds is calculated, the raw abundances are used, filtered
+#' into particular guilds, and then rarefied within those guilds to produce accurate results.
 #' 
 #' # Packages and libraries
 packages_needed = c("tidyverse",
@@ -138,15 +137,16 @@ spe_meta <- list(
 #' Functions streamline data processing, model fitting, and results output.
 #' ### Function: ITS taxonomy
 #' This function simplifies and displays the sequence distribution among taxa and
-#' across primary lifestyles.
+#' across primary lifestyles. Use the argument `other_threshold` to 
+#' choose a small (e.g., 2, the default) cutoff, below which orders are relabeled as "other".
 #+ its_tax_trophic
-its_taxaGuild <- function(data) {
+its_taxaGuild <- function(data, other_threshold=2) {
     # What is the distribution among site types at the class level?
     taxonomy_df <-
         data %>%
-        group_by(phylum, class, field_type, field_name) %>%
+        group_by(phylum, order, field_type, field_name) %>%
         summarize(abund = sum(seq_abund), .groups = "drop") %>%
-        group_by(phylum, class, field_type) %>%
+        group_by(phylum, order, field_type) %>%
         summarize(mean = mean(abund) %>% round(., 2),
                   .groups = "drop") %>%
         pivot_wider(
@@ -154,7 +154,7 @@ its_taxaGuild <- function(data) {
             values_from = mean,
             values_fill = 0
         ) %>%
-        select(phylum, class, corn, restored, remnant) %>%
+        select(phylum, order, corn, restored, remnant) %>%
         arrange(-remnant)
     print(kable(
         taxonomy_df,
@@ -175,11 +175,29 @@ its_taxaGuild <- function(data) {
         ) %>%
         select(primary_lifestyle, corn, restored, remnant) %>%
         arrange(-remnant)
-    print(kable(
-        guild_df,
-        format = "pandoc",
-        caption = "Distribution of ITS OTUs by Fungal Trait 'primary_lifestyle'; mean sequence abundance by field type"
-    ))
+    # Create table
+    table <- kable(guild_df, format = "pandoc",
+        caption = "Distribution of ITS OTUs by Fungal Trait 'primary_lifestyle'; mean sequence abundance by field type")
+    # Plot the most abundant orders across field types
+    plot <- 
+        data %>% 
+        filter(order != is.na(order), order != "unidentified") %>% 
+        group_by(field_type, order, field_key) %>% 
+        summarize(seq_sum = sum(seq_abund), .groups = "drop_last") %>% 
+        summarize(seq_avg = mean(seq_sum), .groups = "drop_last") %>% 
+        mutate(seq_comp = (seq_avg / sum(seq_avg)) * 100,
+               order = replace(order, which(seq_comp < 2), paste0("Other (OTU<", other_threshold, "%)"))) %>% 
+        group_by(field_type, order) %>% 
+        summarize(seq_comp = sum(seq_comp), .groups = "drop") %>% 
+        ggplot(., aes(x = field_type, y = seq_comp)) +
+        geom_col(aes(fill = order), color = "black") +
+        labs(x = "", y = "Proportion of sequence abundance",
+             title = "Composition of fungi") +
+        scale_fill_discrete_sequential(name = "Order", palette = "Plasma") +
+        theme_classic()
+    
+    print(list(table, plot))
+    
 }
 #' 
 #' ### Function: ITS and guilds
@@ -192,7 +210,7 @@ its_taxaGuild <- function(data) {
 #' help us find trends worthy of further study. 
 #+ its_guilds
 its_test_taxaGuild <- function(data) {
-    pl <- c("soil_saprotroph", "wood_saprotroph", "litter_saprotroph", "plant_pathogen")
+    pl <- c("soil_saprotroph", "plant_pathogen", "ectomycorrhizal", "wood_saprotroph", "litter_saprotroph")
     df1 <- data.frame()
     for (i in 1:length(pl)) {
         cat("---------------------------------\n")
@@ -337,8 +355,55 @@ amf_tax <- function(data, cluster_type) {
     return(amf_df)
 }
 #' 
+#' ## Examine change over time in guilds
+#' Function `guiltime()` filters ITS data to a user-specified guild and 
+#' produces linear models and plots of change in sequence abundance over time since restoration
+#' in Blue Mounds and Fermilab. 
+guiltime <- function(pl) {
+    d <- spe_meta$its_rfy %>%
+        filter(
+            primary_lifestyle == pl,
+            region %in% c("BM", "FL"),
+            field_type == "restored"
+        ) %>% 
+        group_by(field_key, field_name, region, yr_since) %>% 
+        summarize(seq_sum = sum(seq_abund), .groups = "drop")
+    
+    bm <- summary(
+        lm(seq_sum ~ yr_since, data = d %>% filter(region == "BM"))
+    )
+    fl <- summary(
+        lm(seq_sum ~ yr_since, data = d %>% filter(region == "FL"))
+    )
+    
+    fits <- data.frame(
+        rbind(BM = c(coef(bm)[1,1], coef(bm)[2,1], coef(bm)[2,4]),
+              FL = c(coef(fl)[1,1], coef(fl)[2,1], coef(fl)[2,4]))) %>% 
+        mutate(lty = case_when(X3 < 0.05 ~ "a", TRUE ~ "b")) %>% 
+        rownames_to_column(var = "region")
+    
+    plot <- 
+        ggplot(d, aes(x = yr_since, y = seq_sum)) +
+        facet_wrap(vars(region), scales = "free_y") +
+        geom_point() +
+        geom_abline(data = fits, aes(slope = X2, intercept = X1, linetype = lty), color = "blue") +
+        labs(x = "Years since restoration", 
+             y = "Sum of ITS sequences") +
+        theme_bw() +
+        theme(legend.position = "none")
+    
+    out <- list(
+        bm_summary = bm,
+        fl_summary = fl,
+        plot = plot
+    )
+    
+    print(out)
+    
+}
+#' 
 #' ## Re-rarefy in guilds (or groups)
-#' To examine trends or differences within subgroups of OTUs, the raw sequence
+#' To examine richness and composition within subgroups of OTUs, the raw sequence
 #' data should be re-rarefied within those groups. Otherwise, especially with low-abundance
 #' groups, data and sites may have been lost when the entire species matrix was 
 #' rarefied. This function automates the process.
@@ -404,6 +469,89 @@ rerare <- function(spe, meta, grp_var, grp, site) {
     
 }
 #' 
+#' ### Calculate Hill's series on a samples-species matrix
+#' The object `$rrfd` from rerare() can be passed to this function
+#+ calc_diversity_function
+calc_diversity <- function(spe) {
+    spe_mat <- data.frame(spe, row.names = 1)
+    
+    N0  <- apply(spe_mat > 0, MARGIN = 1, FUN = sum)
+    N1  <- exp(diversity(spe_mat))
+    N2  <- diversity(spe_mat, "inv")
+    E10 <- N1 / N0
+    E20 <- N2 / N0
+    
+    return(
+        data.frame(N0, N1, N2, E10, E20) %>%
+            rownames_to_column(var = "field_key") %>%
+            mutate(field_key = as.integer(field_key)) %>%
+            left_join(sites, by = join_by(field_key)) %>%
+            pivot_longer(
+                cols = N0:E20,
+                names_to = "hill_index",
+                values_to = "value"
+            ) %>%
+            mutate(hill_index = factor(
+                hill_index,
+                ordered = TRUE,
+                levels = c("N0", "N1", "N2", "E10", "E20")
+            ))
+    )
+}
+#' 
+#' ### Results from re-rarefied data
+#' After re-rarefying into a guild (or taxonomic group), produce diversity statistics 
+#' and calculate percent composition; display results. For plotting, it's convenient 
+#' to limit the number of taxonomic orders displayed. Use the argument `other_threshold` to 
+#' choose a small (e.g., 2, the default) cutoff, below which orders are relabeled as "other".
+gudicom <- function(div, rrfd, grp_var, other_threshold=2) {
+    hillfield <-     
+        ggplot(div, aes(x = field_type, y = value)) +
+        facet_wrap(vars(hill_index), scales = "free_y") +
+        geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
+        geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
+        labs(x = "", y = "Index value", title = paste("Microbial diversity (Hill's):", grp_var),
+             caption = "Re-rarefied in the group; N0-richness, N1-e^Shannon, N2-Simpson, E10=N1/N0, E20=N2/N0, width=n") +
+        scale_fill_discrete_qualitative(palette = "Dark3") +
+        theme_bw()
+    hilltime <- 
+        div %>% 
+        filter(field_type == "restored", region %in% c("BM", "FL")) %>% 
+        ggplot(aes(x = yr_since, y = value)) +
+        facet_grid(rows = vars(hill_index), cols = vars(region), scales = "free") +
+        geom_smooth(method = "lm") +
+        geom_point() +
+        labs(x = "Years since restoration", y = "Index value", title = paste("Microbial diversity (Hill's) in restored fields:", grp_var),
+             caption = "Re-rarefied in the group; N0-richness, N1-e^Shannon, N2-Simpson, E10=N1/N0, E20=N2/N0, width=n") +
+        theme_bw()
+    comp <- 
+        rrfd %>% 
+        filter(order != is.na(order), order != "unidentified") %>% 
+        group_by(field_type, order, field_key) %>% 
+        summarize(seq_sum = sum(seq_abund), .groups = "drop_last") %>% 
+        summarize(seq_avg = mean(seq_sum), .groups = "drop_last") %>% 
+        mutate(seq_comp = (seq_avg / sum(seq_avg)) * 100,
+               order = replace(order, which(seq_comp < other_threshold), paste0("Other (OTU<", other_threshold, "%)"))) %>% 
+        group_by(field_type, order) %>% 
+        summarize(seq_comp = sum(seq_comp), .groups = "drop")
+    comp_plot <-
+        ggplot(comp, aes(x = field_type, y = seq_comp)) +
+        geom_col(aes(fill = order), color = "black") +
+        labs(x = "", y = "Proportion of sequence abundance",
+             title = paste("Composition of", grp_var)) +
+        scale_fill_discrete_sequential(name = "Order", palette = "Plasma") +
+        theme_classic()
+    
+    print(list(
+        hillfield,
+        hilltime,
+        comp_plot
+    ))
+    
+    return(comp)
+    
+}
+#' 
 #' ## Perform Indicator Species Analysis
 #' Function `inspan()` takes a combined species and sites data frame and 
 #' wrangles it through the analysis to filter OTUs for indicators of field types. 
@@ -459,7 +607,7 @@ inspan <- function(data, np, meta) {
 }
 #' 
 #' # Analysis and Results
-#' ## ITS sequences in OTU clusters
+#' ## ITS sequences
 #' Function outputs are verbose, but details may be necessary later so they are displayed here.
 #+ its_tax_trophic_otu,message=FALSE
 its_taxaGuild(spe_meta$its_rfy)
@@ -469,173 +617,126 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
 #' 
 #' Model tests on `field_type` are technically invalid due to pseudoreplication, but are included here
 #' to point out trends that we may be able to present in some other valid way. Trends 
-#' with restoration age in Blue Mounds are clearly justified. These trends are:
+#' with restoration age in Blue Mounds are clearly justified. Results are shown in descending 
+#' order based on sequence abundance in remnants:
 #' 
 #' - Soil saprotroph increases with years since
-#' - Wood saprotroph differs among field types and decreases with years since
 #' - Plant pathogens decrease with years since
+#' - Ectomycorrhizal abundance is very low in corn/restored and with 
+#' little replication; nothing can be said except that it's relatively abundant in remnants.
+#' - Wood saprotroph differs among field types (corn vs. remnant; restored intermediate) and decreases with years since
+#' - Litter saprotroph is abundant everywhere, but differences over time or field type are weak.
 #' 
-#' ## ITS-based indicators
+#' #### ITS-based indicators
 #' An indicator species analysis is warranted, identifying which species correlate strongly with `field_type`. 
-#' Performing this with all ITS data may identify 
-#' particular species to further examine. The analysis should also be done with data re-rarefied into 
+#' Performing this with all ITS data may identify particular species to further examine, although it remains
+#' a problem that we cannot distinguish field type from an individual field due to pseudoreplication. 
+#' 
+#' Following the indicator species analysis, richness and composition of selected guilds is 
+#' calculated. These calculations are done with data re-rarefied into 
 #' the guilds identified here, again to showcase particular species which seem to drive differences among
 #' field types. It's also of value because this approach avoids the problem we have with pseudoreplication.
 #' 
 #' With indicator species analysis performed using package [indicspecies](http://sites.google.com/site/miqueldecaceres/),
 #' the index values A and B show the specificity and fidelity components of the IndVal combined index. The 
 #' combined index value is noted as 'stat' in the output table below.  
-
-spe_meta$its_rfy %>% 
-    filter(order != is.na(order), order != "unidentified") %>% 
-    group_by(field_type, order, field_key) %>% 
-    summarize(seq_sum = sum(seq_abund), .groups = "drop_last") %>% 
-    summarize(seq_avg = mean(seq_sum), .groups = "drop_last") %>% 
-    mutate(seq_comp = (seq_avg / sum(seq_avg)) * 100,
-           order = replace(order, which(seq_comp < 2), "Other")) %>% 
-    group_by(field_type, order) %>% 
-    summarize(seq_comp = sum(seq_comp), .groups = "drop") %>% 
-    ggplot(., aes(x = field_type, y = seq_comp)) +
-    geom_col(aes(fill = order), color = "black") +
-    labs(x = "", y = "Proportion of sequence abundance",
-         title = "Composition of fungi") +
-    scale_fill_discrete_sequential(name = "Order", palette = "Plasma") +
-    theme_classic()
-
-
+#+ its_inspan_all
 its_inspan <- 
     spe$its_rfy %>% 
     left_join(sites, by = join_by(field_key)) %>% 
     inspan(., 1999, meta$its_rfy)
+#+ its_inspan_stats
+its_inspan %>%
+    mutate(field_type = factor(
+        field_type,
+        ordered = TRUE,
+        levels = c("corn", "restored", "remnant")
+    )) %>%
+    group_by(field_type) %>%
+    summarize(
+        n_otu = n(),
+        stat_avg = mean(stat),
+        stat_sd = sd(stat)
+    ) %>% 
+    kable(format = "pandoc", caption = "Indicator species stats of entire rarefied ITS table")
+#' Potential indicators were filtered to p.value<0.05 before this summary was produced. 
+#' Cornfields are a restrictive habitat for soil microbes, and that is reflected in the results here.
+#' More species have higher specificity and fidelity to cornfields than the other field types. The top ten
+#' indicators for each field type are printed here; the entire table is available for further use.
+#+ its_inspan_top10
+its_inspan %>% 
+    mutate(field_type = factor(
+    field_type,
+    ordered = TRUE,
+    levels = c("corn", "restored", "remnant")
+)) %>%
+    group_by(field_type) %>% 
+    slice_max(order_by = stat, n = 10) %>% 
+    arrange(field_type, -stat) %>% print(n = Inf)
+#' 
+#' ### Soil saprotrophs
 
 
-# soil saprotrophs, re-rarefy
+
+
+guiltime("soil_saprotroph")
+
 ssap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "soil_saprotroph", sites)
-ssap_stk_data <- 
-    ssap$rrfd_speTaxa %>% 
-    group_by(field_type, order, field_key) %>% 
-    summarize(seq_sum = sum(seq_abund), .groups = "drop_last") %>% 
-    summarize(seq_avg = mean(seq_sum), .groups = "drop_last") %>% 
-    mutate(seq_comp = (seq_avg / sum(seq_avg)) * 100,
-           order = replace(order, which(seq_comp < 1), "Other")) %>% 
-    group_by(field_type, order) %>% 
-    summarize(seq_comp = sum(seq_comp), .groups = "drop")
-ggplot(ssap_stk_data, aes(x = field_type, y = seq_comp)) +
-    geom_col(aes(fill = order), color = "black") +
-    labs(x = "", y = "Proportion of sequence abundance",
-         title = "Composition of soil saprotrophs") +
-    scale_fill_discrete_sequential(name = "Order",palette = "Plasma") +
-    theme_classic()
-    
-#' Ideally we want to look for the trend found in the earlier model: soil saprotrophs
-#' were found to be increasing in restored Blue Mounds fields. The following plot isn't 
-#' very convincing.
-ssap$rrfd_speTaxa %>% 
-    filter(field_type == "restored", 
-           region %in% c("BM", "FL"),
-           order %in% ssap_stk_data$order) %>% 
-    group_by(order, region, field_name, yr_since) %>% 
-    summarize(seq_sum = sum(seq_abund), .groups = "drop") %>% 
-    ggplot(aes(x = yr_since, y = seq_sum)) +
-    facet_wrap(vars(order), scales = "free_y") +
-    geom_point(aes(fill = region), shape = 21) +
-    labs(x = "Years since restoration", 
-         y = "Sequence abundance (sum of rarefied)",
-         title = "Soil saprotroph abundance over time (rarefied in this group)") +
-    theme_bw()
 
-#' Partly, the difference is probably due to the fact that the data here have been re-rarefied
-#' into just the soil saprotrophs group. We'd like to see if these fungi change in abundance over 
-#' time as an entire group, but now we can't because sequences have been rarefied to field. To 
-#' do this, we have to use the data which were rarefied across all taxa. 
+ssap_div <- calc_diversity(ssap$rrfd)
 
-speTaxa_its_rfy %>% 
-    filter(field_type == "restored", 
-           region %in% c("BM", "FL"),
-           order %in% ssap_stk_data$order) %>% 
-    group_by(order, field_key, yr_since, region) %>% 
-    summarize(seq_sum = sum(seq_abund), .groups = "drop") %>% 
-    ggplot(aes(x = yr_since, y = seq_sum)) +
-    facet_wrap(vars(order), scales = "free_y") +
-    geom_point(aes(fill = region), shape = 21) +
-    labs(x = "Years since restoration", 
-         y = "Sequence abundance (sum of rarefied)",
-         title = "Soil saprotroph abundance over time (rarefied across ITS-based OTUs)") +
-    theme_bw()
-#' The difference is hard to overstate. Which one is right????
+ssap_comp <- gudicom(ssap_div, ssap$rrfd_speTaxa, "soil_saprotroph")
 
-
-#' This allows us to look for the global trends in restored fields with all soil saprotrophs
-#' For now, only the subgroup identified earlier are used because the variable `primary_lifestyle`
-#' is not included in the speTaxa tables...
-spe_meta$its_rfy %>% 
-    filter(field_type == "restored", 
-           region %in% c("BM", "FL"),
-           primary_lifestyle == "soil_saprotroph") %>% 
-    group_by(field_key, yr_since, region) %>% 
-    summarize(seq_sum = sum(seq_abund), .groups = "drop") %>%
-    ggplot(aes(x = yr_since, y = seq_sum)) +
-    geom_point(aes(fill = region), shape = 21) +
-    labs(x = "Years since restoration", 
-         y = "Sequence abundance (sum of rarefied)",
-         title = "Soil saprotroph abundance over time (rarefied across ITS-based OTUs") +
-    theme_bw()
-    
-#' Why did the previous model show soil saprotrophs increasing in Blue Mounds???
-#' Here is the data used by that model:
-its_rfy_guilds
-#' And here is the data I think should be exactly the same:
-spe_meta$its_rfy %>% 
-    filter(field_type == "restored", 
-           region == "BM",
-           primary_lifestyle == "soil_saprotroph") %>% 
-    group_by(field_key, yr_since) %>% 
-    summarize(seq_sum = sum(seq_abund), .groups = "drop")
-#' Now they are the same because they start with data that were rarefied across groups.
-#' I can't make the same data frame to compare with from data rarefied in soil saprotrophs 
-#' only, because the totals would all be in fields and equal. 
-
-
-summary(lm(seq_sum ~ yr_since, 
-           data = spe_meta$its_rfy %>% 
-               filter(field_type == "restored", 
-                      region == "BM",
-                      primary_lifestyle == "soil_saprotroph") %>% 
-               group_by(field_key, yr_since) %>% 
-               summarize(seq_sum = sum(seq_abund), .groups = "drop")))
+# indicator
 
 
 
 
+#' ### ITS: plant pathogens
 
-ssap_inspan <- 
-    ssap$rrfd %>% 
-    left_join(sites, by = join_by(field_key)) %>% 
-    inspan(., 1999, meta$its_raw)
-
-
-
-
-
-
-
-
-
-
-
-
-
-wsap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "wood_saprotroph", sites)
-wsap_inspan <- 
-    wsap$rrfd %>% 
-    left_join(sites, by = join_by(field_key)) %>% 
-    inspan(., 1999, meta$its_raw)
+guiltime("plant_pathogen")
 
 ppat <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "plant_pathogen", sites)
-ppat_inspan <- 
-    ppat$rrfd %>% 
-    left_join(sites, by = join_by(field_key)) %>% 
-    inspan(., 1999, meta$its_raw)
+
+ppat_div <- calc_diversity(ppat$rrfd)
+
+ppat_comp <- gudicom(ppat_div, ppat$rrfd_speTaxa, "plant_pathogen")
+
+# indicator
+
+
+
+
+
+#' ### ITS: wood saptrotrophs
+
+guiltime("wood_saprotroph") 
+
+wsap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "wood_saprotroph", sites)
+
+wsap_div <- calc_diversity(wsap$rrfd)
+
+wasp_comp <- gudicom(wsap_div, wsap$rrfd_speTaxa, "wood_saprotroph")
+
+# indicator
+
+
+
+#' ### ITS: litter saprotrophs
+
+guiltime("litter_saprotroph") 
+
+lsap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "litter_saprotroph", sites)
+
+lsap_div <- calc_diversity(lsap$rrfd)
+
+lsap_comp <- gudicom(lsap_div, lsap$rrfd_speTaxa, "litter_saprotroph")
+
+# indicator
+
+
+
+
 
 
 
