@@ -283,13 +283,13 @@ its_test_taxaGuild <- function(data) {
 #' ## 18S-based data (AMF)
 #' This function simplifies and displays taxonomic information about the AMF OTUs. 
 #+ amf_taxa_function
-amf_tax <- function(data, cluster_type) {
+amf_tax <- function(data) {
     cat("---------------------------------\n")
-    print(paste("AMF", cluster_type))
+    print(paste("AMF"))
     cat("---------------------------------\n")
     amf_df <-
         data %>%
-        group_by(family, field_type, region, site_name, yr_since) %>%
+        group_by(family, field_type, region, field_name, yr_since) %>%
         summarize(seq_sum = sum(seq_abund) %>% round(., 1),
                   .groups = "drop")
     amf_df_summary <-
@@ -304,16 +304,9 @@ amf_tax <- function(data, cluster_type) {
             values_fill = 0
         ) %>%
         arrange(-remnant)
+    
     print(kable(amf_df_summary, format = "pandoc"))
-    write_csv(
-        amf_df_summary,
-        paste0(
-            getwd(),
-            "/microbial_guild_taxonomy_files/amf_",
-            cluster_type,
-            "_taxonomy.csv"
-        )
-    )
+    
     cat("\n---------------------------------\n")
     print("Compare abundances across field types with mixed model")
     cat("---------------------------------\n")
@@ -924,13 +917,48 @@ lsap_inspan %>%
 
 
 
-#' ## AMF OTUs
+
+
+
+
+
+
+
+#' ## AMF
 #' Function output is verbose but retained as explained previously.
 #+ amf_otu_summary,message=FALSE
 
-# amf_otu_summary <- amf_tax(spe_meta$amf_otu, "otu")
+amf_otu_summary <- amf_tax(spe_meta$amf_rfy)
 
-#' Claroideoglomeraceae differs across field types with a likelihood ratio test result p<0.01. 
+#' From the mean sequence abundances in field types, the following families look interesting:
+#' 
+#' - Claroideoglomeraceae: low in corn
+#' - Paraglomeraceae: highest in corn, declines through restoration and remnant
+#' - Diversisporaceae: highest in corn, declines through restoration and remnant
+#' - Gigasporaceae: low in corn
+#' 
+#' These don't all show up in linear modeling (shown next), but since this modeling isn't 
+#' likely valid, we can explore any of these that appear worthwhile. For now, let's look at a
+#' boxplot for each.
+#+ amf_boxplot,fig.width=7,fig.height=6,fig.align='center'
+spe_meta$amf_rfy %>% 
+    filter(family %in% c("Claroideoglomeraceae", "Paraglomeraceae", "Diversisporaceae", "Gigasporaceae")) %>% 
+    group_by(region, field_type, field_key, family) %>% 
+    summarize(seq_sum = sum(seq_abund), .groups = "drop") %>% 
+    ggplot(aes(x = field_type, y = seq_sum)) +
+    facet_wrap(vars(family), scales = "free_y") +
+    geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
+    geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
+    labs(x = "", y = "Sum of sequence abundance", title = "AMF abundance in families and field types") +
+    scale_fill_discrete_qualitative(palette = "Dark3") +
+    theme_bw()
+
+#' make some comments...
+#' 
+
+
+#' ### Individual families
+#' Claroideoglomeraceae differs across field types with a likelihood ratio test result p<0.05. 
 #' Tukey's post-hoc test with Holm correction performed, letters on the figure show differences.
 #+ claroideoglomeraceae_otu_fields_fig,message=FALSE,fig.align='center'
 
@@ -949,7 +977,7 @@ lsap_inspan %>%
 
 
 #' Gigasporaceae increased with time since restoration by a simple linear regression, 
-#' $R^2_{adj}$ = 0.81, p < 0.01
+#' $R^2_{adj}$ = 0.66, p < 0.05
 #+ gigasporaceae_otu_time_fig,message=FALSE,fig.align='center'
 
 
