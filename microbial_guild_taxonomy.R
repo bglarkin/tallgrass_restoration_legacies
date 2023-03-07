@@ -690,7 +690,7 @@ guiltime("soil_saprotroph")
 #+ ssap_rerare
 (ssap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "soil_saprotroph", sites))
 #+ ssap_div
-(ssap_div <- calc_diversity(ssap$rrfd))
+ssap_div <- calc_diversity(ssap$rrfd)
 #' Diversity measures are stored in this data frame for further use...
 #+ ssap_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
 (ssap_comp <- gudicom(ssap_div, ssap$rrfd_speTaxa, "soil_saprotroph"))
@@ -752,7 +752,7 @@ guiltime("plant_pathogen")
 #+ ppat_rerare
 (ppat <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "plant_pathogen", sites))
 #+ ppat_div
-(ppat_div <- calc_diversity(ppat$rrfd))
+ppat_div <- calc_diversity(ppat$rrfd)
 #+ ppat_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
 (ppat_comp <- gudicom(ppat_div, ppat$rrfd_speTaxa, "plant_pathogen", other_threshold = 1))
 #' Richness and diversity look flat or declining from corn to remnants and evenness takes a 
@@ -814,7 +814,7 @@ guiltime("wood_saprotroph")
 (wsap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "wood_saprotroph", sites))
 #' Sequence depth is low; these aren't abundant taxa. 
 #+ wsap_div
-(wsap_div <- calc_diversity(wsap$rrfd))
+wsap_div <- calc_diversity(wsap$rrfd)
 #+ wsap_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
 (wasp_comp <- gudicom(wsap_div, wsap$rrfd_speTaxa, "wood_saprotroph"))
 #' With diversity, not much jumps out. 
@@ -865,7 +865,7 @@ guiltime("litter_saprotroph")
 (lsap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "litter_saprotroph", sites))
 #' Sequencing depth of 297, perhaps too rare to justify examination.
 #+ lsap_div
-(lsap_div <- calc_diversity(lsap$rrfd))
+lsap_div <- calc_diversity(lsap$rrfd)
 #+ lsap_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
 (lsap_comp <- gudicom(lsap_div, lsap$rrfd_speTaxa, "litter_saprotroph"))
 #' With no litter in cornfields, it's perhaps not surprising to see increasing trends across field types
@@ -901,10 +901,6 @@ lsap_inspan %>%
     arrange(field_type, -stat) %>% 
     kable(format = "pandoc", caption = "Indicator species of litter saprotrophs")
 #' 
-
-
-
-
 
 
 

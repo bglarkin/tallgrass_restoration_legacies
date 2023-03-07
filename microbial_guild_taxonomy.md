@@ -2,7 +2,7 @@ Microbial data: microbial guilds and taxonomy
 ================
 Beau Larkin
 
-Last updated: 06 March, 2023
+Last updated: 07 March, 2023
 
 - <a href="#description" id="toc-description">Description</a>
 - <a href="#packages-and-libraries"
@@ -1191,9 +1191,9 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)   
-    ## restored - corn == 0       131.7      915.1   0.144  0.98836   
-    ## remnant - corn == 0       1968.2      915.1   2.151  0.07677 . 
-    ## remnant - restored == 0   1836.5      578.8   3.173  0.00411 **
+    ## restored - corn == 0       131.7      915.1   0.144   0.9884   
+    ## remnant - corn == 0       1968.2      915.1   2.151   0.0768 . 
+    ## remnant - restored == 0   1836.5      578.8   3.173   0.0041 **
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## (Adjusted p values reported -- single-step method)
@@ -1310,8 +1310,8 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)  
     ## restored - corn == 0      -514.4      493.3  -1.043   0.5451  
-    ## remnant - corn == 0      -1732.5      642.9  -2.695   0.0188 *
-    ## remnant - restored == 0  -1218.2      538.5  -2.262   0.0598 .
+    ## remnant - corn == 0      -1732.5      642.9  -2.695   0.0186 *
+    ## remnant - restored == 0  -1218.2      538.5  -2.262   0.0599 .
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## (Adjusted p values reported -- single-step method)
@@ -1518,9 +1518,9 @@ its_inspan %>%
 
 | field_type | n_otu |  stat_avg |   stat_sd |
 |:-----------|------:|----------:|----------:|
-| corn       |    88 | 0.8299548 | 0.0965605 |
-| restored   |    10 | 0.8150214 | 0.0363025 |
-| remnant    |    47 | 0.7462101 | 0.0822420 |
+| corn       |    92 | 0.8213678 | 0.1027331 |
+| restored   |    10 | 0.8157168 | 0.0351250 |
+| remnant    |    50 | 0.7408116 | 0.0800308 |
 
 Indicator species stats of entire rarefied ITS table
 
@@ -1544,38 +1544,38 @@ its_inspan %>%
     kable(format = "pandoc", caption = "Indicator species of ITS OTUs (top 10 per field type)")
 ```
 
-| otu_num  |         A |      B |      stat | p.value | field_type | primary_lifestyle | phylum            | class              | order                              | family                             | genus            | species                 |
-|:---------|----------:|-------:|----------:|--------:|:-----------|:------------------|:------------------|:-------------------|:-----------------------------------|:-----------------------------------|:-----------------|:------------------------|
-| otu_537  | 1.0000000 | 1.0000 | 1.0000000 |  0.0005 | corn       | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Agaricales                         | Bolbitiaceae                       | Conocybe         | Conocybe_apala          |
-| otu_204  | 0.9937578 | 1.0000 | 0.9968740 |  0.0005 | corn       | NA                | Mortierellomycota | Mortierellomycetes | Mortierellales                     | Mortierellaceae                    | NA               | NA                      |
-| otu_172  | 0.9772048 | 1.0000 | 0.9885367 |  0.0005 | corn       | plant_pathogen    | Ascomycota        | Dothideomycetes    | Pleosporales                       | Corynesporascaceae                 | Corynespora      | Corynespora_cassiicola  |
-| otu_188  | 0.9759492 | 1.0000 | 0.9879014 |  0.0005 | corn       | NA                | NA                | NA                 | NA                                 | NA                                 | NA               | NA                      |
-| otu_9    | 0.9753667 | 1.0000 | 0.9876066 |  0.0025 | corn       | soil_saprotroph   | Basidiomycota     | Tremellomycetes    | Cystofilobasidiales                | Mrakiaceae                         | Tausonia         | Tausonia_pullulans      |
-| otu_200  | 0.9724757 | 1.0000 | 0.9861418 |  0.0005 | corn       | plant_pathogen    | Ascomycota        | Dothideomycetes    | Pleosporales                       | Phaeosphaeriaceae                  | Ophiosphaerella  | unidentified            |
-| otu_59   | 0.9602305 | 1.0000 | 0.9799135 |  0.0005 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales                     | Mortierellaceae                    | Mortierella      | NA                      |
-| otu_694  | 0.9400850 | 1.0000 | 0.9695798 |  0.0010 | corn       | NA                | NA                | NA                 | NA                                 | NA                                 | NA               | NA                      |
-| otu_553  | 0.9378783 | 1.0000 | 0.9684412 |  0.0015 | corn       | plant_pathogen    | Ascomycota        | Sordariomycetes    | Magnaporthales                     | Magnaporthaceae                    | Gaeumannomyces   | NA                      |
-| otu_364  | 0.9318632 | 1.0000 | 0.9653306 |  0.0005 | corn       | NA                | Ascomycota        | Sordariomycetes    | Sordariales                        | Lasiosphaeriaceae                  | Cladorrhinum     | NA                      |
-| otu_332  | 0.9219288 | 0.8125 | 0.8654867 |  0.0370 | restored   | plant_pathogen    | Ascomycota        | Sordariomycetes    | Glomerellales                      | Plectosphaerellaceae               | Plectosphaerella | NA                      |
-| otu_177  | 0.9809886 | 0.7500 | 0.8577537 |  0.0280 | restored   | NA                | Ascomycota        | Dothideomycetes    | Pleosporales                       | NA                                 | NA               | NA                      |
-| otu_817  | 1.0000000 | 0.6875 | 0.8291562 |  0.0190 | restored   | NA                | Ascomycota        | NA                 | NA                                 | NA                                 | NA               | NA                      |
-| otu_461  | 0.8351648 | 0.8125 | 0.8237545 |  0.0180 | restored   | NA                | Ascomycota        | Dothideomycetes    | Pleosporales                       | Phaeosphaeriaceae                  | NA               | NA                      |
-| otu_35   | 0.7234228 | 0.9375 | 0.8235344 |  0.0440 | restored   | animal_parasite   | Ascomycota        | Sordariomycetes    | Hypocreales                        | Clavicipitaceae                    | Metarhizium      | NA                      |
-| otu_193  | 0.8307978 | 0.8125 | 0.8215979 |  0.0480 | restored   | NA                | Basidiomycota     | Agaricomycetes     | Sebacinales                        | unidentified                       | unidentified     | unidentified            |
-| otu_107  | 0.8061297 | 0.8125 | 0.8093086 |  0.0310 | restored   | NA                | Ascomycota        | Dothideomycetes    | Pleosporales                       | NA                                 | NA               | NA                      |
-| otu_114  | 0.6963432 | 0.9375 | 0.8079739 |  0.0025 | restored   | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales                     | Mortierellaceae                    | Mortierella      | unidentified            |
-| otu_238  | 0.9179982 | 0.6250 | 0.7574621 |  0.0455 | restored   | NA                | Ascomycota        | Leotiomycetes      | NA                                 | NA                                 | NA               | NA                      |
-| otu_10   | 0.5687968 | 1.0000 | 0.7541862 |  0.0150 | restored   | NA                | Ascomycota        | NA                 | NA                                 | NA                                 | NA               | NA                      |
-| otu_772  | 0.9272420 | 1.0000 | 0.9629340 |  0.0010 | remnant    | NA                | Ascomycota        | Sordariomycetes    | NA                                 | NA                                 | NA               | NA                      |
-| otu_629  | 0.9159892 | 1.0000 | 0.9570732 |  0.0015 | remnant    | NA                | Ascomycota        | Leotiomycetes      | Helotiales                         | Hyaloscyphaceae                    | Microscypha      | unidentified            |
-| otu_159  | 0.8185686 | 1.0000 | 0.9047478 |  0.0020 | remnant    | NA                | Ascomycota        | Sordariomycetes    | Sordariomycetes_ord_Incertae_sedis | Sordariomycetes_fam_Incertae_sedis | Pleurophragmium  | unidentified            |
-| otu_135  | 0.7768230 | 1.0000 | 0.8813757 |  0.0070 | remnant    | plant_pathogen    | Ascomycota        | Sordariomycetes    | Hypocreales                        | Nectriaceae                        | Ilyonectria      | NA                      |
-| otu_854  | 1.0000000 | 0.7500 | 0.8660254 |  0.0030 | remnant    | NA                | Ascomycota        | NA                 | NA                                 | NA                                 | NA               | NA                      |
-| otu_1740 | 1.0000000 | 0.7500 | 0.8660254 |  0.0040 | remnant    | NA                | Glomeromycota     | Glomeromycetes     | Glomerales                         | Glomeraceae                        | NA               | NA                      |
-| otu_1098 | 0.9716841 | 0.7500 | 0.8536762 |  0.0075 | remnant    | NA                | NA                | NA                 | NA                                 | NA                                 | NA               | NA                      |
-| otu_235  | 0.7275292 | 1.0000 | 0.8529532 |  0.0480 | remnant    | NA                | Ascomycota        | Leotiomycetes      | Helotiales                         | Hyaloscyphaceae                    | NA               | NA                      |
-| otu_1468 | 0.9332261 | 0.7500 | 0.8366119 |  0.0055 | remnant    | NA                | Ascomycota        | Sordariomycetes    | NA                                 | NA                                 | NA               | NA                      |
-| otu_140  | 0.9276552 | 0.7500 | 0.8341111 |  0.0310 | remnant    | soil_saprotroph   | Ascomycota        | Sordariomycetes    | Hypocreales                        | Stachybotryaceae                   | Striaticonidium  | Striaticonidium_cinctum |
+| otu_num  |         A |      B |      stat | p.value | field_type | primary_lifestyle      | phylum            | class              | order                              | family                             | genus            | species                 |
+|:---------|----------:|-------:|----------:|--------:|:-----------|:-----------------------|:------------------|:-------------------|:-----------------------------------|:-----------------------------------|:-----------------|:------------------------|
+| otu_537  | 1.0000000 | 1.0000 | 1.0000000 |  0.0005 | corn       | soil_saprotroph        | Basidiomycota     | Agaricomycetes     | Agaricales                         | Bolbitiaceae                       | Conocybe         | Conocybe_apala          |
+| otu_204  | 0.9937578 | 1.0000 | 0.9968740 |  0.0005 | corn       | NA                     | Mortierellomycota | Mortierellomycetes | Mortierellales                     | Mortierellaceae                    | NA               | NA                      |
+| otu_172  | 0.9772048 | 1.0000 | 0.9885367 |  0.0005 | corn       | plant_pathogen         | Ascomycota        | Dothideomycetes    | Pleosporales                       | Corynesporascaceae                 | Corynespora      | Corynespora_cassiicola  |
+| otu_188  | 0.9759492 | 1.0000 | 0.9879014 |  0.0005 | corn       | NA                     | NA                | NA                 | NA                                 | NA                                 | NA               | NA                      |
+| otu_9    | 0.9753667 | 1.0000 | 0.9876066 |  0.0010 | corn       | soil_saprotroph        | Basidiomycota     | Tremellomycetes    | Cystofilobasidiales                | Mrakiaceae                         | Tausonia         | Tausonia_pullulans      |
+| otu_200  | 0.9724757 | 1.0000 | 0.9861418 |  0.0005 | corn       | plant_pathogen         | Ascomycota        | Dothideomycetes    | Pleosporales                       | Phaeosphaeriaceae                  | Ophiosphaerella  | unidentified            |
+| otu_59   | 0.9602305 | 1.0000 | 0.9799135 |  0.0005 | corn       | soil_saprotroph        | Mortierellomycota | Mortierellomycetes | Mortierellales                     | Mortierellaceae                    | Mortierella      | NA                      |
+| otu_694  | 0.9400850 | 1.0000 | 0.9695798 |  0.0005 | corn       | NA                     | NA                | NA                 | NA                                 | NA                                 | NA               | NA                      |
+| otu_553  | 0.9378783 | 1.0000 | 0.9684412 |  0.0025 | corn       | plant_pathogen         | Ascomycota        | Sordariomycetes    | Magnaporthales                     | Magnaporthaceae                    | Gaeumannomyces   | NA                      |
+| otu_364  | 0.9318632 | 1.0000 | 0.9653306 |  0.0005 | corn       | NA                     | Ascomycota        | Sordariomycetes    | Sordariales                        | Lasiosphaeriaceae                  | Cladorrhinum     | NA                      |
+| otu_332  | 0.9219288 | 0.8125 | 0.8654867 |  0.0400 | restored   | plant_pathogen         | Ascomycota        | Sordariomycetes    | Glomerellales                      | Plectosphaerellaceae               | Plectosphaerella | NA                      |
+| otu_177  | 0.9809886 | 0.7500 | 0.8577537 |  0.0155 | restored   | NA                     | Ascomycota        | Dothideomycetes    | Pleosporales                       | NA                                 | NA               | NA                      |
+| otu_817  | 1.0000000 | 0.6875 | 0.8291562 |  0.0235 | restored   | NA                     | Ascomycota        | NA                 | NA                                 | NA                                 | NA               | NA                      |
+| otu_461  | 0.8351648 | 0.8125 | 0.8237545 |  0.0265 | restored   | NA                     | Ascomycota        | Dothideomycetes    | Pleosporales                       | Phaeosphaeriaceae                  | NA               | NA                      |
+| otu_35   | 0.7234228 | 0.9375 | 0.8235344 |  0.0405 | restored   | animal_parasite        | Ascomycota        | Sordariomycetes    | Hypocreales                        | Clavicipitaceae                    | Metarhizium      | NA                      |
+| otu_193  | 0.8307978 | 0.8125 | 0.8215979 |  0.0395 | restored   | NA                     | Basidiomycota     | Agaricomycetes     | Sebacinales                        | unidentified                       | unidentified     | unidentified            |
+| otu_107  | 0.8061297 | 0.8125 | 0.8093086 |  0.0245 | restored   | NA                     | Ascomycota        | Dothideomycetes    | Pleosporales                       | NA                                 | NA               | NA                      |
+| otu_114  | 0.6963432 | 0.9375 | 0.8079739 |  0.0015 | restored   | soil_saprotroph        | Mortierellomycota | Mortierellomycetes | Mortierellales                     | Mortierellaceae                    | Mortierella      | unidentified            |
+| otu_33   | 0.5843320 | 1.0000 | 0.7644161 |  0.0440 | restored   | plant_pathogen         | Ascomycota        | Sordariomycetes    | Hypocreales                        | Nectriaceae                        | Fusarium         | NA                      |
+| otu_10   | 0.5687968 | 1.0000 | 0.7541862 |  0.0150 | restored   | NA                     | Ascomycota        | NA                 | NA                                 | NA                                 | NA               | NA                      |
+| otu_772  | 0.9272420 | 1.0000 | 0.9629340 |  0.0010 | remnant    | NA                     | Ascomycota        | Sordariomycetes    | NA                                 | NA                                 | NA               | NA                      |
+| otu_629  | 0.9159892 | 1.0000 | 0.9570732 |  0.0010 | remnant    | NA                     | Ascomycota        | Leotiomycetes      | Helotiales                         | Hyaloscyphaceae                    | Microscypha      | unidentified            |
+| otu_159  | 0.8185686 | 1.0000 | 0.9047478 |  0.0015 | remnant    | NA                     | Ascomycota        | Sordariomycetes    | Sordariomycetes_ord_Incertae_sedis | Sordariomycetes_fam_Incertae_sedis | Pleurophragmium  | unidentified            |
+| otu_135  | 0.7768230 | 1.0000 | 0.8813757 |  0.0060 | remnant    | plant_pathogen         | Ascomycota        | Sordariomycetes    | Hypocreales                        | Nectriaceae                        | Ilyonectria      | NA                      |
+| otu_854  | 1.0000000 | 0.7500 | 0.8660254 |  0.0025 | remnant    | NA                     | Ascomycota        | NA                 | NA                                 | NA                                 | NA               | NA                      |
+| otu_1740 | 1.0000000 | 0.7500 | 0.8660254 |  0.0025 | remnant    | NA                     | Glomeromycota     | Glomeromycetes     | Glomerales                         | Glomeraceae                        | NA               | NA                      |
+| otu_1098 | 0.9716841 | 0.7500 | 0.8536762 |  0.0050 | remnant    | NA                     | NA                | NA                 | NA                                 | NA                                 | NA               | NA                      |
+| otu_1468 | 0.9332261 | 0.7500 | 0.8366119 |  0.0035 | remnant    | NA                     | Ascomycota        | Sordariomycetes    | NA                                 | NA                                 | NA               | NA                      |
+| otu_140  | 0.9276552 | 0.7500 | 0.8341111 |  0.0355 | remnant    | soil_saprotroph        | Ascomycota        | Sordariomycetes    | Hypocreales                        | Stachybotryaceae                   | Striaticonidium  | Striaticonidium_cinctum |
+| otu_369  | 0.6807314 | 1.0000 | 0.8250645 |  0.0085 | remnant    | unspecified_saprotroph | Ascomycota        | Sordariomycetes    | Hypocreales                        | Bionectriaceae                     | Gliomastix       | Gliomastix_roseogrisea  |
 
 Indicator species of ITS OTUs (top 10 per field type)
 
@@ -1651,23 +1651,23 @@ soil chemistry.
     ## [1] 3586
     ## 
     ## $zero_otu_num
-    ## [1] 6
+    ## [1] 4
     ## 
     ## $rrfd
-    ## # A tibble: 25 × 245
+    ## # A tibble: 25 × 247
     ##    field_key otu_2 otu_9 otu_14 otu_27 otu_37 otu_41 otu_47 otu_49 otu_55 otu_59
     ##        <dbl> <dbl> <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
-    ##  1         1   716     0     97      2    181     18    841      0    613      0
-    ##  2         2  1464     0    452      2    142     66      0      0      0      0
-    ##  3         3     7    29    413      0    246    471      0      0      0    280
-    ##  4         4     0     0      0      0    281    220     20      0     20      0
-    ##  5         5   118    47      0      0    122     35      0      0      0    220
-    ##  6         6   143  1289    360    143     22    261      0      0      0     74
-    ##  7         7   326  2261     44     46    100     50      0      2      0    207
+    ##  1         1   751     0     92      2    174     18    863      0    610      0
+    ##  2         2  1469     0    443      4    158     67      0      0      0      0
+    ##  3         3     7    29    410      0    245    460      0      0      0    286
+    ##  4         4     0     0      0      0    278    215     24      0     21      0
+    ##  5         5   118    49      0      0    121     35      0      0      0    218
+    ##  6         6   138  1282    393    162     27    248      0      0      0     62
+    ##  7         7   344  2228     49     27    100     55      0      3      0    256
     ##  8         8   601    38    373     71    219     62     19      0      0     25
-    ##  9         9   708     0    295      2     96     48    978      0    743      9
-    ## 10        10   570     0    307      0     45     68    383      0   1225      0
-    ## # … with 15 more rows, and 234 more variables: otu_61 <dbl>, otu_66 <dbl>,
+    ##  9         9   724     0    299      1    136     47    957      0    721      8
+    ## 10        10   566     0    345      0     46     69    359      0   1234      0
+    ## # … with 15 more rows, and 236 more variables: otu_61 <dbl>, otu_66 <dbl>,
     ## #   otu_70 <dbl>, otu_75 <dbl>, otu_79 <dbl>, otu_88 <dbl>, otu_89 <dbl>,
     ## #   otu_100 <dbl>, otu_102 <dbl>, otu_106 <dbl>, otu_114 <dbl>, otu_132 <dbl>,
     ## #   otu_134 <dbl>, otu_140 <dbl>, otu_144 <dbl>, otu_154 <dbl>, otu_168 <dbl>,
@@ -1676,34 +1676,26 @@ soil chemistry.
     ## #   otu_234 <dbl>, otu_276 <dbl>, otu_280 <dbl>, otu_283 <dbl>, …
     ## 
     ## $rrfd_speTaxa
-    ## # A tibble: 935 × 14
+    ## # A tibble: 940 × 14
     ##    field_key otu_num seq_abund phylum   class order family genus species prima…¹
     ##        <dbl> <chr>       <dbl> <chr>    <chr> <chr> <chr>  <chr> <chr>   <chr>  
-    ##  1         1 otu_2         716 Mortier… Mort… Mort… Morti… Mort… Mortie… soil_s…
-    ##  2         1 otu_14         97 Mortier… Mort… Mort… Morti… Mort… <NA>    soil_s…
+    ##  1         1 otu_2         751 Mortier… Mort… Mort… Morti… Mort… Mortie… soil_s…
+    ##  2         1 otu_14         92 Mortier… Mort… Mort… Morti… Mort… <NA>    soil_s…
     ##  3         1 otu_27          2 Basidio… Trem… Filo… Pisku… Soli… <NA>    soil_s…
-    ##  4         1 otu_37        181 Mortier… Mort… Mort… Morti… Mort… <NA>    soil_s…
+    ##  4         1 otu_37        174 Mortier… Mort… Mort… Morti… Mort… <NA>    soil_s…
     ##  5         1 otu_41         18 Mortier… Mort… Mort… Morti… Mort… Mortie… soil_s…
-    ##  6         1 otu_47        841 Ascomyc… Geog… Geog… Geogl… Geog… uniden… soil_s…
-    ##  7         1 otu_55        613 Basidio… Agar… Agar… Hygro… Hygr… <NA>    soil_s…
+    ##  6         1 otu_47        863 Ascomyc… Geog… Geog… Geogl… Geog… uniden… soil_s…
+    ##  7         1 otu_55        610 Basidio… Agar… Agar… Hygro… Hygr… <NA>    soil_s…
     ##  8         1 otu_75          4 Basidio… Trem… Filo… Pisku… Soli… Solico… soil_s…
-    ##  9         1 otu_79         55 Mortier… Mort… Mort… Morti… Mort… <NA>    soil_s…
-    ## 10         1 otu_114        65 Mortier… Mort… Mort… Morti… Mort… uniden… soil_s…
-    ## # … with 925 more rows, 4 more variables: field_name <chr>, region <chr>,
+    ##  9         1 otu_79         48 Mortier… Mort… Mort… Morti… Mort… <NA>    soil_s…
+    ## 10         1 otu_114        73 Mortier… Mort… Mort… Morti… Mort… uniden… soil_s…
+    ## # … with 930 more rows, 4 more variables: field_name <chr>, region <chr>,
     ## #   field_type <ord>, yr_since <dbl>, and abbreviated variable name
     ## #   ¹​primary_lifestyle
 
 ``` r
-(ssap_div <- calc_diversity(ssap$rrfd))
+ssap_div <- calc_diversity(ssap$rrfd)
 ```
-
-<div data-pagedtable="false">
-
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["field_key"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["field_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["region"],"name":[3],"type":["chr"],"align":["left"]},{"label":["field_type"],"name":[4],"type":["ord"],"align":["right"]},{"label":["yr_since"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["hill_index"],"name":[6],"type":["ord"],"align":["right"]},{"label":["value"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"N0","7":"31.00000000"},{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"N1","7":"10.86224023"},{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"N2","7":"7.23303504"},{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"E10","7":"0.35039485"},{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"E20","7":"0.23332371"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"N0","7":"36.00000000"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"N1","7":"7.39856050"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"N2","7":"4.18034042"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"E10","7":"0.20551557"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"E20","7":"0.11612057"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"N0","7":"34.00000000"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"N1","7":"16.74643781"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"N2","7":"12.61583470"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"E10","7":"0.49254229"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"E20","7":"0.37105396"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"N0","7":"32.00000000"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"N1","7":"6.41412570"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"N2","7":"3.14150276"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"E10","7":"0.20044143"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"E20","7":"0.09817196"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"N0","7":"29.00000000"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"N1","7":"10.96471698"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"N2","7":"6.34555593"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"E10","7":"0.37809369"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"E20","7":"0.21881227"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"N0","7":"30.00000000"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"N1","7":"9.42357851"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"N2","7":"5.55324586"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"E10","7":"0.31411928"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"E20","7":"0.18510820"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"N0","7":"29.00000000"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"N1","7":"4.55609794"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"N2","7":"2.39787143"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"E10","7":"0.15710683"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"E20","7":"0.08268522"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"N0","7":"44.00000000"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"N1","7":"17.87530791"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"N2","7":"11.61712984"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"E10","7":"0.40625700"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"E20","7":"0.26402568"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"N0","7":"37.00000000"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"N1","7":"9.40699910"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"N2","7":"5.97985170"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"E10","7":"0.25424322"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"E20","7":"0.16161761"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"N0","7":"38.00000000"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"N1","7":"10.62099112"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"N2","7":"5.94897886"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"E10","7":"0.27949977"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"E20","7":"0.15655208"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"N0","7":"36.00000000"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"N1","7":"10.43799584"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"N2","7":"7.25301697"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"E10","7":"0.28994433"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"E20","7":"0.20147269"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"N0","7":"36.00000000"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"N1","7":"8.65822702"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"N2","7":"5.70549395"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"E10","7":"0.24050631"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"E20","7":"0.15848594"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"N0","7":"43.00000000"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"N1","7":"11.64522116"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"N2","7":"5.87998416"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"E10","7":"0.27081910"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"E20","7":"0.13674382"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"N0","7":"32.00000000"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"N1","7":"4.17268922"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"N2","7":"2.44287674"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"E10","7":"0.13039654"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"E20","7":"0.07633990"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"N0","7":"35.00000000"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"N1","7":"13.19041481"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"N2","7":"9.63317023"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"E10","7":"0.37686899"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"E20","7":"0.27523344"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"N0","7":"40.00000000"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"N1","7":"11.59630336"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"N2","7":"6.69893489"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"E10","7":"0.28990758"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"E20","7":"0.16747337"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"N0","7":"48.00000000"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"N1","7":"11.79998712"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"N2","7":"6.63429296"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"E10","7":"0.24583307"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"E20","7":"0.13821444"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"N0","7":"53.00000000"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"N1","7":"15.95453677"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"N2","7":"9.79506781"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"E10","7":"0.30102900"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"E20","7":"0.18481260"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"N0","7":"35.00000000"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"N1","7":"13.42663395"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"N2","7":"9.24891540"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"E10","7":"0.38361811"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"E20","7":"0.26425473"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"N0","7":"36.00000000"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"N1","7":"6.60123947"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"N2","7":"4.22371778"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"E10","7":"0.18336776"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"E20","7":"0.11732549"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"N0","7":"47.00000000"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"N1","7":"14.87007531"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"N2","7":"7.99806196"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"E10","7":"0.31638458"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"E20","7":"0.17017153"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"N0","7":"38.00000000"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"N1","7":"13.81476801"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"N2","7":"9.40389658"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"E10","7":"0.36354653"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"E20","7":"0.24747096"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"N0","7":"37.00000000"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"N1","7":"10.14585020"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"N2","7":"5.67423090"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"E10","7":"0.27421217"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"E20","7":"0.15335759"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"N0","7":"38.00000000"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"N1","7":"8.28354349"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"N2","7":"4.91962802"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"E10","7":"0.21798799"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"E20","7":"0.12946390"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"N0","7":"41.00000000"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"N1","7":"9.60375740"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"N2","7":"4.99606668"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"E10","7":"0.23423799"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"E20","7":"0.12185528"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-
-</div>
 
 Diversity measures are stored in this data frame for further use…
 
@@ -1728,7 +1720,7 @@ Diversity measures are stored in this data frame for further use…
 <div data-pagedtable="false">
 
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["field_type"],"name":[1],"type":["ord"],"align":["right"]},{"label":["order"],"name":[2],"type":["chr"],"align":["left"]},{"label":["seq_comp"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"corn","2":"Agaricales","3":"11.085075"},{"1":"corn","2":"Cystofilobasidiales","3":"20.510270"},{"1":"corn","2":"Filobasidiales","3":"10.197536"},{"1":"corn","2":"Mortierellales","3":"46.455734"},{"1":"corn","2":"Other (OTU<2%)","3":"4.338644"},{"1":"corn","2":"Pezizales","3":"2.455787"},{"1":"corn","2":"Phallales","3":"4.956954"},{"1":"restored","2":"Agaricales","3":"21.061653"},{"1":"restored","2":"Filobasidiales","3":"6.077823"},{"1":"restored","2":"Geoglossales","3":"16.333898"},{"1":"restored","2":"Hypocreales","3":"4.470648"},{"1":"restored","2":"Mortierellales","3":"38.646304"},{"1":"restored","2":"Other (OTU<2%)","3":"10.106596"},{"1":"restored","2":"Pezizales","3":"3.303077"},{"1":"remnant","2":"Agaricales","3":"40.701440"},{"1":"remnant","2":"Geoglossales","3":"9.057892"},{"1":"remnant","2":"Helotiales","3":"4.227016"},{"1":"remnant","2":"Hypocreales","3":"10.692250"},{"1":"remnant","2":"Mortierellales","3":"28.473286"},{"1":"remnant","2":"Other (OTU<2%)","3":"6.848116"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["field_type"],"name":[1],"type":["ord"],"align":["right"]},{"label":["order"],"name":[2],"type":["chr"],"align":["left"]},{"label":["seq_comp"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"corn","2":"Agaricales","3":"11.163677"},{"1":"corn","2":"Cystofilobasidiales","3":"20.375033"},{"1":"corn","2":"Filobasidiales","3":"10.151803"},{"1":"corn","2":"Mortierellales","3":"47.342454"},{"1":"corn","2":"Other (OTU<2%)","3":"4.620669"},{"1":"corn","2":"Pezizales","3":"2.550186"},{"1":"corn","2":"Phallales","3":"3.796179"},{"1":"restored","2":"Agaricales","3":"20.980928"},{"1":"restored","2":"Filobasidiales","3":"6.021423"},{"1":"restored","2":"Geoglossales","3":"16.203688"},{"1":"restored","2":"Hypocreales","3":"4.430061"},{"1":"restored","2":"Mortierellales","3":"38.767564"},{"1":"restored","2":"Other (OTU<2%)","3":"9.939916"},{"1":"restored","2":"Pezizales","3":"3.656419"},{"1":"remnant","2":"Agaricales","3":"40.662749"},{"1":"remnant","2":"Geoglossales","3":"8.964809"},{"1":"remnant","2":"Helotiales","3":"4.351340"},{"1":"remnant","2":"Hypocreales","3":"10.517923"},{"1":"remnant","2":"Mortierellales","3":"28.493414"},{"1":"remnant","2":"Other (OTU<2%)","3":"7.009764"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 
 </div>
@@ -1773,9 +1765,9 @@ ssap_inspan %>%
 
 | field_type | n_otu |  stat_avg |   stat_sd |
 |:-----------|------:|----------:|----------:|
-| corn       |     5 | 0.9342112 | 0.0705360 |
-| restored   |     2 | 0.7794787 | 0.0024830 |
-| remnant    |     2 | 0.7515430 | 0.0628423 |
+| corn       |     6 | 0.9002764 | 0.0627945 |
+| restored   |     2 | 0.7828571 | 0.0046584 |
+| remnant    |     2 | 0.6849543 | 0.0313283 |
 
 Indicator species stats: soil saprotrophs
 
@@ -1795,15 +1787,16 @@ ssap_inspan %>%
 
 | otu_num  |         A |      B |      stat | p.value | field_type | primary_lifestyle | phylum            | class              | order               | family           | genus              | species                 |
 |:---------|----------:|-------:|----------:|--------:|:-----------|:------------------|:------------------|:-------------------|:--------------------|:-----------------|:-------------------|:------------------------|
-| otu_537  | 1.0000000 | 1.0000 | 1.0000000 |  0.0005 | corn       | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Agaricales          | Bolbitiaceae     | Conocybe           | Conocybe_apala          |
-| otu_9    | 0.9414168 | 1.0000 | 0.9702664 |  0.0015 | corn       | soil_saprotroph   | Basidiomycota     | Tremellomycetes    | Cystofilobasidiales | Mrakiaceae       | Tausonia           | Tausonia_pullulans      |
-| otu_59   | 0.9303537 | 1.0000 | 0.9645485 |  0.0005 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | NA                      |
-| otu_134  | 0.8393619 | 1.0000 | 0.9161670 |  0.0020 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | NA                      |
-| otu_41   | 0.6725220 | 1.0000 | 0.8200744 |  0.0165 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | Mortierella_minutissima |
-| otu_114  | 0.6510157 | 0.9375 | 0.7812344 |  0.0155 | restored   | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | unidentified            |
-| otu_2    | 0.6048530 | 1.0000 | 0.7777230 |  0.0295 | restored   | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | Mortierella_exigua      |
-| otu_140  | 0.8447774 | 0.7500 | 0.7959793 |  0.0435 | remnant    | soil_saprotroph   | Ascomycota        | Sordariomycetes    | Hypocreales         | Stachybotryaceae | Striaticonidium    | Striaticonidium_cinctum |
-| otu_2138 | 1.0000000 | 0.5000 | 0.7071068 |  0.0175 | remnant    | soil_saprotroph   | Ascomycota        | Leotiomycetes      | Thelebolales        | Pseudeurotiaceae | Gymnostellatospora | NA                      |
+| otu_9    | 0.9421983 | 1.0000 | 0.9706690 |  0.0020 | corn       | soil_saprotroph   | Basidiomycota     | Tremellomycetes    | Cystofilobasidiales | Mrakiaceae       | Tausonia           | Tausonia_pullulans      |
+| otu_59   | 0.9327003 | 1.0000 | 0.9657641 |  0.0005 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | NA                      |
+| otu_134  | 0.8330147 | 1.0000 | 0.9126964 |  0.0030 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | NA                      |
+| otu_537  | 1.0000000 | 0.8000 | 0.8944272 |  0.0015 | corn       | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Agaricales          | Bolbitiaceae     | Conocybe           | Conocybe_apala          |
+| otu_61   | 0.8764195 | 0.8000 | 0.8373384 |  0.0455 | corn       | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Phallales           | Phallaceae       | Phallus            | Phallus_rugulosus       |
+| otu_41   | 0.6736523 | 1.0000 | 0.8207633 |  0.0150 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | Mortierella_minutissima |
+| otu_114  | 0.6592357 | 0.9375 | 0.7861510 |  0.0145 | restored   | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | unidentified            |
+| otu_2    | 0.6077186 | 1.0000 | 0.7795631 |  0.0290 | restored   | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | Mortierella_exigua      |
+| otu_2138 | 1.0000000 | 0.5000 | 0.7071068 |  0.0180 | remnant    | soil_saprotroph   | Ascomycota        | Leotiomycetes      | Thelebolales        | Pseudeurotiaceae | Gymnostellatospora | NA                      |
+| otu_1192 | 0.8786127 | 0.5000 | 0.6628019 |  0.0490 | remnant    | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Agaricales          | Clavariaceae     | Clavaria           | unidentified            |
 
 Indicator species of soil saprotrophs
 
@@ -1883,23 +1876,23 @@ still hold up.
     ## [1] 2786
     ## 
     ## $zero_otu_num
-    ## [1] 7
+    ## [1] 6
     ## 
     ## $rrfd
-    ## # A tibble: 25 × 154
+    ## # A tibble: 25 × 155
     ##    field_key otu_1 otu_3 otu_7 otu_13 otu_16 otu_21 otu_23 otu_28 otu_33 otu_43
     ##        <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
-    ##  1         1   477    32  1583      8     56      0    164      0     29     12
-    ##  2         2   819   255   139    200     64      6    100      9    226     29
-    ##  3         3   115   121    61    749    230    755     71     55     40     48
-    ##  4         4   728     2   691      0      0      0     60      0     37      0
-    ##  5         5   120   100  1179     46    117     36     27     29     45     71
-    ##  6         6   521    79   519      5    258    514    127     56     16    103
-    ##  7         7   417   449    39    232    312    212     88    212     83     68
-    ##  8         8   679   289   572     70     46     50     29     41    170     43
-    ##  9         9   722   426   389    100     17      0    331      0    110      5
-    ## 10        10   497   600   699     60     11      1     36      0    142      0
-    ## # … with 15 more rows, and 143 more variables: otu_53 <dbl>, otu_58 <dbl>,
+    ##  1         1   449    31  1596     10     42      0    169      0     41      9
+    ##  2         2   782   226   131    219     73      4     80      4    240     27
+    ##  3         3   134   100    58    748    187    779     75     67     29     52
+    ##  4         4   741     3   667      0      0      0     57      0     45      0
+    ##  5         5   119   111  1185     46    116     27     36     33     40     65
+    ##  6         6   496   107   503      6    263    492    134     40     16    120
+    ##  7         7   433   443    42    239    295    190     94    202     92     81
+    ##  8         8   692   291   580     60     47     44     29     62    158     42
+    ##  9         9   787   408   377    102     17      0    296      0    107      5
+    ## 10        10   539   590   695     55      9      1     24      0    142      0
+    ## # … with 15 more rows, and 144 more variables: otu_53 <dbl>, otu_58 <dbl>,
     ## #   otu_65 <dbl>, otu_68 <dbl>, otu_87 <dbl>, otu_99 <dbl>, otu_135 <dbl>,
     ## #   otu_137 <dbl>, otu_153 <dbl>, otu_172 <dbl>, otu_179 <dbl>, otu_200 <dbl>,
     ## #   otu_212 <dbl>, otu_279 <dbl>, otu_285 <dbl>, otu_289 <dbl>, otu_294 <dbl>,
@@ -1908,34 +1901,26 @@ still hold up.
     ## #   otu_432 <dbl>, otu_504 <dbl>, otu_511 <dbl>, otu_521 <dbl>, …
     ## 
     ## $rrfd_speTaxa
-    ## # A tibble: 848 × 14
+    ## # A tibble: 835 × 14
     ##    field_key otu_num seq_abund phylum   class order family genus species prima…¹
     ##        <dbl> <chr>       <dbl> <chr>    <chr> <chr> <chr>  <chr> <chr>   <chr>  
-    ##  1         1 otu_1         477 Ascomyc… Sord… Hypo… Nectr… Fusa… Fusari… plant_…
-    ##  2         1 otu_3          32 Ascomyc… Sord… Glom… Plect… Gibe… <NA>    plant_…
-    ##  3         1 otu_7        1583 Ascomyc… Doth… Pleo… Peric… Peri… <NA>    plant_…
-    ##  4         1 otu_13          8 Ascomyc… Sord… Glom… Plect… Plec… Plecto… plant_…
-    ##  5         1 otu_16         56 Ascomyc… Sord… Hypo… Nectr… Nect… Nectri… plant_…
-    ##  6         1 otu_23        164 Ascomyc… Doth… Pleo… Pleos… Alte… <NA>    plant_…
-    ##  7         1 otu_33         29 Ascomyc… Sord… Hypo… Nectr… Fusa… <NA>    plant_…
-    ##  8         1 otu_43         12 Ascomyc… Sord… Hypo… Nectr… Fusa… Fusari… plant_…
-    ##  9         1 otu_58         26 Ascomyc… Doth… Pleo… Phaeo… Para… <NA>    plant_…
-    ## 10         1 otu_65          4 Ascomyc… Sord… Hypo… Nectr… Gibb… Gibber… plant_…
-    ## # … with 838 more rows, 4 more variables: field_name <chr>, region <chr>,
+    ##  1         1 otu_1         449 Ascomyc… Sord… Hypo… Nectr… Fusa… Fusari… plant_…
+    ##  2         1 otu_3          31 Ascomyc… Sord… Glom… Plect… Gibe… <NA>    plant_…
+    ##  3         1 otu_7        1596 Ascomyc… Doth… Pleo… Peric… Peri… <NA>    plant_…
+    ##  4         1 otu_13         10 Ascomyc… Sord… Glom… Plect… Plec… Plecto… plant_…
+    ##  5         1 otu_16         42 Ascomyc… Sord… Hypo… Nectr… Nect… Nectri… plant_…
+    ##  6         1 otu_23        169 Ascomyc… Doth… Pleo… Pleos… Alte… <NA>    plant_…
+    ##  7         1 otu_33         41 Ascomyc… Sord… Hypo… Nectr… Fusa… <NA>    plant_…
+    ##  8         1 otu_43          9 Ascomyc… Sord… Hypo… Nectr… Fusa… Fusari… plant_…
+    ##  9         1 otu_58         20 Ascomyc… Doth… Pleo… Phaeo… Para… <NA>    plant_…
+    ## 10         1 otu_65          7 Ascomyc… Sord… Hypo… Nectr… Gibb… Gibber… plant_…
+    ## # … with 825 more rows, 4 more variables: field_name <chr>, region <chr>,
     ## #   field_type <ord>, yr_since <dbl>, and abbreviated variable name
     ## #   ¹​primary_lifestyle
 
 ``` r
-(ppat_div <- calc_diversity(ppat$rrfd))
+ppat_div <- calc_diversity(ppat$rrfd)
 ```
-
-<div data-pagedtable="false">
-
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["field_key"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["field_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["region"],"name":[3],"type":["chr"],"align":["left"]},{"label":["field_type"],"name":[4],"type":["ord"],"align":["right"]},{"label":["yr_since"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["hill_index"],"name":[6],"type":["ord"],"align":["right"]},{"label":["value"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"N0","7":"24.00000000"},{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"N1","7":"4.70238168"},{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"N2","7":"2.75564635"},{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"E10","7":"0.19593257"},{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"E20","7":"0.11481860"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"N0","7":"42.00000000"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"N1","7":"13.13196914"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"N2","7":"7.80282324"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"E10","7":"0.31266593"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"E20","7":"0.18578151"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"N0","7":"38.00000000"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"N1","7":"10.84358940"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"N2","7":"6.14939899"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"E10","7":"0.28535762"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"E20","7":"0.16182629"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"N0","7":"27.00000000"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"N1","7":"8.95621863"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"N2","7":"6.07629307"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"E10","7":"0.33171180"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"E20","7":"0.22504789"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"N0","7":"33.00000000"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"N1","7":"7.22763545"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"N2","7":"4.23173877"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"E10","7":"0.21901926"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"E20","7":"0.12823451"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"N0","7":"28.00000000"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"N1","7":"9.66205863"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"N2","7":"7.45879011"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"E10","7":"0.34507352"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"E20","7":"0.26638536"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"N0","7":"36.00000000"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"N1","7":"15.53008412"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"N2","7":"11.24826243"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"E10","7":"0.43139123"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"E20","7":"0.31245173"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"N0","7":"38.00000000"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"N1","7":"13.78493004"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"N2","7":"8.00953079"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"E10","7":"0.36276132"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"E20","7":"0.21077713"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"N0","7":"31.00000000"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"N1","7":"11.09263807"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"N2","7":"7.44109949"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"E10","7":"0.35782703"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"E20","7":"0.24003547"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"N0","7":"31.00000000"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"N1","7":"10.47022731"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"N2","7":"6.62503307"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"E10","7":"0.33774927"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"E20","7":"0.21371074"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"N0","7":"35.00000000"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"N1","7":"16.09347537"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"N2","7":"10.63341297"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"E10","7":"0.45981358"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"E20","7":"0.30381180"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"N0","7":"33.00000000"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"N1","7":"8.82851684"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"N2","7":"6.01566501"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"E10","7":"0.26753081"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"E20","7":"0.18229288"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"N0","7":"32.00000000"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"N1","7":"9.44485637"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"N2","7":"6.28784879"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"E10","7":"0.29515176"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"E20","7":"0.19649527"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"N0","7":"33.00000000"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"N1","7":"8.74171331"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"N2","7":"3.91821508"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"E10","7":"0.26490040"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"E20","7":"0.11873379"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"N0","7":"23.00000000"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"N1","7":"7.10127100"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"N2","7":"4.66777240"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"E10","7":"0.30875091"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"E20","7":"0.20294663"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"N0","7":"37.00000000"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"N1","7":"10.36015814"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"N2","7":"7.04256682"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"E10","7":"0.28000427"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"E20","7":"0.19033964"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"N0","7":"29.00000000"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"N1","7":"8.98197294"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"N2","7":"5.90425754"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"E10","7":"0.30972320"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"E20","7":"0.20359509"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"N0","7":"35.00000000"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"N1","7":"10.62316038"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"N2","7":"5.92056983"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"E10","7":"0.30351887"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"E20","7":"0.16915914"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"N0","7":"42.00000000"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"N1","7":"12.36279068"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"N2","7":"6.65897630"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"E10","7":"0.29435216"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"E20","7":"0.15854705"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"N0","7":"32.00000000"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"N1","7":"6.66992069"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"N2","7":"3.12776880"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"E10","7":"0.20843502"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"E20","7":"0.09774278"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"N0","7":"39.00000000"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"N1","7":"7.30842183"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"N2","7":"3.39703756"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"E10","7":"0.18739543"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"E20","7":"0.08710353"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"N0","7":"41.00000000"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"N1","7":"8.96811439"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"N2","7":"4.96135132"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"E10","7":"0.21873450"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"E20","7":"0.12100857"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"N0","7":"44.00000000"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"N1","7":"13.54135534"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"N2","7":"7.83722142"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"E10","7":"0.30775808"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"E20","7":"0.17811867"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"N0","7":"27.00000000"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"N1","7":"11.79504627"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"N2","7":"9.15705673"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"E10","7":"0.43685357"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"E20","7":"0.33915025"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"N0","7":"38.00000000"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"N1","7":"13.27340226"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"N2","7":"9.26432057"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"E10","7":"0.34930006"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"E20","7":"0.24379791"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-
-</div>
 
 ``` r
 (ppat_comp <- gudicom(ppat_div, ppat$rrfd_speTaxa, "plant_pathogen", other_threshold = 1))
@@ -1958,7 +1943,7 @@ still hold up.
 <div data-pagedtable="false">
 
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["field_type"],"name":[1],"type":["ord"],"align":["right"]},{"label":["order"],"name":[2],"type":["chr"],"align":["left"]},{"label":["seq_comp"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"corn","2":"Diaporthales","3":"1.292612"},{"1":"corn","2":"Glomerellales","3":"22.999095"},{"1":"corn","2":"Hypocreales","3":"36.867648"},{"1":"corn","2":"Magnaporthales","3":"1.233857"},{"1":"corn","2":"Other (OTU<1%)","3":"2.367830"},{"1":"corn","2":"Pleosporales","3":"35.238957"},{"1":"restored","2":"Cantharellales","3":"2.569449"},{"1":"restored","2":"Capnodiales","3":"1.831766"},{"1":"restored","2":"Glomerellales","3":"13.487499"},{"1":"restored","2":"Hypocreales","3":"42.904617"},{"1":"restored","2":"Other (OTU<1%)","3":"3.501145"},{"1":"restored","2":"Pleosporales","3":"32.927534"},{"1":"restored","2":"Ustilaginales","3":"1.146258"},{"1":"restored","2":"Xylariales","3":"1.631732"},{"1":"remnant","2":"Cantharellales","3":"3.668935"},{"1":"remnant","2":"Glomerellales","3":"9.318749"},{"1":"remnant","2":"Hypocreales","3":"54.017742"},{"1":"remnant","2":"Other (OTU<1%)","3":"2.067005"},{"1":"remnant","2":"Pezizales","3":"1.722505"},{"1":"remnant","2":"Pleosporales","3":"29.205064"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["field_type"],"name":[1],"type":["ord"],"align":["right"]},{"label":["order"],"name":[2],"type":["chr"],"align":["left"]},{"label":["seq_comp"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"corn","2":"Diaporthales","3":"1.294106"},{"1":"corn","2":"Glomerellales","3":"22.720304"},{"1":"corn","2":"Hypocreales","3":"36.556745"},{"1":"corn","2":"Magnaporthales","3":"1.182183"},{"1":"corn","2":"Other (OTU<1%)","3":"2.200563"},{"1":"corn","2":"Pleosporales","3":"34.926871"},{"1":"corn","2":"Urocystidales","3":"1.119227"},{"1":"restored","2":"Cantharellales","3":"2.598802"},{"1":"restored","2":"Capnodiales","3":"1.743785"},{"1":"restored","2":"Glomerellales","3":"13.700662"},{"1":"restored","2":"Hypocreales","3":"43.150231"},{"1":"restored","2":"Other (OTU<1%)","3":"3.601759"},{"1":"restored","2":"Pleosporales","3":"32.527208"},{"1":"restored","2":"Ustilaginales","3":"1.147523"},{"1":"restored","2":"Xylariales","3":"1.530030"},{"1":"remnant","2":"Cantharellales","3":"3.446295"},{"1":"remnant","2":"Glomerellales","3":"8.710511"},{"1":"remnant","2":"Hypocreales","3":"54.873636"},{"1":"remnant","2":"Other (OTU<1%)","3":"2.280299"},{"1":"remnant","2":"Pezizales","3":"1.723148"},{"1":"remnant","2":"Pleosporales","3":"28.966111"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 
 </div>
@@ -2004,9 +1989,9 @@ ppat_inspan %>%
 
 | field_type | n_otu |  stat_avg |   stat_sd |
 |:-----------|------:|----------:|----------:|
-| corn       |    13 | 0.8547888 | 0.1101429 |
-| restored   |     1 | 0.8577461 |        NA |
-| remnant    |     5 | 0.7301094 | 0.0763120 |
+| corn       |    12 | 0.8699759 | 0.0842613 |
+| restored   |     1 | 0.8776629 |        NA |
+| remnant    |     5 | 0.7346977 | 0.0710710 |
 
 Indicator species stats: plant pathogens
 
@@ -2029,25 +2014,24 @@ ppat_inspan %>%
 
 | otu_num  |         A |      B |      stat | p.value | field_type | primary_lifestyle | phylum        | class             | order          | family               | genus            | species                     |
 |:---------|----------:|-------:|----------:|--------:|:-----------|:------------------|:--------------|:------------------|:---------------|:---------------------|:-----------------|:----------------------------|
-| otu_172  | 0.9781659 | 1.0000 | 0.9890227 |  0.0010 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Corynesporascaceae   | Corynespora      | Corynespora_cassiicola      |
-| otu_200  | 0.9457006 | 1.0000 | 0.9724714 |  0.0015 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Phaeosphaeriaceae    | Ophiosphaerella  | unidentified                |
-| otu_553  | 0.9256198 | 1.0000 | 0.9620914 |  0.0060 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Magnaporthales | Magnaporthaceae      | Gaeumannomyces   | NA                          |
-| otu_21   | 0.9229813 | 1.0000 | 0.9607192 |  0.0010 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Phaeosphaeriaceae    | Setophoma        | Setophoma_terrestris        |
-| otu_1841 | 1.0000000 | 0.8000 | 0.8944272 |  0.0015 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Pleosporaceae        | Curvularia       | NA                          |
-| otu_432  | 0.9952517 | 0.8000 | 0.8923011 |  0.0015 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Glomerellales  | Glomerellaceae       | Colletotrichum   | NA                          |
-| otu_391  | 0.7493404 | 1.0000 | 0.8656445 |  0.0110 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Torulaceae           | Dendryphion      | NA                          |
-| otu_13   | 0.7329077 | 1.0000 | 0.8561003 |  0.0070 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Glomerellales  | Plectosphaerellaceae | Plectosphaerella | Plectosphaerella_cucumerina |
-| otu_796  | 0.9084249 | 0.8000 | 0.8524904 |  0.0055 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Capnodiales    | Mycosphaerellaceae   | Cercospora       | NA                          |
-| otu_325  | 1.0000000 | 0.6000 | 0.7745967 |  0.0060 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Diaporthales   | Diaporthaceae        | Diaporthe        | NA                          |
-| otu_521  | 0.9388753 | 0.6000 | 0.7505499 |  0.0220 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Glomerellales  | Plectosphaerellaceae | Lectera          | NA                          |
-| otu_1013 | 0.8387097 | 0.6000 | 0.7093841 |  0.0430 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Xylariales     | Microdochiaceae      | Microdochium     | Microdochium_colombiense    |
-| otu_2242 | 1.0000000 | 0.4000 | 0.6324555 |  0.0445 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Diaporthales   | Diaporthaceae        | Phaeocytostroma  | Phaeocytostroma_ambiguum    |
-| otu_332  | 0.9055118 | 0.8125 | 0.8577461 |  0.0275 | restored   | plant_pathogen    | Ascomycota    | Sordariomycetes   | Glomerellales  | Plectosphaerellaceae | Plectosphaerella | NA                          |
-| otu_135  | 0.7471148 | 1.0000 | 0.8643580 |  0.0175 | remnant    | plant_pathogen    | Ascomycota    | Sordariomycetes   | Hypocreales    | Nectriaceae          | Ilyonectria      | NA                          |
-| otu_1716 | 1.0000000 | 0.5000 | 0.7071068 |  0.0215 | remnant    | plant_pathogen    | Ascomycota    | Sordariomycetes   | Hypocreales    | Nectriaceae          | Volutella        | NA                          |
-| otu_942  | 0.9944751 | 0.5000 | 0.7051507 |  0.0215 | remnant    | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Pleosporaceae        | Curvularia       | NA                          |
-| otu_319  | 0.6552901 | 0.7500 | 0.7010475 |  0.0355 | remnant    | plant_pathogen    | Basidiomycota | Ustilaginomycetes | Ustilaginales  | Ustilaginaceae       | Ustilago         | Ustilago_nunavutica         |
-| otu_1    | 0.4527729 | 1.0000 | 0.6728840 |  0.0490 | remnant    | plant_pathogen    | Ascomycota    | Sordariomycetes   | Hypocreales    | Nectriaceae          | Fusarium         | Fusarium_oxysporum          |
+| otu_200  | 0.9496845 | 1.0000 | 0.9745176 |  0.0015 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Phaeosphaeriaceae    | Ophiosphaerella  | unidentified                |
+| otu_553  | 0.9441341 | 1.0000 | 0.9716656 |  0.0020 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Magnaporthales | Magnaporthaceae      | Gaeumannomyces   | NA                          |
+| otu_21   | 0.9229596 | 1.0000 | 0.9607079 |  0.0005 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Phaeosphaeriaceae    | Setophoma        | Setophoma_terrestris        |
+| otu_391  | 0.8275862 | 1.0000 | 0.9097177 |  0.0010 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Torulaceae           | Dendryphion      | NA                          |
+| otu_1841 | 1.0000000 | 0.8000 | 0.8944272 |  0.0005 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Pleosporaceae        | Curvularia       | NA                          |
+| otu_432  | 0.9921834 | 0.8000 | 0.8909247 |  0.0010 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Glomerellales  | Glomerellaceae       | Colletotrichum   | NA                          |
+| otu_172  | 0.9820106 | 0.8000 | 0.8863456 |  0.0010 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Corynesporascaceae   | Corynespora      | Corynespora_cassiicola      |
+| otu_13   | 0.7385764 | 1.0000 | 0.8594047 |  0.0060 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Glomerellales  | Plectosphaerellaceae | Plectosphaerella | Plectosphaerella_cucumerina |
+| otu_796  | 0.8918469 | 0.8000 | 0.8446760 |  0.0060 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Capnodiales    | Mycosphaerellaceae   | Cercospora       | NA                          |
+| otu_325  | 1.0000000 | 0.6000 | 0.7745967 |  0.0045 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Diaporthales   | Diaporthaceae        | Diaporthe        | NA                          |
+| otu_521  | 0.9258160 | 0.6000 | 0.7453118 |  0.0265 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Glomerellales  | Plectosphaerellaceae | Lectera          | NA                          |
+| otu_1013 | 0.8818898 | 0.6000 | 0.7274159 |  0.0360 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Xylariales     | Microdochiaceae      | Microdochium     | Microdochium_colombiense    |
+| otu_332  | 0.9480519 | 0.8125 | 0.8776629 |  0.0165 | restored   | plant_pathogen    | Ascomycota    | Sordariomycetes   | Glomerellales  | Plectosphaerellaceae | Plectosphaerella | NA                          |
+| otu_135  | 0.7352190 | 1.0000 | 0.8574491 |  0.0110 | remnant    | plant_pathogen    | Ascomycota    | Sordariomycetes   | Hypocreales    | Nectriaceae          | Ilyonectria      | NA                          |
+| otu_319  | 0.7041454 | 0.7500 | 0.7267111 |  0.0235 | remnant    | plant_pathogen    | Basidiomycota | Ustilaginomycetes | Ustilaginales  | Ustilaginaceae       | Ustilago         | Ustilago_nunavutica         |
+| otu_942  | 1.0000000 | 0.5000 | 0.7071068 |  0.0220 | remnant    | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Pleosporaceae        | Curvularia       | NA                          |
+| otu_1716 | 1.0000000 | 0.5000 | 0.7071068 |  0.0205 | remnant    | plant_pathogen    | Ascomycota    | Sordariomycetes   | Hypocreales    | Nectriaceae          | Volutella        | NA                          |
+| otu_1    | 0.4557800 | 1.0000 | 0.6751148 |  0.0490 | remnant    | plant_pathogen    | Ascomycota    | Sordariomycetes   | Hypocreales    | Nectriaceae          | Fusarium         | Fusarium_oxysporum          |
 
 Indicator species of plant pathogens
 
@@ -2122,23 +2106,23 @@ saprotrophs live in cornfield soil…let’s see:
     ## [1] 701
     ## 
     ## $zero_otu_num
-    ## [1] 6
+    ## [1] 7
     ## 
     ## $rrfd
-    ## # A tibble: 25 × 119
+    ## # A tibble: 25 × 118
     ##    field_key otu_11 otu_20 otu_29 otu_39 otu_76 otu_117 otu_120 otu_130 otu_169
     ##        <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
-    ##  1         1      0     42    225    177      0      11       0     122       0
-    ##  2         2     23    182      9    129    182      11       8       0       1
-    ##  3         3     95    212      0     11      9       0       0       0       0
+    ##  1         1      0     41    230    182      0      10       0     121       0
+    ##  2         2     22    192      9    154    147       8       5       0       2
+    ##  3         3     93    231      0      3      5       0       0       0       0
     ##  4         4      0     71     47    302      0       0       0       0       0
-    ##  5         5     25     40      0    382      0       0       0      85      44
-    ##  6         6    494      1    143      9      0      10       0       0       0
-    ##  7         7    135    302     46     16      6       0       0       0       0
-    ##  8         8     29     69     37    213      0      18       0       0       0
-    ##  9         9     24     24    128    211      0       0       9      55       0
-    ## 10        10      9     54     77    161      8       5     101     147       0
-    ## # … with 15 more rows, and 109 more variables: otu_202 <dbl>, otu_252 <dbl>,
+    ##  5         5     19     35      0    398      0       0       0      78      42
+    ##  6         6    502      5    126     15      0      17       0       0       0
+    ##  7         7    132    288     46     17      9       0       0       0       0
+    ##  8         8     39     69     42    213      0      12       0       0       0
+    ##  9         9     37     15    153    197      0       0       7      69       0
+    ## 10        10      4     45     78    164      4       3     102     146       0
+    ## # … with 15 more rows, and 108 more variables: otu_202 <dbl>, otu_252 <dbl>,
     ## #   otu_266 <dbl>, otu_287 <dbl>, otu_322 <dbl>, otu_329 <dbl>, otu_331 <dbl>,
     ## #   otu_333 <dbl>, otu_341 <dbl>, otu_365 <dbl>, otu_370 <dbl>, otu_397 <dbl>,
     ## #   otu_415 <dbl>, otu_437 <dbl>, otu_438 <dbl>, otu_487 <dbl>, otu_508 <dbl>,
@@ -2147,36 +2131,28 @@ saprotrophs live in cornfield soil…let’s see:
     ## #   otu_793 <dbl>, otu_818 <dbl>, otu_852 <dbl>, otu_853 <dbl>, …
     ## 
     ## $rrfd_speTaxa
-    ## # A tibble: 465 × 14
+    ## # A tibble: 475 × 14
     ##    field_key otu_num seq_abund phylum   class order family genus species prima…¹
     ##        <dbl> <chr>       <dbl> <chr>    <chr> <chr> <chr>  <chr> <chr>   <chr>  
-    ##  1         1 otu_20         42 Ascomyc… Sord… Hypo… Bione… Clon… <NA>    wood_s…
-    ##  2         1 otu_29        225 Ascomyc… Sord… Hypo… Nectr… Mari… Marian… wood_s…
-    ##  3         1 otu_39        177 Ascomyc… Doth… Pleo… Cucur… Pyre… uniden… wood_s…
-    ##  4         1 otu_117        11 Ascomyc… Doth… Pleo… Lindg… Cloh… Clohes… wood_s…
-    ##  5         1 otu_130       122 Basidio… Agar… Trec… Hydno… Subu… <NA>    wood_s…
-    ##  6         1 otu_333         4 Ascomyc… Leot… Helo… Helot… Scyt… uniden… wood_s…
-    ##  7         1 otu_415        30 Ascomyc… Leot… Helo… Helot… Scyt… Scytal… wood_s…
-    ##  8         1 otu_508        15 Ascomyc… Doth… Pleo… Lenti… Keis… Keissl… wood_s…
-    ##  9         1 otu_599         5 Ascomyc… Doth… Pleo… Didym… Para… Paraph… wood_s…
-    ## 10         1 otu_633         6 Ascomyc… Doth… Pleo… Lenti… Keis… Keissl… wood_s…
-    ## # … with 455 more rows, 4 more variables: field_name <chr>, region <chr>,
+    ##  1         1 otu_20         41 Ascomyc… Sord… Hypo… Bione… Clon… <NA>    wood_s…
+    ##  2         1 otu_29        230 Ascomyc… Sord… Hypo… Nectr… Mari… Marian… wood_s…
+    ##  3         1 otu_39        182 Ascomyc… Doth… Pleo… Cucur… Pyre… uniden… wood_s…
+    ##  4         1 otu_117        10 Ascomyc… Doth… Pleo… Lindg… Cloh… Clohes… wood_s…
+    ##  5         1 otu_130       121 Basidio… Agar… Trec… Hydno… Subu… <NA>    wood_s…
+    ##  6         1 otu_333         3 Ascomyc… Leot… Helo… Helot… Scyt… uniden… wood_s…
+    ##  7         1 otu_415        29 Ascomyc… Leot… Helo… Helot… Scyt… Scytal… wood_s…
+    ##  8         1 otu_508        14 Ascomyc… Doth… Pleo… Lenti… Keis… Keissl… wood_s…
+    ##  9         1 otu_599         3 Ascomyc… Doth… Pleo… Didym… Para… Paraph… wood_s…
+    ## 10         1 otu_633         4 Ascomyc… Doth… Pleo… Lenti… Keis… Keissl… wood_s…
+    ## # … with 465 more rows, 4 more variables: field_name <chr>, region <chr>,
     ## #   field_type <ord>, yr_since <dbl>, and abbreviated variable name
     ## #   ¹​primary_lifestyle
 
 Sequence depth is low; these aren’t abundant taxa.
 
 ``` r
-(wsap_div <- calc_diversity(wsap$rrfd))
+wsap_div <- calc_diversity(wsap$rrfd)
 ```
-
-<div data-pagedtable="false">
-
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["field_key"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["field_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["region"],"name":[3],"type":["chr"],"align":["left"]},{"label":["field_type"],"name":[4],"type":["ord"],"align":["right"]},{"label":["yr_since"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["hill_index"],"name":[6],"type":["ord"],"align":["right"]},{"label":["value"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"N0","7":"16.0000000"},{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"N1","7":"6.6404678"},{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"N2","7":"4.8201615"},{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"E10","7":"0.4150292"},{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"E20","7":"0.3012601"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"N0","7":"26.0000000"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"N1","7":"7.8801363"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"N2","7":"5.4741832"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"E10","7":"0.3030822"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"E20","7":"0.2105455"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"N0","7":"16.0000000"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"N1","7":"4.4628829"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"N2","7":"3.2036678"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"E10","7":"0.2789302"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"E20","7":"0.2002292"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"N0","7":"17.0000000"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"N1","7":"6.8826617"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"N2","7":"4.2862090"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"E10","7":"0.4048625"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"E20","7":"0.2521299"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"N0","7":"16.0000000"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"N1","7":"5.2307053"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"N2","7":"3.0422220"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"E10","7":"0.3269191"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"E20","7":"0.1901389"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"N0","7":"10.0000000"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"N1","7":"2.5774792"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"N2","7":"1.8518068"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"E10","7":"0.2577479"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"E20","7":"0.1851807"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"N0","7":"21.0000000"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"N1","7":"6.9456204"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"N2","7":"4.1509423"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"E10","7":"0.3307438"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"E20","7":"0.1976639"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"N0","7":"21.0000000"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"N1","7":"9.2053471"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"N2","7":"5.9834281"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"E10","7":"0.4383499"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"E20","7":"0.2849251"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"N0","7":"27.0000000"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"N1","7":"11.5385536"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"N2","7":"6.8940501"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"E10","7":"0.4273538"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"E20","7":"0.2553352"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"N0","7":"22.0000000"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"N1","7":"9.1481665"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"N2","7":"6.9016025"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"E10","7":"0.4158258"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"E20","7":"0.3137092"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"N0","7":"24.0000000"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"N1","7":"6.4510404"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"N2","7":"3.0193424"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"E10","7":"0.2687934"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"E20","7":"0.1258059"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"N0","7":"23.0000000"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"N1","7":"10.3388369"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"N2","7":"7.8043516"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"E10","7":"0.4495146"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"E20","7":"0.3393196"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"N0","7":"15.0000000"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"N1","7":"5.1239540"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"N2","7":"3.3103237"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"E10","7":"0.3415969"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"E20","7":"0.2206882"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"N0","7":"19.0000000"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"N1","7":"6.8828932"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"N2","7":"4.0193442"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"E10","7":"0.3622575"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"E20","7":"0.2115444"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"N0","7":"19.0000000"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"N1","7":"8.3328848"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"N2","7":"5.5465997"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"E10","7":"0.4385729"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"E20","7":"0.2919263"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"N0","7":"15.0000000"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"N1","7":"4.2439412"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"N2","7":"2.9199829"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"E10","7":"0.2829294"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"E20","7":"0.1946655"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"N0","7":"23.0000000"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"N1","7":"7.3483313"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"N2","7":"4.3433387"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"E10","7":"0.3194927"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"E20","7":"0.1888408"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"N0","7":"19.0000000"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"N1","7":"7.6405610"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"N2","7":"5.4454295"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"E10","7":"0.4021348"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"E20","7":"0.2866016"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"N0","7":"17.0000000"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"N1","7":"6.7266943"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"N2","7":"4.9774728"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"E10","7":"0.3956879"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"E20","7":"0.2927925"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"N0","7":"15.0000000"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"N1","7":"7.1531922"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"N2","7":"5.7643022"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"E10","7":"0.4768795"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"E20","7":"0.3842868"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"N0","7":"19.0000000"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"N1","7":"7.7658197"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"N2","7":"4.8884434"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"E10","7":"0.4087274"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"E20","7":"0.2572865"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"N0","7":"18.0000000"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"N1","7":"9.5381111"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"N2","7":"7.6076510"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"E10","7":"0.5298951"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"E20","7":"0.4226473"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"N0","7":"16.0000000"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"N1","7":"4.8992435"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"N2","7":"3.1867976"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"E10","7":"0.3062027"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"E20","7":"0.1991748"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"N0","7":"16.0000000"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"N1","7":"5.9282632"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"N2","7":"4.0533601"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"E10","7":"0.3705164"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"E20","7":"0.2533350"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"N0","7":"15.0000000"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"N1","7":"5.3644015"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"N2","7":"3.8460112"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"E10","7":"0.3576268"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"E20","7":"0.2564007"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-
-</div>
 
 ``` r
 (wasp_comp <- gudicom(wsap_div, wsap$rrfd_speTaxa, "wood_saprotroph"))
@@ -2199,7 +2175,7 @@ Sequence depth is low; these aren’t abundant taxa.
 <div data-pagedtable="false">
 
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["field_type"],"name":[1],"type":["ord"],"align":["right"]},{"label":["order"],"name":[2],"type":["chr"],"align":["left"]},{"label":["seq_comp"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"corn","2":"Agaricales","3":"16.113753"},{"1":"corn","2":"Hypocreales","3":"24.554290"},{"1":"corn","2":"Other (OTU<2%)","3":"7.512173"},{"1":"corn","2":"Phomatosporales","3":"16.596881"},{"1":"corn","2":"Sordariales","3":"31.215778"},{"1":"corn","2":"Trechisporales","3":"4.007124"},{"1":"restored","2":"Agaricales","3":"2.615450"},{"1":"restored","2":"Auriculariales","3":"2.408394"},{"1":"restored","2":"Chaetothyriales","3":"2.975075"},{"1":"restored","2":"Helotiales","3":"3.433536"},{"1":"restored","2":"Hymenochaetales","3":"4.586120"},{"1":"restored","2":"Hypocreales","3":"21.139855"},{"1":"restored","2":"Minutisphaerales","3":"3.423697"},{"1":"restored","2":"Other (OTU<2%)","3":"6.316131"},{"1":"restored","2":"Pezizales","3":"2.998687"},{"1":"restored","2":"Pleosporales","3":"27.876570"},{"1":"restored","2":"Sordariales","3":"7.941404"},{"1":"restored","2":"Trechisporales","3":"14.285082"},{"1":"remnant","2":"Agaricales","3":"2.103971"},{"1":"remnant","2":"Auriculariales","3":"2.156571"},{"1":"remnant","2":"Chaetothyriales","3":"12.150434"},{"1":"remnant","2":"Helotiales","3":"8.152889"},{"1":"remnant","2":"Hymenochaetales","3":"3.418953"},{"1":"remnant","2":"Hypocreales","3":"20.014026"},{"1":"remnant","2":"Minutisphaerales","3":"9.678268"},{"1":"remnant","2":"Other (OTU<2%)","3":"4.330674"},{"1":"remnant","2":"Pezizales","3":"7.784694"},{"1":"remnant","2":"Pleosporales","3":"24.669063"},{"1":"remnant","2":"Sordariales","3":"5.540458"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["field_type"],"name":[1],"type":["ord"],"align":["right"]},{"label":["order"],"name":[2],"type":["chr"],"align":["left"]},{"label":["seq_comp"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"corn","2":"Agaricales","3":"13.603069"},{"1":"corn","2":"Hypocreales","3":"24.694803"},{"1":"corn","2":"Other (OTU<2%)","3":"7.202651"},{"1":"corn","2":"Pezizales","3":"2.092780"},{"1":"corn","2":"Phomatosporales","3":"16.974770"},{"1":"corn","2":"Sordariales","3":"31.275433"},{"1":"corn","2":"Trechisporales","3":"4.156493"},{"1":"restored","2":"Agaricales","3":"2.291383"},{"1":"restored","2":"Auriculariales","3":"2.315760"},{"1":"restored","2":"Chaetothyriales","3":"3.339569"},{"1":"restored","2":"Helotiales","3":"3.756184"},{"1":"restored","2":"Hymenochaetales","3":"4.753401"},{"1":"restored","2":"Hypocreales","3":"20.978953"},{"1":"restored","2":"Minutisphaerales","3":"3.168934"},{"1":"restored","2":"Other (OTU<2%)","3":"5.890967"},{"1":"restored","2":"Pezizales","3":"2.603844"},{"1":"restored","2":"Pleosporales","3":"29.327876"},{"1":"restored","2":"Sordariales","3":"8.385487"},{"1":"restored","2":"Trechisporales","3":"13.187641"},{"1":"remnant","2":"Chaetothyriales","3":"12.781756"},{"1":"remnant","2":"Helotiales","3":"8.326704"},{"1":"remnant","2":"Hymenochaetales","3":"2.439671"},{"1":"remnant","2":"Hypocreales","3":"20.657650"},{"1":"remnant","2":"Minutisphaerales","3":"8.750994"},{"1":"remnant","2":"Other (OTU<2%)","3":"7.973128"},{"1":"remnant","2":"Pezizales","3":"7.743304"},{"1":"remnant","2":"Pleosporales","3":"24.714930"},{"1":"remnant","2":"Sordariales","3":"6.611862"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 
 </div>
@@ -2235,10 +2211,11 @@ wsap_inspan %>%
     kable(format = "pandoc", caption = "Indicator species stats: wood saprotrophs")
 ```
 
-| field_type | n_otu | stat_avg |   stat_sd |
-|:-----------|------:|---------:|----------:|
-| corn       |     3 | 0.808547 | 0.0941557 |
-| remnant    |     3 | 0.696997 | 0.0679090 |
+| field_type | n_otu |  stat_avg |   stat_sd |
+|:-----------|------:|----------:|----------:|
+| corn       |     4 | 0.7686415 | 0.1157425 |
+| restored   |     1 | 0.7071068 |        NA |
+| remnant    |     2 | 0.7344317 | 0.0486268 |
 
 Indicator species stats: wood saprotrophs
 
@@ -2256,14 +2233,15 @@ wsap_inspan %>%
     kable(format = "pandoc", caption = "Indicator species of wood saprotrophs")
 ```
 
-| otu_num |         A |    B |      stat | p.value | field_type | primary_lifestyle | phylum        | class           | order            | family              | genus             | species                    |
-|:--------|----------:|-----:|----------:|--------:|:-----------|:------------------|:--------------|:----------------|:-----------------|:--------------------|:------------------|:---------------------------|
-| otu_589 | 0.9504950 | 0.80 | 0.8720069 |  0.0020 | corn       | wood_saprotroph   | Ascomycota    | Sordariomycetes | Hypocreales      | Stachybotryaceae    | Stachybotrys      | Stachybotrys_limonispora   |
-| otu_11  | 0.7280681 | 1.00 | 0.8532691 |  0.0045 | corn       | wood_saprotroph   | Ascomycota    | Sordariomycetes | Sordariales      | Chaetomiaceae       | Humicola          | Humicola_grisea            |
-| otu_341 | 0.8175182 | 0.60 | 0.7003649 |  0.0375 | corn       | wood_saprotroph   | Basidiomycota | Agaricomycetes  | Agaricales       | Psathyrellaceae     | Psathyrella       | NA                         |
-| otu_599 | 0.7822878 | 0.75 | 0.7659738 |  0.0480 | remnant    | wood_saprotroph   | Ascomycota    | Dothideomycetes | Pleosporales     | Didymosphaeriaceae  | Paraphaeosphaeria | Paraphaeosphaeria_michotii |
-| otu_881 | 0.9655172 | 0.50 | 0.6948083 |  0.0220 | remnant    | wood_saprotroph   | Ascomycota    | Eurotiomycetes  | Chaetothyriales  | Herpotrichiellaceae | Minimelanolocus   | Minimelanolocus_asiaticus  |
-| otu_970 | 0.7943262 | 0.50 | 0.6302088 |  0.0475 | remnant    | wood_saprotroph   | Ascomycota    | Dothideomycetes | Minutisphaerales | Minutisphaeraceae   | Minutisphaera     | unidentified               |
+| otu_num |         A |    B |      stat | p.value | field_type | primary_lifestyle | phylum        | class           | order           | family              | genus             | species                    |
+|:--------|----------:|-----:|----------:|--------:|:-----------|:------------------|:--------------|:----------------|:----------------|:--------------------|:------------------|:---------------------------|
+| otu_589 | 0.9795918 | 0.80 | 0.8852533 |  0.0025 | corn       | wood_saprotroph   | Ascomycota    | Sordariomycetes | Hypocreales     | Stachybotryaceae    | Stachybotrys      | Stachybotrys_limonispora   |
+| otu_11  | 0.7074293 | 1.00 | 0.8410882 |  0.0030 | corn       | wood_saprotroph   | Ascomycota    | Sordariomycetes | Sordariales     | Chaetomiaceae       | Humicola          | Humicola_grisea            |
+| otu_341 | 0.8538755 | 0.60 | 0.7157690 |  0.0200 | corn       | wood_saprotroph   | Basidiomycota | Agaricomycetes  | Agaricales      | Psathyrellaceae     | Psathyrella       | NA                         |
+| otu_266 | 1.0000000 | 0.40 | 0.6324555 |  0.0475 | corn       | wood_saprotroph   | Basidiomycota | Agaricomycetes  | Agaricales      | Psathyrellaceae     | Psathyrella       | NA                         |
+| otu_130 | 1.0000000 | 0.50 | 0.7071068 |  0.0495 | restored   | wood_saprotroph   | Basidiomycota | Agaricomycetes  | Trechisporales  | Hydnodontaceae      | Subulicystidium   | NA                         |
+| otu_599 | 0.7881041 | 0.75 | 0.7688160 |  0.0420 | remnant    | wood_saprotroph   | Ascomycota    | Dothideomycetes | Pleosporales    | Didymosphaeriaceae  | Paraphaeosphaeria | Paraphaeosphaeria_michotii |
+| otu_881 | 0.9801325 | 0.50 | 0.7000473 |  0.0135 | remnant    | wood_saprotroph   | Ascomycota    | Eurotiomycetes  | Chaetothyriales | Herpotrichiellaceae | Minimelanolocus   | Minimelanolocus_asiaticus  |
 
 Indicator species of wood saprotrophs
 
@@ -2333,61 +2311,53 @@ guiltime("litter_saprotroph")
     ## [1] 297
     ## 
     ## $zero_otu_num
-    ## [1] 18
+    ## [1] 22
     ## 
     ## $rrfd
-    ## # A tibble: 25 × 124
-    ##    field_key otu_18 otu_105 otu_126 otu_133 otu_147 otu_151 otu_225 otu_226
+    ## # A tibble: 25 × 120
+    ##    field_key otu_18 otu_105 otu_126 otu_133 otu_147 otu_151 otu_164 otu_225
     ##        <dbl>  <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
-    ##  1         1    114       0      14       0       0      97       4       0
-    ##  2         2     85      88       1       0      23       0       2      41
-    ##  3         3     59      28     163       0       0       0       9       0
-    ##  4         4     25       0       0       0       0       0       0       0
-    ##  5         5     27       0      53       0       0       0      14       0
-    ##  6         6     82       0     100       0      27       0      46       0
-    ##  7         7     61       0     129       0      29       0       0       0
-    ##  8         8      7       0      15     200       5       0       1       0
+    ##  1         1    105       0      11       0       0     107       0       3
+    ##  2         2    102     103       7       0      11       0       0       2
+    ##  3         3     47      30     180       0       0       0       0      13
+    ##  4         4     30       0       0       0       0       0       0       0
+    ##  5         5     28       0      54       0       0       0       0      18
+    ##  6         6     94       0     105       0      18       0       0      39
+    ##  7         7     69       0     119       0      39       0       0       0
+    ##  8         8      7       0      17     203       8       0       0       2
     ##  9         9     60       0       0       0       0       0       0       0
-    ## 10        10     62      24       0       0       0      64       0       0
-    ## # … with 15 more rows, and 115 more variables: otu_265 <dbl>, otu_267 <dbl>,
-    ## #   otu_272 <dbl>, otu_286 <dbl>, otu_302 <dbl>, otu_326 <dbl>, otu_358 <dbl>,
-    ## #   otu_393 <dbl>, otu_414 <dbl>, otu_445 <dbl>, otu_457 <dbl>, otu_484 <dbl>,
-    ## #   otu_503 <dbl>, otu_542 <dbl>, otu_551 <dbl>, otu_560 <dbl>, otu_574 <dbl>,
-    ## #   otu_608 <dbl>, otu_618 <dbl>, otu_623 <dbl>, otu_653 <dbl>, otu_660 <dbl>,
-    ## #   otu_698 <dbl>, otu_707 <dbl>, otu_729 <dbl>, otu_732 <dbl>, otu_761 <dbl>,
-    ## #   otu_766 <dbl>, otu_789 <dbl>, otu_804 <dbl>, otu_827 <dbl>, …
+    ## 10        10     56      31       0       0       0      66       0       0
+    ## # … with 15 more rows, and 111 more variables: otu_226 <dbl>, otu_265 <dbl>,
+    ## #   otu_267 <dbl>, otu_272 <dbl>, otu_286 <dbl>, otu_302 <dbl>, otu_326 <dbl>,
+    ## #   otu_358 <dbl>, otu_393 <dbl>, otu_414 <dbl>, otu_445 <dbl>, otu_448 <dbl>,
+    ## #   otu_457 <dbl>, otu_484 <dbl>, otu_503 <dbl>, otu_542 <dbl>, otu_551 <dbl>,
+    ## #   otu_560 <dbl>, otu_574 <dbl>, otu_608 <dbl>, otu_618 <dbl>, otu_623 <dbl>,
+    ## #   otu_653 <dbl>, otu_660 <dbl>, otu_698 <dbl>, otu_707 <dbl>, otu_729 <dbl>,
+    ## #   otu_732 <dbl>, otu_761 <dbl>, otu_766 <dbl>, otu_789 <dbl>, …
     ## 
     ## $rrfd_speTaxa
-    ## # A tibble: 433 × 14
+    ## # A tibble: 432 × 14
     ##    field_key otu_num seq_abund phylum   class order family genus species prima…¹
     ##        <dbl> <chr>       <dbl> <chr>    <chr> <chr> <chr>  <chr> <chr>   <chr>  
-    ##  1         1 otu_18        114 Ascomyc… Doth… Capn… Clado… Clad… <NA>    litter…
-    ##  2         1 otu_126        14 Ascomyc… Sord… Sord… Chaet… Chae… <NA>    litter…
-    ##  3         1 otu_151        97 Basidio… Agar… Agar… Entol… Clit… uniden… litter…
-    ##  4         1 otu_225         4 Chytrid… Rhiz… Rhiz… Rhizo… Rhiz… Rhizop… litter…
-    ##  5         1 otu_265         6 Chytrid… Rhiz… Rhiz… Rhizo… Rhiz… uniden… litter…
-    ##  6         1 otu_272        14 Ascomyc… Doth… Pleo… Phaeo… Neos… <NA>    litter…
-    ##  7         1 otu_286         6 Ascomyc… Doth… Pleo… Phaeo… Neos… <NA>    litter…
-    ##  8         1 otu_326         4 Ascomyc… Doth… Pleo… Dicty… Dict… Dictyo… litter…
-    ##  9         1 otu_414         2 Ascomyc… Euro… Chae… Cyphe… Cyph… <NA>    litter…
-    ## 10         1 otu_457         2 Ascomyc… Euro… Chae… Cyphe… Cyph… uniden… litter…
-    ## # … with 423 more rows, 4 more variables: field_name <chr>, region <chr>,
+    ##  1         1 otu_18        105 Ascomyc… Doth… Capn… Clado… Clad… <NA>    litter…
+    ##  2         1 otu_126        11 Ascomyc… Sord… Sord… Chaet… Chae… <NA>    litter…
+    ##  3         1 otu_151       107 Basidio… Agar… Agar… Entol… Clit… uniden… litter…
+    ##  4         1 otu_225         3 Chytrid… Rhiz… Rhiz… Rhizo… Rhiz… Rhizop… litter…
+    ##  5         1 otu_226         3 Ascomyc… Leot… Helo… Hyalo… Clat… Clathr… litter…
+    ##  6         1 otu_265         4 Chytrid… Rhiz… Rhiz… Rhizo… Rhiz… uniden… litter…
+    ##  7         1 otu_272        22 Ascomyc… Doth… Pleo… Phaeo… Neos… <NA>    litter…
+    ##  8         1 otu_286         4 Ascomyc… Doth… Pleo… Phaeo… Neos… <NA>    litter…
+    ##  9         1 otu_326         5 Ascomyc… Doth… Pleo… Dicty… Dict… Dictyo… litter…
+    ## 10         1 otu_414         3 Ascomyc… Euro… Chae… Cyphe… Cyph… <NA>    litter…
+    ## # … with 422 more rows, 4 more variables: field_name <chr>, region <chr>,
     ## #   field_type <ord>, yr_since <dbl>, and abbreviated variable name
     ## #   ¹​primary_lifestyle
 
 Sequencing depth of 297, perhaps too rare to justify examination.
 
 ``` r
-(lsap_div <- calc_diversity(lsap$rrfd))
+lsap_div <- calc_diversity(lsap$rrfd)
 ```
-
-<div data-pagedtable="false">
-
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["field_key"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["field_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["region"],"name":[3],"type":["chr"],"align":["left"]},{"label":["field_type"],"name":[4],"type":["ord"],"align":["right"]},{"label":["yr_since"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["hill_index"],"name":[6],"type":["ord"],"align":["right"]},{"label":["value"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"N0","7":"20.0000000"},{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"N1","7":"6.1443222"},{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"N2","7":"3.8032596"},{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"E10","7":"0.3072161"},{"1":"1","2":"BBRP1","3":"BM","4":"restored","5":"16","6":"E20","7":"0.1901630"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"N0","7":"19.0000000"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"N1","7":"7.1484238"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"N2","7":"4.9827148"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"E10","7":"0.3762328"},{"1":"2","2":"ERRP1","3":"BM","4":"restored","5":"3","6":"E20","7":"0.2622481"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"N0","7":"13.0000000"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"N1","7":"4.4046910"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"N2","7":"2.8280273"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"E10","7":"0.3388224"},{"1":"3","2":"FGC1","3":"FG","4":"corn","5":"0","6":"E20","7":"0.2175406"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"N0","7":"15.0000000"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"N1","7":"9.4393295"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"N2","7":"7.5800464"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"E10","7":"0.6292886"},{"1":"4","2":"FGREM1","3":"FG","4":"remnant","5":"NA","6":"E20","7":"0.5053364"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"N0","7":"14.0000000"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"N1","7":"7.2971107"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"N2","7":"5.0581455"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"E10","7":"0.5212222"},{"1":"5","2":"FGRP1","3":"FG","4":"restored","5":"15","6":"E20","7":"0.3612961"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"N0","7":"11.0000000"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"N1","7":"5.4740331"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"N2","7":"4.3631103"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"E10","7":"0.4976394"},{"1":"6","2":"FLC1","3":"FL","4":"corn","5":"0","6":"E20","7":"0.3966464"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"N0","7":"11.0000000"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"N1","7":"4.9757134"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"N2","7":"3.6983355"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"E10","7":"0.4523376"},{"1":"7","2":"FLC2","3":"FL","4":"corn","5":"0","6":"E20","7":"0.3362123"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"N0","7":"16.0000000"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"N1","7":"4.0846780"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"N2","7":"2.1470925"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"E10","7":"0.2552924"},{"1":"8","2":"FLREM1","3":"FL","4":"remnant","5":"NA","6":"E20","7":"0.1341933"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"N0","7":"15.0000000"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"N1","7":"11.2493145"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"N2","7":"9.3135889"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"E10","7":"0.7499543"},{"1":"9","2":"FLRP1","3":"FL","4":"restored","5":"40","6":"E20","7":"0.6209059"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"N0","7":"13.0000000"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"N1","7":"8.6776545"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"N2","7":"7.0437595"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"E10","7":"0.6675119"},{"1":"10","2":"FLRP4","3":"FL","4":"restored","5":"36","6":"E20","7":"0.5418277"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"N0","7":"14.0000000"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"N1","7":"8.0493580"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"N2","7":"6.5626813"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"E10","7":"0.5749541"},{"1":"11","2":"FLRP5","3":"FL","4":"restored","5":"35","6":"E20","7":"0.4687630"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"N0","7":"16.0000000"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"N1","7":"7.1964198"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"N2","7":"4.2475562"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"E10","7":"0.4497762"},{"1":"12","2":"FLRSP1","3":"FL","4":"restored","5":"10","6":"E20","7":"0.2654723"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"N0","7":"23.0000000"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"N1","7":"7.4297147"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"N2","7":"3.8012928"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"E10","7":"0.3230311"},{"1":"13","2":"FLRSP2","3":"FL","4":"restored","5":"10","6":"E20","7":"0.1652736"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"N0","7":"15.0000000"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"N1","7":"6.3748300"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"N2","7":"4.2747274"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"E10","7":"0.4249887"},{"1":"14","2":"FLRSP3","3":"FL","4":"restored","5":"10","6":"E20","7":"0.2849818"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"N0","7":"16.0000000"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"N1","7":"5.8889673"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"N2","7":"3.1363200"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"E10","7":"0.3680605"},{"1":"15","2":"KORP1","3":"BM","4":"restored","5":"28","6":"E20","7":"0.1960200"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"N0","7":"22.0000000"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"N1","7":"8.4777019"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"N2","7":"5.2142224"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"E10","7":"0.3853501"},{"1":"16","2":"LPC1","3":"LP","4":"corn","5":"0","6":"E20","7":"0.2370101"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"N0","7":"24.0000000"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"N1","7":"13.2489165"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"N2","7":"9.1626675"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"E10","7":"0.5520382"},{"1":"17","2":"LPREM1","3":"LP","4":"remnant","5":"NA","6":"E20","7":"0.3817778"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"N0","7":"21.0000000"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"N1","7":"8.5202849"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"N2","7":"4.3258791"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"E10","7":"0.4057279"},{"1":"18","2":"LPRP1","3":"LP","4":"restored","5":"4","6":"E20","7":"0.2059942"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"N0","7":"15.0000000"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"N1","7":"8.5366371"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"N2","7":"7.1732130"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"E10","7":"0.5691091"},{"1":"19","2":"LPRP2","3":"LP","4":"restored","5":"4","6":"E20","7":"0.4782142"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"N0","7":"17.0000000"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"N1","7":"9.8107852"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"N2","7":"7.4343869"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"E10","7":"0.5771050"},{"1":"20","2":"MBREM1","3":"BM","4":"remnant","5":"NA","6":"E20","7":"0.4373169"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"N0","7":"29.0000000"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"N1","7":"10.6234450"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"N2","7":"6.9625858"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"E10","7":"0.3663257"},{"1":"21","2":"MBRP1","3":"BM","4":"restored","5":"18","6":"E20","7":"0.2400892"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"N0","7":"20.0000000"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"N1","7":"10.5672372"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"N2","7":"7.6114419"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"E10","7":"0.5283619"},{"1":"22","2":"MHRP1","3":"BM","4":"restored","5":"7","6":"E20","7":"0.3805721"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"N0","7":"15.0000000"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"N1","7":"8.1645061"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"N2","7":"6.0206812"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"E10","7":"0.5443004"},{"1":"23","2":"MHRP2","3":"BM","4":"restored","5":"2","6":"E20","7":"0.4013787"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"N0","7":"19.0000000"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"N1","7":"11.0081907"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"N2","7":"9.2510750"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"E10","7":"0.5793785"},{"1":"24","2":"PHC1","3":"BM","4":"corn","5":"0","6":"E20","7":"0.4868987"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"N0","7":"20.0000000"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"N1","7":"7.7905937"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"N2","7":"4.2094488"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"E10","7":"0.3895297"},{"1":"25","2":"PHRP1","3":"BM","4":"restored","5":"11","6":"E20","7":"0.2104724"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-
-</div>
 
 ``` r
 (lsap_comp <- gudicom(lsap_div, lsap$rrfd_speTaxa, "litter_saprotroph"))
@@ -2410,7 +2380,7 @@ Sequencing depth of 297, perhaps too rare to justify examination.
 <div data-pagedtable="false">
 
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["field_type"],"name":[1],"type":["ord"],"align":["right"]},{"label":["order"],"name":[2],"type":["chr"],"align":["left"]},{"label":["seq_comp"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"corn","2":"Agaricales","3":"6.201055"},{"1":"corn","2":"Capnodiales","3":"18.922806"},{"1":"corn","2":"Chaetosphaeriales","3":"15.982100"},{"1":"corn","2":"Chaetothyriales","3":"4.283203"},{"1":"corn","2":"Other (OTU<2%)","3":"2.796868"},{"1":"corn","2":"Pezizales","3":"3.995525"},{"1":"corn","2":"Pleosporales","3":"7.927122"},{"1":"corn","2":"Rhizophlyctidales","3":"11.315327"},{"1":"corn","2":"Sordariales","3":"28.575995"},{"1":"restored","2":"Agaricales","3":"15.743820"},{"1":"restored","2":"Capnodiales","3":"22.018195"},{"1":"restored","2":"Chaetosphaeriales","3":"10.023328"},{"1":"restored","2":"Chaetothyriales","3":"6.908759"},{"1":"restored","2":"Glomerellales","3":"2.407878"},{"1":"restored","2":"Helotiales","3":"6.459597"},{"1":"restored","2":"Hypocreales","3":"4.227017"},{"1":"restored","2":"Other (OTU<2%)","3":"2.917237"},{"1":"restored","2":"Pezizales","3":"2.273172"},{"1":"restored","2":"Pleosporales","3":"8.038609"},{"1":"restored","2":"Rhizophlyctidales","3":"7.316246"},{"1":"restored","2":"Sebacinales","3":"4.013131"},{"1":"restored","2":"Sordariales","3":"7.653012"},{"1":"remnant","2":"Agaricales","3":"9.440698"},{"1":"remnant","2":"Cantharellales","3":"9.044030"},{"1":"remnant","2":"Capnodiales","3":"10.412535"},{"1":"remnant","2":"Chaetosphaeriales","3":"5.632685"},{"1":"remnant","2":"Chaetothyriales","3":"9.698532"},{"1":"remnant","2":"Helotiales","3":"9.758033"},{"1":"remnant","2":"Hypocreales","3":"16.600555"},{"1":"remnant","2":"Other (OTU<2%)","3":"2.538675"},{"1":"remnant","2":"Pleosporales","3":"7.973027"},{"1":"remnant","2":"Rhizophlyctidales","3":"3.272511"},{"1":"remnant","2":"Sebacinales","3":"4.998017"},{"1":"remnant","2":"Sordariales","3":"3.014677"},{"1":"remnant","2":"Xylariales","3":"7.616025"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["field_type"],"name":[1],"type":["ord"],"align":["right"]},{"label":["order"],"name":[2],"type":["chr"],"align":["left"]},{"label":["seq_comp"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"corn","2":"Agaricales","3":"5.855786"},{"1":"corn","2":"Capnodiales","3":"18.937860"},{"1":"corn","2":"Chaetosphaeriales","3":"14.873073"},{"1":"corn","2":"Chaetothyriales","3":"5.606603"},{"1":"corn","2":"Hypocreales","3":"2.284172"},{"1":"corn","2":"Other (OTU<2%)","3":"1.453564"},{"1":"corn","2":"Pezizales","3":"3.893475"},{"1":"corn","2":"Pleosporales","3":"7.911540"},{"1":"corn","2":"Rhizophlyctidales","3":"10.216477"},{"1":"corn","2":"Sordariales","3":"28.967451"},{"1":"restored","2":"Agaricales","3":"16.720613"},{"1":"restored","2":"Capnodiales","3":"22.557966"},{"1":"restored","2":"Chaetosphaeriales","3":"9.646508"},{"1":"restored","2":"Chaetothyriales","3":"7.001521"},{"1":"restored","2":"Glomerellales","3":"2.642083"},{"1":"restored","2":"Helotiales","3":"6.617003"},{"1":"restored","2":"Hypocreales","3":"4.616387"},{"1":"restored","2":"Other (OTU<2%)","3":"1.604122"},{"1":"restored","2":"Pezizales","3":"2.058766"},{"1":"restored","2":"Pleosporales","3":"8.014713"},{"1":"restored","2":"Rhizophlyctidales","3":"6.775057"},{"1":"restored","2":"Sebacinales","3":"3.793277"},{"1":"restored","2":"Sordariales","3":"7.951985"},{"1":"remnant","2":"Agaricales","3":"7.583920"},{"1":"remnant","2":"Cantharellales","3":"10.443431"},{"1":"remnant","2":"Capnodiales","3":"11.438044"},{"1":"remnant","2":"Chaetosphaeriales","3":"5.801906"},{"1":"remnant","2":"Chaetothyriales","3":"9.324492"},{"1":"remnant","2":"Helotiales","3":"9.697472"},{"1":"remnant","2":"Hypocreales","3":"17.592209"},{"1":"remnant","2":"Other (OTU<2%)","3":"2.113552"},{"1":"remnant","2":"Pleosporales","3":"8.702860"},{"1":"remnant","2":"Rhizophlyctidales","3":"4.289266"},{"1":"remnant","2":"Sebacinales","3":"4.475756"},{"1":"remnant","2":"Sordariales","3":"3.066722"},{"1":"remnant","2":"Xylariales","3":"5.470369"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 
 </div>
@@ -2446,8 +2416,8 @@ lsap_inspan %>%
 
 | field_type | n_otu |  stat_avg |   stat_sd |
 |:-----------|------:|----------:|----------:|
-| corn       |     3 | 0.8000703 | 0.0741808 |
-| remnant    |     1 | 0.6813851 |        NA |
+| corn       |     3 | 0.8011214 | 0.0763339 |
+| remnant    |     2 | 0.7093130 | 0.0721707 |
 
 Indicator species stats: litter saprotrophs
 
@@ -2462,12 +2432,13 @@ lsap_inspan %>%
     kable(format = "pandoc", caption = "Indicator species of litter saprotrophs")
 ```
 
-| otu_num  |         A |   B |      stat | p.value | field_type | primary_lifestyle | phylum          | class                 | order             | family             | genus         | species                |
-|:---------|----------:|----:|----------:|--------:|:-----------|:------------------|:----------------|:----------------------|:------------------|:-------------------|:--------------|:-----------------------|
-| otu_126  | 0.7845069 | 1.0 | 0.8857239 |  0.0055 | corn       | litter_saprotroph | Ascomycota      | Sordariomycetes       | Sordariales       | Chaetomiaceae      | Chaetomium    | NA                     |
-| otu_358  | 0.9572650 | 0.6 | 0.7578647 |  0.0240 | corn       | litter_saprotroph | Ascomycota      | Eurotiomycetes        | Chaetothyriales   | Cyphellophoraceae  | Cyphellophora | Cyphellophora_suttonii |
-| otu_1009 | 0.9541284 | 0.6 | 0.7566221 |  0.0140 | corn       | litter_saprotroph | Ascomycota      | Pezizomycetes         | Pezizales         | Pyronemataceae     | Cheilymenia   | Cheilymenia_stercorea  |
-| otu_1302 | 0.9285714 | 0.5 | 0.6813851 |  0.0370 | remnant    | litter_saprotroph | Chytridiomycota | Rhizophlyctidomycetes | Rhizophlyctidales | Rhizophlyctidaceae | Rhizophlyctis | unidentified           |
+| otu_num  |         A |    B |      stat | p.value | field_type | primary_lifestyle | phylum          | class                 | order             | family             | genus              | species                     |
+|:---------|----------:|-----:|----------:|--------:|:-----------|:------------------|:----------------|:----------------------|:------------------|:-------------------|:-------------------|:----------------------------|
+| otu_126  | 0.7907429 | 1.00 | 0.8892373 |  0.0030 | corn       | litter_saprotroph | Ascomycota      | Sordariomycetes       | Sordariales       | Chaetomiaceae      | Chaetomium         | NA                          |
+| otu_1009 | 0.9600000 | 0.60 | 0.7589466 |  0.0140 | corn       | litter_saprotroph | Ascomycota      | Pezizomycetes         | Pezizales         | Pyronemataceae     | Cheilymenia        | Cheilymenia_stercorea       |
+| otu_358  | 0.9504950 | 0.60 | 0.7551801 |  0.0225 | corn       | litter_saprotroph | Ascomycota      | Eurotiomycetes        | Chaetothyriales   | Cyphellophoraceae  | Cyphellophora      | Cyphellophora_suttonii      |
+| otu_608  | 0.7708333 | 0.75 | 0.7603453 |  0.0445 | remnant    | litter_saprotroph | Ascomycota      | Sordariomycetes       | Hypocreales       | Bionectriaceae     | Paracylindrocarpon | Paracylindrocarpon_aloicola |
+| otu_1302 | 0.8666667 | 0.50 | 0.6582806 |  0.0355 | remnant    | litter_saprotroph | Chytridiomycota | Rhizophlyctidomycetes | Rhizophlyctidales | Rhizophlyctidaceae | Rhizophlyctis      | unidentified                |
 
 Indicator species of litter saprotrophs
 
