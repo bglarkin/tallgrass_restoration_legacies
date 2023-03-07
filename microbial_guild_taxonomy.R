@@ -866,7 +866,7 @@ guiltime("litter_saprotroph")
 #' Sequencing depth of 297, perhaps too rare to justify examination.
 #+ lsap_div
 lsap_div <- calc_diversity(lsap$rrfd)
-#+ lsap_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
+#+ lsap_composition,message=FALSE,results=FALSE,fig.width=7,fig.height=7,fig.align='center'
 (lsap_comp <- gudicom(lsap_div, lsap$rrfd_speTaxa, "litter_saprotroph"))
 #' With no litter in cornfields, it's perhaps not surprising to see increasing trends across field types
 #' with this guild. Trends over time aren't convincing, except possibly in Fermi.
