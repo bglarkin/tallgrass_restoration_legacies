@@ -2,7 +2,7 @@ Microbial data: overview of data, diversity statistics
 ================
 Beau Larkin
 
-Last updated: 27 February, 2023
+Last updated: 06 March, 2023
 
 - <a href="#description" id="toc-description">Description</a>
 - <a href="#packages-and-libraries"
@@ -866,9 +866,9 @@ test_diversity(div$amf_rfy)
     ##      AIC      BIC   logLik deviance df.resid 
     ## 126.5654 132.6598 -58.2827 116.5654       20 
     ## Random effects:
-    ##  Groups   Name        Std.Dev. 
-    ##  region   (Intercept) 6.568e-10
-    ##  Residual             2.490e+00
+    ##  Groups   Name        Std.Dev.
+    ##  region   (Intercept) 0.00    
+    ##  Residual             2.49    
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ##        (Intercept)  field_typerestored   field_typeremnant  
@@ -935,7 +935,7 @@ test_diversity(div$amf_rfy)
     ## -61.3699 -55.2756  35.6850 -71.3699       20 
     ## Random effects:
     ##  Groups   Name        Std.Dev. 
-    ##  region   (Intercept) 7.234e-12
+    ##  region   (Intercept) 7.314e-12
     ##  Residual             5.806e-02
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
