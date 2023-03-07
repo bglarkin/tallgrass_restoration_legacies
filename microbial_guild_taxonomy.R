@@ -927,24 +927,12 @@ lsap_inspan %>%
 #' ## AMF
 #' Function output is verbose but retained as explained previously.
 #+ amf_otu_summary,message=FALSE
-
-amf_otu_summary <- amf_tax(spe_meta$amf_rfy)
-
-#' From the mean sequence abundances in field types, the following families look interesting:
+amf_summary <- amf_tax(spe_meta$amf_rfy)
 #' 
-#' - Claroideoglomeraceae: low in corn
-#' - Paraglomeraceae: highest in corn, declines through restoration and remnant
-#' - Diversisporaceae: highest in corn, declines through restoration and remnant
-#' - Gigasporaceae: low in corn
-#' 
-#' These don't all show up in linear modeling (shown next), but since this modeling isn't 
-#' likely valid, we can explore any of these that appear worthwhile. For now, let's look at a
-#' boxplot for each.
+#' Let's look at abundances across field types in four families:
 #+ amf_boxplot,fig.width=7,fig.height=6,fig.align='center'
-spe_meta$amf_rfy %>% 
+amf_summary %>% 
     filter(family %in% c("Claroideoglomeraceae", "Paraglomeraceae", "Diversisporaceae", "Gigasporaceae")) %>% 
-    group_by(region, field_type, field_key, family) %>% 
-    summarize(seq_sum = sum(seq_abund), .groups = "drop") %>% 
     ggplot(aes(x = field_type, y = seq_sum)) +
     facet_wrap(vars(family), scales = "free_y") +
     geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
@@ -952,50 +940,75 @@ spe_meta$amf_rfy %>%
     labs(x = "", y = "Sum of sequence abundance", title = "AMF abundance in families and field types") +
     scale_fill_discrete_qualitative(palette = "Dark3") +
     theme_bw()
-
-#' make some comments...
 #' 
-
-
-#' ### Individual families
-#' Claroideoglomeraceae differs across field types with a likelihood ratio test result p<0.05. 
-#' Tukey's post-hoc test with Holm correction performed, letters on the figure show differences.
-#+ claroideoglomeraceae_otu_fields_fig,message=FALSE,fig.align='center'
-
-
-# amf_otu_summary %>% 
-#     filter(family == "Claroideoglomeraceae") %>% 
-#     ggplot(aes(x = field_type, y = seq_sum)) +
-#     geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
-#     geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
-#     annotate("text", label = c("a", "b", "ab"), x = c(1,2,3), y = rep(350, 3)) +
-#     labs(x = "", y = "Sequence abundance", title = "AMF variation in field types, 97% OTU",
-#          caption = "Likelihood ratio test p<0.01, Tukey's post-hoc with Holm correction at p<0.05") +
-#     scale_fill_discrete_qualitative(palette = "Dark3") +
-#     theme_classic()
-
-
-
-#' Gigasporaceae increased with time since restoration by a simple linear regression, 
-#' $R^2_{adj}$ = 0.66, p < 0.05
-#+ gigasporaceae_otu_time_fig,message=FALSE,fig.align='center'
-
-
-
-# amf_otu_summary %>% 
-#     filter(field_type == "restored", region == "BM", family == "Gigasporaceae") %>% 
-#     ggplot(aes(x = yr_since, y = seq_sum)) +
-#     geom_smooth(method = "lm", linewidth = 0.4, se = FALSE) +
-#     geom_point(size = 2, shape = 21, fill = "gray60") +
-#     labs(x = "Years since restoration", 
-#          y = "Sequence abundance", 
-#          title = "Gigasporaceae abundance since restoration, 97% OTU",
-#          caption = "R2Adj = 0.81, p<0.01") +
-#     theme_classic()
-
-
-
-
+#' Let's also look at change over time in Fermi and Blue Mounds:
+#+ amf_change_time_all,message=FALSE,fig.height=8,fig.width=5,fig.align='center'
+amf_summary %>% 
+    filter(family %in% c("Claroideoglomeraceae", "Paraglomeraceae", "Diversisporaceae", "Gigasporaceae"),
+           region %in% c("BM", "FL"),
+           field_type == "restored") %>% 
+    ggplot(aes(x = yr_since, y = seq_sum)) +
+    facet_grid(rows = vars(family), cols = vars(region), scales = "free") +
+    geom_smooth(method = "lm") +
+    geom_point() +
+    labs(x = "", y = "Sum of sequences abundances") +
+    theme_bw()
+#' 
+#' From the mean sequence abundances in field types and trends over time, the following families look interesting:
+#' 
+#' - *Claroideoglomeraceae:* low in corn; significantly by likelihood ratio test
+#' - *Paraglomeraceae:* highest in corn, declines through restoration and remnant, declines in BM and FL but 
+#' likely not a significant trend
+#' - *Diversisporaceae:* highest in corn, declines through restoration and remnant
+#' - *Gigasporaceae:* low in corn, and also the only one with a significant change with years
+#' since restoration, and this only in Blue Mounds. These increase over time (recall that pathogens decline over time). 
+#' 
+#' In the next section, we will examine these families more closely by first re-rarefying abundances within
+#' families.
+#' 
+#' ### Claroideoglomeraceae
+#' 
+#' #### Diversity
+#+ claroid_rerare
+(claroid <- rerare(spe$amf_raw, meta$amf_raw, family, "Claroideoglomeraceae", sites))
+#' Sequencing depth of 290, perhaps too rare to justify examination.
+#+ claroid_div
+claroid_div <- calc_diversity(claroid$rrfd)
+#+ claroid_composition,message=FALSE,results=FALSE,fig.width=7,fig.height=7,fig.align='center'
+(claroid_comp <- gudicom(claroid_div, claroid$rrfd_speTaxa, "Claroideoglomeraceae"))
+#' With no litter in cornfields, it's perhaps not surprising to see increasing trends across field types
+#' with this guild. Trends over time aren't convincing, except possibly in Fermi.
+#' 
+#' #### Indicators
+#+ lsap_inspan
+lsap_inspan <- 
+    lsap$rrfd %>% 
+    left_join(sites, by = join_by(field_key)) %>% 
+    inspan(., 1999, meta$its_raw)
+#+ lsap_inspan_stats
+lsap_inspan %>%
+    mutate(field_type = factor(
+        field_type,
+        ordered = TRUE,
+        levels = c("corn", "restored", "remnant")
+    )) %>%
+    group_by(field_type) %>%
+    summarize(
+        n_otu = n(),
+        stat_avg = mean(stat),
+        stat_sd = sd(stat)
+    ) %>% 
+    kable(format = "pandoc", caption = "Indicator species stats: litter saprotrophs")
+#+ lsap_inspan_table
+lsap_inspan %>% 
+    mutate(field_type = factor(
+        field_type,
+        ordered = TRUE,
+        levels = c("corn", "restored", "remnant")
+    )) %>%
+    arrange(field_type, -stat) %>% 
+    kable(format = "pandoc", caption = "Indicator species of litter saprotrophs")
+#' 
 
 
 #' 
