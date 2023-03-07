@@ -180,7 +180,7 @@ its_taxaGuild <- function(data, other_threshold=2) {
     table <- kable(guild_df, format = "pandoc",
         caption = "Distribution of ITS OTUs by Fungal Trait 'primary_lifestyle'; mean sequence abundance by field type")
     # Plot the most abundant orders across field types
-    plot <- 
+    plot_orders <- 
         data %>% 
         filter(order != is.na(order), order != "unidentified") %>% 
         group_by(field_type, order, field_key) %>% 
@@ -193,11 +193,30 @@ its_taxaGuild <- function(data, other_threshold=2) {
         ggplot(., aes(x = field_type, y = seq_comp)) +
         geom_col(aes(fill = order), color = "black") +
         labs(x = "", y = "Proportion of sequence abundance",
-             title = "Composition of fungi") +
+             title = "Composition of fungi by order") +
         scale_fill_discrete_sequential(name = "Order", palette = "Plasma") +
         theme_classic()
+    # Plot the composition of primary lifestyles
+    plot_guilds <- 
+        data %>% 
+        filter(primary_lifestyle != is.na(primary_lifestyle)) %>% 
+        group_by(field_type, primary_lifestyle, field_key) %>% 
+        summarize(seq_sum = sum(seq_abund), .groups = "drop_last") %>% 
+        summarize(seq_avg = mean(seq_sum), .groups = "drop_last") %>% 
+        mutate(seq_comp = (seq_avg / sum(seq_avg)) * 100,
+               primary_lifestyle = replace(primary_lifestyle, which(seq_comp < 2), paste0("Other (OTU<", other_threshold, "%)"))) %>% 
+        group_by(field_type, primary_lifestyle) %>% 
+        summarize(seq_comp = sum(seq_comp), .groups = "drop") %>% 
+        ggplot(., aes(x = field_type, y = seq_comp)) +
+        geom_col(aes(fill = primary_lifestyle), color = "black") +
+        labs(x = "", y = "Proportion of sequence abundance",
+             title = "Composition of fungi by primary lifestyle") +
+        scale_fill_discrete_sequential(name = "Primary lifestyle", palette = "Inferno") +
+        theme_classic()
     
-    print(list(table, plot))
+    print(list(table,
+               plot_orders,
+               plot_guilds))
     
 }
 #' 
