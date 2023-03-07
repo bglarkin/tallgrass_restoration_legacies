@@ -32,7 +32,8 @@ packages_needed = c("tidyverse",
                     "lme4",
                     "multcomp",
                     "indicspecies",
-                    "GUniFrac")
+                    "GUniFrac",
+                    "vegan")
 packages_installed = packages_needed %in% rownames(installed.packages())
 #+ packages,message=FALSE
 if (any(!packages_installed)) {
@@ -379,16 +380,16 @@ guiltime <- function(pl) {
     fits <- data.frame(
         rbind(BM = c(coef(bm)[1,1], coef(bm)[2,1], coef(bm)[2,4]),
               FL = c(coef(fl)[1,1], coef(fl)[2,1], coef(fl)[2,4]))) %>% 
-        mutate(lty = case_when(X3 < 0.05 ~ "a", TRUE ~ "b")) %>% 
+        mutate(lty = case_when(X3 < 0.05 ~ "a", TRUE ~ NA_character_)) %>% 
         rownames_to_column(var = "region")
-    
     plot <- 
         ggplot(d, aes(x = yr_since, y = seq_sum)) +
         facet_wrap(vars(region), scales = "free_y") +
         geom_point() +
         geom_abline(data = fits, aes(slope = X2, intercept = X1, linetype = lty), color = "blue") +
         labs(x = "Years since restoration", 
-             y = "Sum of ITS sequences") +
+             y = "Sum of ITS sequences",
+             caption = "Solid line, if present, shows linear relationship at p<0.05") +
         theme_bw() +
         theme(legend.position = "none")
     
@@ -543,9 +544,9 @@ gudicom <- function(div, rrfd, grp_var, other_threshold=2) {
         theme_classic()
     
     print(list(
-        hillfield,
-        hilltime,
-        comp_plot
+        Hills_field_type = hillfield,
+        Hills_yrs_since_restoration = hilltime,
+        Composition = comp_plot
     ))
     
     return(comp)
@@ -609,7 +610,7 @@ inspan <- function(data, np, meta) {
 #' # Analysis and Results
 #' ## ITS sequences
 #' Function outputs are verbose, but details may be necessary later so they are displayed here.
-#+ its_tax_trophic_otu,message=FALSE
+#+ its_tax_trophic_otu,message=FALSE,fig.height=7,fig.align='center'
 its_taxaGuild(spe_meta$its_rfy)
 #' 
 #+ its_guilds_otu,message=FALSE
@@ -672,69 +673,234 @@ its_inspan %>%
 )) %>%
     group_by(field_type) %>% 
     slice_max(order_by = stat, n = 10) %>% 
-    arrange(field_type, -stat) %>% print(n = Inf)
+    arrange(field_type, -stat) %>% 
+    kable(format = "pandoc", caption = "Indicator species of ITS OTUs (top 10 per field type)")
 #' 
 #' ### Soil saprotrophs
-
-
-
-
+#' #### Trends over time
+#+ ssap_guiltime,fig.width=8,fig.height=4.5,fig.align='center'
 guiltime("soil_saprotroph")
-
-ssap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "soil_saprotroph", sites)
-
-ssap_div <- calc_diversity(ssap$rrfd)
-
-ssap_comp <- gudicom(ssap_div, ssap$rrfd_speTaxa, "soil_saprotroph")
-
-# indicator
-
-
-
-
-#' ### ITS: plant pathogens
-
+#' Sequence abundance of soil saprotrophs increases over time in the Blue Mounds 
+#' area ($R^2_{Adj}=0.58, p<0.05$), but
+#' this appears to be leveraged by Karla Ott's property, though. With all
+#' that big bluestem...maybe there is more litter and soil carbon? It will be good 
+#' to look at trends in soil chemistry. 
+#' 
+#' #### Diversity
+#+ ssap_rerare
+(ssap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "soil_saprotroph", sites))
+#+ ssap_div
+(ssap_div <- calc_diversity(ssap$rrfd))
+#' Diversity measures are stored in this data frame for further use...
+#+ ssap_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
+(ssap_comp <- gudicom(ssap_div, ssap$rrfd_speTaxa, "soil_saprotroph"))
+#' Richness increases from corn to remnant, but within-group variability is high. Diversity 
+#' indices look muddy. Diversity indices increase with years since restoration, but the 
+#' significance of this remains to be seen. 
+#' 
+#' Composition of soil saprotrophs by order can be modified somewhat by choosing the 
+#' threshold for lumping rare orders into an "other" category. Leaving this at the default
+#' of <2%, nine named orders are left. Agarics increase strongly from corn to remnant; Cystofilobasidiales
+#' and Filobasidiales aren't found outside of cornfields. Generally, cornfield composition looks 
+#' different than the other two, but remnants do appear somewhat intermediate. 
+#' 
+#' #### Indicators
+#+ ssap_inspan
+ssap_inspan <- 
+    ssap$rrfd %>% 
+    left_join(sites, by = join_by(field_key)) %>% 
+    inspan(., 1999, meta$its_raw)
+#+ ssap_inspan_stats
+ssap_inspan %>%
+    mutate(field_type = factor(
+        field_type,
+        ordered = TRUE,
+        levels = c("corn", "restored", "remnant")
+    )) %>%
+    group_by(field_type) %>%
+    summarize(
+        n_otu = n(),
+        stat_avg = mean(stat),
+        stat_sd = sd(stat)
+    ) %>% 
+    kable(format = "pandoc", caption = "Indicator species stats: soil saprotrophs")
+#' We see the same trend as before, where more indicators are found in 
+#' cornfields, and their indicator stats are stronger. 
+#+ ssap_inspan_table
+ssap_inspan %>% 
+    mutate(field_type = factor(
+        field_type,
+        ordered = TRUE,
+        levels = c("corn", "restored", "remnant")
+    )) %>%
+    arrange(field_type, -stat) %>% 
+    kable(format = "pandoc", caption = "Indicator species of soil saprotrophs")
+#' A later task will be to comb these tables for species with good stories...
+#' 
+#' ### Plant pathogens 
+#' #### Trends over time
+#+ ppat_guiltime,fig.width=8,fig.height=4.5,fig.align='center'
 guiltime("plant_pathogen")
-
-ppat <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "plant_pathogen", sites)
-
-ppat_div <- calc_diversity(ppat$rrfd)
-
-ppat_comp <- gudicom(ppat_div, ppat$rrfd_speTaxa, "plant_pathogen")
-
-# indicator
-
-
-
-
-
-#' ### ITS: wood saptrotrophs
-
+#' A strong decline in pathogens is seen in Blue Mounds' restored fields 
+#' ($R^2_{Adj}=0.75, p<0.01$), and although two distinct groups are apparent, no single
+#' site displays undue leverage. It's possible that a signal like this will be found
+#' in soil chemistry or plant data and can help explain what we are seeing here. Recall also
+#' that AMF were previously found to increase along this same sequence...maybe that will
+#' still hold up. 
+#' 
+#' #### Diversity
+#+ ppat_rerare
+(ppat <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "plant_pathogen", sites))
+#+ ppat_div
+(ppat_div <- calc_diversity(ppat$rrfd))
+#+ ppat_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
+(ppat_comp <- gudicom(ppat_div, ppat$rrfd_speTaxa, "plant_pathogen", other_threshold = 1))
+#' Richness and diversity look flat or declining from corn to remnants and evenness takes a 
+#' hit in restored and remnant fields. It looks like we have fewer pathogens, but more dominant 
+#' individual taxa become established. Pathogen diversity decreases with years since restoration 
+#' in Blue Mounds, but if the dumbbell plots can be believed, the opposite appears true in Fermi.
+#' 
+#' Many pathogen orders are rare, so the argument `other_threshold` was adjusted to 
+#' show more diversity. Shifts don't appear pronounced. *Diaporthales* decreases in composition
+#' from corn to remnant while *Hypocreales* pathogens increase. *Cantharellales* appear a
+#' small component but are possibly "late successional" pathogens, possibly associated with some
+#' native plant in a plant-soil feedback. 
+#' 
+#' #### Indicators
+#+ ppat_inspan
+ppat_inspan <- 
+    ppat$rrfd %>% 
+    left_join(sites, by = join_by(field_key)) %>% 
+    inspan(., 1999, meta$its_raw)
+#+ ppat_inspan_stats
+ppat_inspan %>%
+    mutate(field_type = factor(
+        field_type,
+        ordered = TRUE,
+        levels = c("corn", "restored", "remnant")
+    )) %>%
+    group_by(field_type) %>%
+    summarize(
+        n_otu = n(),
+        stat_avg = mean(stat),
+        stat_sd = sd(stat)
+    ) %>% 
+    kable(format = "pandoc", caption = "Indicator species stats: plant pathogens")
+#' We see the same trend as before, where more indicators are found in 
+#' cornfields, and their indicator stats are stronger. Composition at the level of taxonomic order
+#' isn't telling the whole story.
+#' 
+#' Plant pathogen indicators are nearly all in *Ascomycota.*
+#+ ppat_inspan_table
+ppat_inspan %>% 
+    mutate(field_type = factor(
+        field_type,
+        ordered = TRUE,
+        levels = c("corn", "restored", "remnant")
+    )) %>%
+    arrange(field_type, -stat) %>% 
+    kable(format = "pandoc", caption = "Indicator species of plant pathogens")
+#' 
+#' ### Wood saprotrophs
+#' #### Trends over time
+#+ wsap_guiltime,fig.width=8,fig.height=4.5,fig.align='center'
 guiltime("wood_saprotroph") 
-
-wsap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "wood_saprotroph", sites)
-
-wsap_div <- calc_diversity(wsap$rrfd)
-
-wasp_comp <- gudicom(wsap_div, wsap$rrfd_speTaxa, "wood_saprotroph")
-
-# indicator
-
-
-
-#' ### ITS: litter saprotrophs
-
+#' Interestingly a strong negative relationship over time since restoration ($R^2_{Adj}=0.73, p<0.01$)
+#' in sharp contrast to the increasing relationship found with soil saprotrophs. Apparently many wood
+#' saprotrophs live in cornfield soil...let's see:
+#' 
+#' #### Diversity
+#+ wsap_rerare
+(wsap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "wood_saprotroph", sites))
+#' Sequence depth is low; these aren't abundant taxa. 
+#+ wsap_div
+(wsap_div <- calc_diversity(wsap$rrfd))
+#+ wsap_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
+(wasp_comp <- gudicom(wsap_div, wsap$rrfd_speTaxa, "wood_saprotroph"))
+#' With diversity, not much jumps out. 
+#' 
+#' Diversity appears high across fields and years compared with other guilds.
+#' While *Agaric* soil saprotrophs increased strongly from corn to remnants, 
+#' they declined when characterized as wood saprotrophs.
+#' 
+#' #### Indicators
+#+ wsap_inspan
+wsap_inspan <- 
+    wsap$rrfd %>% 
+    left_join(sites, by = join_by(field_key)) %>% 
+    inspan(., 1999, meta$its_raw)
+#+ wsap_inspan_stats
+wsap_inspan %>%
+    mutate(field_type = factor(
+        field_type,
+        ordered = TRUE,
+        levels = c("corn", "restored", "remnant")
+    )) %>%
+    group_by(field_type) %>%
+    summarize(
+        n_otu = n(),
+        stat_avg = mean(stat),
+        stat_sd = sd(stat)
+    ) %>% 
+    kable(format = "pandoc", caption = "Indicator species stats: wood saprotrophs")
+#' Few species show specificity or fidelity. Corn fields have a few unusual taxa, though. 
+#' Less so with remnants, and none with restored fields. 
+#+ wsap_inspan_table
+wsap_inspan %>% 
+    mutate(field_type = factor(
+        field_type,
+        ordered = TRUE,
+        levels = c("corn", "restored", "remnant")
+    )) %>%
+    arrange(field_type, -stat) %>% 
+    kable(format = "pandoc", caption = "Indicator species of wood saprotrophs")
+#' 
+#' ### Litter saprotrophs
+#' #### Trends over time
+#+ lsap_guiltime,fig.width=8,fig.height=4.5,fig.align='center'
 guiltime("litter_saprotroph") 
-
-lsap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "litter_saprotroph", sites)
-
-lsap_div <- calc_diversity(lsap$rrfd)
-
-lsap_comp <- gudicom(lsap_div, lsap$rrfd_speTaxa, "litter_saprotroph")
-
-# indicator
-
-
+#' 
+#' #### Diversity
+#+ lsap_rerare
+(lsap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "litter_saprotroph", sites))
+#' Sequencing depth of 297, perhaps too rare to justify examination.
+#+ lsap_div
+(lsap_div <- calc_diversity(lsap$rrfd))
+#+ lsap_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
+(lsap_comp <- gudicom(lsap_div, lsap$rrfd_speTaxa, "litter_saprotroph"))
+#' With no litter in cornfields, it's perhaps not surprising to see increasing trends across field types
+#' with this guild. Trends over time aren't convincing, except possibly in Fermi.
+#' 
+#' #### Indicators
+#+ lsap_inspan
+lsap_inspan <- 
+    lsap$rrfd %>% 
+    left_join(sites, by = join_by(field_key)) %>% 
+    inspan(., 1999, meta$its_raw)
+#+ lsap_inspan_stats
+lsap_inspan %>%
+    mutate(field_type = factor(
+        field_type,
+        ordered = TRUE,
+        levels = c("corn", "restored", "remnant")
+    )) %>%
+    group_by(field_type) %>%
+    summarize(
+        n_otu = n(),
+        stat_avg = mean(stat),
+        stat_sd = sd(stat)
+    ) %>% 
+    kable(format = "pandoc", caption = "Indicator species stats: litter saprotrophs")
+#+ lsap_inspan_table
+lsap_inspan %>% 
+    mutate(field_type = factor(
+        field_type,
+        ordered = TRUE,
+        levels = c("corn", "restored", "remnant")
+    )) %>%
+    arrange(field_type, -stat) %>% 
+    kable(format = "pandoc", caption = "Indicator species of litter saprotrophs")
+#' 
 
 
 
@@ -746,33 +912,43 @@ lsap_comp <- gudicom(lsap_div, lsap$rrfd_speTaxa, "litter_saprotroph")
 #' ## AMF OTUs
 #' Function output is verbose but retained as explained previously.
 #+ amf_otu_summary,message=FALSE
-amf_otu_summary <- amf_tax(spe_meta$amf_otu, "otu")
+
+# amf_otu_summary <- amf_tax(spe_meta$amf_otu, "otu")
+
 #' Claroideoglomeraceae differs across field types with a likelihood ratio test result p<0.01. 
 #' Tukey's post-hoc test with Holm correction performed, letters on the figure show differences.
 #+ claroideoglomeraceae_otu_fields_fig,message=FALSE,fig.align='center'
-amf_otu_summary %>% 
-    filter(family == "Claroideoglomeraceae") %>% 
-    ggplot(aes(x = field_type, y = seq_sum)) +
-    geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
-    geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
-    annotate("text", label = c("a", "b", "ab"), x = c(1,2,3), y = rep(350, 3)) +
-    labs(x = "", y = "Sequence abundance", title = "AMF variation in field types, 97% OTU",
-         caption = "Likelihood ratio test p<0.01, Tukey's post-hoc with Holm correction at p<0.05") +
-    scale_fill_discrete_qualitative(palette = "Dark3") +
-    theme_classic()
+
+
+# amf_otu_summary %>% 
+#     filter(family == "Claroideoglomeraceae") %>% 
+#     ggplot(aes(x = field_type, y = seq_sum)) +
+#     geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
+#     geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
+#     annotate("text", label = c("a", "b", "ab"), x = c(1,2,3), y = rep(350, 3)) +
+#     labs(x = "", y = "Sequence abundance", title = "AMF variation in field types, 97% OTU",
+#          caption = "Likelihood ratio test p<0.01, Tukey's post-hoc with Holm correction at p<0.05") +
+#     scale_fill_discrete_qualitative(palette = "Dark3") +
+#     theme_classic()
+
+
+
 #' Gigasporaceae increased with time since restoration by a simple linear regression, 
 #' $R^2_{adj}$ = 0.81, p < 0.01
 #+ gigasporaceae_otu_time_fig,message=FALSE,fig.align='center'
-amf_otu_summary %>% 
-    filter(field_type == "restored", region == "BM", family == "Gigasporaceae") %>% 
-    ggplot(aes(x = yr_since, y = seq_sum)) +
-    geom_smooth(method = "lm", linewidth = 0.4, se = FALSE) +
-    geom_point(size = 2, shape = 21, fill = "gray60") +
-    labs(x = "Years since restoration", 
-         y = "Sequence abundance", 
-         title = "Gigasporaceae abundance since restoration, 97% OTU",
-         caption = "R2Adj = 0.81, p<0.01") +
-    theme_classic()
+
+
+
+# amf_otu_summary %>% 
+#     filter(field_type == "restored", region == "BM", family == "Gigasporaceae") %>% 
+#     ggplot(aes(x = yr_since, y = seq_sum)) +
+#     geom_smooth(method = "lm", linewidth = 0.4, se = FALSE) +
+#     geom_point(size = 2, shape = 21, fill = "gray60") +
+#     labs(x = "Years since restoration", 
+#          y = "Sequence abundance", 
+#          title = "Gigasporaceae abundance since restoration, 97% OTU",
+#          caption = "R2Adj = 0.81, p<0.01") +
+#     theme_classic()
 
 
 
@@ -787,7 +963,3 @@ amf_otu_summary %>%
 #' the AMF family *Gigasporaceae* increases, but this contrast was not found in any 
 #' other group of AMF and the *Gigasporaceae* aren't particularly abundant to begin with.
 #' 
-#' 
-#' 
-#' 
-#' # New section: INDVAL; let's look for species with stories...
