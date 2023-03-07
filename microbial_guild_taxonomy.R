@@ -692,7 +692,7 @@ guiltime("soil_saprotroph")
 #+ ssap_div
 ssap_div <- calc_diversity(ssap$rrfd)
 #' Diversity measures are stored in this data frame for further use...
-#+ ssap_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
+#+ ssap_composition,message=FALSE,results=FALSE,fig.width=7,fig.height=7,fig.align='center'
 (ssap_comp <- gudicom(ssap_div, ssap$rrfd_speTaxa, "soil_saprotroph"))
 #' Richness increases from corn to remnant, but within-group variability is high. Diversity 
 #' indices look muddy. Diversity indices increase with years since restoration, but the 
@@ -753,7 +753,7 @@ guiltime("plant_pathogen")
 (ppat <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "plant_pathogen", sites))
 #+ ppat_div
 ppat_div <- calc_diversity(ppat$rrfd)
-#+ ppat_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
+#+ ppat_composition,message=FALSE,results=FALSE,fig.width=7,fig.height=7,fig.align='center'
 (ppat_comp <- gudicom(ppat_div, ppat$rrfd_speTaxa, "plant_pathogen", other_threshold = 1))
 #' Richness and diversity look flat or declining from corn to remnants and evenness takes a 
 #' hit in restored and remnant fields. It looks like we have fewer pathogens, but more dominant 
@@ -815,7 +815,7 @@ guiltime("wood_saprotroph")
 #' Sequence depth is low; these aren't abundant taxa. 
 #+ wsap_div
 wsap_div <- calc_diversity(wsap$rrfd)
-#+ wsap_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
+#+ wsap_composition,message=FALSE,results=FALSE,fig.width=7,fig.height=7,fig.align='center'
 (wasp_comp <- gudicom(wsap_div, wsap$rrfd_speTaxa, "wood_saprotroph"))
 #' With diversity, not much jumps out. 
 #' 
