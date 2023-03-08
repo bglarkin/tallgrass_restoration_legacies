@@ -18,9 +18,14 @@
 #' across field types and with time since restoration. 
 #' 
 #' The full sequence abundance tables were rarefied to make sequencing depth equivalent
-#' across fields. This can result in lower-abundance OTUs dropping to zero. Here, when 
-#' richness and composition within guilds is calculated, the raw abundances are used, filtered
-#' into particular guilds, and then rarefied within those guilds to produce accurate results.
+#' across fields. This can result in lower-abundance OTUs dropping to zero. Within guilds, loss 
+#' of OTUs could change or bias interpretations of richness, diversity, and composition. We 
+#' tried using raw sequence data and rarefying within guilds to address this problem, but 
+#' in each case the sequence depth was so small that additional OTUs were lost and abundances were
+#' significantly lowered. 
+#' 
+#' We may try a different approach which is described in [Semchenko et al. 2018](https://www.science.org/doi/10.1126/sciadv.aau4578),
+#' but for now, the analysis uses data from the entire rarefied tables for ITS and 18S sequences.
 #' 
 #' # Packages and libraries
 packages_needed = c("tidyverse",
@@ -482,8 +487,65 @@ rerare <- function(spe, meta, grp_var, grp, site) {
     
 }
 #' 
+#' ## Filter to guilds or taxonomic groups
+#' To examine richness and composition within subgroups of OTUs, the rarefied table
+#' must be transposed, filtered, and transposed back. The function `filgu()` or "filter 
+#' guilds" automates this process. 
+#' 
+#' Outputs are:
+#' 
+#' 1. The resulting samples-species matrix
+#' 1. Sequence abundances in long-form, with site and species metadata
+#' 
+#+ filgu_function
+filgu <- function(spe, meta, grp_var, grp, site) {
+    # spe       = species matrix with raw abundances
+    # meta      = species metadata matching the OTU list with raw abundances
+    # grp_var   = variable name from `meta` desired for grouping and filtering
+    #             the OTUs (e.g., `primary_lifestyle`, `family`)
+    # grp       = string or factor level name of the group desired from `grp_var`
+    # site      = site metadata to combine with sequence abundance long-form
+    #             output table
+    
+    grp_var <- enquo(grp_var)
+    
+    filspe <- 
+        spe %>% 
+        column_to_rownames(var = "field_key") %>% 
+        t() %>% 
+        as.data.frame() %>% 
+        rownames_to_column(var = "otu_num") %>% 
+        as_tibble() %>% 
+        left_join(meta, by = join_by(otu_num)) %>% 
+        filter(!!grp_var == grp) %>% 
+        column_to_rownames(var = "otu_num") %>% 
+        select(-colnames(meta)[-1]) %>% 
+        t() %>% 
+        as.data.frame() %>%
+        rownames_to_column(var = "field_key") %>%
+        mutate(field_key = as.numeric(field_key)) %>% 
+        arrange(field_key) %>% 
+        as_tibble()
+    
+    filspeTaxa <- 
+        filspe %>% 
+        pivot_longer(cols = starts_with("otu"), 
+                     names_to = "otu_num", 
+                     values_to = "seq_abund") %>% 
+        filter(seq_abund > 0) %>% 
+        left_join(meta, by = join_by(otu_num)) %>% 
+        left_join(site, by = join_by(field_key)) %>% 
+        select(-otu_ID)
+    
+    return(list(
+        filspe = filspe,
+        filspeTaxa = filspeTaxa
+    ))
+    
+}
+#' 
 #' ### Calculate Hill's series on a samples-species matrix
-#' The object `$rrfd` from rerare() can be passed to this function
+#' The objects `$rrfd` from **rerare()** or `$filspe` from **filgu()** can be passed to this function
 #+ calc_diversity_function
 calc_diversity <- function(spe) {
     spe_mat <- data.frame(spe, row.names = 1)
@@ -708,7 +770,20 @@ guiltime("soil_saprotroph")
 #' 
 #' #### Diversity
 #+ ssap_rerare
+
+
+
+
 (ssap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "soil_saprotroph", sites))
+(ssap <- filgu(spe$its_raw, meta$its_raw, primary_lifestyle, "soil_saprotroph", sites))
+
+# compare row and col sums, look at distributions
+# Read the stupid paper about these methods
+
+
+
+
+
 #+ ssap_div
 ssap_div <- calc_diversity(ssap$rrfd)
 #' Diversity measures are stored in this data frame for further use...
