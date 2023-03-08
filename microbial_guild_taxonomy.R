@@ -543,6 +543,33 @@ filgu <- function(spe, meta, grp_var, grp, site) {
     ))
     
 }
+
+t1 <- filgu(spe$its_raw, meta$its_raw, primary_lifestyle, "soil_saprotroph", sites)
+
+coldat <- 
+    data.frame(
+        col_sums = 
+            t1$filspe %>% 
+            select(-field_key) %>% 
+            colSums())
+ggplot(coldat, aes(x = col_sums)) +
+    geom_histogram(bins = nrow(coldat)) +
+    labs(title = "Sequences per OTU") +
+    theme_classic()
+
+rowdat <- 
+    data.frame(
+        row_sums = 
+            t1$filspe %>% 
+            select(-field_key) %>% 
+            rowSums())
+ggplot(rowdat, aes(x = row_sums)) +
+    geom_histogram(bins = nrow(rowdat)) +
+    labs(title = "Sequences per sample") +
+    theme_classic()
+
+
+
 #' 
 #' ### Calculate Hill's series on a samples-species matrix
 #' The objects `$rrfd` from **rerare()** or `$filspe` from **filgu()** can be passed to this function
@@ -691,6 +718,11 @@ inspan <- function(data, np, meta) {
 #' 
 #' # Analysis and Results
 #' ## ITS sequences
+#' Recall the number of OTUs recovered in each dataset. The effect of rarefing did not change
+#' richness or diversity very much. 
+Map(function(x) ncol(x)-1, spe)
+#' 
+#' ### Composition in field types
 #' Function outputs are verbose, but details may be necessary later so they are displayed here.
 #+ its_tax_trophic_otu,message=FALSE,fig.height=7,fig.align='center'
 its_taxaGuild(spe_meta$its_rfy)
@@ -774,8 +806,14 @@ guiltime("soil_saprotroph")
 
 
 
-(ssap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "soil_saprotroph", sites))
-(ssap <- filgu(spe$its_raw, meta$its_raw, primary_lifestyle, "soil_saprotroph", sites))
+(t1 <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "soil_saprotroph", sites))
+(t2 <- filgu(spe$its_raw, meta$its_raw, primary_lifestyle, "soil_saprotroph", sites))
+
+apply(t1$rrfd[, -1], 1, sum)
+apply(t2$filspe[, -1], 1, sum)
+apply(t1$rrfd[, -1], 2, sum)
+apply(t2$filspe[, -1], 2, sum)
+
 
 # compare row and col sums, look at distributions
 # Read the stupid paper about these methods

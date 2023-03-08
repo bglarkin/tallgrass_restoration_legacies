@@ -47,10 +47,14 @@ conflict_prefer("select", "dplyr")
 #' ## Sites-species tables
 #' CSV files were produced in `process_data.R`
 spe <- list(
-    its_rfy = read_csv(paste0(getwd(), "/clean_data/spe_ITS_raw.csv"), 
+    its_raw = read_csv(paste0(getwd(), "/clean_data/spe_ITS_raw.csv"), 
                         show_col_types = FALSE),
-    amf_rfy = read_csv(paste0(getwd(), "/clean_data/spe_18S_raw.csv"), 
-                        show_col_types = FALSE)
+    its_rfy = read_csv(paste0(getwd(), "/clean_data/spe_ITS_rfy.csv"), 
+                       show_col_types = FALSE),
+    amf_raw = read_csv(paste0(getwd(), "/clean_data/spe_18S_raw.csv"), 
+                        show_col_types = FALSE),
+    amf_rfy = read_csv(paste0(getwd(), "/clean_data/spe_18S_rfy.csv"), 
+                       show_col_types = FALSE)
 )
 #' 
 #' ## Site metadata and design
@@ -143,8 +147,17 @@ test_age <- function(data, caption=NULL) {
 }
 #' 
 #' # Analysis and Results
-#' Microbial diversity is considered for each of four datasets: OTU or SV clustering for 18S or ITS gene 
-#' sequencing. For each set, Hill's numbers are produced ([Hill 1973](http://doi.wiley.com/10.2307/1934352), 
+#' 
+#' What was the effect of rarefying the samples-species tables on the number of OTUs recovered? 
+#' Few were lost due to rarefying, as we can see by counting columns (less column 1 because it 
+#' has field site keys):
+Map(function(x) ncol(x)-1, spe) 
+#' It appears that little will be lost in terms of richness or diversity by rarefying.
+#' 
+#' ## Microbial diversity
+#' 
+#' Microbial diversity is considered for 18S or ITS gene 
+#' datasets. For each set, Hill's numbers are produced ([Hill 1973](http://doi.wiley.com/10.2307/1934352), 
 #' [Borcard and Legendere 2018, p. 373](http://link.springer.com/10.1007/978-3-319-71404-2)) and plotted,
 #' with means differences tested using mixed-effects linear models in `lmer` ([Bates et al. 2015](https://doi.org/10.18637/jss.v067.i01)).
 #' Correlations are then produced to visualize change in diversity trends over time, 
@@ -162,9 +175,9 @@ test_age <- function(data, caption=NULL) {
 #' - $E_{10}$ = Shannon's evenness (Hill's ratio $N_{1} / N_{0}$)
 #' - $E_{20}$ = Simpson's evenness (Hill's ratio $N_{2} / N_{0}$)
 #' 
-#' ### Diversity calculations
 #+ diversity_calculations
-div <- Map(calc_diversity, spe)
+# Rarefied tables only
+div <- Map(calc_diversity, spe[c(2,4)])
 #' 
 #' ## Fungi (ITS gene)
 #' ### Diversity across field types
@@ -198,7 +211,7 @@ ggplot(div$its_rfy, aes(x = field_type, y = value)) +
     facet_wrap(vars(hill_index), scales = "free_y") +
     geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
     geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
-    # geom_label(data = labs_its, aes(x = xpos, y = ypos, label = lab), label.size = NA) +
+    geom_label(data = labs_its, aes(x = xpos, y = ypos, label = lab), label.size = NA) +
     labs(x = "", y = "Index value", title = "TGP microbial diversity (Hill's), ITS, 97% OTU",
          caption = "N0-richness, N1-e^Shannon, N2-Simpson, E10=N1/N0, E20=N2/N0, width=n,\nletters indicate significant differences at p<0.05") +
     scale_fill_discrete_qualitative(palette = "Dark3") +
