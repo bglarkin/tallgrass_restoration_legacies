@@ -962,6 +962,28 @@ amf_summary %>%
     labs(x = "", y = "Sum of sequences abundances") +
     theme_bw()
 #' 
+#' And finally composition at the family level. *Glomeraceae* truly dominates.
+#+ amf_composition,fig.height=7,fig.align='center'
+amf_summary %>% 
+    group_by(field_type, family) %>% 
+    summarize(seq_avg = mean(seq_sum), .groups = "drop_last") %>% 
+    mutate(seq_comp = (seq_avg / sum(seq_avg)) * 100,
+           order = replace(family, which(seq_comp < 0), "Other")) %>% 
+    group_by(field_type, order) %>% 
+    summarize(seq_comp = sum(seq_comp), .groups = "drop") %>% 
+    ggplot(aes(x = field_type, y = seq_comp)) +
+    geom_col(aes(fill = order), color = "black") +
+    labs(x = "", y = "Proportion of sequence abundance",
+         title = "Composition of AMF by order") +
+    scale_fill_discrete_sequential(name = "Order", palette = "Plasma") +
+    theme_classic()
+    
+    
+
+    
+    
+    
+
 #' From the mean sequence abundances in field types and trends over time, the following families look interesting:
 #' 
 #' - *Claroideoglomeraceae:* low in corn; significantly by likelihood ratio test
@@ -977,13 +999,19 @@ amf_summary %>%
 #' ### Claroideoglomeraceae
 #' 
 #' #### Diversity
-#+ claroid_rerare
-(claroid <- rerare(spe$amf_raw, meta$amf_raw, family, "Claroideoglomeraceae", sites))
+
+# The re-rarefy thing isn't working. Pause to figure out why. 
+# You can still do diversity and so forth below.
+
 #' Sequencing depth of 290, perhaps too rare to justify examination.
 #+ claroid_div
-claroid_div <- calc_diversity(claroid$rrfd)
+# claroid_div <- calc_diversity(claroid$rrfd)
+
+
 #+ claroid_divplot,message=FALSE,results=FALSE,fig.width=7,fig.height=7,fig.align='center'
-gudicom(claroid_div, claroid$rrfd_speTaxa, "Claroideoglomeraceae", gene = "amf")
+# gudicom(claroid_div, claroid$rrfd_speTaxa, "Claroideoglomeraceae", gene = "amf")
+
+
 #' With no litter in cornfields, it's perhaps not surprising to see increasing trends across field types
 #' with this guild. Trends over time aren't convincing, except possibly in Fermi.
 #' 
