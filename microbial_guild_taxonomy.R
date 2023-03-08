@@ -517,7 +517,7 @@ calc_diversity <- function(spe) {
 #' and calculate percent composition; display results. For plotting, it's convenient 
 #' to limit the number of taxonomic orders displayed. Use the argument `other_threshold` to 
 #' choose a small (e.g., 2, the default) cutoff, below which orders are relabeled as "other".
-gudicom <- function(div, rrfd, grp_var, other_threshold=2) {
+gudicom <- function(div, rrfd, grp_var, gene="its", other_threshold=2) {
     hillfield <-     
         ggplot(div, aes(x = field_type, y = value)) +
         facet_wrap(vars(hill_index), scales = "free_y") +
@@ -537,31 +537,39 @@ gudicom <- function(div, rrfd, grp_var, other_threshold=2) {
         labs(x = "Years since restoration", y = "Index value", title = paste("Microbial diversity (Hill's) in restored fields:", grp_var),
              caption = "Re-rarefied in the group; N0-richness, N1-e^Shannon, N2-Simpson, E10=N1/N0, E20=N2/N0, width=n") +
         theme_bw()
-    comp <- 
-        rrfd %>% 
-        filter(order != is.na(order), order != "unidentified") %>% 
-        group_by(field_type, order, field_key) %>% 
-        summarize(seq_sum = sum(seq_abund), .groups = "drop_last") %>% 
-        summarize(seq_avg = mean(seq_sum), .groups = "drop_last") %>% 
-        mutate(seq_comp = (seq_avg / sum(seq_avg)) * 100,
-               order = replace(order, which(seq_comp < other_threshold), paste0("Other (OTU<", other_threshold, "%)"))) %>% 
-        group_by(field_type, order) %>% 
-        summarize(seq_comp = sum(seq_comp), .groups = "drop")
-    comp_plot <-
-        ggplot(comp, aes(x = field_type, y = seq_comp)) +
-        geom_col(aes(fill = order), color = "black") +
-        labs(x = "", y = "Proportion of sequence abundance",
-             title = paste("Composition of", grp_var)) +
-        scale_fill_discrete_sequential(name = "Order", palette = "Plasma") +
-        theme_classic()
-    
-    print(list(
-        Hills_field_type = hillfield,
-        Hills_yrs_since_restoration = hilltime,
-        Composition = comp_plot
-    ))
-    
-    return(comp)
+    if(gene == "its") {
+        comp <- 
+            rrfd %>% 
+            filter(order != is.na(order), order != "unidentified") %>% 
+            group_by(field_type, order, field_key) %>% 
+            summarize(seq_sum = sum(seq_abund), .groups = "drop_last") %>% 
+            summarize(seq_avg = mean(seq_sum), .groups = "drop_last") %>% 
+            mutate(seq_comp = (seq_avg / sum(seq_avg)) * 100,
+                   order = replace(order, which(seq_comp < other_threshold), paste0("Other (OTU<", other_threshold, "%)"))) %>% 
+            group_by(field_type, order) %>% 
+            summarize(seq_comp = sum(seq_comp), .groups = "drop")
+        comp_plot <-
+            ggplot(comp, aes(x = field_type, y = seq_comp)) +
+            geom_col(aes(fill = order), color = "black") +
+            labs(x = "", y = "Proportion of sequence abundance",
+                 title = paste("Composition of", grp_var)) +
+            scale_fill_discrete_sequential(name = "Order", palette = "Plasma") +
+            theme_classic()
+        
+        print(list(
+            Hills_field_type = hillfield,
+            Hills_yrs_since_restoration = hilltime,
+            Composition = comp_plot
+        ))
+        
+        return(comp)
+        
+    } else {
+        print(list(
+            Hills_field_type = hillfield,
+            Hills_yrs_since_restoration = hilltime
+        ))
+    }
     
 }
 #' 
@@ -704,8 +712,8 @@ guiltime("soil_saprotroph")
 #+ ssap_div
 ssap_div <- calc_diversity(ssap$rrfd)
 #' Diversity measures are stored in this data frame for further use...
-#+ ssap_composition,message=FALSE,results=FALSE,fig.width=7,fig.height=7,fig.align='center'
-(ssap_comp <- gudicom(ssap_div, ssap$rrfd_speTaxa, "soil_saprotroph"))
+#+ ssap_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
+ssap_comp <- gudicom(ssap_div, ssap$rrfd_speTaxa, "soil_saprotroph")
 #' Richness increases from corn to remnant, but within-group variability is high. Diversity 
 #' indices look muddy. Diversity indices increase with years since restoration, but the 
 #' significance of this remains to be seen. 
@@ -765,8 +773,8 @@ guiltime("plant_pathogen")
 (ppat <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "plant_pathogen", sites))
 #+ ppat_div
 ppat_div <- calc_diversity(ppat$rrfd)
-#+ ppat_composition,message=FALSE,results=FALSE,fig.width=7,fig.height=7,fig.align='center'
-(ppat_comp <- gudicom(ppat_div, ppat$rrfd_speTaxa, "plant_pathogen", other_threshold = 1))
+#+ ppat_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
+ppat_comp <- gudicom(ppat_div, ppat$rrfd_speTaxa, "plant_pathogen", other_threshold = 1)
 #' Richness and diversity look flat or declining from corn to remnants and evenness takes a 
 #' hit in restored and remnant fields. It looks like we have fewer pathogens, but more dominant 
 #' individual taxa become established. Pathogen diversity decreases with years since restoration 
@@ -827,8 +835,8 @@ guiltime("wood_saprotroph")
 #' Sequence depth is low; these aren't abundant taxa. 
 #+ wsap_div
 wsap_div <- calc_diversity(wsap$rrfd)
-#+ wsap_composition,message=FALSE,results=FALSE,fig.width=7,fig.height=7,fig.align='center'
-(wasp_comp <- gudicom(wsap_div, wsap$rrfd_speTaxa, "wood_saprotroph"))
+#+ wsap_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
+wasp_comp <- gudicom(wsap_div, wsap$rrfd_speTaxa, "wood_saprotroph")
 #' With diversity, not much jumps out. 
 #' 
 #' Diversity appears high across fields and years compared with other guilds.
@@ -878,8 +886,8 @@ guiltime("litter_saprotroph")
 #' Sequencing depth of 297, perhaps too rare to justify examination.
 #+ lsap_div
 lsap_div <- calc_diversity(lsap$rrfd)
-#+ lsap_composition,message=FALSE,results=FALSE,fig.width=7,fig.height=7,fig.align='center'
-(lsap_comp <- gudicom(lsap_div, lsap$rrfd_speTaxa, "litter_saprotroph"))
+#+ lsap_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
+lsap_comp <- gudicom(lsap_div, lsap$rrfd_speTaxa, "litter_saprotroph")
 #' With no litter in cornfields, it's perhaps not surprising to see increasing trends across field types
 #' with this guild. Trends over time aren't convincing, except possibly in Fermi.
 #' 
@@ -974,41 +982,12 @@ amf_summary %>%
 #' Sequencing depth of 290, perhaps too rare to justify examination.
 #+ claroid_div
 claroid_div <- calc_diversity(claroid$rrfd)
-#+ claroid_composition,message=FALSE,results=FALSE,fig.width=7,fig.height=7,fig.align='center'
-(claroid_comp <- gudicom(claroid_div, claroid$rrfd_speTaxa, "Claroideoglomeraceae"))
+#+ claroid_divplot,message=FALSE,results=FALSE,fig.width=7,fig.height=7,fig.align='center'
+gudicom(claroid_div, claroid$rrfd_speTaxa, "Claroideoglomeraceae", gene = "amf")
 #' With no litter in cornfields, it's perhaps not surprising to see increasing trends across field types
 #' with this guild. Trends over time aren't convincing, except possibly in Fermi.
 #' 
-#' #### Indicators
-#+ lsap_inspan
-lsap_inspan <- 
-    lsap$rrfd %>% 
-    left_join(sites, by = join_by(field_key)) %>% 
-    inspan(., 1999, meta$its_raw)
-#+ lsap_inspan_stats
-lsap_inspan %>%
-    mutate(field_type = factor(
-        field_type,
-        ordered = TRUE,
-        levels = c("corn", "restored", "remnant")
-    )) %>%
-    group_by(field_type) %>%
-    summarize(
-        n_otu = n(),
-        stat_avg = mean(stat),
-        stat_sd = sd(stat)
-    ) %>% 
-    kable(format = "pandoc", caption = "Indicator species stats: litter saprotrophs")
-#+ lsap_inspan_table
-lsap_inspan %>% 
-    mutate(field_type = factor(
-        field_type,
-        ordered = TRUE,
-        levels = c("corn", "restored", "remnant")
-    )) %>%
-    arrange(field_type, -stat) %>% 
-    kable(format = "pandoc", caption = "Indicator species of litter saprotrophs")
-#' 
+
 
 
 #' 
@@ -1019,3 +998,4 @@ lsap_inspan %>%
 #' the AMF family *Gigasporaceae* increases, but this contrast was not found in any 
 #' other group of AMF and the *Gigasporaceae* aren't particularly abundant to begin with.
 #' 
+
