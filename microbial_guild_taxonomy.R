@@ -527,6 +527,19 @@ filgu <- function(spe, meta, grp_var, grp, site) {
         arrange(field_key) %>% 
         as_tibble()
     
+    cs <- colSums(filspe %>% select(-field_key))
+    rs <- rowSums(filspe %>% select(-field_key))
+    
+    hist(cs,
+         breaks = length(cs),
+         main = "Histogram of OTU sequence sums",
+         xlab = "Number of sequences")
+    
+    hist(rs,
+         breaks = length(rs),
+         main = "Histogram of sequence abundance in samples",
+         xlab = "Number of sequences")
+    
     filspeTaxa <- 
         filspe %>% 
         pivot_longer(cols = starts_with("otu"), 
@@ -537,39 +550,17 @@ filgu <- function(spe, meta, grp_var, grp, site) {
         left_join(site, by = join_by(field_key)) %>% 
         select(-otu_ID)
     
+    print(list(
+        OTUs_n = length(cs),
+        Sites_n = length(rs)
+    ))
+    
     return(list(
         filspe = filspe,
         filspeTaxa = filspeTaxa
     ))
     
 }
-
-t1 <- filgu(spe$its_raw, meta$its_raw, primary_lifestyle, "soil_saprotroph", sites)
-
-coldat <- 
-    data.frame(
-        col_sums = 
-            t1$filspe %>% 
-            select(-field_key) %>% 
-            colSums())
-ggplot(coldat, aes(x = col_sums)) +
-    geom_histogram(bins = nrow(coldat)) +
-    labs(title = "Sequences per OTU") +
-    theme_classic()
-
-rowdat <- 
-    data.frame(
-        row_sums = 
-            t1$filspe %>% 
-            select(-field_key) %>% 
-            rowSums())
-ggplot(rowdat, aes(x = row_sums)) +
-    geom_histogram(bins = nrow(rowdat)) +
-    labs(title = "Sequences per sample") +
-    theme_classic()
-
-
-
 #' 
 #' ### Calculate Hill's series on a samples-species matrix
 #' The objects `$rrfd` from **rerare()** or `$filspe` from **filgu()** can be passed to this function
@@ -801,46 +792,31 @@ guiltime("soil_saprotroph")
 #' to look at trends in soil chemistry. 
 #' 
 #' #### Diversity
-#+ ssap_rerare
-
-
-
-
-(t1 <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "soil_saprotroph", sites))
-(t2 <- filgu(spe$its_raw, meta$its_raw, primary_lifestyle, "soil_saprotroph", sites))
-
-apply(t1$rrfd[, -1], 1, sum)
-apply(t2$filspe[, -1], 1, sum)
-apply(t1$rrfd[, -1], 2, sum)
-apply(t2$filspe[, -1], 2, sum)
-
-
-# compare row and col sums, look at distributions
-# Read the stupid paper about these methods
-
-
-
-
-
+#+ ssap_filgu
+ssap <- filgu(spe$its_rfy, meta$its_rfy, primary_lifestyle, "soil_saprotroph", sites)
+#' Most OTUs contain few sequences, but several range from hundreds to 25,000 sequences.
+#' The 25 samples are all retained, and vary from 4000 to 14000 sequences. None are so small that 
+#' results would be biased by poor representation bias from being rarefied.
 #+ ssap_div
-ssap_div <- calc_diversity(ssap$rrfd)
+ssap_div <- calc_diversity(ssap$filspe)
 #' Diversity measures are stored in this data frame for further use...
 #+ ssap_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
-ssap_comp <- gudicom(ssap_div, ssap$rrfd_speTaxa, "soil_saprotroph")
+ssap_comp <- gudicom(ssap_div, ssap$filspeTaxa, "soil_saprotroph")
 #' Richness increases from corn to remnant, but within-group variability is high. Diversity 
 #' indices look muddy. Diversity indices increase with years since restoration, but the 
 #' significance of this remains to be seen. 
 #' 
 #' Composition of soil saprotrophs by order can be modified somewhat by choosing the 
 #' threshold for lumping rare orders into an "other" category. Leaving this at the default
-#' of <2%, nine named orders are left. Agarics increase strongly from corn to remnant; Cystofilobasidiales
-#' and Filobasidiales aren't found outside of cornfields. Generally, cornfield composition looks 
-#' different than the other two, but remnants do appear somewhat intermediate. 
+#' of <2%, nine named orders are left. *Agarics* increase strongly from corn to remnant; *Cystofilobasidiales*
+#' and *Filobasidiales* aren't found outside of cornfields. Generally, cornfield composition looks 
+#' different than the other two, but remnants do appear somewhat intermediate. *Mortierellales* appear less 
+#' in remnants than corn or former corn fields.
 #' 
 #' #### Indicators
 #+ ssap_inspan
 ssap_inspan <- 
-    ssap$rrfd %>% 
+    ssap$filspe %>% 
     left_join(sites, by = join_by(field_key)) %>% 
     inspan(., 1999, meta$its_raw)
 #+ ssap_inspan_stats
@@ -882,12 +858,14 @@ guiltime("plant_pathogen")
 #' still hold up. 
 #' 
 #' #### Diversity
-#+ ppat_rerare
-(ppat <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "plant_pathogen", sites))
+#+ ppat_filgu
+ppat <- filgu(spe$its_rfy, meta$its_rfy, primary_lifestyle, "plant_pathogen", sites)
+#' All samples are retained and contain 2000-12000 sequences, so none are so limited as to bias 
+#' results. 
 #+ ppat_div
-ppat_div <- calc_diversity(ppat$rrfd)
+ppat_div <- calc_diversity(ppat$filspe)
 #+ ppat_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
-ppat_comp <- gudicom(ppat_div, ppat$rrfd_speTaxa, "plant_pathogen", other_threshold = 1)
+ppat_comp <- gudicom(ppat_div, ppat$filspeTaxa, "plant_pathogen", other_threshold = 1)
 #' Richness and diversity look flat or declining from corn to remnants and evenness takes a 
 #' hit in restored and remnant fields. It looks like we have fewer pathogens, but more dominant 
 #' individual taxa become established. Pathogen diversity decreases with years since restoration 
@@ -902,7 +880,7 @@ ppat_comp <- gudicom(ppat_div, ppat$rrfd_speTaxa, "plant_pathogen", other_thresh
 #' #### Indicators
 #+ ppat_inspan
 ppat_inspan <- 
-    ppat$rrfd %>% 
+    ppat$filspe %>% 
     left_join(sites, by = join_by(field_key)) %>% 
     inspan(., 1999, meta$its_raw)
 #+ ppat_inspan_stats
@@ -943,13 +921,14 @@ guiltime("wood_saprotroph")
 #' saprotrophs live in cornfield soil...let's see:
 #' 
 #' #### Diversity
-#+ wsap_rerare
-(wsap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "wood_saprotroph", sites))
-#' Sequence depth is low; these aren't abundant taxa. 
+#+ wsap_filgu
+wsap <- filgu(spe$its_rfy, meta$its_rfy, primary_lifestyle, "wood_saprotroph", sites)
+#' Samples contain 800-4400 sequences. Sequence depth is low; these aren't abundant or numerous taxa.
+#' Only 123 OTUs comprise this group. 
 #+ wsap_div
-wsap_div <- calc_diversity(wsap$rrfd)
+wsap_div <- calc_diversity(wsap$filspe)
 #+ wsap_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
-wasp_comp <- gudicom(wsap_div, wsap$rrfd_speTaxa, "wood_saprotroph")
+wasp_comp <- gudicom(wsap_div, wsap$filspeTaxa, "wood_saprotroph")
 #' With diversity, not much jumps out. 
 #' 
 #' Diversity appears high across fields and years compared with other guilds.
@@ -959,7 +938,7 @@ wasp_comp <- gudicom(wsap_div, wsap$rrfd_speTaxa, "wood_saprotroph")
 #' #### Indicators
 #+ wsap_inspan
 wsap_inspan <- 
-    wsap$rrfd %>% 
+    wsap$filspe %>% 
     left_join(sites, by = join_by(field_key)) %>% 
     inspan(., 1999, meta$its_raw)
 #+ wsap_inspan_stats
@@ -994,20 +973,22 @@ wsap_inspan %>%
 guiltime("litter_saprotroph") 
 #' 
 #' #### Diversity
-#+ lsap_rerare
-(lsap <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "litter_saprotroph", sites))
-#' Sequencing depth of 297, perhaps too rare to justify examination.
+#+ lsap_filgu
+lsap <- filgu(spe$its_rfy, meta$its_rfy, primary_lifestyle, "litter_saprotroph", sites)
+#' Slightly more numerous than the wood saprotrophs, but similarly not abundant or numerous. Recall that 
+#' when this group was rarefied in the guild, sampling depth was 297, or an order of magnitude less 
+#' than what we have here. Several OTUs were lost. 
 #+ lsap_div
-lsap_div <- calc_diversity(lsap$rrfd)
+lsap_div <- calc_diversity(lsap$filspe)
 #+ lsap_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
-lsap_comp <- gudicom(lsap_div, lsap$rrfd_speTaxa, "litter_saprotroph")
+lsap_comp <- gudicom(lsap_div, lsap$filspeTaxa, "litter_saprotroph")
 #' With no litter in cornfields, it's perhaps not surprising to see increasing trends across field types
 #' with this guild. Trends over time aren't convincing, except possibly in Fermi.
 #' 
 #' #### Indicators
 #+ lsap_inspan
 lsap_inspan <- 
-    lsap$rrfd %>% 
+    lsap$filspe %>% 
     left_join(sites, by = join_by(field_key)) %>% 
     inspan(., 1999, meta$its_raw)
 #+ lsap_inspan_stats
@@ -1039,7 +1020,7 @@ lsap_inspan %>%
 
 
 
-
+# 2023-03-08 this is where I left off
 
 
 
