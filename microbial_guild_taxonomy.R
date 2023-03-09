@@ -497,6 +497,10 @@ rerare <- function(spe, meta, grp_var, grp, site) {
 #' 1. The resulting samples-species matrix
 #' 1. Sequence abundances in long-form, with site and species metadata
 #' 
+#' Note that this function isn't necessary. Everything produced here can be done with
+#' the `spe_meta$..._rfy` tables. But I'm keeping this path going for now in case we 
+#' need to switch back to rarefying within groups again. 
+#' 
 #+ filgu_function
 filgu <- function(spe, meta, grp_var, grp, site) {
     # spe       = species matrix with raw abundances
@@ -552,7 +556,7 @@ filgu <- function(spe, meta, grp_var, grp, site) {
     
     print(list(
         OTUs_n = length(cs),
-        Sites_n = length(rs)
+        Sites_n = length(which(rs > 0))
     ))
     
     return(list(
@@ -618,7 +622,7 @@ gudicom <- function(div, rrfd, grp_var, gene="its", other_threshold=2) {
              caption = "Re-rarefied in the group; N0-richness, N1-e^Shannon, N2-Simpson, E10=N1/N0, E20=N2/N0, width=n") +
         theme_bw()
     if(gene == "its") {
-        comp <- 
+        comp_ft <- 
             rrfd %>% 
             filter(order != is.na(order), order != "unidentified") %>% 
             group_by(field_type, order, field_key) %>% 
@@ -628,21 +632,47 @@ gudicom <- function(div, rrfd, grp_var, gene="its", other_threshold=2) {
                    order = replace(order, which(seq_comp < other_threshold), paste0("Other (OTU<", other_threshold, "%)"))) %>% 
             group_by(field_type, order) %>% 
             summarize(seq_comp = sum(seq_comp), .groups = "drop")
-        comp_plot <-
-            ggplot(comp, aes(x = field_type, y = seq_comp)) +
+        comp_ft_plot <-
+            ggplot(comp_ft, aes(x = field_type, y = seq_comp)) +
             geom_col(aes(fill = order), color = "black") +
             labs(x = "", y = "Proportion of sequence abundance",
                  title = paste("Composition of", grp_var)) +
             scale_fill_discrete_sequential(name = "Order", palette = "Plasma") +
             theme_classic()
         
+        yr_fct <- 
+            sites %>% 
+            filter(field_type == "restored") %>% 
+            select(field_key, yr_since) %>% 
+            arrange(yr_since) %>% 
+            mutate(yr_fct = factor(yr_since, ordered = TRUE))
+        comp_yr <- 
+            rrfd %>% 
+            filter(order != is.na(order), 
+                   order != "unidentified",
+                   field_type == "restored",
+                   region == "BM") %>% 
+            group_by(field_key, order) %>% 
+            summarize(seq_sum = sum(seq_abund), .groups = "drop_last") %>% 
+            mutate(seq_comp = (seq_sum / sum(seq_sum)) * 100,
+                   order = replace(order, which(seq_comp < other_threshold), paste0("Other (OTU<", other_threshold, "%)"))) %>% 
+            left_join(yr_fct, by = join_by(field_key))
+        comp_yr_plot <-
+            ggplot(comp_yr, aes(x = yr_fct, y = seq_comp)) +
+            geom_col(aes(fill = order), color = "black") +
+            labs(x = "Years since restoration", y = "Proportion of sequence abundance",
+                 title = paste("Composition of", grp_var, "in the Blue Mounds area")) +
+            scale_fill_discrete_sequential(name = "Order", palette = "Plasma") +
+            theme_classic()
+        
         print(list(
             Hills_field_type = hillfield,
             Hills_yrs_since_restoration = hilltime,
-            Composition = comp_plot
+            Composition_field_type = comp_ft_plot,
+            Composition_yr_since = comp_yr_plot
         ))
         
-        return(comp)
+        return(list(comp_ft, comp_yr))
         
     } else {
         print(list(
@@ -709,9 +739,10 @@ inspan <- function(data, np, meta) {
 #' 
 #' # Analysis and Results
 #' ## ITS sequences
-#' Recall the number of OTUs recovered in each dataset. The effect of rarefing did not change
+#' Recall the number of OTUs recovered in each dataset. The effect of rarefying did not change
 #' richness or diversity very much. 
-Map(function(x) ncol(x)-1, spe)
+# Number of OTUs in raw and rarefied datasets
+Map(function(x) ncol(x)-1, spe[1:2])
 #' 
 #' ### Composition in field types
 #' Function outputs are verbose, but details may be necessary later so they are displayed here.
@@ -813,6 +844,10 @@ ssap_comp <- gudicom(ssap_div, ssap$filspeTaxa, "soil_saprotroph")
 #' different than the other two, but remnants do appear somewhat intermediate. *Mortierellales* appear less 
 #' in remnants than corn or former corn fields.
 #' 
+#' *Agarics* generally decrease over time and *Geminibasidiales* increase.
+#' 
+#' Soil saprotrophs remain an interesting guild. 
+#' 
 #' #### Indicators
 #+ ssap_inspan
 ssap_inspan <- 
@@ -877,6 +912,9 @@ ppat_comp <- gudicom(ppat_div, ppat$filspeTaxa, "plant_pathogen", other_threshol
 #' small component but are possibly "late successional" pathogens, possibly associated with some
 #' native plant in a plant-soil feedback. 
 #' 
+#' In the Blue Mounds area, trends in pathogen composition over time aren't obvious. Possibly
+#' *Glomerales* pathogens decrease over time and *Pleosporales* increase. 
+#' 
 #' #### Indicators
 #+ ppat_inspan
 ppat_inspan <- 
@@ -928,12 +966,15 @@ wsap <- filgu(spe$its_rfy, meta$its_rfy, primary_lifestyle, "wood_saprotroph", s
 #+ wsap_div
 wsap_div <- calc_diversity(wsap$filspe)
 #+ wsap_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
-wasp_comp <- gudicom(wsap_div, wsap$filspeTaxa, "wood_saprotroph")
+wasp_comp <- gudicom(wsap_div, wsap$filspeTaxa, "wood_saprotroph", other_threshold = 3)
 #' With diversity, not much jumps out. 
 #' 
 #' Diversity appears high across fields and years compared with other guilds.
 #' While *Agaric* soil saprotrophs increased strongly from corn to remnants, 
 #' they declined when characterized as wood saprotrophs.
+#' 
+#' Notable changes in composition are evident over time. *Tubeufiales* declines with time
+#' since restoration; *Hypocreales* increases. 
 #' 
 #' #### Indicators
 #+ wsap_inspan
@@ -1020,13 +1061,10 @@ lsap_inspan %>%
 
 
 
-# 2023-03-08 this is where I left off
-
-
-
-
-
 #' ## AMF
+#' Recall the number of OTUs recovered in each dataset. The effect of rarefying did not change
+#' richness or diversity very much. 
+Map(function(x) ncol(x)-1, spe[3:4])
 #' Function output is verbose but retained as explained previously.
 #+ amf_otu_summary,message=FALSE
 amf_summary <- amf_tax(spe_meta$amf_rfy)
@@ -1071,53 +1109,121 @@ amf_summary %>%
          title = "Composition of AMF by order") +
     scale_fill_discrete_sequential(name = "Order", palette = "Plasma") +
     theme_classic()
-    
-    
-
-    
-    
-    
-
+#' 
 #' From the mean sequence abundances in field types and trends over time, the following families look interesting:
 #' 
-#' - *Claroideoglomeraceae:* low in corn; significantly by likelihood ratio test
+#' - *Claroideoglomeraceae:* low in corn; significantly by likelihood ratio test. Declines with time in BM,
+#' but this was not significant.
 #' - *Paraglomeraceae:* highest in corn, declines through restoration and remnant, declines in BM and FL but 
 #' likely not a significant trend
 #' - *Diversisporaceae:* highest in corn, declines through restoration and remnant
 #' - *Gigasporaceae:* low in corn, and also the only one with a significant change with years
-#' since restoration, and this only in Blue Mounds. These increase over time (recall that pathogens decline over time). 
+#' since restoration, and this only in Blue Mounds. Gigasporaceae increase over time 
+#' ($R^2_{Adj}=0.66, p<0.05$). These are rare taxa though, and I'm not sure we can really 
+#' say much about them. 
 #' 
-#' In the next section, we will examine these families more closely by first re-rarefying abundances within
-#' families.
+#' In the next section, we will examine these families more closely.
 #' 
 #' ### Claroideoglomeraceae
-#' 
-#' #### Diversity
-
-# The re-rarefy thing isn't working. Pause to figure out why. 
-# You can still do diversity and so forth below.
-
-#' Sequencing depth of 290, perhaps too rare to justify examination.
+#+ claroid_filgu
+claroid <- filgu(spe$amf_rfy, meta$amf_rfy, family, "Claroideoglomeraceae", sites)
+#' Out of 146 AMF OTUs, 17 map to this family. Most are low abundance across sites, but all
+#' samples are retained and contain sufficient sequences to draw meaningful conclusions. 
 #+ claroid_div
-# claroid_div <- calc_diversity(claroid$rrfd)
-
-
+claroid_div <- calc_diversity(claroid$filspe)
 #+ claroid_divplot,message=FALSE,results=FALSE,fig.width=7,fig.height=7,fig.align='center'
-# gudicom(claroid_div, claroid$rrfd_speTaxa, "Claroideoglomeraceae", gene = "amf")
-
-
-#' With no litter in cornfields, it's perhaps not surprising to see increasing trends across field types
-#' with this guild. Trends over time aren't convincing, except possibly in Fermi.
+gudicom(claroid_div, claroid$filspeTaxa, "Claroideoglomeraceae", gene = "amf")
+#' Little change over time, but alpha diversity in cornfields is low compared with restored and 
+#' remnant fields.
 #' 
-
-
-
+#' ### Paraglomeraceae
+#+ para_filgu
+para <- filgu(spe$amf_rfy, meta$amf_rfy, family, "Paraglomeraceae", sites)
+#' Out of 146 AMF OTUs, only 6 map to this family. Most are low abundance across sites, but all
+#' samples are retained. Any interpretation here is likely to be dominated by a couple high-abundance
+#' OTUs, and a couple of samples have close to zero detections. Is this real?
+#+ para_div
+para_div <- calc_diversity(para$filspe)
+#+ para_divplot,message=FALSE,results=FALSE,fig.width=7,fig.height=7,fig.align='center'
+gudicom(para_div, para$filspeTaxa, "Paraglomeraceae", gene = "amf")
+#' Richness declines with time since restoration in the Blue Mounds, but with few sequences 
+#' and likely non-significant correlations, I don't see doing much more with this group. 
+#' 
+#' ### Diversisporaceae
+#+ diver_filgu
+diver <- filgu(spe$amf_rfy, meta$amf_rfy, family, "Diversisporaceae", sites)
+#' Out of 146 AMF OTUs, only 8 map to this family. Most are low abundance across sites, but all
+#' samples are retained. Any interpretation here is likely to be dominated by a couple high-abundance
+#' OTUs, and a couple of samples have close to zero detections. Is this real?
+#+ diver_div
+diver_div <- calc_diversity(diver$filspe)
+#+ diver_divplot,message=FALSE,results=FALSE,fig.width=7,fig.height=7,fig.align='center'
+gudicom(diver_div, diver$filspeTaxa, "Diversisporaceae", gene = "amf")
+#' Richness declines with time since restoration in the Blue Mounds. Few sequences 
+#' and likely non-significant correlations, but these taxa definitely don't like cornfields. 
+#' 
+#' ### Gigasporaceae
+#+ giga_filgu
+giga <- filgu(spe$amf_rfy, meta$amf_rfy, family, "Gigasporaceae", sites)
+#' Out of 146 AMF OTUs, only 4 map to this family. Most are low abundance across sites, and 
+#' only 19 samples contain these taxa. Any interpretation here is likely to be dominated by a couple high-abundance
+#' OTUs, and a couple of samples have close to zero detections. Is this real? 
+#' 
+#' These OTUs all dropped with previous attempts to re-rarefy in the guild. Perhaps that also supports
+#' that these are just too low abundance to work more with. 
+#+ giga_div
+giga_div <- calc_diversity(giga$filspe)
+#+ giga_seq_abund_years,message=FALSE,fig.width=7,fig.height=5,fig.align='center'
+giga$filspeTaxa %>% 
+    filter(field_type == "restored", region %in% c("BM", "FL")) %>% 
+    group_by(region, field_type, field_key, yr_since) %>% 
+    summarize(seq_sum = sum(seq_abund), .groups = "drop") %>% 
+    ggplot(aes(x = yr_since, y = seq_sum)) +
+    facet_wrap(vars(region), scales = "free") +
+    geom_smooth(aes(linetype = region), method = "lm", se = FALSE) +
+    geom_point() +
+    scale_linetype_manual(values = c("solid", NA), guide = "none") +
+    labs(x = "Years since restoration", y = "Sum of sequences", title = "Gigasporaceae") +
+    theme_bw()
+#' Pity that there are so few of these AMF. It's a nice relationship. Maybe there is a natural 
+#' history angle here, like an interaction between Gigasporaceae and plant pathogens, but 
+#' it will be hard to argue that it matters much given the low abundance observed. 
 #' 
 #' # Conclusions: taxa and guilds
-#' Little variation exists here for ITS or AMF sequences among field types, although 
-#' classes of fungi identified through ITS sequences remain to be closely examined. 
-#' It's striking that plant pathogens decline as restorations age while 
-#' the AMF family *Gigasporaceae* increases, but this contrast was not found in any 
-#' other group of AMF and the *Gigasporaceae* aren't particularly abundant to begin with.
 #' 
+#' 1. Much work remains researching the natural history of taxa identified through 
+#' indicator species analysis and changes in composition across field types. 
+#' 1. Cornfields are weird. They harbor more and stronger indicator species, differ obviously in 
+#' composition, diversity, and richness. This is not a surprise, but it is obvious. 
+#' 1. Soil saprotrophs remain interesing.
+#'    1. Soil saprotrophs increase with years since restoration in the Blue Mounds. 
+#'    1. Richness increases from corn to restored to remnant, and sequence
+#'    abundance increases with restoration age in the Blue Mounds. 
+#'    *Agarics* increase strongly from corn to remnant; *Cystofilobasidiales*
+#'    and *Filobasidiales* aren't found outside of cornfields. Generally, cornfield composition looks 
+#'    different than the other two, but remnants do appear somewhat intermediate. *Mortierellales* appear less 
+#'.   in remnants than corn or former corn fields.
+#'    1. *Agarics* generally decrease over time and *Geminibasidiales* increase in composition
+#'    at Blue Mounds 
+#' 1. A strong decline in pathogens is seen in Blue Mounds’ restored fields. Declines are noticeable
+#' in abundance, richness, Shannon's, and Simpson's diversity (although the latter three need
+#' tests for significance of correlations).
+#'    1. Changes in composition across field types are subtle but present, and would benefit from 
+#'    additional natural history work. Composition over time in Blue Mounds doesn't change in 
+#'    obvious linear progressions. 
+#' 1. Wood saprotrophs decline across years in Blue Mounds in a trend that is nearly reciprocal 
+#' to that seen with soil saprotrophs. Possibly a natural history angle there. 
+#'    1. Diversity appears high across fields and years compared with other guilds.
+#'    While *Agaric* soil saprotrophs increased strongly from corn to remnants, 
+#'    they declined when characterized as wood saprotrophs.
+#'    1. Notable changes in composition are evident over time. *Tubeufiales* declines with time
+#'    since restoration; *Hypocreales* increases. 
+#' 1. AMF generate less interest, mostly because fewer species and smaller sequence abundances 
+#' prevent development of nice relationships. 
+#'    1. *Claroideoglomeraceae* is probably the strongest family, with substantial differences across
+#'    field types in sequence abundance. 
+#'    1. *Gigasporaceae* significantly increases across the Blue Mounds series, but 
+#'    sequence abundances and richness are so small in this family that further discussion 
+#'    may be inappropriate or irrelevant. 
+
 

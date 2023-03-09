@@ -150,8 +150,13 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
         summarize(across(starts_with("otu"), ~ sum(.x)), .groups = "drop") %>%
         mutate(field_key = as.numeric(field_key)) %>% 
         arrange(field_key)
+    
     zero_otu1 <- which(apply(spe_topn, 2, sum) == 0)
-    spe_raw <- spe_topn[, -zero_otu1]
+    if(length(zero_otu1) == 0) {
+        spe_raw <- spe_topn
+    } else {
+        spe_raw <- spe_topn[, -zero_otu1]
+    }
     
     spe_sum <-
         data.frame(
@@ -162,12 +167,21 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
         )
     depth <- min(rowSums(spe_sum))
     rfy <- Rarefy(spe_sum)
+    
     zero_otu2 <- which(apply(rfy$otu.tab.rff, 2, sum) == 0)
-    spe_rfy <- data.frame(rfy$otu.tab.rff[, -zero_otu2]) %>%
-        rownames_to_column(var = "field_key") %>%
-        mutate(field_key = as.numeric(field_key)) %>% 
-        arrange(field_key) %>% 
-        as_tibble()
+    if(length(zero_otu2) == 0) {
+        spe_rfy <- data.frame(rfy$otu.tab.rff) %>%
+            rownames_to_column(var = "field_key") %>%
+            mutate(field_key = as.numeric(field_key)) %>% 
+            arrange(field_key) %>% 
+            as_tibble()
+    } else {
+        spe_rfy <- data.frame(rfy$otu.tab.rff[, -zero_otu2]) %>%
+            rownames_to_column(var = "field_key") %>%
+            mutate(field_key = as.numeric(field_key)) %>% 
+            arrange(field_key) %>% 
+            as_tibble()
+    }
     
     meta_raw <- meta %>% filter(!(otu_num %in% names(zero_otu1)))
     meta_rfy <- meta_raw %>% filter(!(otu_num %in% names(zero_otu2)))
