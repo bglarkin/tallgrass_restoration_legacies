@@ -23,6 +23,9 @@ Last updated: 10 March, 2023
     - <a href="#pcoa-with-18s-gene-uninformed-distance"
       id="toc-pcoa-with-18s-gene-uninformed-distance">PCoA with 18S gene,
       uninformed distance</a>
+    - <a href="#pcoa-with-18s-gene-unifrac-distance"
+      id="toc-pcoa-with-18s-gene-unifrac-distance">PCoA with 18S gene, UNIFRAC
+      distance</a>
 
 # Description
 
@@ -183,6 +186,7 @@ pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
                  title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
             theme_bw()
         p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
     } else {
         p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
             geom_col(fill = "gray70", color = "gray30") + 
@@ -192,6 +196,7 @@ pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
                  title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
             theme_bw()
         p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
     }
     ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
     # Ordination plot
@@ -201,7 +206,6 @@ pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
         mutate(field_key = as.integer(field_key)) %>%
         left_join(sites, by = "field_key") %>% 
         select(-field_name)
-    eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
     # Output data
     output <- list(dataset = df_name,
                    components_exceed_broken_stick = p_ncomp,
@@ -292,7 +296,7 @@ correction is needed for these ordinations.
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, strata = region)
     ##            Df SumOfSqs      R2      F Pr(>F)    
-    ## field_type  2   1.2003 0.17108 2.2703  5e-04 ***
+    ## field_type  2   1.2003 0.17108 2.2703  0.001 ***
     ## Residual   22   5.8154 0.82892                  
     ## Total      24   7.0156 1.00000                  
     ## ---
@@ -709,3 +713,219 @@ Both axes correlate significantly and strongly with years since
 restoration. Axis 2 shows a stronger relationship
 $(R^2_{Adj}=0.60, p<0.001)$, and Axis 1 shows a moderately strong
 relationship $(R^2_{Adj}=0.49, p<0.005)$
+
+### PCoA with 18S gene, UNIFRAC distance
+
+``` r
+(pcoa_amf_uni <- pcoa_fun(distab$amf_uni, df_name = "18S gene, 97% OTU, UNIFRAC distance", corr = "lingoes"))
+```
+
+    ## $dataset
+    ## [1] "18S gene, 97% OTU, UNIFRAC distance"
+    ## 
+    ## $components_exceed_broken_stick
+    ## [1] 3
+    ## 
+    ## $correction_note
+    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.00730538070686336 , except diagonal elements"
+    ## 
+    ## $values
+    ##   Dim Eigenvalues   Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig
+    ## 1   1  0.08910476 0.09641014    0.2302806   0.16236050    0.2302806
+    ## 2   2  0.05546845 0.06277383    0.1499385   0.11888224    0.3802192
+    ## 3   3  0.03768300 0.04498838    0.1074571   0.09714311    0.4876762
+    ## 4   4  0.02287671 0.03018210    0.0720915   0.08265036    0.5597677
+    ##   Cum_br_stick
+    ## 1    0.1623605
+    ## 2    0.2812427
+    ## 3    0.3783858
+    ## 4    0.4610362
+    ## 
+    ## $eigenvalues
+    ## [1] 23 15
+    ## 
+    ## $site_vectors
+    ##    field_key       Axis.1       Axis.2       Axis.3 region field_type yr_since
+    ## 1          1  0.005000811 -0.019022480 -0.075661370     BM   restored       16
+    ## 2          2  0.184329497 -0.015254402 -0.007699769     BM   restored        3
+    ## 3          3 -0.072487397  0.067424513  0.039009283     FG       corn        -
+    ## 4          4 -0.041221010 -0.036068309  0.021185618     FG    remnant        +
+    ## 5          5  0.024753793 -0.052063386  0.054757181     FG   restored       15
+    ## 6          6  0.132027889  0.107077144  0.033575362     FL       corn        -
+    ## 7          7 -0.042177309  0.100432373 -0.083348303     FL       corn        -
+    ## 8          8  0.012829998 -0.029240145  0.019755980     FL    remnant        +
+    ## 9          9 -0.048029289 -0.037910042  0.024674421     FL   restored       40
+    ## 10        10 -0.047531002 -0.032394265  0.016179264     FL   restored       36
+    ## 11        11 -0.032019394 -0.015349526  0.017878940     FL   restored       35
+    ## 12        12  0.070369149 -0.022703786 -0.026097774     FL   restored       10
+    ## 13        13  0.014601133 -0.009117052 -0.041202654     FL   restored       10
+    ## 14        14  0.027018121 -0.003352651 -0.048179202     FL   restored       10
+    ## 15        15 -0.040888003 -0.041071752 -0.022777348     BM   restored       28
+    ## 16        16 -0.029033616  0.101034837 -0.007893224     LP       corn        -
+    ## 17        17 -0.010295789 -0.010944908  0.003923329     LP    remnant        +
+    ## 18        18  0.001881795  0.008404165  0.035231885     LP   restored        4
+    ## 19        19  0.066396377 -0.002797405  0.021616717     LP   restored        4
+    ## 20        20 -0.045321553 -0.044288430 -0.057552793     BM    remnant        +
+    ## 21        21 -0.010605035 -0.038274923 -0.046884326     BM   restored       18
+    ## 22        22 -0.024417886 -0.009405314  0.017526673     BM   restored        7
+    ## 23        23 -0.029424159  0.005009133  0.025573301     BM   restored        2
+    ## 24        24 -0.076762389  0.062360323  0.037484938     BM       corn        -
+    ## 25        25  0.011005267 -0.032483714  0.048923871     BM   restored       11
+    ## 
+    ## $broken_stick_plot
+
+<img src="microbial_communities_files/figure-gfm/pcoa_amf_uni-1.png" style="display: block; margin: auto;" />
+
+    ## 
+    ## $permanova
+    ## Permutation test for adonis under reduced model
+    ## Terms added sequentially (first to last)
+    ## Blocks:  strata 
+    ## Permutation: free
+    ## Number of permutations: 1999
+    ## 
+    ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, strata = region)
+    ##            Df SumOfSqs      R2      F Pr(>F)   
+    ## field_type  2 0.054762 0.22505 3.1945  0.003 **
+    ## Residual   22 0.188572 0.77495                 
+    ## Total      24 0.243335 1.00000                 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Three axes are significant by a broken stick model, between them
+explaining 48.8% of the variation in AMF among fields. The most
+substantial variation here is on the first axis (23%) with Axis 2
+explaining 15% of the variation in AMF abundances. Testing the design
+factor *field_type* (with *region* treated as a block using the `strata`
+argument of `adonis2`) revealed a significant clustering
+$(R^2=0.23, p<0.01)$.
+
+Let’s view a plot with abundances of community subgroups inset.
+
+``` r
+pcoa_amf_uni$ord <- 
+    ggplot(pcoa_amf_uni$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_point(aes(fill = field_type, shape = region), size = 10) +
+    geom_text(aes(label = yr_since)) +
+    scale_fill_discrete_qualitative(palette = "harmonic") +
+    scale_shape_manual(values = c(21, 22, 23, 24)) +
+    labs(x = paste0("Axis 1 (", pcoa_amf_uni$eig[1], "%)"), 
+         y = paste0("Axis 2 (", pcoa_amf_uni$eig[2], "%)"), 
+         title = paste0("PCoA Ordination of field-averaged species data (", pcoa_amf_uni$dataset, ")"),
+         caption = "Text indicates years since restoration, with corn (-) and remnants (+) never restored.") +
+    # lims(x = c(-0.6,0.35)) +
+    theme_bw() +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
+```
+
+``` r
+# pcoa_amf_bray$inset reused here because it doesn't change
+pcoa_amf_uni$ord +
+    annotation_custom(
+        ggplotGrob(pcoa_amf_bray$inset + theme(
+            plot.background = element_rect(colour = "black", fill = "gray90")
+        )),
+        xmin = 0.07,
+        xmax = 0.19,
+        ymin = 0.015,
+        ymax = 0.09
+    )
+```
+
+<img src="microbial_communities_files/figure-gfm/amf_uni_families_fig-1.png" style="display: block; margin: auto;" />
+
+Community trajectories revealed in the ordination separate cornfields
+from everything else. Using UNIFRAC distance has really dissolved most
+of what was apparent with the Bray-Curtis distance.  
+Corn fields stand well apart with AMF communities, but no signal appears
+for other field types or for years since restoration. I guess what this
+shows is that for AMF, restored fields almost immediately resemble
+remnants (but there must be some outlier taxa in Eric Rahnheim’s place).
+
+What’s becoming apparent here is that Axis 1 separates strongly on
+*field_type* and years since restoration, and Axis 2 further separates
+on years since restoration. A consistent signal of region isn’t obvious.
+
+Let’s test the relationship between age and community axis scores with
+restored fields only. I don’t expect much.
+
+``` r
+amf_uni_resto_scores <-
+    pcoa_amf_uni$site_vectors %>%
+    filter(field_type == "restored") %>%
+    mutate(yr_since = as.numeric(yr_since))
+```
+
+``` r
+summary(lm(
+    Axis.1 ~ yr_since,
+    data = amf_uni_resto_scores
+))
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = Axis.1 ~ yr_since, data = amf_uni_resto_scores)
+    ## 
+    ## Residuals:
+    ##       Min        1Q    Median        3Q       Max 
+    ## -0.077622 -0.015330 -0.003244  0.011231  0.138891 
+    ## 
+    ## Coefficients:
+    ##              Estimate Std. Error t value Pr(>|t|)  
+    ## (Intercept)  0.053716   0.020091   2.674   0.0182 *
+    ## yr_since    -0.002759   0.001019  -2.709   0.0170 *
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 0.04938 on 14 degrees of freedom
+    ## Multiple R-squared:  0.3439, Adjusted R-squared:  0.297 
+    ## F-statistic: 7.338 on 1 and 14 DF,  p-value: 0.01696
+
+``` r
+summary(lm(
+    Axis.2 ~ yr_since,
+    data = amf_uni_resto_scores
+))
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = Axis.2 ~ yr_since, data = amf_uni_resto_scores)
+    ## 
+    ## Residuals:
+    ##       Min        1Q    Median        3Q       Max 
+    ## -0.032677 -0.008332  0.002915  0.008418  0.020946 
+    ## 
+    ## Coefficients:
+    ##               Estimate Std. Error t value Pr(>|t|)  
+    ## (Intercept) -0.0067045  0.0060005  -1.117   0.2827  
+    ## yr_since    -0.0008454  0.0003042  -2.779   0.0148 *
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 0.01475 on 14 degrees of freedom
+    ## Multiple R-squared:  0.3555, Adjusted R-squared:  0.3095 
+    ## F-statistic: 7.723 on 1 and 14 DF,  p-value: 0.01478
+
+``` r
+amf_uni_resto_scores %>%
+    pivot_longer(Axis.1:Axis.2, names_to = "axis", values_to = "score") %>%
+    ggplot(aes(x = yr_since, y = score)) +
+    facet_wrap(vars(axis), scales = "free") +
+    geom_smooth(method = "lm", se = FALSE, linewidth = 0.5) +
+    geom_point(aes(shape = region), fill = "grey", size = 2) +
+    labs(x = "Years since restoration",
+         y = "PCoA axis score",
+         title = "Correlations, axis scores and years since restoration (18S gene, 97% OTU, UNIFRAC distance)",
+         caption = "Blue lines show linear model fit; solid line is significant at p<0.05") +
+    scale_shape_manual(values = c(21, 22, 23, 24)) +
+    theme_bw()
+```
+
+<img src="microbial_communities_files/figure-gfm/amf_uni_yrs_scores_fig-1.png" style="display: block; margin: auto;" />
+
+Both axes correlate significantly but with less than moderate strength
+with years since restoration. Axis 2 again shows a stronger relationship
+$(R^2_{Adj}=0.31, p<0.05)$, and Axis 1 is close with
+$(R^2_{Adj}=0.30, p<0.05)$

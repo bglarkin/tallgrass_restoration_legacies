@@ -138,6 +138,7 @@ pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
                  title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
             theme_bw()
         p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
     } else {
         p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
             geom_col(fill = "gray70", color = "gray30") + 
@@ -147,6 +148,7 @@ pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
                  title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
             theme_bw()
         p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
     }
     ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
     # Ordination plot
@@ -156,7 +158,6 @@ pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
         mutate(field_key = as.integer(field_key)) %>%
         left_join(sites, by = "field_key") %>% 
         select(-field_name)
-    eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
     # Output data
     output <- list(dataset = df_name,
                    components_exceed_broken_stick = p_ncomp,
@@ -390,5 +391,92 @@ amf_resto_scores %>%
 #' Both axes correlate significantly and strongly with years since restoration. 
 #' Axis 2 shows a stronger relationship $(R^2_{Adj}=0.60, p<0.001)$, and Axis 1 
 #' shows a moderately strong relationship $(R^2_{Adj}=0.49, p<0.005)$ 
+#' 
+#' 
+#' ### PCoA with 18S gene, UNIFRAC distance
+#' 
+#+ pcoa_amf_uni,fig.align='center'
+(pcoa_amf_uni <- pcoa_fun(distab$amf_uni, df_name = "18S gene, 97% OTU, UNIFRAC distance", corr = "lingoes"))
+#' 
+#' Three axes are significant by a broken stick model, between them explaining
+#' `r round(sum(pcoa_amf_uni$values$Rel_corr_eig[1:3])*100, 1)`% of the 
+#' variation in AMF among fields. The most substantial variation here is on the first axis 
+#' (`r pcoa_amf_uni$eigenvalues[1]`%) with Axis 2
+#' explaining `r pcoa_amf_uni$eigenvalues[2]`% of the variation in AMF abundances. 
+#' Testing the design factor *field_type* (with *region* treated as a block 
+#' using the `strata` argument of `adonis2`) revealed a significant
+#' clustering $(R^2=0.23, p<0.01)$. 
+#' 
+#' Let's view a plot with abundances of community subgroups inset. 
+pcoa_amf_uni$ord <- 
+    ggplot(pcoa_amf_uni$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_point(aes(fill = field_type, shape = region), size = 10) +
+    geom_text(aes(label = yr_since)) +
+    scale_fill_discrete_qualitative(palette = "harmonic") +
+    scale_shape_manual(values = c(21, 22, 23, 24)) +
+    labs(x = paste0("Axis 1 (", pcoa_amf_uni$eig[1], "%)"), 
+         y = paste0("Axis 2 (", pcoa_amf_uni$eig[2], "%)"), 
+         title = paste0("PCoA Ordination of field-averaged species data (", pcoa_amf_uni$dataset, ")"),
+         caption = "Text indicates years since restoration, with corn (-) and remnants (+) never restored.") +
+    # lims(x = c(-0.6,0.35)) +
+    theme_bw() +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
+#+ amf_uni_families_fig,fig.align='center'
+# pcoa_amf_bray$inset reused here because it doesn't change
+pcoa_amf_uni$ord +
+    annotation_custom(
+        ggplotGrob(pcoa_amf_bray$inset + theme(
+            plot.background = element_rect(colour = "black", fill = "gray90")
+        )),
+        xmin = 0.07,
+        xmax = 0.19,
+        ymin = 0.015,
+        ymax = 0.09
+    )
+#'
+#' Community trajectories revealed in the ordination separate cornfields from everything else. 
+#' Using UNIFRAC distance has really dissolved most of what was apparent with the Bray-Curtis distance.  
+#' Corn fields stand well apart with AMF communities, but no signal appears for other field types
+#' or for years since restoration. I guess what this shows is that for AMF, restored fields 
+#' almost immediately resemble remnants (but there must be some outlier taxa in Eric Rahnheim's place). 
+#' 
+#' What's becoming apparent here is that Axis 1 separates strongly on *field_type* and years 
+#' since restoration, and Axis 2 further separates on years since restoration. A consistent signal
+#' of region isn't obvious. 
+#' 
+#' Let's test the relationship between age and community axis scores with restored fields 
+#' only. I don't expect much. 
+#+ amf_uni_yrs_scores_data
+amf_uni_resto_scores <-
+    pcoa_amf_uni$site_vectors %>%
+    filter(field_type == "restored") %>%
+    mutate(yr_since = as.numeric(yr_since))
+#+ amf_uni_yrs_scores_lm_1
+summary(lm(
+    Axis.1 ~ yr_since,
+    data = amf_uni_resto_scores
+))
+#+ amf_uni_yrs_scores_lm_2
+summary(lm(
+    Axis.2 ~ yr_since,
+    data = amf_uni_resto_scores
+))
+#+ amf_uni_yrs_scores_fig,fig.align='center',message=FALSE
+amf_uni_resto_scores %>%
+    pivot_longer(Axis.1:Axis.2, names_to = "axis", values_to = "score") %>%
+    ggplot(aes(x = yr_since, y = score)) +
+    facet_wrap(vars(axis), scales = "free") +
+    geom_smooth(method = "lm", se = FALSE, linewidth = 0.5) +
+    geom_point(aes(shape = region), fill = "grey", size = 2) +
+    labs(x = "Years since restoration",
+         y = "PCoA axis score",
+         title = "Correlations, axis scores and years since restoration (18S gene, 97% OTU, UNIFRAC distance)",
+         caption = "Blue lines show linear model fit; solid line is significant at p<0.05") +
+    scale_shape_manual(values = c(21, 22, 23, 24)) +
+    theme_bw()
+#' 
+#' Both axes correlate significantly but with less than moderate strength with years since restoration. 
+#' Axis 2 again shows a stronger relationship $(R^2_{Adj}=0.31, p<0.05)$, and Axis 1 
+#' is close with $(R^2_{Adj}=0.30, p<0.05)$ 
 #' 
 
