@@ -1227,30 +1227,31 @@ giga$filspeTaxa %>%
 #' a guild or taxonomic group, and then rarefy in that group. I did that with these guilds
 #' and families, and the action reduced sequence abundances greatly without affecting 
 #' what we would interpret from the data. This appendix shows some diagnostics on that process.
-
-
-
+#' 
+#' ## Diversity with ITS sequences
+#' Let's graphically compare diversity metrics between datasets. *Pre-rarefied* data are rarefied
+#' as a full set (all samples and OTUs), then filtered to subsets of guilds. *Post-rarefied*
+#' data are filtered to subsets of guilds from raw ITS sequence abundances and then rarefied
+#' within the subset. 
+#' 
+#' First, post-rarefied datasets are produced for the guilds of interest in this report. Then,
+#' the Hill's series of diversity metrics are calculated. 
+#' 
 ssap_rrfd <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "soil_saprotroph", sites)
-ssap_rrfd_div <- calc_diversity(ssap_rrfd$rrfd)
-
 ppat_rrfd <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "plant_pathogen", sites)
-ppat_rrfd_div <- calc_diversity(ppat_rrfd$rrfd)
-
-
 wsap_rrfd <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "wood_saprotroph", sites)
-wsap_rrfd_div <- calc_diversity(wsap_rrfd$rrfd)
-
 lsap_rrfd <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "litter_saprotroph", sites)
-lsap_rrfd_div <- calc_diversity(lsap_rrfd$rrfd)
-
-
+#' 
+#' The diversity metrics are bound to the pre-rarefied sets produced earlier in this report.
+#' These data are wrangled to facilitate plotting. 
+#' 
 rrfd_compare <- 
     bind_rows(
         list(
-            ssap_postrare = ssap_rrfd_div,
-            ppat_postrare = ppat_rrfd_div,
-            wsap_postrare = wsap_rrfd_div,
-            lsap_postrare = lsap_rrfd_div,
+            ssap_postrare = calc_diversity(ssap_rrfd$rrfd),
+            ppat_postrare = calc_diversity(ppat_rrfd$rrfd),
+            wsap_postrare = calc_diversity(wsap_rrfd$rrfd),
+            lsap_postrare = calc_diversity(lsap_rrfd$rrfd),
             ssap_prerare = ssap_div,
             ppat_prerare = ppat_div,
             wsap_prerare = wsap_div,
@@ -1259,10 +1260,14 @@ rrfd_compare <-
         .id = "guild_rrfd_key"
     ) %>% separate_wider_delim(guild_rrfd_key, "_", names = c("guild", "rrfd_step")) %>% 
     pivot_wider(names_from = rrfd_step, values_from = value)
-
-
+#' 
+#' Results are plottted. 
+#+ rrfd_compare_fig,fig.align='center',fig.width=9,fig.height=8
 ggplot(rrfd_compare %>% filter(hill_index %in% c("N0", "N1", "N2")), aes(x = prerare, y = postrare)) +
     facet_wrap(vars(hill_index, guild), scales = "free", ncol = 4) +
     geom_abline(intercept = 0, slope = 1) +
-    geom_point() +
+    geom_point(aes(fill = field_type), size = 2, shape = 21) +
+    labs(x = "Index value from pre-rarefied abundances", y = "Index value from post-rarefied abundances",
+         caption = "N0 = richness, N1 = Shannon's Diversity, N2 = Simpson's Diversity\nlsap = litter saprotrophs, ppat = plant pathogens, ssap = soil saprotrophs, wsap = wood saprotrophs") +
+    scale_fill_discrete_qualitative(palette = "Harmonic") +
     theme_bw()
