@@ -148,7 +148,8 @@ test_age <- function(data, caption=NULL) {
 #' 
 #' # Analysis and Results
 #' 
-#' What was the effect of rarefying the samples-species tables on the number of OTUs recovered? 
+#' What was the effect of rarefying the samples-species tables on the number of OTUs recovered?
+#' After rarefying, zero-abundance and singleton OTUs were removed.  
 #' Few were lost due to rarefying, as we can see by counting columns (less column 1 because it 
 #' has field site keys):
 Map(function(x) ncol(x)-1, spe) 

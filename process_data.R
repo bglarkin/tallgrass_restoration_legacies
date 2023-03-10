@@ -41,6 +41,8 @@
 #' For all tables, short and unique rownames must be created to allow for easy joining of species
 #' and metadata tables. 
 #' 
+#' For all sequences, zero-abundance and singleton OTUs must be removed after rarefying.
+#' 
 #' For the 18S data, a second table is needed to produce a UNIFRAC distance matrix. The table
 #' must have OTUs in rows with OTU ids. 
 #' 
@@ -151,11 +153,11 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
         mutate(field_key = as.numeric(field_key)) %>% 
         arrange(field_key)
     
-    zero_otu1 <- which(apply(spe_topn, 2, sum) == 0)
-    if(length(zero_otu1) == 0) {
+    zero_otu <- which(apply(spe_topn, 2, sum) == 0)
+    if(length(zero_otu) == 0) {
         spe_raw <- spe_topn
     } else {
-        spe_raw <- spe_topn[, -zero_otu1]
+        spe_raw <- spe_topn[, -zero_otu]
     }
     
     spe_sum <-
@@ -168,23 +170,23 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     depth <- min(rowSums(spe_sum))
     rfy <- Rarefy(spe_sum)
     
-    zero_otu2 <- which(apply(rfy$otu.tab.rff, 2, sum) == 0)
-    if(length(zero_otu2) == 0) {
+    single_zero_otus <- which(apply(rfy$otu.tab.rff, 2, sum) <= 1)
+    if(length(single_zero_otus) == 0) {
         spe_rfy <- data.frame(rfy$otu.tab.rff) %>%
             rownames_to_column(var = "field_key") %>%
             mutate(field_key = as.numeric(field_key)) %>% 
             arrange(field_key) %>% 
             as_tibble()
     } else {
-        spe_rfy <- data.frame(rfy$otu.tab.rff[, -zero_otu2]) %>%
+        spe_rfy <- data.frame(rfy$otu.tab.rff[, -single_zero_otus]) %>%
             rownames_to_column(var = "field_key") %>%
             mutate(field_key = as.numeric(field_key)) %>% 
             arrange(field_key) %>% 
             as_tibble()
     }
     
-    meta_raw <- meta %>% filter(!(otu_num %in% names(zero_otu1)))
-    meta_rfy <- meta_raw %>% filter(!(otu_num %in% names(zero_otu2)))
+    meta_raw <- meta %>% filter(!(otu_num %in% names(zero_otu)))
+    meta_rfy <- meta_raw %>% filter(!(otu_num %in% names(single_zero_otus)))
     
     write_csv(meta_raw, paste0(getwd(), folder, "/spe_", gene, "_raw_taxonomy.csv"))
     write_csv(spe_raw, paste0(getwd(), folder, "/spe_", gene, "_raw.csv"))

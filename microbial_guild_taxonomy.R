@@ -817,7 +817,7 @@ its_inspan %>%
 #+ ssap_guiltime,fig.width=8,fig.height=4.5,fig.align='center'
 guiltime("soil_saprotroph")
 #' Sequence abundance of soil saprotrophs increases over time in the Blue Mounds 
-#' area ($R^2_{Adj}=0.58, p<0.05$), but
+#' area ($R^2_{Adj}=0.56, p<0.05$), but
 #' this appears to be leveraged by Karla Ott's property, though. With all
 #' that big bluestem...maybe there is more litter and soil carbon? It will be good 
 #' to look at trends in soil chemistry. 
@@ -954,7 +954,7 @@ ppat_inspan %>%
 #' #### Trends over time
 #+ wsap_guiltime,fig.width=8,fig.height=4.5,fig.align='center'
 guiltime("wood_saprotroph") 
-#' Interestingly a strong negative relationship over time since restoration ($R^2_{Adj}=0.73, p<0.01$)
+#' Interestingly a strong negative relationship over time since restoration ($R^2_{Adj}=0.72, p<0.01$)
 #' in sharp contrast to the increasing relationship found with soil saprotrophs. Apparently many wood
 #' saprotrophs live in cornfield soil...let's see:
 #' 
@@ -1056,11 +1056,6 @@ lsap_inspan %>%
     arrange(field_type, -stat) %>% 
     kable(format = "pandoc", caption = "Indicator species of litter saprotrophs")
 #' 
-
-
-
-
-
 #' ## AMF
 #' Recall the number of OTUs recovered in each dataset. The effect of rarefying did not change
 #' richness or diversity very much. 
@@ -1127,7 +1122,7 @@ amf_summary %>%
 #' ### Claroideoglomeraceae
 #+ claroid_filgu
 claroid <- filgu(spe$amf_rfy, meta$amf_rfy, family, "Claroideoglomeraceae", sites)
-#' Out of 146 AMF OTUs, 17 map to this family. Most are low abundance across sites, but all
+#' Out of 143 AMF OTUs, 17 map to this family. Most are low abundance across sites, but all
 #' samples are retained and contain sufficient sequences to draw meaningful conclusions. 
 #+ claroid_div
 claroid_div <- calc_diversity(claroid$filspe)
@@ -1139,7 +1134,7 @@ gudicom(claroid_div, claroid$filspeTaxa, "Claroideoglomeraceae", gene = "amf")
 #' ### Paraglomeraceae
 #+ para_filgu
 para <- filgu(spe$amf_rfy, meta$amf_rfy, family, "Paraglomeraceae", sites)
-#' Out of 146 AMF OTUs, only 6 map to this family. Most are low abundance across sites, but all
+#' Out of 143 AMF OTUs, only 6 map to this family. Most are low abundance across sites, but all
 #' samples are retained. Any interpretation here is likely to be dominated by a couple high-abundance
 #' OTUs, and a couple of samples have close to zero detections. Is this real?
 #+ para_div
@@ -1152,7 +1147,7 @@ gudicom(para_div, para$filspeTaxa, "Paraglomeraceae", gene = "amf")
 #' ### Diversisporaceae
 #+ diver_filgu
 diver <- filgu(spe$amf_rfy, meta$amf_rfy, family, "Diversisporaceae", sites)
-#' Out of 146 AMF OTUs, only 8 map to this family. Most are low abundance across sites, but all
+#' Out of 143 AMF OTUs, only 8 map to this family. Most are low abundance across sites, but all
 #' samples are retained. Any interpretation here is likely to be dominated by a couple high-abundance
 #' OTUs, and a couple of samples have close to zero detections. Is this real?
 #+ diver_div
@@ -1165,7 +1160,7 @@ gudicom(diver_div, diver$filspeTaxa, "Diversisporaceae", gene = "amf")
 #' ### Gigasporaceae
 #+ giga_filgu
 giga <- filgu(spe$amf_rfy, meta$amf_rfy, family, "Gigasporaceae", sites)
-#' Out of 146 AMF OTUs, only 4 map to this family. Most are low abundance across sites, and 
+#' Out of 143 AMF OTUs, only 4 map to this family. Most are low abundance across sites, and 
 #' only 19 samples contain these taxa. Any interpretation here is likely to be dominated by a couple high-abundance
 #' OTUs, and a couple of samples have close to zero detections. Is this real? 
 #' 
@@ -1185,6 +1180,7 @@ giga$filspeTaxa %>%
     scale_linetype_manual(values = c("solid", NA), guide = "none") +
     labs(x = "Years since restoration", y = "Sum of sequences", title = "Gigasporaceae") +
     theme_bw()
+#' 
 #' Pity that there are so few of these AMF. It's a nice relationship. Maybe there is a natural 
 #' history angle here, like an interaction between Gigasporaceae and plant pathogens, but 
 #' it will be hard to argue that it matters much given the low abundance observed. 
@@ -1225,5 +1221,48 @@ giga$filspeTaxa %>%
 #'    1. *Gigasporaceae* significantly increases across the Blue Mounds series, but 
 #'    sequence abundances and richness are so small in this family that further discussion 
 #'    may be inappropriate or irrelevant. 
+#'    
+#' # Appendix: Rarefy in guilds?
+#' One practice that's becoming popular is to take the raw sequence abundance data, filter it to 
+#' a guild or taxonomic group, and then rarefy in that group. I did that with these guilds
+#' and families, and the action reduced sequence abundances greatly without affecting 
+#' what we would interpret from the data. This appendix shows some diagnostics on that process.
 
 
+
+ssap_rrfd <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "soil_saprotroph", sites)
+ssap_rrfd_div <- calc_diversity(ssap_rrfd$rrfd)
+
+ppat_rrfd <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "plant_pathogen", sites)
+ppat_rrfd_div <- calc_diversity(ppat_rrfd$rrfd)
+
+
+wsap_rrfd <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "wood_saprotroph", sites)
+wsap_rrfd_div <- calc_diversity(wsap_rrfd$rrfd)
+
+lsap_rrfd <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "litter_saprotroph", sites)
+lsap_rrfd_div <- calc_diversity(lsap_rrfd$rrfd)
+
+
+rrfd_compare <- 
+    bind_rows(
+        list(
+            ssap_postrare = ssap_rrfd_div,
+            ppat_postrare = ppat_rrfd_div,
+            wsap_postrare = wsap_rrfd_div,
+            lsap_postrare = lsap_rrfd_div,
+            ssap_prerare = ssap_div,
+            ppat_prerare = ppat_div,
+            wsap_prerare = wsap_div,
+            lsap_prerare = lsap_div
+        ),
+        .id = "guild_rrfd_key"
+    ) %>% separate_wider_delim(guild_rrfd_key, "_", names = c("guild", "rrfd_step")) %>% 
+    pivot_wider(names_from = rrfd_step, values_from = value)
+
+
+ggplot(rrfd_compare %>% filter(hill_index %in% c("N0", "N1", "N2")), aes(x = prerare, y = postrare)) +
+    facet_wrap(vars(hill_index, guild), scales = "free", ncol = 4) +
+    geom_abline(intercept = 0, slope = 1) +
+    geom_point() +
+    theme_bw()

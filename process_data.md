@@ -2,7 +2,7 @@ Database assembly: species data
 ================
 Beau Larkin
 
-Last updated: 09 March, 2023
+Last updated: 10 March, 2023
 
 - <a href="#description" id="toc-description">Description</a>
   - <a href="#its-data-all-fungi" id="toc-its-data-all-fungi">ITS data (all
@@ -61,6 +61,9 @@ data will be joined with the ITS taxonomy
 
 For all tables, short and unique rownames must be created to allow for
 easy joining of species and metadata tables.
+
+For all sequences, zero-abundance and singleton OTUs must be removed
+after rarefying.
 
 For the 18S data, a second table is needed to produce a UNIFRAC distance
 matrix. The table must have OTUs in rows with OTU ids.
@@ -182,11 +185,11 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
         mutate(field_key = as.numeric(field_key)) %>% 
         arrange(field_key)
     
-    zero_otu1 <- which(apply(spe_topn, 2, sum) == 0)
-    if(length(zero_otu1) == 0) {
+    zero_otu <- which(apply(spe_topn, 2, sum) == 0)
+    if(length(zero_otu) == 0) {
         spe_raw <- spe_topn
     } else {
-        spe_raw <- spe_topn[, -zero_otu1]
+        spe_raw <- spe_topn[, -zero_otu]
     }
     
     spe_sum <-
@@ -199,23 +202,23 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     depth <- min(rowSums(spe_sum))
     rfy <- Rarefy(spe_sum)
     
-    zero_otu2 <- which(apply(rfy$otu.tab.rff, 2, sum) == 0)
-    if(length(zero_otu2) == 0) {
+    single_zero_otus <- which(apply(rfy$otu.tab.rff, 2, sum) <= 1)
+    if(length(single_zero_otus) == 0) {
         spe_rfy <- data.frame(rfy$otu.tab.rff) %>%
             rownames_to_column(var = "field_key") %>%
             mutate(field_key = as.numeric(field_key)) %>% 
             arrange(field_key) %>% 
             as_tibble()
     } else {
-        spe_rfy <- data.frame(rfy$otu.tab.rff[, -zero_otu2]) %>%
+        spe_rfy <- data.frame(rfy$otu.tab.rff[, -single_zero_otus]) %>%
             rownames_to_column(var = "field_key") %>%
             mutate(field_key = as.numeric(field_key)) %>% 
             arrange(field_key) %>% 
             as_tibble()
     }
     
-    meta_raw <- meta %>% filter(!(otu_num %in% names(zero_otu1)))
-    meta_rfy <- meta_raw %>% filter(!(otu_num %in% names(zero_otu2)))
+    meta_raw <- meta %>% filter(!(otu_num %in% names(zero_otu)))
+    meta_rfy <- meta_raw %>% filter(!(otu_num %in% names(single_zero_otus)))
     
     write_csv(meta_raw, paste0(getwd(), folder, "/spe_", gene, "_raw_taxonomy.csv"))
     write_csv(spe_raw, paste0(getwd(), folder, "/spe_", gene, "_raw.csv"))
@@ -313,7 +316,7 @@ its
     ## #   otu_39 <dbl>, otu_40 <dbl>, otu_41 <dbl>, otu_42 <dbl>, otu_43 <dbl>, …
     ## 
     ## $spe_rfy_meta
-    ## # A tibble: 2,785 × 9
+    ## # A tibble: 2,750 × 9
     ##    otu_num otu_ID                phylum class order family genus species prima…¹
     ##    <chr>   <chr>                 <chr>  <chr> <chr> <chr>  <chr> <chr>   <chr>  
     ##  1 otu_1   352d386293a59777de3e… Ascom… Sord… Hypo… Nectr… Fusa… Fusari… plant_…
@@ -326,23 +329,23 @@ its
     ##  8 otu_8   0ab6be0adca17efdd24e… Ascom… Euro… Chae… Herpo… unid… uniden… <NA>   
     ##  9 otu_9   3c7865fa957956fc9c7f… Basid… Trem… Cyst… Mraki… Taus… Tauson… soil_s…
     ## 10 otu_10  caa87147e44034b05364… Ascom… <NA>  <NA>  <NA>   <NA>  <NA>    <NA>   
-    ## # … with 2,775 more rows, and abbreviated variable name ¹​primary_lifestyle
+    ## # … with 2,740 more rows, and abbreviated variable name ¹​primary_lifestyle
     ## 
     ## $spe_rfy
-    ## # A tibble: 25 × 2,786
+    ## # A tibble: 25 × 2,751
     ##    field_key otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10 otu_11
     ##        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>
     ##  1         1  1043  1231    68  2346   196  1247  3507   274     0    542      0
-    ##  2         2  2898  1690   930    78   632    56   449     0     0   1810     82
-    ##  3         3   356     7   305     0   541   276   165     0    27      0    432
-    ##  4         4  1633     0     5     0  1412  2311  1471     0     0    826      0
-    ##  5         5   452   102   415     0  1163  2765  4511     0    41   1014    125
-    ##  6         6  1012   289   178     0   484   519   990     0  2768      0   2000
-    ##  7         7  1032  1092  1069     8   596  2493    87     0  7476      0    252
-    ##  8         8  1450   487   618  1134   496   903  1141     0    33   1192    100
-    ##  9         9  1505  1016   812     0   151  1035   713    23     0    435     57
-    ## 10        10   680   723   811   450   180   692   931  1471     0    217     31
-    ## # … with 15 more rows, and 2,774 more variables: otu_12 <dbl>, otu_13 <dbl>,
+    ##  2         2  2907  1685   939    83   615    62   458     0     0   1788     81
+    ##  3         3   355     5   304     0   549   275   174     0    26      0    429
+    ##  4         4  1622     0     5     0  1412  2327  1498     0     0    813      0
+    ##  5         5   424   104   419     0  1162  2709  4525     0    35   1006    122
+    ##  6         6  1014   310   173     0   482   509  1014     0  2840      0   1989
+    ##  7         7  1040  1116  1061     7   588  2478    84     0  7406      0    260
+    ##  8         8  1423   493   608  1123   503   932  1167     0    33   1193     87
+    ##  9         9  1476  1010   827     0   158  1033   731    15     0    420     62
+    ## 10        10   715   718   793   473   183   714   948  1448     0    202     25
+    ## # … with 15 more rows, and 2,739 more variables: otu_12 <dbl>, otu_13 <dbl>,
     ## #   otu_14 <dbl>, otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>,
     ## #   otu_19 <dbl>, otu_20 <dbl>, otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>,
     ## #   otu_24 <dbl>, otu_25 <dbl>, otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>,
@@ -407,7 +410,7 @@ amf
     ## #   otu_39 <dbl>, otu_40 <dbl>, otu_41 <dbl>, otu_42 <dbl>, otu_43 <dbl>, …
     ## 
     ## $spe_rfy_meta
-    ## # A tibble: 146 × 8
+    ## # A tibble: 143 × 8
     ##    otu_num otu_ID                         class order family genus taxon acces…¹
     ##    <chr>   <chr>                          <chr> <chr> <chr>  <chr> <chr> <chr>  
     ##  1 otu_1   320f3edc7b48ba5691766ccc71b0d… Glom… Glom… Glome… Glom… Glom… VTX002…
@@ -420,23 +423,23 @@ amf
     ##  8 otu_8   0d508e08bf3048aa561e7c9d96e3b… Glom… Glom… Glome… Glom… Glom… VTX003…
     ##  9 otu_9   4a4251fdd8c94240584c5d4ff6aeb… Glom… Glom… Glome… Glom… Glom… VTX002…
     ## 10 otu_10  210c71717f87c8e4912431ed98b55… Glom… Glom… Claro… Clar… Clar… VTX000…
-    ## # … with 136 more rows, and abbreviated variable name ¹​accession
+    ## # … with 133 more rows, and abbreviated variable name ¹​accession
     ## 
     ## $spe_rfy
-    ## # A tibble: 25 × 147
+    ## # A tibble: 25 × 144
     ##    field_key otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10 otu_11
     ##        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>
-    ##  1         1   375  1237  1228   254  2725   572   812  1824    71    129   1241
-    ##  2         2  1979    16  4251     0  1673   605   232     0   672    599      0
-    ##  3         3    29   227    19  2222   887   369   924     0   367     15      0
-    ##  4         4  1416  2004     0   703   639   713   223   894  2569    735    319
-    ##  5         5   367  1374    14    32  1886   693   315     7  1070   1298     68
-    ##  6         6   411    72  3349  2513   804   501  1500     2   376     74      2
-    ##  7         7     8     0  1056   873  3655   195    51    76    44      0      0
-    ##  8         8  1097  1048   201   303   824   797  1119   466   477   1217   1526
-    ##  9         9   355  1501   126  1455   264   280   909  2159  1107    837   2555
-    ## 10        10  1333   891   113  1200    70   474  1197  3242   169    542   1182
-    ## # … with 15 more rows, and 135 more variables: otu_12 <dbl>, otu_13 <dbl>,
+    ##  1         1   381  1224  1252   243  2711   568   798  1810    69    135   1262
+    ##  2         2  2033    10  4141     0  1697   655   224     0   717    578      0
+    ##  3         3    26   211    19  2201   876   352   962     0   375     16      0
+    ##  4         4  1420  1963     0   713   641   711   238   913  2557    735    319
+    ##  5         5   352  1456    15    22  1876   701   312     8  1062   1274     57
+    ##  6         6   391    67  3410  2497   747   525  1485     3   393     85      2
+    ##  7         7    10     0  1050   864  3706   192    49    72    42      0      0
+    ##  8         8  1070  1005   214   324   834   782  1120   476   501   1174   1545
+    ##  9         9   358  1488   125  1493   287   259   918  2170  1090    804   2523
+    ## 10        10  1340   890   126  1151    66   465  1224  3208   174    542   1130
+    ## # … with 15 more rows, and 132 more variables: otu_12 <dbl>, otu_13 <dbl>,
     ## #   otu_14 <dbl>, otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>,
     ## #   otu_19 <dbl>, otu_20 <dbl>, otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>,
     ## #   otu_24 <dbl>, otu_25 <dbl>, otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>,

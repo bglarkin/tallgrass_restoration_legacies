@@ -2,7 +2,7 @@ Testing for autocorrelation among sites
 ================
 Beau Larkin
 
-Last updated: 09 March, 2023
+Last updated: 10 March, 2023
 
 - <a href="#description" id="toc-description">Description</a>
 - <a href="#packages-and-libraries"
@@ -162,12 +162,12 @@ man_1 <-
     ## Call:
     ## mantel(xdis = dist_spe, ydis = dist_geo, method = "spearman",      permutations = 9999, na.rm = TRUE) 
     ## 
-    ## Mantel statistic r: 0.1091 
-    ##       Significance: 0.0385 
+    ## Mantel statistic r: 0.1094 
+    ##       Significance: 0.0411 
     ## 
     ## Upper quantiles of permutations (null model):
     ##    90%    95%  97.5%    99% 
-    ## 0.0690 0.0989 0.1258 0.1586 
+    ## 0.0725 0.1009 0.1270 0.1648 
     ## Permutation: free
     ## Number of permutations: 9999
 
@@ -193,16 +193,16 @@ print(man_1_cor)
     ## mantel.correlog(D.eco = dist_spe, D.geo = dist_geo, n.class = 0,      cutoff = FALSE, r.type = "spearman", nperm = 9999, mult = "holm") 
     ## 
     ##         class.index      n.dist  Mantel.cor Pr(Mantel) Pr(corrected)
-    ## D.cl.1   9.4645e+03  1.2000e+02  7.4142e-02     0.1271        0.1271
-    ## D.cl.2   2.8242e+04  3.6000e+01  4.9108e-02     0.2739        0.2739
-    ## D.cl.3   4.7019e+04  4.0000e+00  1.4190e-03     0.5022        0.5478
-    ## D.cl.4   6.5796e+04  2.6000e+01 -4.3385e-02     0.2757        0.8217
-    ## D.cl.5   8.4574e+04  1.1200e+02 -4.1687e-02     0.2974        1.0000
-    ## D.cl.6   1.0335e+05  3.6000e+01  5.5267e-02     0.2044        1.0000
-    ## D.cl.7   1.2213e+05  4.8000e+01  9.5341e-02     0.1147        0.8029
+    ## D.cl.1   9.4645e+03  1.2000e+02  7.6596e-02     0.1215        0.1215
+    ## D.cl.2   2.8242e+04  3.6000e+01  5.1053e-02     0.2566        0.2566
+    ## D.cl.3   4.7019e+04  4.0000e+00  1.4190e-03     0.5074        0.5132
+    ## D.cl.4   6.5796e+04  2.6000e+01 -4.6410e-02     0.2497        0.7491
+    ## D.cl.5   8.4574e+04  1.1200e+02 -4.4255e-02     0.2855        0.9988
+    ## D.cl.6   1.0335e+05  3.6000e+01  5.5105e-02     0.2013        1.0000
+    ## D.cl.7   1.2213e+05  4.8000e+01  9.6618e-02     0.1111        0.7777
     ## D.cl.8   1.4091e+05  0.0000e+00          NA         NA            NA
-    ## D.cl.9   1.5968e+05  9.0000e+01 -1.4218e-01     0.0397        0.3176
-    ## D.cl.10  1.7846e+05  1.2600e+02 -2.4712e-02     0.3858            NA
+    ## D.cl.9   1.5968e+05  9.0000e+01 -1.4428e-01     0.0402        0.3216
+    ## D.cl.10  1.7846e+05  1.2600e+02 -2.3105e-02     0.3805            NA
 
 ``` r
 plot(man_1_cor)
@@ -252,12 +252,12 @@ man_2 <-
     ## Call:
     ## mantel(xdis = dist_spe_bm, ydis = dist_geo_bm, method = "spearman",      na.rm = TRUE) 
     ## 
-    ## Mantel statistic r: -0.3779 
-    ##       Significance: 0.962 
+    ## Mantel statistic r: -0.3805 
+    ##       Significance: 0.965 
     ## 
     ## Upper quantiles of permutations (null model):
     ##   90%   95% 97.5%   99% 
-    ## 0.309 0.424 0.514 0.663 
+    ## 0.289 0.365 0.459 0.581 
     ## Permutation: free
     ## Number of permutations: 5039
 
@@ -288,11 +288,11 @@ man_3
     ## mantel(xdis = dist_soil, ydis = dist_geo_bm, method = "spearman",      na.rm = TRUE) 
     ## 
     ## Mantel statistic r: 0.1052 
-    ##       Significance: 0.337 
+    ##       Significance: 0.34 
     ## 
     ## Upper quantiles of permutations (null model):
     ##   90%   95% 97.5%   99% 
-    ## 0.287 0.377 0.473 0.553 
+    ## 0.295 0.399 0.478 0.576 
     ## Permutation: free
     ## Number of permutations: 5039
 
