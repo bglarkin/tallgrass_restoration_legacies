@@ -27,3 +27,7 @@ since restoration. Indicator species analysis is also performed to identify part
 with interesting stories. 
 
 ## Microbial Communities
+In [this report](microbial_communities.md), multivariate analysis is performed on three datasets: ITS (rarefied, Bray-Curtis distance), 18S (rarefied,
+Bray-Curtis distance), and 18S (rarefied, UNIFRAC distance). Unconstrained ordinations are produced.Cornfields clustered away from all other field types, but separation of remnants and restored fields differed among datasets. With ITS, years since restoration looked like a strong signal among restored fields, but remnants appeared intermediate among restored fields where age is concerned. This could be evidence of a "novel microbial assemblage" as a successional endpoint in restored fields (although other scenarios are equally plausible). With both 18S datasets, remnant and restored fields clustered closer together, and away from corn. Years since restoration was still a significant signal, but less so than with ITS. 
+
+Years since will also be tested **post-hoc** using `envfit()`. 
