@@ -556,7 +556,7 @@ which is informed by phylogeny.
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, strata = region)
     ##            Df SumOfSqs      R2     F Pr(>F)   
-    ## field_type  2   1.0911 0.24497 3.569  0.002 **
+    ## field_type  2   1.0911 0.24497 3.569 0.0015 **
     ## Residual   22   3.3628 0.75503                
     ## Total      24   4.4539 1.00000                
     ## ---
