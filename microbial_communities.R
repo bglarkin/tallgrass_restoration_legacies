@@ -473,11 +473,4 @@ amf_uni_resto_scores %>%
 #' is close with $(R^2_{Adj}=0.30, p<0.05)$ 
 #' 
 
-#' A quick trial of constraining on years since restoration
-
-
-resto_field_keys <- sites %>% 
-    filter(field_type == "restored") %>% 
-    pull(field_key)
-
-spe$its
+#' Try fitting years since restoration with envfit...
