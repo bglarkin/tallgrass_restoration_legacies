@@ -1271,3 +1271,6 @@ ggplot(rrfd_compare %>% filter(hill_index %in% c("N0", "N1", "N2")), aes(x = pre
          caption = "N0 = richness, N1 = Shannon's Diversity, N2 = Simpson's Diversity\nlsap = litter saprotrophs, ppat = plant pathogens, ssap = soil saprotrophs, wsap = wood saprotrophs") +
     scale_fill_discrete_qualitative(palette = "Harmonic") +
     theme_bw()
+
+# Dont do amf
+# s axis sequence abundance, y axis richness

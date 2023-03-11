@@ -186,7 +186,7 @@ pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
 #' although axis 2 explains `r pcoa_its$eigenvalues[2]`% of the variation and was very close to the broken
 #' stick value. Testing the design factor *field_type* (with *region* treated as a block 
 #' using the `strata` argument of `adonis2`) revealed a significant
-#' clustering $(R^2=0.17, p<0.001)$.  
+#' clustering $(R^2=`r round(pcoa_its$permanova$R2[1], 2)`, p=`r pcoa_its$permanova$Pr[1]`)$.  
 #' 
 #' Let's view a plot with abundances of community subgroups inset.
 pcoa_its$ord <-
@@ -263,11 +263,9 @@ its_resto_scores <-
     pcoa_its$site_vectors %>%
     filter(field_type == "restored") %>%
     mutate(yr_since = as.numeric(yr_since))
-#+ its_yrs_scores_lm
-summary(lm(
-    Axis.1 ~ yr_since,
-    data = its_resto_scores
-))
+#+ its_resto_scores_lm
+summary(lm(Axis.1 ~ yr_since,
+           data = its_resto_scores))
 #+ its_resto_scores_fig,fig.align='center',message=FALSE
 its_resto_scores %>%
     pivot_longer(Axis.1:Axis.2, names_to = "axis", values_to = "score") %>%
@@ -301,7 +299,7 @@ its_resto_scores %>%
 #' explaining `r pcoa_amf_bray$eigenvalues[2]`% of the variation in AMF abundances. 
 #' Testing the design factor *field_type* (with *region* treated as a block 
 #' using the `strata` argument of `adonis2`) revealed a significant
-#' clustering $(R^2=0.24, p<0.001)$. 
+#' clustering $(R^2=`r round(pcoa_amf_bray$permanova$R2[1], 2)`, p=`r round(pcoa_amf_bray$permanova$Pr[1], 3)`)$. 
 #' 
 #' Let's view a plot with abundances of community subgroups inset. 
 pcoa_amf_bray$ord <- 
@@ -364,15 +362,11 @@ amf_resto_scores <-
     filter(field_type == "restored") %>%
     mutate(yr_since = as.numeric(yr_since))
 #+ amf_yrs_scores_lm_1
-summary(lm(
-    Axis.1 ~ yr_since,
-    data = amf_resto_scores
-))
+summary(lm(Axis.1 ~ yr_since,
+           data = amf_resto_scores))
 #+ amf_yrs_scores_lm_2
-summary(lm(
-    Axis.2 ~ yr_since,
-    data = amf_resto_scores
-))
+summary(lm(Axis.2 ~ yr_since,
+           data = amf_resto_scores))
 #+ amf_yrs_scores_fig,fig.align='center',message=FALSE
 amf_resto_scores %>%
     pivot_longer(Axis.1:Axis.2, names_to = "axis", values_to = "score") %>%
@@ -386,7 +380,6 @@ amf_resto_scores %>%
          caption = "Blue lines show linear model fit; solid line is significant at p<0.05") +
     scale_shape_manual(values = c(21, 22, 23, 24)) +
     theme_bw()
-
 #' 
 #' Both axes correlate significantly and strongly with years since restoration. 
 #' Axis 2 shows a stronger relationship $(R^2_{Adj}=0.60, p<0.001)$, and Axis 1 
@@ -405,7 +398,7 @@ amf_resto_scores %>%
 #' explaining `r pcoa_amf_uni$eigenvalues[2]`% of the variation in AMF abundances. 
 #' Testing the design factor *field_type* (with *region* treated as a block 
 #' using the `strata` argument of `adonis2`) revealed a significant
-#' clustering $(R^2=0.23, p<0.01)$. 
+#' clustering $(R^2=`r round(pcoa_amf_uni$permanova$R2[1], 2)`, p=`r round(pcoa_amf_uni$permanova$Pr[1], 3)`)$. 
 #' 
 #' Let's view a plot with abundances of community subgroups inset. 
 pcoa_amf_uni$ord <- 
