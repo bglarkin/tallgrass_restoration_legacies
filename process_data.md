@@ -2,7 +2,7 @@ Database assembly: species data
 ================
 Beau Larkin
 
-Last updated: 10 March, 2023
+Last updated: 11 March, 2023
 
 - <a href="#description" id="toc-description">Description</a>
   - <a href="#its-data-all-fungi" id="toc-its-data-all-fungi">ITS data (all
@@ -316,7 +316,7 @@ its
     ## #   otu_39 <dbl>, otu_40 <dbl>, otu_41 <dbl>, otu_42 <dbl>, otu_43 <dbl>, …
     ## 
     ## $spe_rfy_meta
-    ## # A tibble: 2,750 × 9
+    ## # A tibble: 2,740 × 9
     ##    otu_num otu_ID                phylum class order family genus species prima…¹
     ##    <chr>   <chr>                 <chr>  <chr> <chr> <chr>  <chr> <chr>   <chr>  
     ##  1 otu_1   352d386293a59777de3e… Ascom… Sord… Hypo… Nectr… Fusa… Fusari… plant_…
@@ -329,23 +329,23 @@ its
     ##  8 otu_8   0ab6be0adca17efdd24e… Ascom… Euro… Chae… Herpo… unid… uniden… <NA>   
     ##  9 otu_9   3c7865fa957956fc9c7f… Basid… Trem… Cyst… Mraki… Taus… Tauson… soil_s…
     ## 10 otu_10  caa87147e44034b05364… Ascom… <NA>  <NA>  <NA>   <NA>  <NA>    <NA>   
-    ## # … with 2,740 more rows, and abbreviated variable name ¹​primary_lifestyle
+    ## # … with 2,730 more rows, and abbreviated variable name ¹​primary_lifestyle
     ## 
     ## $spe_rfy
-    ## # A tibble: 25 × 2,751
+    ## # A tibble: 25 × 2,741
     ##    field_key otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10 otu_11
     ##        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>
     ##  1         1  1043  1231    68  2346   196  1247  3507   274     0    542      0
-    ##  2         2  2907  1685   939    83   615    62   458     0     0   1788     81
-    ##  3         3   355     5   304     0   549   275   174     0    26      0    429
-    ##  4         4  1622     0     5     0  1412  2327  1498     0     0    813      0
-    ##  5         5   424   104   419     0  1162  2709  4525     0    35   1006    122
-    ##  6         6  1014   310   173     0   482   509  1014     0  2840      0   1989
-    ##  7         7  1040  1116  1061     7   588  2478    84     0  7406      0    260
-    ##  8         8  1423   493   608  1123   503   932  1167     0    33   1193     87
-    ##  9         9  1476  1010   827     0   158  1033   731    15     0    420     62
-    ## 10        10   715   718   793   473   183   714   948  1448     0    202     25
-    ## # … with 15 more rows, and 2,739 more variables: otu_12 <dbl>, otu_13 <dbl>,
+    ##  2         2  2884  1711   915    84   619    59   458     0     0   1805     79
+    ##  3         3   349     5   305     0   546   267   174     0    24      0    427
+    ##  4         4  1607     0     5     0  1400  2312  1492     0     0    827      0
+    ##  5         5   439    98   424     0  1159  2776  4547     0    45   1008    119
+    ##  6         6  1043   304   172     0   468   505   942     0  2777      0   1982
+    ##  7         7  1049  1124  1058     7   602  2504    82     0  7414      0    281
+    ##  8         8  1432   484   589  1147   522   921  1139     0    33   1211     88
+    ##  9         9  1518  1017   831     0   159  1031   725    18     0    410     52
+    ## 10        10   712   714   816   437   188   705   937  1432     0    204     31
+    ## # … with 15 more rows, and 2,729 more variables: otu_12 <dbl>, otu_13 <dbl>,
     ## #   otu_14 <dbl>, otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>,
     ## #   otu_19 <dbl>, otu_20 <dbl>, otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>,
     ## #   otu_24 <dbl>, otu_25 <dbl>, otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>,
@@ -410,7 +410,7 @@ amf
     ## #   otu_39 <dbl>, otu_40 <dbl>, otu_41 <dbl>, otu_42 <dbl>, otu_43 <dbl>, …
     ## 
     ## $spe_rfy_meta
-    ## # A tibble: 143 × 8
+    ## # A tibble: 145 × 8
     ##    otu_num otu_ID                         class order family genus taxon acces…¹
     ##    <chr>   <chr>                          <chr> <chr> <chr>  <chr> <chr> <chr>  
     ##  1 otu_1   320f3edc7b48ba5691766ccc71b0d… Glom… Glom… Glome… Glom… Glom… VTX002…
@@ -423,23 +423,23 @@ amf
     ##  8 otu_8   0d508e08bf3048aa561e7c9d96e3b… Glom… Glom… Glome… Glom… Glom… VTX003…
     ##  9 otu_9   4a4251fdd8c94240584c5d4ff6aeb… Glom… Glom… Glome… Glom… Glom… VTX002…
     ## 10 otu_10  210c71717f87c8e4912431ed98b55… Glom… Glom… Claro… Clar… Clar… VTX000…
-    ## # … with 133 more rows, and abbreviated variable name ¹​accession
+    ## # … with 135 more rows, and abbreviated variable name ¹​accession
     ## 
     ## $spe_rfy
-    ## # A tibble: 25 × 144
+    ## # A tibble: 25 × 146
     ##    field_key otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10 otu_11
     ##        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>
-    ##  1         1   381  1224  1252   243  2711   568   798  1810    69    135   1262
-    ##  2         2  2033    10  4141     0  1697   655   224     0   717    578      0
-    ##  3         3    26   211    19  2201   876   352   962     0   375     16      0
-    ##  4         4  1420  1963     0   713   641   711   238   913  2557    735    319
-    ##  5         5   352  1456    15    22  1876   701   312     8  1062   1274     57
-    ##  6         6   391    67  3410  2497   747   525  1485     3   393     85      2
-    ##  7         7    10     0  1050   864  3706   192    49    72    42      0      0
-    ##  8         8  1070  1005   214   324   834   782  1120   476   501   1174   1545
-    ##  9         9   358  1488   125  1493   287   259   918  2170  1090    804   2523
-    ## 10        10  1340   890   126  1151    66   465  1224  3208   174    542   1130
-    ## # … with 15 more rows, and 132 more variables: otu_12 <dbl>, otu_13 <dbl>,
+    ##  1         1   383  1208  1266   254  2738   566   783  1804    76    131   1246
+    ##  2         2  2041    13  4165     0  1671   622   221     0   689    585      0
+    ##  3         3    30   232    16  2293   873   357   949     0   378     13      0
+    ##  4         4  1403  1949     0   685   621   745   236   893  2537    753    320
+    ##  5         5   371  1412    11    26  1918   717   341    10  1058   1270     59
+    ##  6         6   369    70  3407  2471   778   525  1475     4   377     78      3
+    ##  7         7    11     0  1060   882  3711   197    44    76    49      0      0
+    ##  8         8  1036   983   212   304   870   789  1175   465   464   1199   1551
+    ##  9         9   351  1540   127  1429   303   283   940  2208  1091    781   2519
+    ## 10        10  1340   883   124  1166    69   488  1243  3200   164    553   1158
+    ## # … with 15 more rows, and 134 more variables: otu_12 <dbl>, otu_13 <dbl>,
     ## #   otu_14 <dbl>, otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>,
     ## #   otu_19 <dbl>, otu_20 <dbl>, otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>,
     ## #   otu_24 <dbl>, otu_25 <dbl>, otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>,

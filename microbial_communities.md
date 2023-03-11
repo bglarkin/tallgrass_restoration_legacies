@@ -247,40 +247,40 @@ correction is needed for these ordinations.
     ## 
     ## $values
     ##   Dim Eigenvalues Relative_eig Broken_stick Cumul_eig Cumul_br_stick
-    ## 1   1   1.2536003   0.17863235   0.15733159 0.1786323      0.1573316
-    ## 2   2   0.7722529   0.11004253   0.11566492 0.2886749      0.2729965
-    ## 3   3   0.5903333   0.08411981   0.09483159 0.3727947      0.3678281
+    ## 1   1   1.2515128   0.17836487   0.15733159 0.1783649      0.1573316
+    ## 2   2   0.7678955   0.10944001   0.11566492 0.2878049      0.2729965
+    ## 3   3   0.5912564   0.08426552   0.09483159 0.3720704      0.3678281
     ## 
     ## $eigenvalues
-    ## [1] 17.9 11.0
+    ## [1] 17.8 10.9
     ## 
     ## $site_vectors
     ##    field_key      Axis.1       Axis.2 region field_type yr_since
-    ## 1          1  0.22945298  0.064756425     BM   restored       16
-    ## 2          2 -0.11234235 -0.031611773     BM   restored        3
-    ## 3          3 -0.31689891  0.001750474     FG       corn        -
-    ## 4          4  0.10794445  0.278206922     FG    remnant        +
-    ## 5          5 -0.04814317  0.276499333     FG   restored       15
-    ## 6          6 -0.28613642 -0.116414739     FL       corn        -
-    ## 7          7 -0.32628464  0.006027334     FL       corn        -
-    ## 8          8  0.08088163  0.182196869     FL    remnant        +
-    ## 9          9  0.22853794  0.239504806     FL   restored       40
-    ## 10        10  0.31814997  0.124859139     FL   restored       36
-    ## 11        11  0.21319247  0.216199710     FL   restored       35
-    ## 12        12  0.21864782 -0.209921833     FL   restored       10
-    ## 13        13  0.17946192 -0.119880496     FL   restored       10
-    ## 14        14  0.21739891 -0.270300182     FL   restored       10
-    ## 15        15  0.25856918  0.036257830     BM   restored       28
-    ## 16        16 -0.35994169 -0.119966453     LP       corn        -
-    ## 17        17  0.06473879 -0.155854166     LP    remnant        +
-    ## 18        18 -0.24198268 -0.061066122     LP   restored        4
-    ## 19        19 -0.14128386 -0.094286654     LP   restored        4
-    ## 20        20  0.23903491 -0.331697545     BM    remnant        +
-    ## 21        21  0.18748186 -0.295646183     BM   restored       18
-    ## 22        22 -0.11966215  0.189045601     BM   restored        7
-    ## 23        23 -0.22014442  0.061622325     BM   restored        2
-    ## 24        24 -0.34343453 -0.027960533     BM       corn        -
-    ## 25        25 -0.02723800  0.157679911     BM   restored       11
+    ## 1          1  0.22805632  0.064775270     BM   restored       16
+    ## 2          2 -0.11104697 -0.030363045     BM   restored        3
+    ## 3          3 -0.31741373 -0.001821344     FG       corn        -
+    ## 4          4  0.10872273  0.278711238     FG    remnant        +
+    ## 5          5 -0.04815772  0.277771586     FG   restored       15
+    ## 6          6 -0.28798717 -0.118813317     FL       corn        -
+    ## 7          7 -0.32710353  0.003593538     FL       corn        -
+    ## 8          8  0.08083494  0.181437487     FL    remnant        +
+    ## 9          9  0.22524395  0.239025340     FL   restored       40
+    ## 10        10  0.31599415  0.122946458     FL   restored       36
+    ## 11        11  0.21422117  0.211168584     FL   restored       35
+    ## 12        12  0.21921481 -0.208575507     FL   restored       10
+    ## 13        13  0.17940500 -0.120518159     FL   restored       10
+    ## 14        14  0.21812847 -0.268559952     FL   restored       10
+    ## 15        15  0.25846206  0.035886961     BM   restored       28
+    ## 16        16 -0.36020233 -0.120479006     LP       corn        -
+    ## 17        17  0.06578739 -0.152829462     LP    remnant        +
+    ## 18        18 -0.24121975 -0.059967628     LP   restored        4
+    ## 19        19 -0.13842214 -0.091677779     LP   restored        4
+    ## 20        20  0.23910783 -0.333022749     BM    remnant        +
+    ## 21        21  0.18744873 -0.292546853     BM   restored       18
+    ## 22        22 -0.11766236  0.188248594     BM   restored        7
+    ## 23        23 -0.21926814  0.063277043     BM   restored        2
+    ## 24        24 -0.34388759 -0.028828986     BM       corn        -
+    ## 25        25 -0.02825613  0.161161687     BM   restored       11
     ## 
     ## $broken_stick_plot
 
@@ -296,19 +296,19 @@ correction is needed for these ordinations.
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, strata = region)
     ##            Df SumOfSqs      R2      F Pr(>F)    
-    ## field_type  2   1.1999 0.17098 2.2687  0.001 ***
-    ## Residual   22   5.8178 0.82902                  
-    ## Total      24   7.0178 1.00000                  
+    ## field_type  2   1.2032 0.17148 2.2767  5e-04 ***
+    ## Residual   22   5.8134 0.82852                  
+    ## Total      24   7.0166 1.00000                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Axis 1 explains 17.9% of the variation and is the only eigenvalue that
+Axis 1 explains 17.8% of the variation and is the only eigenvalue that
 exceeds a broken stick model. The most substantial variation here will
-be on the first axis, although axis 2 explains 11% of the variation and
-was very close to the broken stick value. Testing the design factor
+be on the first axis, although axis 2 explains 10.9% of the variation
+and was very close to the broken stick value. Testing the design factor
 *field_type* (with *region* treated as a block using the `strata`
 argument of `adonis2`) revealed a significant clustering
-$(R^2=0.17, p=0.001)$.
+$(R^2=0.17, p=5\times 10^{-4})$.
 
 Let’s view a plot with abundances of community subgroups inset.
 
@@ -329,7 +329,7 @@ pcoa_its$ord <-
         ),
         caption = "Text indicates years since restoration, with corn (-) and remnants (+) never restored."
     ) +
-    lims(y = c(-0.3,0.4)) +
+    lims(y = c(-0.5,0.32)) +
     theme_bw() +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
 pcoa_its$inset <-
@@ -360,15 +360,11 @@ pcoa_its$ord +
             plot.background = element_rect(colour = "black", fill = "gray90")
         )),
         xmin = -0.38,
-        xmax = -0.05,
-        ymin = 0.17,
-        ymax = 0.42
+        xmax = 0,
+        ymin = -0.53,
+        ymax = -0.18
     )
 ```
-
-    ## Warning: Removed 1 rows containing missing values (`geom_point()`).
-
-    ## Warning: Removed 1 rows containing missing values (`geom_text()`).
 
 <img src="microbial_communities_files/figure-gfm/its_guilds_fig-1.png" style="display: block; margin: auto;" />
 
@@ -415,18 +411,18 @@ summary(lm(Axis.1 ~ yr_since,
     ## 
     ## Residuals:
     ##      Min       1Q   Median       3Q      Max 
-    ## -0.18243 -0.09880 -0.04418  0.10480  0.21032 
+    ## -0.18276 -0.09798 -0.04488  0.10446  0.21030 
     ## 
     ## Coefficients:
     ##              Estimate Std. Error t value Pr(>|t|)   
-    ## (Intercept) -0.104804   0.055002  -1.905  0.07747 . 
-    ## yr_since     0.011313   0.002788   4.057  0.00118 **
+    ## (Intercept) -0.103378   0.054925  -1.882  0.08077 . 
+    ## yr_since     0.011230   0.002785   4.033  0.00123 **
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 0.1352 on 14 degrees of freedom
-    ## Multiple R-squared:  0.5404, Adjusted R-squared:  0.5075 
-    ## F-statistic: 16.46 on 1 and 14 DF,  p-value: 0.001177
+    ## Residual standard error: 0.135 on 14 degrees of freedom
+    ## Multiple R-squared:  0.5374, Adjusted R-squared:  0.5044 
+    ## F-statistic: 16.26 on 1 and 14 DF,  p-value: 0.001234
 
 ``` r
 its_resto_scores %>%
@@ -473,11 +469,11 @@ which is informed by phylogeny.
     ## 
     ## $values
     ##   Dim Eigenvalues Relative_eig Rel_corr_eig Broken_stick Cum_corr_eig
-    ## 1   1   1.2143676   0.27265524   0.24730742   0.16236050    0.2473074
-    ## 2   2   0.8107748   0.18203878   0.16663487   0.11888224    0.4139423
-    ## 3   3   0.5853076   0.13141588   0.12156713   0.09714311    0.5355094
-    ## 4   4   0.4131249   0.09275665   0.08715023   0.08265036    0.6226597
-    ## 5   5   0.3090212   0.06938283   0.06634137   0.07178079    0.6890010
+    ## 1   1   1.2090404   0.27088679   0.24718446   0.16236050    0.2471845
+    ## 2   2   0.8150638   0.18261591   0.16804116   0.11888224    0.4152256
+    ## 3   3   0.5844341   0.13094310   0.12171154   0.09714311    0.5369372
+    ## 4   4   0.4141364   0.09278769   0.08750156   0.08265036    0.6244387
+    ## 5   5   0.3122205   0.06995333   0.06702837   0.07178079    0.6914671
     ##   Cumul_br_stick
     ## 1      0.1623605
     ## 2      0.2812427
@@ -486,61 +482,61 @@ which is informed by phylogeny.
     ## 5      0.5328170
     ## 
     ## $eigenvalues
-    ## [1] 27.3 18.2
+    ## [1] 27.1 18.3
     ## 
     ## $site_vectors
-    ##    field_key      Axis.1      Axis.2      Axis.3       Axis.4 region field_type
-    ## 1          1  0.19628739  0.25561717 -0.19617564 -0.087332711     BM   restored
-    ## 2          2  0.01930845 -0.27067783 -0.20664973 -0.239691883     BM   restored
-    ## 3          3 -0.43012588  0.21450148  0.12825487  0.003222681     FG       corn
-    ## 4          4  0.04900590  0.03173160  0.25380678 -0.158712673     FG    remnant
-    ## 5          5 -0.02007511 -0.04204429  0.19180970 -0.358153797     FG   restored
-    ## 6          6 -0.19346799 -0.01190650 -0.12070435  0.078394197     FL       corn
-    ## 7          7 -0.43898172  0.28227929 -0.19454625 -0.208754840     FL       corn
-    ## 8          8  0.10268602 -0.02778184  0.14472296 -0.023505197     FL    remnant
-    ## 9          9  0.18931432  0.22595453  0.20580384  0.073214139     FL   restored
-    ## 10        10  0.24929426  0.12473594  0.07365419  0.191496659     FL   restored
-    ## 11        11  0.12702136  0.11343291  0.14323471  0.134870511     FL   restored
-    ## 12        12  0.14423924 -0.09658572 -0.15027146  0.022354828     FL   restored
-    ## 13        13  0.16935043  0.03888061 -0.15517201  0.081226398     FL   restored
-    ## 14        14  0.08434227 -0.05516000 -0.22674111  0.059112177     FL   restored
-    ## 15        15  0.31295844  0.30303169  0.09614277 -0.021236484     BM   restored
-    ## 16        16 -0.40640255  0.06029114 -0.08678931  0.132668531     LP       corn
-    ## 17        17  0.01946420 -0.21142755 -0.05130133  0.073781504     LP    remnant
-    ## 18        18 -0.08322360 -0.25135379  0.05037356  0.141445778     LP   restored
-    ## 19        19  0.04549685 -0.30465459 -0.06538885  0.037702428     LP   restored
-    ## 20        20  0.24842121  0.17654521 -0.19243694 -0.034694717     BM    remnant
-    ## 21        21  0.18497859 -0.05645717 -0.11552554 -0.023557387     BM   restored
-    ## 22        22 -0.02006413 -0.21135676  0.10940117 -0.001315178     BM   restored
-    ## 23        23 -0.12956750 -0.13469018  0.15537081 -0.015827894     BM   restored
-    ## 24        24 -0.43634128  0.07255410  0.02660396  0.161869279     BM       corn
-    ## 25        25  0.01608083 -0.22545946  0.18252320 -0.018576348     BM   restored
-    ##    yr_since
-    ## 1        16
-    ## 2         3
-    ## 3         -
-    ## 4         +
-    ## 5        15
-    ## 6         -
-    ## 7         -
-    ## 8         +
-    ## 9        40
-    ## 10       36
-    ## 11       35
-    ## 12       10
-    ## 13       10
-    ## 14       10
-    ## 15       28
-    ## 16        -
-    ## 17        +
-    ## 18        4
-    ## 19        4
-    ## 20        +
-    ## 21       18
-    ## 22        7
-    ## 23        2
-    ## 24        -
-    ## 25       11
+    ##    field_key      Axis.1       Axis.2      Axis.3       Axis.4 region
+    ## 1          1  0.19487528  0.260842815 -0.18919856  0.090337570     BM
+    ## 2          2  0.01951657 -0.267722026 -0.21689331  0.239547063     BM
+    ## 3          3 -0.42949658  0.210276297  0.12976044 -0.001787677     FG
+    ## 4          4  0.05194072  0.025268753  0.25859530  0.158808751     FG
+    ## 5          5 -0.02238309 -0.045593302  0.19065073  0.359294045     FG
+    ## 6          6 -0.19512425 -0.002727189 -0.12821207 -0.071212715     FL
+    ## 7          7 -0.43724213  0.284957920 -0.19112953  0.206402480     FL
+    ## 8          8  0.09473998 -0.027504018  0.13814558  0.021156523     FL
+    ## 9          9  0.19147540  0.222318568  0.20761978 -0.069857490     FL
+    ## 10        10  0.25068999  0.122611705  0.07435319 -0.187100960     FL
+    ## 11        11  0.12616097  0.115994368  0.14444509 -0.140440374     FL
+    ## 12        12  0.14691323 -0.092502615 -0.15089176 -0.030029449     FL
+    ## 13        13  0.16694672  0.039228425 -0.14762443 -0.093312908     FL
+    ## 14        14  0.08600051 -0.046312577 -0.22862400 -0.055187250     FL
+    ## 15        15  0.30733673  0.301125918  0.09488442  0.025905344     BM
+    ## 16        16 -0.40674333  0.060689714 -0.08279509 -0.132417298     LP
+    ## 17        17  0.01677338 -0.214211717 -0.05453361 -0.073267985     LP
+    ## 18        18 -0.08204798 -0.255972344  0.04510679 -0.142502218     LP
+    ## 19        19  0.04950928 -0.301704416 -0.07205871 -0.028480274     LP
+    ## 20        20  0.24850278  0.180936335 -0.18421542  0.033541442     BM
+    ## 21        21  0.18592897 -0.055508569 -0.11459408  0.024571586     BM
+    ## 22        22 -0.01983961 -0.215541570  0.11276553 -0.010344201     BM
+    ## 23        23 -0.13058570 -0.141322684  0.15769951  0.011052391     BM
+    ## 24        24 -0.43468103  0.070902957  0.02896328 -0.162660649     BM
+    ## 25        25  0.02083319 -0.228530745  0.17778092  0.027984256     BM
+    ##    field_type yr_since
+    ## 1    restored       16
+    ## 2    restored        3
+    ## 3        corn        -
+    ## 4     remnant        +
+    ## 5    restored       15
+    ## 6        corn        -
+    ## 7        corn        -
+    ## 8     remnant        +
+    ## 9    restored       40
+    ## 10   restored       36
+    ## 11   restored       35
+    ## 12   restored       10
+    ## 13   restored       10
+    ## 14   restored       10
+    ## 15   restored       28
+    ## 16       corn        -
+    ## 17    remnant        +
+    ## 18   restored        4
+    ## 19   restored        4
+    ## 20    remnant        +
+    ## 21   restored       18
+    ## 22   restored        7
+    ## 23   restored        2
+    ## 24       corn        -
+    ## 25   restored       11
     ## 
     ## $broken_stick_plot
 
@@ -555,18 +551,18 @@ which is informed by phylogeny.
     ## Number of permutations: 1999
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, strata = region)
-    ##            Df SumOfSqs      R2     F Pr(>F)   
-    ## field_type  2   1.0911 0.24497 3.569 0.0015 **
-    ## Residual   22   3.3628 0.75503                
-    ## Total      24   4.4539 1.00000                
+    ##            Df SumOfSqs      R2      F Pr(>F)   
+    ## field_type  2   1.0896 0.24412 3.5526  0.002 **
+    ## Residual   22   3.3737 0.75588                 
+    ## Total      24   4.4633 1.00000                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Four axes are significant by a broken stick model, between them
-explaining 67.9% of the variation in AMF among fields. It may be
+explaining 67.7% of the variation in AMF among fields. It may be
 worthwhile to examine structure on Axes 3 and 4 sometime. The most
-substantial variation here is on the first axis (27.3%) with Axis 2
-explaining 18.2% of the variation in AMF abundances. Testing the design
+substantial variation here is on the first axis (27.1%) with Axis 2
+explaining 18.3% of the variation in AMF abundances. Testing the design
 factor *field_type* (with *region* treated as a block using the `strata`
 argument of `adonis2`) revealed a significant clustering
 $(R^2=0.24, p=0.002)$.
@@ -653,18 +649,18 @@ summary(lm(Axis.1 ~ yr_since,
     ## 
     ## Residuals:
     ##      Min       1Q   Median       3Q      Max 
-    ## -0.12739 -0.07985  0.01385  0.07887  0.13295 
+    ## -0.12925 -0.07773  0.01445  0.07992  0.12743 
     ## 
     ## Coefficients:
     ##              Estimate Std. Error t value Pr(>|t|)   
-    ## (Intercept) -0.016192   0.036923  -0.439  0.66770   
-    ## yr_since     0.007007   0.001872   3.743  0.00218 **
+    ## (Intercept) -0.015277   0.036722  -0.416  0.68371   
+    ## yr_since     0.006971   0.001862   3.744  0.00218 **
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 0.09074 on 14 degrees of freedom
-    ## Multiple R-squared:  0.5002, Adjusted R-squared:  0.4645 
-    ## F-statistic: 14.01 on 1 and 14 DF,  p-value: 0.002182
+    ## Residual standard error: 0.09025 on 14 degrees of freedom
+    ## Multiple R-squared:  0.5004, Adjusted R-squared:  0.4647 
+    ## F-statistic: 14.02 on 1 and 14 DF,  p-value: 0.002178
 
 ``` r
 summary(lm(Axis.2 ~ yr_since,
@@ -677,18 +673,18 @@ summary(lm(Axis.2 ~ yr_since,
     ## 
     ## Residuals:
     ##      Min       1Q   Median       3Q      Max 
-    ## -0.13216 -0.08135 -0.04535  0.05549  0.28686 
+    ## -0.13522 -0.07896 -0.04629  0.06041  0.29221 
     ## 
     ## Coefficients:
     ##              Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept) -0.229819   0.050413  -4.559 0.000446 ***
-    ## yr_since     0.012411   0.002556   4.856 0.000254 ***
+    ## (Intercept) -0.229591   0.050841  -4.516 0.000484 ***
+    ## yr_since     0.012389   0.002578   4.807 0.000279 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 0.1239 on 14 degrees of freedom
-    ## Multiple R-squared:  0.6275, Adjusted R-squared:  0.6008 
-    ## F-statistic: 23.58 on 1 and 14 DF,  p-value: 0.0002544
+    ## Residual standard error: 0.1249 on 14 degrees of freedom
+    ## Multiple R-squared:  0.6227, Adjusted R-squared:  0.5957 
+    ## F-statistic:  23.1 on 1 and 14 DF,  p-value: 0.0002791
 
 ``` r
 amf_resto_scores %>%
@@ -784,7 +780,7 @@ relationship $(R^2_{Adj}=0.49, p<0.005)$
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, strata = region)
     ##            Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type  2 0.054762 0.22505 3.1945 0.0045 **
+    ## field_type  2 0.054762 0.22505 3.1945 0.0035 **
     ## Residual   22 0.188572 0.77495                 
     ## Total      24 0.243335 1.00000                 
     ## ---

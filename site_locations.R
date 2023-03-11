@@ -158,3 +158,4 @@ ggplot(sites_ppt, aes(x = region, y = ppt_mm)) +
     labs(x = "", y = "Precipitation (mm)") +
     scale_fill_discrete_qualitative(name = "field_type", palette = "Harmonic") +
     theme_bw()
+
