@@ -370,3 +370,4 @@ ggplot(
 test_age(div$amf_rfy, caption = "Correlation between Hill's numbers and field age in the Blue Mounds region: AMF (18S), 97% OTU")
 #' 
 #' The relationships are too weak to examine further. 
+#' 
