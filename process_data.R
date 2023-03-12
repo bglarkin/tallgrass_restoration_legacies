@@ -222,32 +222,32 @@ traits   <- read_csv(paste0(getwd(),   "/otu_tables/2023-02-23_fungal_traits.csv
 #' ## ETL using `etl()`
 #' Schema: `process_qiime(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, colname_prefix, folder)`
 #+ otu_its,message=FALSE
-its <- 
-    etl(
-        spe = its_otu,
-        taxa = its_taxa,
-        samps = 6,
-        traits = traits,
-        varname = otu_num,
-        gene = "ITS",
-        cluster_type = "otu",
-        colname_prefix = "ITS_TGP_",
-        folder = "/clean_data"
-    )
-its
-#+ otu_18S,message=FALSE
-amf <- 
-    etl(
-        spe = amf_otu,
-        taxa = amf_taxa,
-        samps = 6,
-        varname = otu_num,
-        gene = "18S",
-        cluster_type = "otu",
-        colname_prefix = "X18S_TGP_",
-        folder = "/clean_data"
-    )
-amf
+# its <- 
+#     etl(
+#         spe = its_otu,
+#         taxa = its_taxa,
+#         samps = 6,
+#         traits = traits,
+#         varname = otu_num,
+#         gene = "ITS",
+#         cluster_type = "otu",
+#         colname_prefix = "ITS_TGP_",
+#         folder = "/clean_data"
+#     )
+# its
+# #+ otu_18S,message=FALSE
+# amf <- 
+#     etl(
+#         spe = amf_otu,
+#         taxa = amf_taxa,
+#         samps = 6,
+#         varname = otu_num,
+#         gene = "18S",
+#         cluster_type = "otu",
+#         colname_prefix = "X18S_TGP_",
+#         folder = "/clean_data"
+#     )
+# amf
 #' 
 #' ## Post-processing 18S data
 #' To produce a UNIFRAC distance table, the trimmed table `amf$spe_rfy` must be 
@@ -261,18 +261,21 @@ amf
 #+ import_sites,message=FALSE
 sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE)
 #+ wrangle_amf_spe
-amf_export <- 
-    data.frame(
-        sites %>% 
-            select(field_key, field_name) %>% 
-            left_join(amf$spe_rfy, by = join_by(field_key)) %>% 
-            select(-field_key),
-        row.names = 1
-    ) %>% 
-    t() %>% 
-    as.data.frame() %>% 
-    rownames_to_column(var = "otu_num") %>% 
-    left_join(amf$spe_rfy_meta %>% select(otu_num, otu_ID), by = join_by(otu_num)) %>% 
-    select(otu_ID, everything(), -otu_num)
-write_tsv(amf_export, paste0(getwd(), "/otu_tables/18S/spe_18S_rfy_export.tsv"))
-
+# amf_export <- 
+#     data.frame(
+#         sites %>% 
+#             select(field_key, field_name) %>% 
+#             left_join(amf$spe_rfy, by = join_by(field_key)) %>% 
+#             select(-field_key),
+#         row.names = 1
+#     ) %>% 
+#     t() %>% 
+#     as.data.frame() %>% 
+#     rownames_to_column(var = "otu_num") %>% 
+#     left_join(amf$spe_rfy_meta %>% select(otu_num, otu_ID), by = join_by(otu_num)) %>% 
+#     select(otu_ID, everything(), -otu_num)
+# write_tsv(amf_export, paste0(getwd(), "/otu_tables/18S/spe_18S_rfy_export.tsv"))
+#' 
+#' The processing functions above are commented out so that new tables aren't produced every time
+#' this script is run. New tables create many cascading changes which are nuisances (like axis limits) 
+#' but do not change any interpretation. 
