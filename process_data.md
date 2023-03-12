@@ -262,193 +262,33 @@ Schema:
 `process_qiime(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, colname_prefix, folder)`
 
 ``` r
-its <- 
-    etl(
-        spe = its_otu,
-        taxa = its_taxa,
-        samps = 6,
-        traits = traits,
-        varname = otu_num,
-        gene = "ITS",
-        cluster_type = "otu",
-        colname_prefix = "ITS_TGP_",
-        folder = "/clean_data"
-    )
-its
+# its <- 
+#     etl(
+#         spe = its_otu,
+#         taxa = its_taxa,
+#         samps = 6,
+#         traits = traits,
+#         varname = otu_num,
+#         gene = "ITS",
+#         cluster_type = "otu",
+#         colname_prefix = "ITS_TGP_",
+#         folder = "/clean_data"
+#     )
+# its
+# #+ otu_18S,message=FALSE
+# amf <- 
+#     etl(
+#         spe = amf_otu,
+#         taxa = amf_taxa,
+#         samps = 6,
+#         varname = otu_num,
+#         gene = "18S",
+#         cluster_type = "otu",
+#         colname_prefix = "X18S_TGP_",
+#         folder = "/clean_data"
+#     )
+# amf
 ```
-
-    ## $spe_raw_meta
-    ## # A tibble: 2,795 × 9
-    ##    otu_num otu_ID                phylum class order family genus species prima…¹
-    ##    <chr>   <chr>                 <chr>  <chr> <chr> <chr>  <chr> <chr>   <chr>  
-    ##  1 otu_1   352d386293a59777de3e… Ascom… Sord… Hypo… Nectr… Fusa… Fusari… plant_…
-    ##  2 otu_2   a78342f18e3db5624f3d… Morti… Mort… Mort… Morti… Mort… Mortie… soil_s…
-    ##  3 otu_3   dabfbac17ada76765b6d… Ascom… Sord… Glom… Plect… Gibe… <NA>    plant_…
-    ##  4 otu_4   bdee5c3cbce33c88a5e8… Ascom… Euro… Chae… Herpo… unid… uniden… <NA>   
-    ##  5 otu_5   73514f6e23fa430c5127… Ascom… Sord… Hypo… Nectr… <NA>  <NA>    <NA>   
-    ##  6 otu_6   c92d481c3f8ce88e480e… Ascom… Doth… Pleo… Didym… <NA>  <NA>    <NA>   
-    ##  7 otu_7   204f1bd97debac4d9c56… Ascom… Doth… Pleo… Peric… Peri… <NA>    plant_…
-    ##  8 otu_8   0ab6be0adca17efdd24e… Ascom… Euro… Chae… Herpo… unid… uniden… <NA>   
-    ##  9 otu_9   3c7865fa957956fc9c7f… Basid… Trem… Cyst… Mraki… Taus… Tauson… soil_s…
-    ## 10 otu_10  caa87147e44034b05364… Ascom… <NA>  <NA>  <NA>   <NA>  <NA>    <NA>   
-    ## # … with 2,785 more rows, and abbreviated variable name ¹​primary_lifestyle
-    ## 
-    ## $spe_raw
-    ## # A tibble: 25 × 2,796
-    ##    field_key otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10 otu_11
-    ##        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>
-    ##  1         1  1043  1231    68  2346   196  1247  3507   274     0    542      0
-    ##  2         2  3256  1921  1062    92   695    65   509     0     0   2039     90
-    ##  3         3   404     7   361     0   628   312   193     0    30      0    497
-    ##  4         4  1695     0     5     0  1471  2439  1562     0     0    860      0
-    ##  5         5   542   123   527     0  1435  3396  5575     0    50   1248    147
-    ##  6         6  1369   409   235     0   635   689  1312     0  3778      0   2675
-    ##  7         7  1235  1324  1244     9   697  2970    98     0  8845      0    312
-    ##  8         8  1760   601   744  1395   615  1118  1398     0    38   1469    108
-    ##  9         9  2199  1453  1181     0   220  1503  1054    27     0    611     79
-    ## 10        10   842   848   962   521   214   834  1114  1721     0    256     34
-    ## # … with 15 more rows, and 2,784 more variables: otu_12 <dbl>, otu_13 <dbl>,
-    ## #   otu_14 <dbl>, otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>,
-    ## #   otu_19 <dbl>, otu_20 <dbl>, otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>,
-    ## #   otu_24 <dbl>, otu_25 <dbl>, otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>,
-    ## #   otu_29 <dbl>, otu_30 <dbl>, otu_31 <dbl>, otu_32 <dbl>, otu_33 <dbl>,
-    ## #   otu_34 <dbl>, otu_35 <dbl>, otu_36 <dbl>, otu_37 <dbl>, otu_38 <dbl>,
-    ## #   otu_39 <dbl>, otu_40 <dbl>, otu_41 <dbl>, otu_42 <dbl>, otu_43 <dbl>, …
-    ## 
-    ## $spe_rfy_meta
-    ## # A tibble: 2,740 × 9
-    ##    otu_num otu_ID                phylum class order family genus species prima…¹
-    ##    <chr>   <chr>                 <chr>  <chr> <chr> <chr>  <chr> <chr>   <chr>  
-    ##  1 otu_1   352d386293a59777de3e… Ascom… Sord… Hypo… Nectr… Fusa… Fusari… plant_…
-    ##  2 otu_2   a78342f18e3db5624f3d… Morti… Mort… Mort… Morti… Mort… Mortie… soil_s…
-    ##  3 otu_3   dabfbac17ada76765b6d… Ascom… Sord… Glom… Plect… Gibe… <NA>    plant_…
-    ##  4 otu_4   bdee5c3cbce33c88a5e8… Ascom… Euro… Chae… Herpo… unid… uniden… <NA>   
-    ##  5 otu_5   73514f6e23fa430c5127… Ascom… Sord… Hypo… Nectr… <NA>  <NA>    <NA>   
-    ##  6 otu_6   c92d481c3f8ce88e480e… Ascom… Doth… Pleo… Didym… <NA>  <NA>    <NA>   
-    ##  7 otu_7   204f1bd97debac4d9c56… Ascom… Doth… Pleo… Peric… Peri… <NA>    plant_…
-    ##  8 otu_8   0ab6be0adca17efdd24e… Ascom… Euro… Chae… Herpo… unid… uniden… <NA>   
-    ##  9 otu_9   3c7865fa957956fc9c7f… Basid… Trem… Cyst… Mraki… Taus… Tauson… soil_s…
-    ## 10 otu_10  caa87147e44034b05364… Ascom… <NA>  <NA>  <NA>   <NA>  <NA>    <NA>   
-    ## # … with 2,730 more rows, and abbreviated variable name ¹​primary_lifestyle
-    ## 
-    ## $spe_rfy
-    ## # A tibble: 25 × 2,741
-    ##    field_key otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10 otu_11
-    ##        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>
-    ##  1         1  1043  1231    68  2346   196  1247  3507   274     0    542      0
-    ##  2         2  2884  1711   915    84   619    59   458     0     0   1805     79
-    ##  3         3   349     5   305     0   546   267   174     0    24      0    427
-    ##  4         4  1607     0     5     0  1400  2312  1492     0     0    827      0
-    ##  5         5   439    98   424     0  1159  2776  4547     0    45   1008    119
-    ##  6         6  1043   304   172     0   468   505   942     0  2777      0   1982
-    ##  7         7  1049  1124  1058     7   602  2504    82     0  7414      0    281
-    ##  8         8  1432   484   589  1147   522   921  1139     0    33   1211     88
-    ##  9         9  1518  1017   831     0   159  1031   725    18     0    410     52
-    ## 10        10   712   714   816   437   188   705   937  1432     0    204     31
-    ## # … with 15 more rows, and 2,729 more variables: otu_12 <dbl>, otu_13 <dbl>,
-    ## #   otu_14 <dbl>, otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>,
-    ## #   otu_19 <dbl>, otu_20 <dbl>, otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>,
-    ## #   otu_24 <dbl>, otu_25 <dbl>, otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>,
-    ## #   otu_29 <dbl>, otu_30 <dbl>, otu_31 <dbl>, otu_32 <dbl>, otu_33 <dbl>,
-    ## #   otu_34 <dbl>, otu_35 <dbl>, otu_36 <dbl>, otu_37 <dbl>, otu_38 <dbl>,
-    ## #   otu_39 <dbl>, otu_40 <dbl>, otu_41 <dbl>, otu_42 <dbl>, otu_43 <dbl>, …
-    ## 
-    ## $depth_rfy
-    ## [1] 45478
-
-``` r
-amf <- 
-    etl(
-        spe = amf_otu,
-        taxa = amf_taxa,
-        samps = 6,
-        varname = otu_num,
-        gene = "18S",
-        cluster_type = "otu",
-        colname_prefix = "X18S_TGP_",
-        folder = "/clean_data"
-    )
-amf
-```
-
-    ## $spe_raw_meta
-    ## # A tibble: 147 × 8
-    ##    otu_num otu_ID                         class order family genus taxon acces…¹
-    ##    <chr>   <chr>                          <chr> <chr> <chr>  <chr> <chr> <chr>  
-    ##  1 otu_1   320f3edc7b48ba5691766ccc71b0d… Glom… Glom… Glome… Glom… Glom… VTX002…
-    ##  2 otu_2   97cefc055a2fa1b8caf5b81635b3f… Glom… Glom… Glome… Glom… Glom… VTX001…
-    ##  3 otu_3   2c47b9acb976f06611bddfe10f97e… Para… Para… Parag… Para… <NA>  <NA>   
-    ##  4 otu_4   7487be824e0acea7ee8c22b94f137… Glom… Glom… Glome… Glom… Glom… VTX001…
-    ##  5 otu_5   e8cbf85e2f78be8ff21c0c3e0f509… Glom… Glom… Glome… Glom… <NA>  <NA>   
-    ##  6 otu_6   87ff74cc0f55f12dc4056a4a8a2c7… Glom… Glom… Claro… Clar… <NA>  <NA>   
-    ##  7 otu_7   f10a50b1220da2d3e275f9772b3c2… Glom… Glom… Glome… Glom… Glom… VTX002…
-    ##  8 otu_8   0d508e08bf3048aa561e7c9d96e3b… Glom… Glom… Glome… Glom… Glom… VTX003…
-    ##  9 otu_9   4a4251fdd8c94240584c5d4ff6aeb… Glom… Glom… Glome… Glom… Glom… VTX002…
-    ## 10 otu_10  210c71717f87c8e4912431ed98b55… Glom… Glom… Claro… Clar… Clar… VTX000…
-    ## # … with 137 more rows, and abbreviated variable name ¹​accession
-    ## 
-    ## $spe_raw
-    ## # A tibble: 25 × 148
-    ##    field_key otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10 otu_11
-    ##        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>
-    ##  1         1   448  1449  1491   297  3244   680   946  2155    87    154   1485
-    ##  2         2  4071    25  8546     0  3449  1276   462     0  1400   1187      0
-    ##  3         3    44   345    31  3448  1341   555  1489     0   570     25      0
-    ##  4         4  2493  3480     0  1223  1109  1222   416  1616  4457   1313    565
-    ##  5         5   726  2861    27    58  3854  1447   664    18  2196   2621    123
-    ##  6         6   725   125  6271  4679  1467   965  2782     5   725    149      6
-    ##  7         7    16     0  1547  1294  5483   283    67   112    67      0      0
-    ##  8         8  2082  2001   425   624  1657  1503  2228   919   941   2343   3033
-    ##  9         9   629  2585   211  2490   487   452  1593  3743  1811   1380   4372
-    ## 10        10  1829  1192   165  1596    96   649  1627  4344   228    730   1551
-    ## # … with 15 more rows, and 136 more variables: otu_12 <dbl>, otu_13 <dbl>,
-    ## #   otu_14 <dbl>, otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>,
-    ## #   otu_19 <dbl>, otu_20 <dbl>, otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>,
-    ## #   otu_24 <dbl>, otu_25 <dbl>, otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>,
-    ## #   otu_29 <dbl>, otu_30 <dbl>, otu_31 <dbl>, otu_32 <dbl>, otu_33 <dbl>,
-    ## #   otu_34 <dbl>, otu_35 <dbl>, otu_36 <dbl>, otu_37 <dbl>, otu_38 <dbl>,
-    ## #   otu_39 <dbl>, otu_40 <dbl>, otu_41 <dbl>, otu_42 <dbl>, otu_43 <dbl>, …
-    ## 
-    ## $spe_rfy_meta
-    ## # A tibble: 145 × 8
-    ##    otu_num otu_ID                         class order family genus taxon acces…¹
-    ##    <chr>   <chr>                          <chr> <chr> <chr>  <chr> <chr> <chr>  
-    ##  1 otu_1   320f3edc7b48ba5691766ccc71b0d… Glom… Glom… Glome… Glom… Glom… VTX002…
-    ##  2 otu_2   97cefc055a2fa1b8caf5b81635b3f… Glom… Glom… Glome… Glom… Glom… VTX001…
-    ##  3 otu_3   2c47b9acb976f06611bddfe10f97e… Para… Para… Parag… Para… <NA>  <NA>   
-    ##  4 otu_4   7487be824e0acea7ee8c22b94f137… Glom… Glom… Glome… Glom… Glom… VTX001…
-    ##  5 otu_5   e8cbf85e2f78be8ff21c0c3e0f509… Glom… Glom… Glome… Glom… <NA>  <NA>   
-    ##  6 otu_6   87ff74cc0f55f12dc4056a4a8a2c7… Glom… Glom… Claro… Clar… <NA>  <NA>   
-    ##  7 otu_7   f10a50b1220da2d3e275f9772b3c2… Glom… Glom… Glome… Glom… Glom… VTX002…
-    ##  8 otu_8   0d508e08bf3048aa561e7c9d96e3b… Glom… Glom… Glome… Glom… Glom… VTX003…
-    ##  9 otu_9   4a4251fdd8c94240584c5d4ff6aeb… Glom… Glom… Glome… Glom… Glom… VTX002…
-    ## 10 otu_10  210c71717f87c8e4912431ed98b55… Glom… Glom… Claro… Clar… Clar… VTX000…
-    ## # … with 135 more rows, and abbreviated variable name ¹​accession
-    ## 
-    ## $spe_rfy
-    ## # A tibble: 25 × 146
-    ##    field_key otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10 otu_11
-    ##        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>
-    ##  1         1   383  1208  1266   254  2738   566   783  1804    76    131   1246
-    ##  2         2  2041    13  4165     0  1671   622   221     0   689    585      0
-    ##  3         3    30   232    16  2293   873   357   949     0   378     13      0
-    ##  4         4  1403  1949     0   685   621   745   236   893  2537    753    320
-    ##  5         5   371  1412    11    26  1918   717   341    10  1058   1270     59
-    ##  6         6   369    70  3407  2471   778   525  1475     4   377     78      3
-    ##  7         7    11     0  1060   882  3711   197    44    76    49      0      0
-    ##  8         8  1036   983   212   304   870   789  1175   465   464   1199   1551
-    ##  9         9   351  1540   127  1429   303   283   940  2208  1091    781   2519
-    ## 10        10  1340   883   124  1166    69   488  1243  3200   164    553   1158
-    ## # … with 15 more rows, and 134 more variables: otu_12 <dbl>, otu_13 <dbl>,
-    ## #   otu_14 <dbl>, otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>,
-    ## #   otu_19 <dbl>, otu_20 <dbl>, otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>,
-    ## #   otu_24 <dbl>, otu_25 <dbl>, otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>,
-    ## #   otu_29 <dbl>, otu_30 <dbl>, otu_31 <dbl>, otu_32 <dbl>, otu_33 <dbl>,
-    ## #   otu_34 <dbl>, otu_35 <dbl>, otu_36 <dbl>, otu_37 <dbl>, otu_38 <dbl>,
-    ## #   otu_39 <dbl>, otu_40 <dbl>, otu_41 <dbl>, otu_42 <dbl>, otu_43 <dbl>, …
-    ## 
-    ## $depth_rfy
-    ## [1] 16611
 
 ## Post-processing 18S data
 
@@ -466,18 +306,23 @@ sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FAL
 ```
 
 ``` r
-amf_export <- 
-    data.frame(
-        sites %>% 
-            select(field_key, field_name) %>% 
-            left_join(amf$spe_rfy, by = join_by(field_key)) %>% 
-            select(-field_key),
-        row.names = 1
-    ) %>% 
-    t() %>% 
-    as.data.frame() %>% 
-    rownames_to_column(var = "otu_num") %>% 
-    left_join(amf$spe_rfy_meta %>% select(otu_num, otu_ID), by = join_by(otu_num)) %>% 
-    select(otu_ID, everything(), -otu_num)
-write_tsv(amf_export, paste0(getwd(), "/otu_tables/18S/spe_18S_rfy_export.tsv"))
+# amf_export <- 
+#     data.frame(
+#         sites %>% 
+#             select(field_key, field_name) %>% 
+#             left_join(amf$spe_rfy, by = join_by(field_key)) %>% 
+#             select(-field_key),
+#         row.names = 1
+#     ) %>% 
+#     t() %>% 
+#     as.data.frame() %>% 
+#     rownames_to_column(var = "otu_num") %>% 
+#     left_join(amf$spe_rfy_meta %>% select(otu_num, otu_ID), by = join_by(otu_num)) %>% 
+#     select(otu_ID, everything(), -otu_num)
+# write_tsv(amf_export, paste0(getwd(), "/otu_tables/18S/spe_18S_rfy_export.tsv"))
 ```
+
+The processing functions above are commented out so that new tables
+aren’t produced every time this script is run. New tables create many
+cascading changes which are nuisances (like axis limits) but do not
+change any interpretation.
