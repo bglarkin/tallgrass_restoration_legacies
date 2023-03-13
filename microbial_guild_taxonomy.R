@@ -825,6 +825,7 @@ guiltime("soil_saprotroph")
 #' #### Diversity
 #+ ssap_filgu
 ssap <- filgu(spe$its_rfy, meta$its_rfy, primary_lifestyle, "soil_saprotroph", sites)
+#' Out of 2752 OTUs, 249 are in this group.
 #' Most OTUs contain few sequences, but several range from hundreds to 25,000 sequences.
 #' The 25 samples are all retained, and vary from 4000 to 14000 sequences. None are so small that 
 #' results would be biased by poor representation bias from being rarefied.
@@ -844,7 +845,7 @@ ssap_comp <- gudicom(ssap_div, ssap$filspeTaxa, "soil_saprotroph")
 #' different than the other two, but remnants do appear somewhat intermediate. *Mortierellales* appear less 
 #' in remnants than corn or former corn fields.
 #' 
-#' *Agarics* generally decrease over time and *Geminibasidiales* increase.
+#' *Agarics* generally decrease over time and *Geoglossales* increase.
 #' 
 #' Soil saprotrophs remain an interesting guild. 
 #' 
@@ -895,6 +896,7 @@ guiltime("plant_pathogen")
 #' #### Diversity
 #+ ppat_filgu
 ppat <- filgu(spe$its_rfy, meta$its_rfy, primary_lifestyle, "plant_pathogen", sites)
+#' Out of 2752 OTUs, 159 are in this group. 
 #' All samples are retained and contain 2000-12000 sequences, so none are so limited as to bias 
 #' results. 
 #+ ppat_div
@@ -961,6 +963,7 @@ guiltime("wood_saprotroph")
 #' #### Diversity
 #+ wsap_filgu
 wsap <- filgu(spe$its_rfy, meta$its_rfy, primary_lifestyle, "wood_saprotroph", sites)
+#' Out of 2752 OTUs, 120 are in this group. 
 #' Samples contain 800-4400 sequences. Sequence depth is low; these aren't abundant or numerous taxa.
 #' Only 123 OTUs comprise this group. 
 #+ wsap_div
@@ -974,7 +977,8 @@ wasp_comp <- gudicom(wsap_div, wsap$filspeTaxa, "wood_saprotroph", other_thresho
 #' they declined when characterized as wood saprotrophs.
 #' 
 #' Notable changes in composition are evident over time. *Tubeufiales* declines with time
-#' since restoration; *Hypocreales* increases. 
+#' since restoration; *Hypocreales* increases. *Pleosporales* also appear to increase, but 
+#' the colors are difficult to discern. Remember to look at tabular data.  
 #' 
 #' #### Indicators
 #+ wsap_inspan
@@ -1016,6 +1020,7 @@ guiltime("litter_saprotroph")
 #' #### Diversity
 #+ lsap_filgu
 lsap <- filgu(spe$its_rfy, meta$its_rfy, primary_lifestyle, "litter_saprotroph", sites)
+#' Out of 2752 OTUs, 139 are in this group. 
 #' Slightly more numerous than the wood saprotrophs, but similarly not abundant or numerous. Recall that 
 #' when this group was rarefied in the guild, sampling depth was 297, or an order of magnitude less 
 #' than what we have here. Several OTUs were lost. 
@@ -1273,4 +1278,5 @@ ggplot(rrfd_compare %>% filter(hill_index %in% c("N0", "N1", "N2")), aes(x = pre
     theme_bw()
 
 # Dont do amf
-# s axis sequence abundance, y axis richness
+# x axis sequence abundance, y axis richness
+
