@@ -2,7 +2,7 @@ Database assembly: species data
 ================
 Beau Larkin
 
-Last updated: 11 March, 2023
+Last updated: 12 March, 2023
 
 - <a href="#description" id="toc-description">Description</a>
   - <a href="#its-data-all-fungi" id="toc-its-data-all-fungi">ITS data (all
@@ -262,7 +262,7 @@ Schema:
 `process_qiime(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, colname_prefix, folder)`
 
 ``` r
-# its <- 
+# its <-
 #     etl(
 #         spe = its_otu,
 #         taxa = its_taxa,
@@ -276,7 +276,7 @@ Schema:
 #     )
 # its
 # #+ otu_18S,message=FALSE
-# amf <- 
+# amf <-
 #     etl(
 #         spe = amf_otu,
 #         taxa = amf_taxa,
@@ -306,18 +306,18 @@ sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FAL
 ```
 
 ``` r
-# amf_export <- 
+# amf_export <-
 #     data.frame(
-#         sites %>% 
-#             select(field_key, field_name) %>% 
-#             left_join(amf$spe_rfy, by = join_by(field_key)) %>% 
+#         sites %>%
+#             select(field_key, field_name) %>%
+#             left_join(amf$spe_rfy, by = join_by(field_key)) %>%
 #             select(-field_key),
 #         row.names = 1
-#     ) %>% 
-#     t() %>% 
-#     as.data.frame() %>% 
-#     rownames_to_column(var = "otu_num") %>% 
-#     left_join(amf$spe_rfy_meta %>% select(otu_num, otu_ID), by = join_by(otu_num)) %>% 
+#     ) %>%
+#     t() %>%
+#     as.data.frame() %>%
+#     rownames_to_column(var = "otu_num") %>%
+#     left_join(amf$spe_rfy_meta %>% select(otu_num, otu_ID), by = join_by(otu_num)) %>%
 #     select(otu_ID, everything(), -otu_num)
 # write_tsv(amf_export, paste0(getwd(), "/otu_tables/18S/spe_18S_rfy_export.tsv"))
 ```
