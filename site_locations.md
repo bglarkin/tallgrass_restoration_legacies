@@ -2,7 +2,7 @@ Site locations, metadata, and climate
 ================
 Beau Larkin
 
-Last updated: 12 March, 2023
+Last updated: 13 March, 2023
 
 - <a href="#description" id="toc-description">Description</a>
 - <a href="#package-and-library-installation"
