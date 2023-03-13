@@ -132,7 +132,7 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
             select(-Confidence)
     }
 
-    spe_topn <-
+    spe_t <-
         data.frame(
             data %>%
                 mutate(!!varname := paste0(cluster_type, "_", row_number())) %>%
@@ -143,21 +143,27 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
         as.data.frame() %>%
         rownames_to_column() %>%
         mutate(rowname = str_remove(rowname, colname_prefix)) %>%
-        separate_wider_delim(cols = rowname, delim = "_", names = c("field_key", NA)) %>%
-        select(field_key, everything()) %>%
+        separate_wider_delim(cols = rowname, delim = "_", names = c("field_key", "sample"))
+    
+    spe_topn <- 
+        spe_t %>%
         mutate(sum = rowSums(across(starts_with(cluster_type)))) %>%
-        group_by(field_key) %>%
+        group_by(field_key) %>% 
         slice_max(sum, n=samps) %>%
-        select(-sum) %>%
-        summarize(across(starts_with("otu"), ~ sum(.x)), .groups = "drop") %>%
+        select(-sum)
+    
+    spe_topn_sum <- 
+        spe_topn %>% 
+        group_by(field_key) %>% 
+        summarize(across(starts_with(cluster_type), ~ sum(.x)), .groups = "drop") %>%
         mutate(field_key = as.numeric(field_key)) %>% 
         arrange(field_key)
     
-    zero_otu <- which(apply(spe_topn, 2, sum) == 0)
+    zero_otu <- which(apply(spe_topn_sum, 2, sum) == 0)
     if(length(zero_otu) == 0) {
-        spe_raw <- spe_topn
+        spe_raw <- spe_topn_sum
     } else {
-        spe_raw <- spe_topn[, -zero_otu]
+        spe_raw <- spe_topn_sum[, -zero_otu]
     }
     
     spe_sum <-
@@ -188,10 +194,12 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     meta_raw <- meta %>% filter(!(otu_num %in% names(zero_otu)))
     meta_rfy <- meta_raw %>% filter(!(otu_num %in% names(single_zero_otus)))
     
-    write_csv(meta_raw, paste0(getwd(), folder, "/spe_", gene, "_raw_taxonomy.csv"))
-    write_csv(spe_raw, paste0(getwd(), folder, "/spe_", gene, "_raw.csv"))
-    write_csv(meta_rfy, paste0(getwd(), folder, "/spe_", gene, "_rfy_taxonomy.csv"))
-    write_csv(spe_rfy, paste0(getwd(), folder, "/spe_", gene, "_rfy.csv"))
+    # write_csv(spe_t, paste0(getwd(), folder, "/spe_", gene, "_raw_samps_all.csv"))
+    # write_csv(spe_topn, paste0(getwd(), folder, "/spe_", gene, "_raw_samps_topn.csv"))
+    # write_csv(meta_raw, paste0(getwd(), folder, "/spe_", gene, "_raw_taxonomy.csv"))
+    # write_csv(spe_raw, paste0(getwd(), folder, "/spe_", gene, "_raw.csv"))
+    # write_csv(meta_rfy, paste0(getwd(), folder, "/spe_", gene, "_rfy_taxonomy.csv"))
+    # write_csv(spe_rfy, paste0(getwd(), folder, "/spe_", gene, "_rfy.csv"))
     
     out <- list(
         spe_raw_meta = meta_raw,
@@ -222,32 +230,35 @@ traits   <- read_csv(paste0(getwd(),   "/otu_tables/2023-02-23_fungal_traits.csv
 #' ## ETL using `etl()`
 #' Schema: `process_qiime(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, colname_prefix, folder)`
 #+ otu_its,message=FALSE
-# its <-
-#     etl(
-#         spe = its_otu,
-#         taxa = its_taxa,
-#         samps = 6,
-#         traits = traits,
-#         varname = otu_num,
-#         gene = "ITS",
-#         cluster_type = "otu",
-#         colname_prefix = "ITS_TGP_",
-#         folder = "/clean_data"
-#     )
-# its
-# #+ otu_18S,message=FALSE
-# amf <-
-#     etl(
-#         spe = amf_otu,
-#         taxa = amf_taxa,
-#         samps = 6,
-#         varname = otu_num,
-#         gene = "18S",
-#         cluster_type = "otu",
-#         colname_prefix = "X18S_TGP_",
-#         folder = "/clean_data"
-#     )
-# amf
+its <-
+    etl(
+        spe = its_otu,
+        taxa = its_taxa,
+        samps = 6,
+        traits = traits,
+        varname = otu_num,
+        gene = "ITS",
+        cluster_type = "otu",
+        colname_prefix = "ITS_TGP_",
+        folder = "/clean_data"
+    )
+its
+
+its$spe_rfy %>% select(-starts_with("otu")) %>% colnames(.)
+
+#+ otu_18S,message=FALSE
+amf <-
+    etl(
+        spe = amf_otu,
+        taxa = amf_taxa,
+        samps = 6,
+        varname = otu_num,
+        gene = "18S",
+        cluster_type = "otu",
+        colname_prefix = "X18S_TGP_",
+        folder = "/clean_data"
+    )
+amf
 #' 
 #' ## Post-processing 18S data
 #' To produce a UNIFRAC distance table, the trimmed table `amf$spe_rfy` must be 
@@ -261,21 +272,17 @@ traits   <- read_csv(paste0(getwd(),   "/otu_tables/2023-02-23_fungal_traits.csv
 #+ import_sites,message=FALSE
 sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE)
 #+ wrangle_amf_spe
-# amf_export <-
-#     data.frame(
-#         sites %>%
-#             select(field_key, field_name) %>%
-#             left_join(amf$spe_rfy, by = join_by(field_key)) %>%
-#             select(-field_key),
-#         row.names = 1
-#     ) %>%
-#     t() %>%
-#     as.data.frame() %>%
-#     rownames_to_column(var = "otu_num") %>%
-#     left_join(amf$spe_rfy_meta %>% select(otu_num, otu_ID), by = join_by(otu_num)) %>%
-#     select(otu_ID, everything(), -otu_num)
-# write_tsv(amf_export, paste0(getwd(), "/otu_tables/18S/spe_18S_rfy_export.tsv"))
-#' 
-#' The processing functions above are commented out so that new tables aren't produced every time
-#' this script is run. New tables create many cascading changes which are nuisances (like axis limits) 
-#' but do not change any interpretation. 
+amf_export <-
+    data.frame(
+        sites %>%
+            select(field_key, field_name) %>%
+            left_join(amf$spe_rfy, by = join_by(field_key)) %>%
+            select(-field_key),
+        row.names = 1
+    ) %>%
+    t() %>%
+    as.data.frame() %>%
+    rownames_to_column(var = "otu_num") %>%
+    left_join(amf$spe_rfy_meta %>% select(otu_num, otu_ID), by = join_by(otu_num)) %>%
+    select(otu_ID, everything(), -otu_num)
+write_tsv(amf_export, paste0(getwd(), "/otu_tables/18S/spe_18S_rfy_export.tsv"))
