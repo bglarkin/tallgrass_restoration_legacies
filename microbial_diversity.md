@@ -2,7 +2,7 @@ Microbial data: overview of data, diversity statistics
 ================
 Beau Larkin
 
-Last updated: 12 March, 2023
+Last updated: 13 March, 2023
 
 - <a href="#description" id="toc-description">Description</a>
 - <a href="#packages-and-libraries"
@@ -90,7 +90,8 @@ conflict_prefer("select", "dplyr")
 
 ## Sites-species tables
 
-CSV files were produced in `process_data.R`
+List *spe* holds average sequence abundances for the top 6 samples per
+field. CSV files were produced in `process_data.R`
 
 ``` r
 spe <- list(
@@ -103,6 +104,14 @@ spe <- list(
     amf_rfy = read_csv(paste0(getwd(), "/clean_data/spe_18S_rfy.csv"), 
                        show_col_types = FALSE)
 )
+```
+
+Object *its_samp* holds raw sequence abundances for each sample. Used
+here for species accumulation.
+
+``` r
+# its_samp  <- read_delim(paste0(getwd(), "/otu_tables/ITS/ITS_otu_raw.txt"), 
+#                        show_col_types = FALSE)
 ```
 
 ## Site metadata and design
@@ -224,7 +233,7 @@ Map(function(x) ncol(x)-1, spe)
     ## [1] 2795
     ## 
     ## $its_rfy
-    ## [1] 2752
+    ## [1] 2750
     ## 
     ## $amf_raw
     ## [1] 147
@@ -284,15 +293,15 @@ test_diversity(div$its_rfy)
     ## Formula: value ~ field_type + (1 | region)
     ##    Data: mod_data
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  266.4322  272.5266 -128.2161  256.4322        20 
+    ##  265.9659  272.0603 -127.9830  255.9659        20 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept) 35.30   
-    ##  Residual             35.05   
+    ##  region   (Intercept) 35.95   
+    ##  Residual             34.57   
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ##        (Intercept)  field_typerestored   field_typeremnant  
-    ##             337.68               74.95              106.07  
+    ##             336.53               76.69              105.47  
     ## 
     ## ---------------------------------
     ## 
@@ -300,15 +309,15 @@ test_diversity(div$its_rfy)
     ## Formula: value ~ 1 + (1 | region)
     ##    Data: mod_data
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  278.3478  282.0044 -136.1739  272.3478        22 
+    ##  278.3308  281.9874 -136.1654  272.3308        22 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept) 29.85   
-    ##  Residual             51.49   
+    ##  region   (Intercept) 30.66   
+    ##  Residual             51.31   
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ## (Intercept)  
-    ##       402.6  
+    ##       402.4  
     ## 
     ## ---------------------------------
     ## 
@@ -317,8 +326,8 @@ test_diversity(div$its_rfy)
     ## mmod_null: value ~ 1 + (1 | region)
     ## mmod: value ~ field_type + (1 | region)
     ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)    
-    ## mmod_null    3 278.35 282.00 -136.17   272.35                         
-    ## mmod         5 266.43 272.53 -128.22   256.43 15.915  2  0.0003499 ***
+    ## mmod_null    3 278.33 281.99 -136.16   272.33                         
+    ## mmod         5 265.97 272.06 -127.98   255.97 16.365  2  0.0002795 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -329,9 +338,9 @@ test_diversity(div$its_rfy)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate
-    ## restored - corn == 0       74.95
-    ## remnant - corn == 0       106.07
-    ## remnant - restored == 0    31.12
+    ## restored - corn == 0       76.69
+    ## remnant - corn == 0       105.47
+    ## remnant - restored == 0    28.78
     ## 
     ##     corn restored  remnant 
     ##      "a"      "b"      "b" 
@@ -346,15 +355,15 @@ test_diversity(div$its_rfy)
     ## Formula: value ~ field_type + (1 | region)
     ##    Data: mod_data
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  223.2386  229.3330 -106.6193  213.2386        20 
+    ##  223.0252  229.1195 -106.5126  213.0252        20 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept)  7.396  
-    ##  Residual             16.142  
+    ##  region   (Intercept)  7.229  
+    ##  Residual             16.101  
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ##        (Intercept)  field_typerestored   field_typeremnant  
-    ##              76.89               24.22               27.97  
+    ##              76.90               24.18               27.78  
     ## 
     ## ---------------------------------
     ## 
@@ -362,15 +371,15 @@ test_diversity(div$its_rfy)
     ## Formula: value ~ 1 + (1 | region)
     ##    Data: mod_data
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  227.2293  230.8860 -110.6147  221.2293        22 
+    ##  227.0132  230.6698 -110.5066  221.0132        22 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept)  6.309  
-    ##  Residual             19.422  
+    ##  region   (Intercept)  6.204  
+    ##  Residual             19.354  
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ## (Intercept)  
-    ##       96.41  
+    ##       96.38  
     ## 
     ## ---------------------------------
     ## 
@@ -378,9 +387,9 @@ test_diversity(div$its_rfy)
     ## Models:
     ## mmod_null: value ~ 1 + (1 | region)
     ## mmod: value ~ field_type + (1 | region)
-    ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)  
-    ## mmod_null    3 227.23 230.89 -110.61   221.23                       
-    ## mmod         5 223.24 229.33 -106.62   213.24 7.9907  2     0.0184 *
+    ##           npar    AIC    BIC  logLik deviance Chisq Df Pr(>Chisq)  
+    ## mmod_null    3 227.01 230.67 -110.51   221.01                      
+    ## mmod         5 223.03 229.12 -106.51   213.03 7.988  2    0.01843 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -391,9 +400,9 @@ test_diversity(div$its_rfy)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate
-    ## restored - corn == 0      24.219
-    ## remnant - corn == 0       27.965
-    ## remnant - restored == 0    3.746
+    ## restored - corn == 0      24.185
+    ## remnant - corn == 0       27.776
+    ## remnant - restored == 0    3.591
     ## 
     ##     corn restored  remnant 
     ##      "a"      "b"      "b" 
@@ -408,15 +417,15 @@ test_diversity(div$its_rfy)
     ## Formula: value ~ field_type + (1 | region)
     ##    Data: mod_data
     ##      AIC      BIC   logLik deviance df.resid 
-    ## 205.6551 211.7495 -97.8276 195.6551       20 
+    ## 205.2793 211.3737 -97.6397 195.2793       20 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept)  3.031  
-    ##  Residual             11.789  
+    ##  region   (Intercept)  2.869  
+    ##  Residual             11.726  
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ##        (Intercept)  field_typerestored   field_typeremnant  
-    ##              37.47               10.96               11.63  
+    ##              37.51               10.88               11.58  
     ## 
     ## ---------------------------------
     ## 
@@ -424,15 +433,15 @@ test_diversity(div$its_rfy)
     ## Formula: value ~ 1 + (1 | region)
     ##    Data: mod_data
     ##      AIC      BIC   logLik deviance df.resid 
-    ## 204.9053 208.5619 -99.4527 198.9053       22 
+    ## 204.5284 208.1850 -99.2642 198.5284       22 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept)  2.065  
-    ##  Residual             12.772  
+    ##  region   (Intercept)  1.968  
+    ##  Residual             12.687  
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ## (Intercept)  
-    ##        46.1  
+    ##       46.09  
     ## 
     ## ---------------------------------
     ## 
@@ -440,9 +449,9 @@ test_diversity(div$its_rfy)
     ## Models:
     ## mmod_null: value ~ 1 + (1 | region)
     ## mmod: value ~ field_type + (1 | region)
-    ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)
-    ## mmod_null    3 204.91 208.56 -99.453   198.91                     
-    ## mmod         5 205.66 211.75 -97.828   195.66 3.2502  2     0.1969
+    ##           npar    AIC    BIC  logLik deviance Chisq Df Pr(>Chisq)
+    ## mmod_null    3 204.53 208.19 -99.264   198.53                    
+    ## mmod         5 205.28 211.37 -97.640   195.28 3.249  2      0.197
     ## 
     ##   General Linear Hypotheses
     ## 
@@ -451,9 +460,9 @@ test_diversity(div$its_rfy)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate
-    ## restored - corn == 0     10.9597
-    ## remnant - corn == 0      11.6286
-    ## remnant - restored == 0   0.6689
+    ## restored - corn == 0     10.8772
+    ## remnant - corn == 0      11.5756
+    ## remnant - restored == 0   0.6984
     ## 
     ##     corn restored  remnant 
     ##      "a"      "a"      "a" 
@@ -470,15 +479,15 @@ test_diversity(div$its_rfy)
     ## Formula: value ~ field_type + (1 | region)
     ##    Data: mod_data
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  -95.6518  -89.5574   52.8259 -105.6518        20 
+    ##  -95.5896  -89.4952   52.7948 -105.5896        20 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
     ##  region   (Intercept) 0.00000 
-    ##  Residual             0.02925 
+    ##  Residual             0.02928 
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ##        (Intercept)  field_typerestored   field_typeremnant  
-    ##            0.22541             0.01412             0.01430  
+    ##            0.22624             0.01308             0.01418  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## 
     ## ---------------------------------
@@ -489,15 +498,15 @@ test_diversity(div$its_rfy)
     ## Formula: value ~ 1 + (1 | region)
     ##    Data: mod_data
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  -98.7317  -95.0750   52.3658 -104.7317        22 
+    ##  -98.7740  -95.1173   52.3870 -104.7740        22 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
     ##  region   (Intercept) 0.00000 
-    ##  Residual             0.02979 
+    ##  Residual             0.02977 
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ## (Intercept)  
-    ##      0.2367  
+    ##      0.2369  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## 
     ## ---------------------------------
@@ -507,8 +516,8 @@ test_diversity(div$its_rfy)
     ## mmod_null: value ~ 1 + (1 | region)
     ## mmod: value ~ field_type + (1 | region)
     ##           npar     AIC     BIC logLik deviance  Chisq Df Pr(>Chisq)
-    ## mmod_null    3 -98.732 -95.075 52.366  -104.73                     
-    ## mmod         5 -95.652 -89.557 52.826  -105.65 0.9201  2     0.6312
+    ## mmod_null    3 -98.774 -95.117 52.387  -104.77                     
+    ## mmod         5 -95.590 -89.495 52.795  -105.59 0.8156  2     0.6651
     ## 
     ##   General Linear Hypotheses
     ## 
@@ -516,10 +525,10 @@ test_diversity(div$its_rfy)
     ## 
     ## 
     ## Linear Hypotheses:
-    ##                          Estimate
-    ## restored - corn == 0    0.0141197
-    ## remnant - corn == 0     0.0143035
-    ## remnant - restored == 0 0.0001838
+    ##                         Estimate
+    ## restored - corn == 0    0.013076
+    ## remnant - corn == 0     0.014175
+    ## remnant - restored == 0 0.001099
     ## 
     ##     corn restored  remnant 
     ##      "a"      "a"      "a" 
@@ -536,15 +545,15 @@ test_diversity(div$its_rfy)
     ## Formula: value ~ field_type + (1 | region)
     ##    Data: mod_data
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ## -104.2282  -98.1338   57.1141 -114.2282        20 
+    ## -104.5845  -98.4901   57.2923 -114.5845        20 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
     ##  region   (Intercept) 0.00000 
-    ##  Residual             0.02464 
+    ##  Residual             0.02446 
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ##        (Intercept)  field_typerestored   field_typeremnant  
-    ##           0.110085            0.004086            0.003523  
+    ##           0.110581            0.003464            0.003535  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## 
     ## ---------------------------------
@@ -555,15 +564,15 @@ test_diversity(div$its_rfy)
     ## Formula: value ~ 1 + (1 | region)
     ##    Data: mod_data
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ## -108.1227 -104.4661   57.0614 -114.1227        22 
+    ## -108.5038 -104.8471   57.2519 -114.5038        22 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept) 0.00000 
-    ##  Residual             0.02469 
+    ##  region   (Intercept) 0.0000  
+    ##  Residual             0.0245  
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ## (Intercept)  
-    ##      0.1133  
+    ##      0.1134  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## 
     ## ---------------------------------
@@ -572,9 +581,9 @@ test_diversity(div$its_rfy)
     ## Models:
     ## mmod_null: value ~ 1 + (1 | region)
     ## mmod: value ~ field_type + (1 | region)
-    ##           npar     AIC      BIC logLik deviance  Chisq Df Pr(>Chisq)
-    ## mmod_null    3 -108.12 -104.466 57.061  -114.12                     
-    ## mmod         5 -104.23  -98.134 57.114  -114.23 0.1055  2     0.9486
+    ##           npar     AIC     BIC logLik deviance  Chisq Df Pr(>Chisq)
+    ## mmod_null    3 -108.50 -104.85 57.252  -114.50                     
+    ## mmod         5 -104.58  -98.49 57.292  -114.58 0.0808  2     0.9604
     ## 
     ##   General Linear Hypotheses
     ## 
@@ -582,10 +591,10 @@ test_diversity(div$its_rfy)
     ## 
     ## 
     ## Linear Hypotheses:
-    ##                           Estimate
-    ## restored - corn == 0     0.0040860
-    ## remnant - corn == 0      0.0035227
-    ## remnant - restored == 0 -0.0005633
+    ##                          Estimate
+    ## restored - corn == 0    0.0034636
+    ## remnant - corn == 0     0.0035352
+    ## remnant - restored == 0 0.0000716
     ## 
     ##     corn restored  remnant 
     ##      "a"      "a"      "a"
@@ -693,11 +702,11 @@ test_age(div$its_rfy,
 
 | hill_num |   cor |   R2 |  pval | sig |
 |:---------|------:|-----:|------:|:----|
-| N0       | -0.34 | 0.11 | 0.458 |     |
-| N1       | -0.68 | 0.46 | 0.092 |     |
-| N2       | -0.68 | 0.46 | 0.095 |     |
-| E10      | -0.81 | 0.66 | 0.026 | \*  |
-| E20      | -0.68 | 0.46 | 0.092 |     |
+| N0       | -0.33 | 0.11 | 0.466 |     |
+| N1       | -0.68 | 0.46 | 0.095 |     |
+| N2       | -0.67 | 0.45 | 0.100 |     |
+| E10      | -0.79 | 0.63 | 0.033 | \*  |
+| E20      | -0.67 | 0.45 | 0.099 |     |
 
 Correlation between Hill’s numbers and field age in the Blue Mounds
 region: ITS, 97% OTU
@@ -756,23 +765,20 @@ test_diversity(div$amf_rfy)
     ## ---------------------------------
     ## [1] "N0"
     ## ---------------------------------
-
-    ## boundary (singular) fit: see help('isSingular')
-
+    ## 
     ## Linear mixed model fit by maximum likelihood  ['lmerMod']
     ## Formula: value ~ field_type + (1 | region)
     ##    Data: mod_data
     ##      AIC      BIC   logLik deviance df.resid 
-    ## 172.0018 178.0962 -81.0009 162.0018       20 
+    ## 171.4885 177.5829 -80.7442 161.4885       20 
     ## Random effects:
-    ##  Groups   Name        Std.Dev. 
-    ##  region   (Intercept) 2.053e-07
-    ##  Residual             6.179e+00
+    ##  Groups   Name        Std.Dev.
+    ##  region   (Intercept) 0.7095  
+    ##  Residual             6.0759  
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ##        (Intercept)  field_typerestored   field_typeremnant  
-    ##              38.60               10.59                8.65  
-    ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
+    ##              38.35               10.82                9.15  
     ## 
     ## ---------------------------------
 
@@ -782,15 +788,15 @@ test_diversity(div$amf_rfy)
     ## Formula: value ~ 1 + (1 | region)
     ##    Data: mod_data
     ##      AIC      BIC   logLik deviance df.resid 
-    ## 177.2673 180.9240 -85.6337 171.2673       22 
+    ## 177.3295 180.9861 -85.6647 171.3295       22 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
     ##  region   (Intercept) 0.000   
-    ##  Residual             7.437   
+    ##  Residual             7.446   
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ## (Intercept)  
-    ##       46.76  
+    ##        46.8  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## 
     ## ---------------------------------
@@ -799,9 +805,9 @@ test_diversity(div$amf_rfy)
     ## Models:
     ## mmod_null: value ~ 1 + (1 | region)
     ## mmod: value ~ field_type + (1 | region)
-    ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)   
-    ## mmod_null    3 177.27 180.92 -85.634   171.27                        
-    ## mmod         5 172.00 178.10 -81.001   162.00 9.2656  2   0.009728 **
+    ##           npar    AIC    BIC  logLik deviance Chisq Df Pr(>Chisq)   
+    ## mmod_null    3 177.33 180.99 -85.665   171.33                       
+    ## mmod         5 171.49 177.58 -80.744   161.49 9.841  2   0.007296 **
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -812,9 +818,9 @@ test_diversity(div$amf_rfy)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate
-    ## restored - corn == 0      10.588
-    ## remnant - corn == 0        8.650
-    ## remnant - restored == 0   -1.937
+    ## restored - corn == 0      10.822
+    ## remnant - corn == 0        9.150
+    ## remnant - restored == 0   -1.672
     ## 
     ##     corn restored  remnant 
     ##      "a"      "b"     "ab" 
@@ -829,15 +835,15 @@ test_diversity(div$amf_rfy)
     ## Formula: value ~ field_type + (1 | region)
     ##    Data: mod_data
     ##      AIC      BIC   logLik deviance df.resid 
-    ## 130.4651 136.5595 -60.2325 120.4651       20 
+    ## 130.0051 136.0995 -60.0026 120.0051       20 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept) 0.3653  
-    ##  Residual             2.6687  
+    ##  region   (Intercept) 0.4095  
+    ##  Residual             2.6381  
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ##        (Intercept)  field_typerestored   field_typeremnant  
-    ##             13.936               6.754               9.899  
+    ##             13.946               6.819               9.893  
     ## 
     ## ---------------------------------
 
@@ -847,15 +853,15 @@ test_diversity(div$amf_rfy)
     ## Formula: value ~ 1 + (1 | region)
     ##    Data: mod_data
     ##      AIC      BIC   logLik deviance df.resid 
-    ## 148.0275 151.6841 -71.0138 142.0275       22 
+    ## 147.9101 151.5667 -70.9550 141.9101       22 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
     ##  region   (Intercept) 0.000   
-    ##  Residual             4.144   
+    ##  Residual             4.134   
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ## (Intercept)  
-    ##       19.86  
+    ##       19.92  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## 
     ## ---------------------------------
@@ -865,8 +871,8 @@ test_diversity(div$amf_rfy)
     ## mmod_null: value ~ 1 + (1 | region)
     ## mmod: value ~ field_type + (1 | region)
     ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)    
-    ## mmod_null    3 148.03 151.68 -71.014   142.03                         
-    ## mmod         5 130.47 136.56 -60.233   120.47 21.562  2  2.079e-05 ***
+    ## mmod_null    3 147.91 151.57 -70.955   141.91                         
+    ## mmod         5 130.00 136.10 -60.003   120.00 21.905  2  1.751e-05 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -877,9 +883,9 @@ test_diversity(div$amf_rfy)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate
-    ## restored - corn == 0       6.754
-    ## remnant - corn == 0        9.899
-    ## remnant - restored == 0    3.145
+    ## restored - corn == 0       6.819
+    ## remnant - corn == 0        9.893
+    ## remnant - restored == 0    3.074
     ## 
     ##     corn restored  remnant 
     ##      "a"      "b"      "b" 
@@ -896,15 +902,15 @@ test_diversity(div$amf_rfy)
     ## Formula: value ~ field_type + (1 | region)
     ##    Data: mod_data
     ##      AIC      BIC   logLik deviance df.resid 
-    ## 126.5110 132.6054 -58.2555 116.5110       20 
+    ## 126.1402 132.2345 -58.0701 116.1402       20 
     ## Random effects:
-    ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept) 0.000   
-    ##  Residual             2.488   
+    ##  Groups   Name        Std.Dev. 
+    ##  region   (Intercept) 6.798e-07
+    ##  Residual             2.469e+00
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ##        (Intercept)  field_typerestored   field_typeremnant  
-    ##              9.637               4.730               7.551  
+    ##              9.672               4.746               7.531  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## 
     ## ---------------------------------
@@ -915,15 +921,15 @@ test_diversity(div$amf_rfy)
     ## Formula: value ~ 1 + (1 | region)
     ##    Data: mod_data
     ##      AIC      BIC   logLik deviance df.resid 
-    ## 138.4159 142.0725 -66.2080 132.4159       22 
+    ## 138.1984 141.8550 -66.0992 132.1984       22 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
     ##  region   (Intercept) 0.000   
-    ##  Residual             3.419   
+    ##  Residual             3.404   
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ## (Intercept)  
-    ##       13.87  
+    ##       13.91  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## 
     ## ---------------------------------
@@ -933,8 +939,8 @@ test_diversity(div$amf_rfy)
     ## mmod_null: value ~ 1 + (1 | region)
     ## mmod: value ~ field_type + (1 | region)
     ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)    
-    ## mmod_null    3 138.42 142.07 -66.208   132.42                         
-    ## mmod         5 126.51 132.60 -58.256   116.51 15.905  2  0.0003518 ***
+    ## mmod_null    3 138.20 141.85 -66.099   132.20                         
+    ## mmod         5 126.14 132.24 -58.070   116.14 16.058  2  0.0003258 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -945,9 +951,9 @@ test_diversity(div$amf_rfy)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate
-    ## restored - corn == 0       4.730
-    ## remnant - corn == 0        7.551
-    ## remnant - restored == 0    2.821
+    ## restored - corn == 0       4.746
+    ## remnant - corn == 0        7.531
+    ## remnant - restored == 0    2.785
     ## 
     ##     corn restored  remnant 
     ##      "a"      "b"      "b" 
@@ -964,15 +970,15 @@ test_diversity(div$amf_rfy)
     ## Formula: value ~ field_type + (1 | region)
     ##    Data: mod_data
     ##      AIC      BIC   logLik deviance df.resid 
-    ## -61.0749 -54.9805  35.5375 -71.0749       20 
+    ## -61.8442 -55.7499  35.9221 -71.8442       20 
     ## Random effects:
-    ##  Groups   Name        Std.Dev. 
-    ##  region   (Intercept) 1.984e-11
-    ##  Residual             5.840e-02
+    ##  Groups   Name        Std.Dev.
+    ##  region   (Intercept) 0.00000 
+    ##  Residual             0.05751 
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ##        (Intercept)  field_typerestored   field_typeremnant  
-    ##            0.37099             0.05393             0.13169  
+    ##            0.37258             0.05344             0.12780  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## 
     ## ---------------------------------
@@ -983,15 +989,15 @@ test_diversity(div$amf_rfy)
     ## Formula: value ~ 1 + (1 | region)
     ##    Data: mod_data
     ##      AIC      BIC   logLik deviance df.resid 
-    ## -55.7274 -52.0708  30.8637 -61.7274       22 
+    ## -56.7326 -53.0759  31.3663 -62.7326       22 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept) 0.00000 
-    ##  Residual             0.07041 
+    ##  region   (Intercept) 0.000   
+    ##  Residual             0.069   
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ## (Intercept)  
-    ##      0.4266  
+    ##      0.4272  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## 
     ## ---------------------------------
@@ -1000,9 +1006,9 @@ test_diversity(div$amf_rfy)
     ## Models:
     ## mmod_null: value ~ 1 + (1 | region)
     ## mmod: value ~ field_type + (1 | region)
-    ##           npar     AIC     BIC logLik deviance  Chisq Df Pr(>Chisq)   
-    ## mmod_null    3 -55.727 -52.071 30.864  -61.727                        
-    ## mmod         5 -61.075 -54.981 35.537  -71.075 9.3475  2   0.009337 **
+    ##           npar     AIC     BIC logLik deviance  Chisq Df Pr(>Chisq)  
+    ## mmod_null    3 -56.733 -53.076 31.366  -62.733                       
+    ## mmod         5 -61.844 -55.750 35.922  -71.844 9.1117  2    0.01051 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -1013,12 +1019,12 @@ test_diversity(div$amf_rfy)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate
-    ## restored - corn == 0     0.05393
-    ## remnant - corn == 0      0.13169
-    ## remnant - restored == 0  0.07776
+    ## restored - corn == 0     0.05344
+    ## remnant - corn == 0      0.12780
+    ## remnant - restored == 0  0.07436
     ## 
     ##     corn restored  remnant 
-    ##      "a"      "a"      "b" 
+    ##      "a"     "ab"      "b" 
     ## 
     ## 
     ## 
@@ -1032,15 +1038,15 @@ test_diversity(div$amf_rfy)
     ## Formula: value ~ field_type + (1 | region)
     ##    Data: mod_data
     ##      AIC      BIC   logLik deviance df.resid 
-    ## -59.8852 -53.7908  34.9426 -69.8852       20 
+    ## -60.2546 -54.1603  35.1273 -70.2546       20 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
     ##  region   (Intercept) 0.00000 
-    ##  Residual             0.05981 
+    ##  Residual             0.05937 
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ##        (Intercept)  field_typerestored   field_typeremnant  
-    ##            0.25834             0.03813             0.10337  
+    ##            0.25979             0.03741             0.10048  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## 
     ## ---------------------------------
@@ -1051,15 +1057,15 @@ test_diversity(div$amf_rfy)
     ## Formula: value ~ 1 + (1 | region)
     ##    Data: mod_data
     ##      AIC      BIC   logLik deviance df.resid 
-    ## -57.9197 -54.2631  31.9599 -63.9197       22 
+    ## -58.5150 -54.8584  32.2575 -64.5150       22 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
     ##  region   (Intercept) 0.00000 
-    ##  Residual             0.06738 
+    ##  Residual             0.06659 
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ## (Intercept)  
-    ##      0.2993  
+    ##      0.2998  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## 
     ## ---------------------------------
@@ -1069,8 +1075,8 @@ test_diversity(div$amf_rfy)
     ## mmod_null: value ~ 1 + (1 | region)
     ## mmod: value ~ field_type + (1 | region)
     ##           npar     AIC     BIC logLik deviance  Chisq Df Pr(>Chisq)  
-    ## mmod_null    3 -57.920 -54.263 31.960  -63.920                       
-    ## mmod         5 -59.885 -53.791 34.943  -69.885 5.9654  2    0.05065 .
+    ## mmod_null    3 -58.515 -54.858 32.258  -64.515                       
+    ## mmod         5 -60.255 -54.160 35.127  -70.255 5.7396  2    0.05671 .
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -1081,9 +1087,9 @@ test_diversity(div$amf_rfy)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate
-    ## restored - corn == 0     0.03813
-    ## remnant - corn == 0      0.10337
-    ## remnant - restored == 0  0.06524
+    ## restored - corn == 0     0.03741
+    ## remnant - corn == 0      0.10048
+    ## remnant - restored == 0  0.06307
     ## 
     ##     corn restored  remnant 
     ##      "a"     "ab"      "b"
@@ -1123,7 +1129,7 @@ labs_amf <- data.frame(
     hill_index = factor(c(rep("N0", 3), rep("N1", 3), rep("N2", 3), rep("E10", 3)), 
                         ordered = TRUE, 
                         levels = c("N0", "N1", "N2", "E10", "E20")),
-    lab = c("a", "b", "ab", "a", "b", "b", "a", "b", "b", "a", "a", "b"),
+    lab = c("a", "b", "ab", "a", "b", "b", "a", "b", "b", "a", "ab", "b"),
     xpos = rep(c(1,2,3), 4),
     ypos = rep(c(64, 33, 25, 0.59), each = 3)
 )
@@ -1191,10 +1197,10 @@ test_age(div$amf_rfy, caption = "Correlation between Hill's numbers and field ag
 | hill_num |   cor |   R2 |  pval | sig |
 |:---------|------:|-----:|------:|:----|
 | N0       |  0.16 | 0.03 | 0.725 |     |
-| N1       | -0.25 | 0.06 | 0.596 |     |
-| N2       | -0.35 | 0.12 | 0.443 |     |
-| E10      | -0.27 | 0.07 | 0.553 |     |
-| E20      | -0.33 | 0.11 | 0.465 |     |
+| N1       | -0.25 | 0.06 | 0.593 |     |
+| N2       | -0.34 | 0.12 | 0.449 |     |
+| E10      | -0.28 | 0.08 | 0.546 |     |
+| E20      | -0.33 | 0.11 | 0.468 |     |
 
 Correlation between Hill’s numbers and field age in the Blue Mounds
 region: AMF (18S), 97% OTU

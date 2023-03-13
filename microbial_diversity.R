@@ -45,6 +45,7 @@ conflict_prefer("select", "dplyr")
 #' 
 #' # Data
 #' ## Sites-species tables
+#' List *spe* holds average sequence abundances for the top 6 samples per field. 
 #' CSV files were produced in `process_data.R`
 spe <- list(
     its_raw = read_csv(paste0(getwd(), "/clean_data/spe_ITS_raw.csv"), 
@@ -56,6 +57,10 @@ spe <- list(
     amf_rfy = read_csv(paste0(getwd(), "/clean_data/spe_18S_rfy.csv"), 
                        show_col_types = FALSE)
 )
+#' Object *its_samp* holds raw sequence abundances for each sample. Used here for
+#' species accumulation.
+# its_samp  <- read_delim(paste0(getwd(), "/otu_tables/ITS/ITS_otu_raw.txt"), 
+#                        show_col_types = FALSE)
 #' 
 #' ## Site metadata and design
 sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>% 
@@ -322,7 +327,7 @@ labs_amf <- data.frame(
     hill_index = factor(c(rep("N0", 3), rep("N1", 3), rep("N2", 3), rep("E10", 3)), 
                         ordered = TRUE, 
                         levels = c("N0", "N1", "N2", "E10", "E20")),
-    lab = c("a", "b", "ab", "a", "b", "b", "a", "b", "b", "a", "a", "b"),
+    lab = c("a", "b", "ab", "a", "b", "b", "a", "b", "b", "a", "ab", "b"),
     xpos = rep(c(1,2,3), 4),
     ypos = rep(c(64, 33, 25, 0.59), each = 3)
 )
