@@ -312,7 +312,7 @@ test_diversity(div$amf_rfy)
 #' (p=0.05).
 #' - $E_{10}$: field type is significant by likelihood ratio test at p<0.05 with region as a random effect. 
 #' Weak support for higher evenness of functionally abundant species in remnant fields was found 
-#' (p=0.05).
+#' (p<0.05).
 #' - $E_{20}$: Similar trend as $E_{10}$ but NS (p>0.05). 
 #' 
 #' Figure labels are generated and the diversity data are plotted below. An interaction plot follows, 
@@ -322,7 +322,7 @@ labs_amf <- data.frame(
     hill_index = factor(c(rep("N0", 3), rep("N1", 3), rep("N2", 3), rep("E10", 3)), 
                         ordered = TRUE, 
                         levels = c("N0", "N1", "N2", "E10", "E20")),
-    lab = c("a", "b", "ab", "a", "b", "b", "a", "b", "b", "a", "ab", "b"),
+    lab = c("a", "b", "ab", "a", "b", "b", "a", "b", "b", "a", "a", "b"),
     xpos = rep(c(1,2,3), 4),
     ypos = rep(c(64, 33, 25, 0.59), each = 3)
 )
