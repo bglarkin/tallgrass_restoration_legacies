@@ -382,8 +382,8 @@ amf_resto_scores %>%
     theme_bw()
 #' 
 #' Both axes correlate significantly and strongly with years since restoration. 
-#' Axis 2 shows a stronger relationship $(R^2_{Adj}=0.60, p<0.001)$, and Axis 1 
-#' shows a moderately strong relationship $(R^2_{Adj}=0.49, p<0.005)$ 
+#' Axis 2 shows a stronger relationship $(R^2_{Adj}=0.61, p<0.001)$, and Axis 1 
+#' shows a moderately strong relationship $(R^2_{Adj}=0.46, p<0.005)$ 
 #' 
 #' 
 #' ### PCoA with 18S gene, UNIFRAC distance
