@@ -180,7 +180,8 @@ its_taxaGuild <- function(data, other_threshold=2) {
             values_fill = 0
         ) %>%
         select(primary_lifestyle, corn, restored, remnant) %>%
-        arrange(-remnant)
+        mutate(total = corn+restored+remnant) %>% 
+        arrange(-total)
     # Create table
     table <- kable(guild_df, format = "pandoc",
         caption = "Distribution of ITS OTUs by Fungal Trait 'primary_lifestyle'; mean sequence abundance by field type")
@@ -748,6 +749,18 @@ Map(function(x) ncol(x)-1, spe[1:2])
 #' Function outputs are verbose, but details may be necessary later so they are displayed here.
 #+ its_tax_trophic_otu,message=FALSE,fig.height=7,fig.align='center'
 its_taxaGuild(spe_meta$its_rfy)
+#' 
+#' The top guilds are:
+#' 
+#' 1. NA
+#' 1. plant pathogens
+#' 1. soil saprotrophs
+#' 1. wood saprotrophs
+#' 1. dung saprotrophs
+#' 1. litter saprotrophs
+#' 
+#' Compared with the sequence abundance in the NA group, plant pathogens and soil saprotrophs are
+#' abundant enough to feel somewhat confident about in terms of coverage. 
 #' 
 #+ its_guilds_otu,message=FALSE
 its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)

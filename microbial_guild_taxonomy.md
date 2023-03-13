@@ -269,7 +269,8 @@ its_taxaGuild <- function(data, other_threshold=2) {
             values_fill = 0
         ) %>%
         select(primary_lifestyle, corn, restored, remnant) %>%
-        arrange(-remnant)
+        mutate(total = corn+restored+remnant) %>% 
+        arrange(-total)
     # Create table
     table <- kable(guild_df, format = "pandoc",
         caption = "Distribution of ITS OTUs by Fungal Trait 'primary_lifestyle'; mean sequence abundance by field type")
@@ -1018,28 +1019,28 @@ its_taxaGuild(spe_meta$its_rfy)
     ## 
     ## Table: Distribution of ITS OTUs by Fungal Trait 'primary_lifestyle'; mean sequence abundance by field type
     ## 
-    ## primary_lifestyle            corn   restored   remnant
-    ## -----------------------  --------  ---------  --------
-    ## NA                        20205.4    24808.4   27174.5
-    ## soil_saprotroph            7047.2     5718.2    6056.2
-    ## plant_pathogen             7065.4     7160.4    5616.8
-    ## ectomycorrhizal              11.0      146.8    1963.5
-    ## litter_saprotroph          2072.0     1435.8    1127.2
-    ## wood_saprotroph            2852.6     2280.7    1115.5
-    ## dung_saprotroph            2727.6     1560.7     952.5
-    ## animal_parasite             652.4     1083.4     657.8
-    ## mycoparasite               1843.6      599.4     220.2
-    ## unspecified_saprotroph      770.0      160.3     181.5
-    ## arbuscular_mycorrhizal       56.0      189.1     161.2
-    ## root_endophyte               13.7      332.3     136.8
-    ## pollen_saprotroph           148.6       74.2      55.5
-    ## epiphyte                      0.0        9.0      26.0
-    ## nectar/tap_saprotroph        37.0       35.6      25.3
-    ## lichen_parasite              16.0       54.9      22.0
-    ## lichenized                    0.0       88.0      13.0
-    ## unspecified_pathotroph        0.0       13.0      10.0
-    ## foliar_endophyte              3.0       34.5       7.0
-    ## algal_parasite                2.0        3.8       0.0
+    ## primary_lifestyle            corn   restored   remnant     total
+    ## -----------------------  --------  ---------  --------  --------
+    ## NA                        20205.4    24808.4   27174.5   72188.3
+    ## plant_pathogen             7065.4     7160.4    5616.8   19842.6
+    ## soil_saprotroph            7047.2     5718.2    6056.2   18821.6
+    ## wood_saprotroph            2852.6     2280.7    1115.5    6248.8
+    ## dung_saprotroph            2727.6     1560.7     952.5    5240.8
+    ## litter_saprotroph          2072.0     1435.8    1127.2    4635.0
+    ## mycoparasite               1843.6      599.4     220.2    2663.2
+    ## animal_parasite             652.4     1083.4     657.8    2393.6
+    ## ectomycorrhizal              11.0      146.8    1963.5    2121.3
+    ## unspecified_saprotroph      770.0      160.3     181.5    1111.8
+    ## root_endophyte               13.7      332.3     136.8     482.8
+    ## arbuscular_mycorrhizal       56.0      189.1     161.2     406.3
+    ## pollen_saprotroph           148.6       74.2      55.5     278.3
+    ## lichenized                    0.0       88.0      13.0     101.0
+    ## nectar/tap_saprotroph        37.0       35.6      25.3      97.9
+    ## lichen_parasite              16.0       54.9      22.0      92.9
+    ## foliar_endophyte              3.0       34.5       7.0      44.5
+    ## epiphyte                      0.0        9.0      26.0      35.0
+    ## unspecified_pathotroph        0.0       13.0      10.0      23.0
+    ## algal_parasite                2.0        3.8       0.0       5.8
     ## 
     ## [[2]]
 
@@ -1049,6 +1050,19 @@ its_taxaGuild(spe_meta$its_rfy)
     ## [[3]]
 
 <img src="microbial_guild_taxonomy_files/figure-gfm/its_tax_trophic_otu-2.png" style="display: block; margin: auto;" />
+
+The top guilds are:
+
+1.  NA
+2.  plant pathogens
+3.  soil saprotrophs
+4.  wood saprotrophs
+5.  dung saprotrophs
+6.  litter saprotrophs
+
+Compared with the sequence abundance in the NA group, plant pathogens
+and soil saprotrophs are abundant enough to feel somewhat confident
+about in terms of coverage.
 
 ``` r
 its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
@@ -1361,8 +1375,8 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)   
     ## restored - corn == 0       135.7      908.2   0.149  0.98746   
-    ## remnant - corn == 0       1952.5      908.2   2.150  0.07701 . 
-    ## remnant - restored == 0   1816.8      574.4   3.163  0.00423 **
+    ## remnant - corn == 0       1952.5      908.2   2.150  0.07696 . 
+    ## remnant - restored == 0   1816.8      574.4   3.163  0.00425 **
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## (Adjusted p values reported -- single-step method)
@@ -1479,7 +1493,7 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)  
     ## restored - corn == 0      -536.8      488.2  -1.099   0.5096  
-    ## remnant - corn == 0      -1755.0      636.5  -2.757   0.0158 *
+    ## remnant - corn == 0      -1755.0      636.5  -2.757   0.0157 *
     ## remnant - restored == 0  -1218.3      533.0  -2.286   0.0565 .
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -1687,9 +1701,9 @@ its_inspan %>%
 
 | field_type | n_otu |  stat_avg |   stat_sd |
 |:-----------|------:|----------:|----------:|
-| corn       |    83 | 0.8401967 | 0.0881556 |
+| corn       |    86 | 0.8329499 | 0.0946951 |
 | restored   |    11 | 0.8103105 | 0.0367968 |
-| remnant    |    49 | 0.7456176 | 0.0797396 |
+| remnant    |    51 | 0.7472340 | 0.0805272 |
 
 Indicator species stats of entire rarefied ITS table
 
@@ -1713,38 +1727,38 @@ its_inspan %>%
     kable(format = "pandoc", caption = "Indicator species of ITS OTUs (top 10 per field type)")
 ```
 
-| otu_num  |         A |      B |      stat | p.value | field_type | primary_lifestyle      | phylum            | class              | order                              | family                             | genus            | species                 |
-|:---------|----------:|-------:|----------:|--------:|:-----------|:-----------------------|:------------------|:-------------------|:-----------------------------------|:-----------------------------------|:-----------------|:------------------------|
-| otu_537  | 1.0000000 | 1.0000 | 1.0000000 |  0.0005 | corn       | soil_saprotroph        | Basidiomycota     | Agaricomycetes     | Agaricales                         | Bolbitiaceae                       | Conocybe         | Conocybe_apala          |
-| otu_204  | 0.9929917 | 1.0000 | 0.9964897 |  0.0005 | corn       | NA                     | Mortierellomycota | Mortierellomycetes | Mortierellales                     | Mortierellaceae                    | NA               | NA                      |
-| otu_172  | 0.9784615 | 1.0000 | 0.9891721 |  0.0005 | corn       | plant_pathogen         | Ascomycota        | Dothideomycetes    | Pleosporales                       | Corynesporascaceae                 | Corynespora      | Corynespora_cassiicola  |
-| otu_9    | 0.9752638 | 1.0000 | 0.9875545 |  0.0030 | corn       | soil_saprotroph        | Basidiomycota     | Tremellomycetes    | Cystofilobasidiales                | Mrakiaceae                         | Tausonia         | Tausonia_pullulans      |
-| otu_188  | 0.9752606 | 1.0000 | 0.9875528 |  0.0005 | corn       | NA                     | NA                | NA                 | NA                                 | NA                                 | NA               | NA                      |
-| otu_200  | 0.9732096 | 1.0000 | 0.9865138 |  0.0005 | corn       | plant_pathogen         | Ascomycota        | Dothideomycetes    | Pleosporales                       | Phaeosphaeriaceae                  | Ophiosphaerella  | unidentified            |
-| otu_59   | 0.9618804 | 1.0000 | 0.9807550 |  0.0005 | corn       | soil_saprotroph        | Mortierellomycota | Mortierellomycetes | Mortierellales                     | Mortierellaceae                    | Mortierella      | NA                      |
-| otu_694  | 0.9498843 | 1.0000 | 0.9746201 |  0.0005 | corn       | NA                     | NA                | NA                 | NA                                 | NA                                 | NA               | NA                      |
-| otu_553  | 0.9351502 | 1.0000 | 0.9670317 |  0.0020 | corn       | plant_pathogen         | Ascomycota        | Sordariomycetes    | Magnaporthales                     | Magnaporthaceae                    | Gaeumannomyces   | NA                      |
-| otu_364  | 0.9311556 | 1.0000 | 0.9649640 |  0.0005 | corn       | NA                     | Ascomycota        | Sordariomycetes    | Sordariales                        | Lasiosphaeriaceae                  | Cladorrhinum     | NA                      |
-| otu_332  | 0.9196326 | 0.8125 | 0.8644082 |  0.0340 | restored   | plant_pathogen         | Ascomycota        | Sordariomycetes    | Glomerellales                      | Plectosphaerellaceae               | Plectosphaerella | NA                      |
-| otu_177  | 0.9844660 | 0.7500 | 0.8592727 |  0.0200 | restored   | NA                     | Ascomycota        | Dothideomycetes    | Pleosporales                       | NA                                 | NA               | NA                      |
-| otu_817  | 1.0000000 | 0.6875 | 0.8291562 |  0.0225 | restored   | NA                     | Ascomycota        | NA                 | NA                                 | NA                                 | NA               | NA                      |
-| otu_35   | 0.7261656 | 0.9375 | 0.8250941 |  0.0360 | restored   | animal_parasite        | Ascomycota        | Sordariomycetes    | Hypocreales                        | Clavicipitaceae                    | Metarhizium      | NA                      |
-| otu_461  | 0.8314607 | 0.8125 | 0.8219257 |  0.0260 | restored   | NA                     | Ascomycota        | Dothideomycetes    | Pleosporales                       | Phaeosphaeriaceae                  | NA               | NA                      |
-| otu_193  | 0.8232695 | 0.8125 | 0.8178670 |  0.0490 | restored   | NA                     | Basidiomycota     | Agaricomycetes     | Sebacinales                        | unidentified                       | unidentified     | unidentified            |
-| otu_107  | 0.8051496 | 0.8125 | 0.8088165 |  0.0320 | restored   | NA                     | Ascomycota        | Dothideomycetes    | Pleosporales                       | NA                                 | NA               | NA                      |
-| otu_114  | 0.6904172 | 0.9375 | 0.8045285 |  0.0020 | restored   | soil_saprotroph        | Mortierellomycota | Mortierellomycetes | Mortierellales                     | Mortierellaceae                    | Mortierella      | unidentified            |
-| otu_33   | 0.5845391 | 1.0000 | 0.7645516 |  0.0410 | restored   | plant_pathogen         | Ascomycota        | Sordariomycetes    | Hypocreales                        | Nectriaceae                        | Fusarium         | NA                      |
-| otu_238  | 0.9315822 | 0.6250 | 0.7630458 |  0.0395 | restored   | NA                     | Ascomycota        | Leotiomycetes      | NA                                 | NA                                 | NA               | NA                      |
-| otu_629  | 0.9255751 | 1.0000 | 0.9620681 |  0.0005 | remnant    | NA                     | Ascomycota        | Leotiomycetes      | Helotiales                         | Hyaloscyphaceae                    | Microscypha      | unidentified            |
-| otu_772  | 0.9246231 | 1.0000 | 0.9615733 |  0.0015 | remnant    | NA                     | Ascomycota        | Sordariomycetes    | NA                                 | NA                                 | NA               | NA                      |
-| otu_159  | 0.8219623 | 1.0000 | 0.9066214 |  0.0030 | remnant    | NA                     | Ascomycota        | Sordariomycetes    | Sordariomycetes_ord_Incertae_sedis | Sordariomycetes_fam_Incertae_sedis | Pleurophragmium  | unidentified            |
-| otu_135  | 0.7770528 | 1.0000 | 0.8815060 |  0.0045 | remnant    | plant_pathogen         | Ascomycota        | Sordariomycetes    | Hypocreales                        | Nectriaceae                        | Ilyonectria      | NA                      |
-| otu_854  | 1.0000000 | 0.7500 | 0.8660254 |  0.0015 | remnant    | NA                     | Ascomycota        | NA                 | NA                                 | NA                                 | NA               | NA                      |
-| otu_1740 | 1.0000000 | 0.7500 | 0.8660254 |  0.0020 | remnant    | NA                     | Glomeromycota     | Glomeromycetes     | Glomerales                         | Glomeraceae                        | NA               | NA                      |
-| otu_1098 | 0.9757576 | 0.7500 | 0.8554637 |  0.0070 | remnant    | NA                     | NA                | NA                 | NA                                 | NA                                 | NA               | NA                      |
-| otu_1468 | 0.9466437 | 0.7500 | 0.8426048 |  0.0025 | remnant    | NA                     | Ascomycota        | Sordariomycetes    | NA                                 | NA                                 | NA               | NA                      |
-| otu_140  | 0.9259492 | 0.7500 | 0.8333438 |  0.0355 | remnant    | soil_saprotroph        | Ascomycota        | Sordariomycetes    | Hypocreales                        | Stachybotryaceae                   | Striaticonidium  | Striaticonidium_cinctum |
-| otu_369  | 0.6912181 | 1.0000 | 0.8313953 |  0.0085 | remnant    | unspecified_saprotroph | Ascomycota        | Sordariomycetes    | Hypocreales                        | Bionectriaceae                     | Gliomastix       | Gliomastix_roseogrisea  |
+| otu_num  |         A |      B |      stat | p.value | field_type | primary_lifestyle | phylum            | class              | order                              | family                             | genus            | species                 |
+|:---------|----------:|-------:|----------:|--------:|:-----------|:------------------|:------------------|:-------------------|:-----------------------------------|:-----------------------------------|:-----------------|:------------------------|
+| otu_537  | 1.0000000 | 1.0000 | 1.0000000 |  0.0005 | corn       | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Agaricales                         | Bolbitiaceae                       | Conocybe         | Conocybe_apala          |
+| otu_204  | 0.9929917 | 1.0000 | 0.9964897 |  0.0005 | corn       | NA                | Mortierellomycota | Mortierellomycetes | Mortierellales                     | Mortierellaceae                    | NA               | NA                      |
+| otu_172  | 0.9784615 | 1.0000 | 0.9891721 |  0.0005 | corn       | plant_pathogen    | Ascomycota        | Dothideomycetes    | Pleosporales                       | Corynesporascaceae                 | Corynespora      | Corynespora_cassiicola  |
+| otu_9    | 0.9752638 | 1.0000 | 0.9875545 |  0.0040 | corn       | soil_saprotroph   | Basidiomycota     | Tremellomycetes    | Cystofilobasidiales                | Mrakiaceae                         | Tausonia         | Tausonia_pullulans      |
+| otu_188  | 0.9752606 | 1.0000 | 0.9875528 |  0.0005 | corn       | NA                | NA                | NA                 | NA                                 | NA                                 | NA               | NA                      |
+| otu_200  | 0.9732096 | 1.0000 | 0.9865138 |  0.0005 | corn       | plant_pathogen    | Ascomycota        | Dothideomycetes    | Pleosporales                       | Phaeosphaeriaceae                  | Ophiosphaerella  | unidentified            |
+| otu_59   | 0.9618804 | 1.0000 | 0.9807550 |  0.0005 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales                     | Mortierellaceae                    | Mortierella      | NA                      |
+| otu_694  | 0.9498843 | 1.0000 | 0.9746201 |  0.0005 | corn       | NA                | NA                | NA                 | NA                                 | NA                                 | NA               | NA                      |
+| otu_553  | 0.9351502 | 1.0000 | 0.9670317 |  0.0020 | corn       | plant_pathogen    | Ascomycota        | Sordariomycetes    | Magnaporthales                     | Magnaporthaceae                    | Gaeumannomyces   | NA                      |
+| otu_364  | 0.9311556 | 1.0000 | 0.9649640 |  0.0005 | corn       | NA                | Ascomycota        | Sordariomycetes    | Sordariales                        | Lasiosphaeriaceae                  | Cladorrhinum     | NA                      |
+| otu_332  | 0.9196326 | 0.8125 | 0.8644082 |  0.0380 | restored   | plant_pathogen    | Ascomycota        | Sordariomycetes    | Glomerellales                      | Plectosphaerellaceae               | Plectosphaerella | NA                      |
+| otu_177  | 0.9844660 | 0.7500 | 0.8592727 |  0.0255 | restored   | NA                | Ascomycota        | Dothideomycetes    | Pleosporales                       | NA                                 | NA               | NA                      |
+| otu_817  | 1.0000000 | 0.6875 | 0.8291562 |  0.0215 | restored   | NA                | Ascomycota        | NA                 | NA                                 | NA                                 | NA               | NA                      |
+| otu_35   | 0.7261656 | 0.9375 | 0.8250941 |  0.0375 | restored   | animal_parasite   | Ascomycota        | Sordariomycetes    | Hypocreales                        | Clavicipitaceae                    | Metarhizium      | NA                      |
+| otu_461  | 0.8314607 | 0.8125 | 0.8219257 |  0.0295 | restored   | NA                | Ascomycota        | Dothideomycetes    | Pleosporales                       | Phaeosphaeriaceae                  | NA               | NA                      |
+| otu_193  | 0.8232695 | 0.8125 | 0.8178670 |  0.0470 | restored   | NA                | Basidiomycota     | Agaricomycetes     | Sebacinales                        | unidentified                       | unidentified     | unidentified            |
+| otu_107  | 0.8051496 | 0.8125 | 0.8088165 |  0.0355 | restored   | NA                | Ascomycota        | Dothideomycetes    | Pleosporales                       | NA                                 | NA               | NA                      |
+| otu_114  | 0.6904172 | 0.9375 | 0.8045285 |  0.0030 | restored   | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales                     | Mortierellaceae                    | Mortierella      | unidentified            |
+| otu_33   | 0.5845391 | 1.0000 | 0.7645516 |  0.0345 | restored   | plant_pathogen    | Ascomycota        | Sordariomycetes    | Hypocreales                        | Nectriaceae                        | Fusarium         | NA                      |
+| otu_238  | 0.9315822 | 0.6250 | 0.7630458 |  0.0445 | restored   | NA                | Ascomycota        | Leotiomycetes      | NA                                 | NA                                 | NA               | NA                      |
+| otu_629  | 0.9255751 | 1.0000 | 0.9620681 |  0.0020 | remnant    | NA                | Ascomycota        | Leotiomycetes      | Helotiales                         | Hyaloscyphaceae                    | Microscypha      | unidentified            |
+| otu_772  | 0.9246231 | 1.0000 | 0.9615733 |  0.0020 | remnant    | NA                | Ascomycota        | Sordariomycetes    | NA                                 | NA                                 | NA               | NA                      |
+| otu_159  | 0.8219623 | 1.0000 | 0.9066214 |  0.0020 | remnant    | NA                | Ascomycota        | Sordariomycetes    | Sordariomycetes_ord_Incertae_sedis | Sordariomycetes_fam_Incertae_sedis | Pleurophragmium  | unidentified            |
+| otu_135  | 0.7770528 | 1.0000 | 0.8815060 |  0.0065 | remnant    | plant_pathogen    | Ascomycota        | Sordariomycetes    | Hypocreales                        | Nectriaceae                        | Ilyonectria      | NA                      |
+| otu_854  | 1.0000000 | 0.7500 | 0.8660254 |  0.0025 | remnant    | NA                | Ascomycota        | NA                 | NA                                 | NA                                 | NA               | NA                      |
+| otu_1740 | 1.0000000 | 0.7500 | 0.8660254 |  0.0015 | remnant    | NA                | Glomeromycota     | Glomeromycetes     | Glomerales                         | Glomeraceae                        | NA               | NA                      |
+| otu_1098 | 0.9757576 | 0.7500 | 0.8554637 |  0.0045 | remnant    | NA                | NA                | NA                 | NA                                 | NA                                 | NA               | NA                      |
+| otu_235  | 0.7280666 | 1.0000 | 0.8532682 |  0.0480 | remnant    | NA                | Ascomycota        | Leotiomycetes      | Helotiales                         | Hyaloscyphaceae                    | NA               | NA                      |
+| otu_1468 | 0.9466437 | 0.7500 | 0.8426048 |  0.0040 | remnant    | NA                | Ascomycota        | Sordariomycetes    | NA                                 | NA                                 | NA               | NA                      |
+| otu_140  | 0.9259492 | 0.7500 | 0.8333438 |  0.0385 | remnant    | soil_saprotroph   | Ascomycota        | Sordariomycetes    | Hypocreales                        | Stachybotryaceae                   | Striaticonidium  | Striaticonidium_cinctum |
 
 Indicator species of ITS OTUs (top 10 per field type)
 
@@ -1927,15 +1941,15 @@ ssap_inspan %>%
 | otu_num  |         A |      B |      stat | p.value | field_type | primary_lifestyle | phylum            | class              | order               | family           | genus              | species                 |
 |:---------|----------:|-------:|----------:|--------:|:-----------|:------------------|:------------------|:-------------------|:--------------------|:-----------------|:-------------------|:------------------------|
 | otu_537  | 1.0000000 | 1.0000 | 1.0000000 |  0.0005 | corn       | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Agaricales          | Bolbitiaceae     | Conocybe           | Conocybe_apala          |
-| otu_9    | 0.9752638 | 1.0000 | 0.9875545 |  0.0025 | corn       | soil_saprotroph   | Basidiomycota     | Tremellomycetes    | Cystofilobasidiales | Mrakiaceae       | Tausonia           | Tausonia_pullulans      |
+| otu_9    | 0.9752638 | 1.0000 | 0.9875545 |  0.0020 | corn       | soil_saprotroph   | Basidiomycota     | Tremellomycetes    | Cystofilobasidiales | Mrakiaceae       | Tausonia           | Tausonia_pullulans      |
 | otu_59   | 0.9618804 | 1.0000 | 0.9807550 |  0.0005 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | NA                      |
-| otu_134  | 0.9190528 | 1.0000 | 0.9586724 |  0.0030 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | NA                      |
-| otu_61   | 0.8970607 | 0.8000 | 0.8471414 |  0.0420 | corn       | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Phallales           | Phallaceae       | Phallus            | Phallus_rugulosus       |
-| otu_41   | 0.6888356 | 1.0000 | 0.8299612 |  0.0080 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | Mortierella_minutissima |
-| otu_114  | 0.6904172 | 0.9375 | 0.8045285 |  0.0050 | restored   | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | unidentified            |
-| otu_140  | 0.9259492 | 0.7500 | 0.8333438 |  0.0350 | remnant    | soil_saprotroph   | Ascomycota        | Sordariomycetes    | Hypocreales         | Stachybotryaceae | Striaticonidium    | Striaticonidium_cinctum |
-| otu_2138 | 1.0000000 | 0.5000 | 0.7071068 |  0.0235 | remnant    | soil_saprotroph   | Ascomycota        | Leotiomycetes      | Thelebolales        | Pseudeurotiaceae | Gymnostellatospora | NA                      |
-| otu_1192 | 0.8654354 | 0.5000 | 0.6578128 |  0.0470 | remnant    | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Agaricales          | Clavariaceae     | Clavaria           | unidentified            |
+| otu_134  | 0.9190528 | 1.0000 | 0.9586724 |  0.0020 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | NA                      |
+| otu_61   | 0.8970607 | 0.8000 | 0.8471414 |  0.0375 | corn       | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Phallales           | Phallaceae       | Phallus            | Phallus_rugulosus       |
+| otu_41   | 0.6888356 | 1.0000 | 0.8299612 |  0.0075 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | Mortierella_minutissima |
+| otu_114  | 0.6904172 | 0.9375 | 0.8045285 |  0.0030 | restored   | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | unidentified            |
+| otu_140  | 0.9259492 | 0.7500 | 0.8333438 |  0.0340 | remnant    | soil_saprotroph   | Ascomycota        | Sordariomycetes    | Hypocreales         | Stachybotryaceae | Striaticonidium    | Striaticonidium_cinctum |
+| otu_2138 | 1.0000000 | 0.5000 | 0.7071068 |  0.0200 | remnant    | soil_saprotroph   | Ascomycota        | Leotiomycetes      | Thelebolales        | Pseudeurotiaceae | Gymnostellatospora | NA                      |
+| otu_1192 | 0.8654354 | 0.5000 | 0.6578128 |  0.0480 | remnant    | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Agaricales          | Clavariaceae     | Clavaria           | unidentified            |
 
 Indicator species of soil saprotrophs
 
@@ -2119,25 +2133,25 @@ ppat_inspan %>%
 
 | otu_num  |         A |      B |      stat | p.value | field_type | primary_lifestyle | phylum        | class             | order          | family               | genus            | species                     |
 |:---------|----------:|-------:|----------:|--------:|:-----------|:------------------|:--------------|:------------------|:---------------|:---------------------|:-----------------|:----------------------------|
-| otu_172  | 0.9784615 | 1.0000 | 0.9891721 |  0.0010 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Corynesporascaceae   | Corynespora      | Corynespora_cassiicola      |
-| otu_200  | 0.9732096 | 1.0000 | 0.9865138 |  0.0010 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Phaeosphaeriaceae    | Ophiosphaerella  | unidentified                |
+| otu_172  | 0.9784615 | 1.0000 | 0.9891721 |  0.0005 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Corynesporascaceae   | Corynespora      | Corynespora_cassiicola      |
+| otu_200  | 0.9732096 | 1.0000 | 0.9865138 |  0.0005 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Phaeosphaeriaceae    | Ophiosphaerella  | unidentified                |
 | otu_553  | 0.9351502 | 1.0000 | 0.9670317 |  0.0030 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Magnaporthales | Magnaporthaceae      | Gaeumannomyces   | NA                          |
 | otu_21   | 0.9101231 | 1.0000 | 0.9540037 |  0.0005 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Phaeosphaeriaceae    | Setophoma        | Setophoma_terrestris        |
-| otu_1841 | 1.0000000 | 0.8000 | 0.8944272 |  0.0010 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Pleosporaceae        | Curvularia       | NA                          |
-| otu_432  | 0.9897522 | 0.8000 | 0.8898324 |  0.0040 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Glomerellales  | Glomerellaceae       | Colletotrichum   | NA                          |
+| otu_1841 | 1.0000000 | 0.8000 | 0.8944272 |  0.0005 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Pleosporaceae        | Curvularia       | NA                          |
+| otu_432  | 0.9897522 | 0.8000 | 0.8898324 |  0.0025 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Glomerellales  | Glomerellaceae       | Colletotrichum   | NA                          |
 | otu_13   | 0.7281250 | 1.0000 | 0.8533024 |  0.0080 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Glomerellales  | Plectosphaerellaceae | Plectosphaerella | Plectosphaerella_cucumerina |
-| otu_391  | 0.7152741 | 1.0000 | 0.8457388 |  0.0135 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Torulaceae           | Dendryphion      | NA                          |
-| otu_796  | 0.8820688 | 0.8000 | 0.8400327 |  0.0090 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Capnodiales    | Mycosphaerellaceae   | Cercospora       | NA                          |
-| otu_325  | 1.0000000 | 0.6000 | 0.7745967 |  0.0075 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Diaporthales   | Diaporthaceae        | Diaporthe        | NA                          |
-| otu_521  | 0.9308536 | 0.6000 | 0.7473367 |  0.0240 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Glomerellales  | Plectosphaerellaceae | Lectera          | NA                          |
-| otu_1013 | 0.9056604 | 0.6000 | 0.7371541 |  0.0320 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Xylariales     | Microdochiaceae      | Microdochium     | Microdochium_colombiense    |
-| otu_332  | 0.9196326 | 0.8125 | 0.8644082 |  0.0360 | restored   | plant_pathogen    | Ascomycota    | Sordariomycetes   | Glomerellales  | Plectosphaerellaceae | Plectosphaerella | NA                          |
-| otu_33   | 0.5845391 | 1.0000 | 0.7645516 |  0.0450 | restored   | plant_pathogen    | Ascomycota    | Sordariomycetes   | Hypocreales    | Nectriaceae          | Fusarium         | NA                          |
-| otu_135  | 0.7770528 | 1.0000 | 0.8815060 |  0.0040 | remnant    | plant_pathogen    | Ascomycota    | Sordariomycetes   | Hypocreales    | Nectriaceae          | Ilyonectria      | NA                          |
-| otu_504  | 0.6831351 | 1.0000 | 0.8265199 |  0.0260 | remnant    | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Massarinaceae        | Stagonospora     | NA                          |
-| otu_1716 | 1.0000000 | 0.5000 | 0.7071068 |  0.0185 | remnant    | plant_pathogen    | Ascomycota    | Sordariomycetes   | Hypocreales    | Nectriaceae          | Volutella        | NA                          |
-| otu_942  | 0.9957806 | 0.5000 | 0.7056134 |  0.0245 | remnant    | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Pleosporaceae        | Curvularia       | NA                          |
-| otu_319  | 0.6125227 | 0.7500 | 0.6777846 |  0.0490 | remnant    | plant_pathogen    | Basidiomycota | Ustilaginomycetes | Ustilaginales  | Ustilaginaceae       | Ustilago         | Ustilago_nunavutica         |
+| otu_391  | 0.7152741 | 1.0000 | 0.8457388 |  0.0205 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Torulaceae           | Dendryphion      | NA                          |
+| otu_796  | 0.8820688 | 0.8000 | 0.8400327 |  0.0095 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes   | Capnodiales    | Mycosphaerellaceae   | Cercospora       | NA                          |
+| otu_325  | 1.0000000 | 0.6000 | 0.7745967 |  0.0055 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Diaporthales   | Diaporthaceae        | Diaporthe        | NA                          |
+| otu_521  | 0.9308536 | 0.6000 | 0.7473367 |  0.0285 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Glomerellales  | Plectosphaerellaceae | Lectera          | NA                          |
+| otu_1013 | 0.9056604 | 0.6000 | 0.7371541 |  0.0315 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes   | Xylariales     | Microdochiaceae      | Microdochium     | Microdochium_colombiense    |
+| otu_332  | 0.9196326 | 0.8125 | 0.8644082 |  0.0390 | restored   | plant_pathogen    | Ascomycota    | Sordariomycetes   | Glomerellales  | Plectosphaerellaceae | Plectosphaerella | NA                          |
+| otu_33   | 0.5845391 | 1.0000 | 0.7645516 |  0.0390 | restored   | plant_pathogen    | Ascomycota    | Sordariomycetes   | Hypocreales    | Nectriaceae          | Fusarium         | NA                          |
+| otu_135  | 0.7770528 | 1.0000 | 0.8815060 |  0.0050 | remnant    | plant_pathogen    | Ascomycota    | Sordariomycetes   | Hypocreales    | Nectriaceae          | Ilyonectria      | NA                          |
+| otu_504  | 0.6831351 | 1.0000 | 0.8265199 |  0.0185 | remnant    | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Massarinaceae        | Stagonospora     | NA                          |
+| otu_1716 | 1.0000000 | 0.5000 | 0.7071068 |  0.0195 | remnant    | plant_pathogen    | Ascomycota    | Sordariomycetes   | Hypocreales    | Nectriaceae          | Volutella        | NA                          |
+| otu_942  | 0.9957806 | 0.5000 | 0.7056134 |  0.0160 | remnant    | plant_pathogen    | Ascomycota    | Dothideomycetes   | Pleosporales   | Pleosporaceae        | Curvularia       | NA                          |
+| otu_319  | 0.6125227 | 0.7500 | 0.6777846 |  0.0435 | remnant    | plant_pathogen    | Basidiomycota | Ustilaginomycetes | Ustilaginales  | Ustilaginaceae       | Ustilago         | Ustilago_nunavutica         |
 
 Indicator species of plant pathogens
 
@@ -2306,11 +2320,11 @@ wsap_inspan %>%
 
 | otu_num |         A |   B |      stat | p.value | field_type | primary_lifestyle | phylum        | class           | order           | family              | genus           | species                   |
 |:--------|----------:|----:|----------:|--------:|:-----------|:------------------|:--------------|:----------------|:----------------|:--------------------|:----------------|:--------------------------|
-| otu_11  | 0.7870955 | 1.0 | 0.8871840 |  0.0055 | corn       | wood_saprotroph   | Ascomycota    | Sordariomycetes | Sordariales     | Chaetomiaceae       | Humicola        | Humicola_grisea           |
-| otu_589 | 0.9654305 | 0.8 | 0.8788313 |  0.0020 | corn       | wood_saprotroph   | Ascomycota    | Sordariomycetes | Hypocreales     | Stachybotryaceae    | Stachybotrys    | Stachybotrys_limonispora  |
-| otu_20  | 0.5859219 | 1.0 | 0.7654553 |  0.0425 | corn       | wood_saprotroph   | Ascomycota    | Sordariomycetes | Hypocreales     | Bionectriaceae      | Clonostachys    | NA                        |
-| otu_341 | 0.9162845 | 0.6 | 0.7414652 |  0.0180 | corn       | wood_saprotroph   | Basidiomycota | Agaricomycetes  | Agaricales      | Psathyrellaceae     | Psathyrella     | NA                        |
-| otu_881 | 0.9842271 | 0.5 | 0.7015081 |  0.0210 | remnant    | wood_saprotroph   | Ascomycota    | Eurotiomycetes  | Chaetothyriales | Herpotrichiellaceae | Minimelanolocus | Minimelanolocus_asiaticus |
+| otu_11  | 0.7870955 | 1.0 | 0.8871840 |  0.0050 | corn       | wood_saprotroph   | Ascomycota    | Sordariomycetes | Sordariales     | Chaetomiaceae       | Humicola        | Humicola_grisea           |
+| otu_589 | 0.9654305 | 0.8 | 0.8788313 |  0.0045 | corn       | wood_saprotroph   | Ascomycota    | Sordariomycetes | Hypocreales     | Stachybotryaceae    | Stachybotrys    | Stachybotrys_limonispora  |
+| otu_20  | 0.5859219 | 1.0 | 0.7654553 |  0.0385 | corn       | wood_saprotroph   | Ascomycota    | Sordariomycetes | Hypocreales     | Bionectriaceae      | Clonostachys    | NA                        |
+| otu_341 | 0.9162845 | 0.6 | 0.7414652 |  0.0195 | corn       | wood_saprotroph   | Basidiomycota | Agaricomycetes  | Agaricales      | Psathyrellaceae     | Psathyrella     | NA                        |
+| otu_881 | 0.9842271 | 0.5 | 0.7015081 |  0.0285 | remnant    | wood_saprotroph   | Ascomycota    | Eurotiomycetes  | Chaetothyriales | Herpotrichiellaceae | Minimelanolocus | Minimelanolocus_asiaticus |
 
 Indicator species of wood saprotrophs
 
@@ -2448,7 +2462,7 @@ lsap_inspan %>%
 | field_type | n_otu |  stat_avg |   stat_sd |
 |:-----------|------:|----------:|----------:|
 | corn       |     3 | 0.8152565 | 0.0981583 |
-| remnant    |     2 | 0.7018522 | 0.0192404 |
+| remnant    |     1 | 0.6882472 |        NA |
 
 Indicator species stats: litter saprotrophs
 
@@ -2463,13 +2477,12 @@ lsap_inspan %>%
     kable(format = "pandoc", caption = "Indicator species of litter saprotrophs")
 ```
 
-| otu_num  |         A |    B |      stat | p.value | field_type | primary_lifestyle | phylum          | class                 | order             | family             | genus         | species                   |
-|:---------|----------:|-----:|----------:|--------:|:-----------|:------------------|:----------------|:----------------------|:------------------|:-------------------|:--------------|:--------------------------|
-| otu_126  | 0.8610846 | 1.00 | 0.9279464 |  0.0110 | corn       | litter_saprotroph | Ascomycota      | Sordariomycetes       | Sordariales       | Chaetomiaceae      | Chaetomium    | NA                        |
-| otu_358  | 0.9867217 | 0.60 | 0.7694368 |  0.0160 | corn       | litter_saprotroph | Ascomycota      | Eurotiomycetes        | Chaetothyriales   | Cyphellophoraceae  | Cyphellophora | Cyphellophora_suttonii    |
-| otu_1009 | 0.9334698 | 0.60 | 0.7483862 |  0.0125 | corn       | litter_saprotroph | Ascomycota      | Pezizomycetes         | Pezizales         | Pyronemataceae     | Cheilymenia   | Cheilymenia_stercorea     |
-| otu_326  | 0.6825054 | 0.75 | 0.7154572 |  0.0485 | remnant    | litter_saprotroph | Ascomycota      | Dothideomycetes       | Pleosporales      | Dictyosporiaceae   | Dictyosporium | Dictyosporium_heptasporum |
-| otu_1302 | 0.9473684 | 0.50 | 0.6882472 |  0.0365 | remnant    | litter_saprotroph | Chytridiomycota | Rhizophlyctidomycetes | Rhizophlyctidales | Rhizophlyctidaceae | Rhizophlyctis | unidentified              |
+| otu_num  |         A |   B |      stat | p.value | field_type | primary_lifestyle | phylum          | class                 | order             | family             | genus         | species                |
+|:---------|----------:|----:|----------:|--------:|:-----------|:------------------|:----------------|:----------------------|:------------------|:-------------------|:--------------|:-----------------------|
+| otu_126  | 0.8610846 | 1.0 | 0.9279464 |  0.0125 | corn       | litter_saprotroph | Ascomycota      | Sordariomycetes       | Sordariales       | Chaetomiaceae      | Chaetomium    | NA                     |
+| otu_358  | 0.9867217 | 0.6 | 0.7694368 |  0.0240 | corn       | litter_saprotroph | Ascomycota      | Eurotiomycetes        | Chaetothyriales   | Cyphellophoraceae  | Cyphellophora | Cyphellophora_suttonii |
+| otu_1009 | 0.9334698 | 0.6 | 0.7483862 |  0.0090 | corn       | litter_saprotroph | Ascomycota      | Pezizomycetes         | Pezizales         | Pyronemataceae     | Cheilymenia   | Cheilymenia_stercorea  |
+| otu_1302 | 0.9473684 | 0.5 | 0.6882472 |  0.0415 | remnant    | litter_saprotroph | Chytridiomycota | Rhizophlyctidomycetes | Rhizophlyctidales | Rhizophlyctidaceae | Rhizophlyctis | unidentified           |
 
 Indicator species of litter saprotrophs
 
@@ -2570,9 +2583,9 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)   
-    ## restored - corn == 0      1398.2      444.5   3.145   0.0045 **
-    ## remnant - corn == 0       1233.5      582.0   2.119   0.0840 . 
-    ## remnant - restored == 0   -164.7      485.0  -0.340   0.9374   
+    ## restored - corn == 0      1398.2      444.5   3.145  0.00449 **
+    ## remnant - corn == 0       1233.5      582.0   2.119  0.08400 . 
+    ## remnant - restored == 0   -164.7      485.0  -0.340  0.93740   
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## (Adjusted p values reported -- single-step method)
@@ -2636,7 +2649,7 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ##                         Estimate Std. Error z value Pr(>|z|)
     ## restored - corn == 0      -162.0      204.6  -0.792    0.704
     ## remnant - corn == 0       -278.3      266.0  -1.046    0.543
-    ## remnant - restored == 0   -116.3      223.5  -0.520    0.859
+    ## remnant - restored == 0   -116.3      223.5  -0.520    0.860
     ## (Adjusted p values reported -- single-step method)
     ## 
     ##     corn restored  remnant 
