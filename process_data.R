@@ -60,6 +60,11 @@ for (i in 1:length(packages_needed)) {
 }
 #' 
 #' ## Functions
+#' *NOTE:* all `write_csv()` steps have been commented out as of 2023-03-13 to prevent overwriting
+#' existing files. This is because function `Rarefy()` produces inconsistent results. Due to rounding,
+#' a very few OTUs are retained or lost (<1%) when this function is rerun. These different outcomes 
+#' change nothing about how results would be interpreted, but they do change axis limits and other trivial
+#' parameters that cause headaches later. 
 etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, colname_prefix, folder) {
     
     # Variable definitions
@@ -194,6 +199,7 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     meta_raw <- meta %>% filter(!(otu_num %in% names(zero_otu)))
     meta_rfy <- meta_raw %>% filter(!(otu_num %in% names(single_zero_otus)))
     
+    # Commented out 2023-03-13, see note above.
     # write_csv(spe_t, paste0(getwd(), folder, "/spe_", gene, "_raw_samps_all.csv"))
     # write_csv(spe_topn, paste0(getwd(), folder, "/spe_", gene, "_raw_samps_topn.csv"))
     # write_csv(meta_raw, paste0(getwd(), folder, "/spe_", gene, "_raw_taxonomy.csv"))
@@ -243,9 +249,6 @@ its <-
         folder = "/clean_data"
     )
 its
-
-its$spe_rfy %>% select(-starts_with("otu")) %>% colnames(.)
-
 #+ otu_18S,message=FALSE
 amf <-
     etl(

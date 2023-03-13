@@ -91,6 +91,14 @@ for (i in 1:length(packages_needed)) {
 
 ## Functions
 
+*NOTE:* all `write_csv()` steps have been commented out as of 2023-03-13
+to prevent overwriting existing files. This is because function
+`Rarefy()` produces inconsistent results. Due to rounding, a very few
+OTUs are retained or lost (\<1%) when this function is rerun. These
+different outcomes change nothing about how results would be
+interpreted, but they do change axis limits and other trivial parameters
+that cause headaches later.
+
 ``` r
 etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, colname_prefix, folder) {
     
@@ -226,6 +234,7 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     meta_raw <- meta %>% filter(!(otu_num %in% names(zero_otu)))
     meta_rfy <- meta_raw %>% filter(!(otu_num %in% names(single_zero_otus)))
     
+    # Commented out 2023-03-13, see note above.
     # write_csv(spe_t, paste0(getwd(), folder, "/spe_", gene, "_raw_samps_all.csv"))
     # write_csv(spe_topn, paste0(getwd(), folder, "/spe_", gene, "_raw_samps_topn.csv"))
     # write_csv(meta_raw, paste0(getwd(), folder, "/spe_", gene, "_raw_taxonomy.csv"))
@@ -324,7 +333,7 @@ its
     ## #   otu_39 <dbl>, otu_40 <dbl>, otu_41 <dbl>, otu_42 <dbl>, otu_43 <dbl>, …
     ## 
     ## $spe_rfy_meta
-    ## # A tibble: 2,748 × 9
+    ## # A tibble: 2,743 × 9
     ##    otu_num otu_ID                phylum class order family genus species prima…¹
     ##    <chr>   <chr>                 <chr>  <chr> <chr> <chr>  <chr> <chr>   <chr>  
     ##  1 otu_1   352d386293a59777de3e… Ascom… Sord… Hypo… Nectr… Fusa… Fusari… plant_…
@@ -337,23 +346,23 @@ its
     ##  8 otu_8   0ab6be0adca17efdd24e… Ascom… Euro… Chae… Herpo… unid… uniden… <NA>   
     ##  9 otu_9   3c7865fa957956fc9c7f… Basid… Trem… Cyst… Mraki… Taus… Tauson… soil_s…
     ## 10 otu_10  caa87147e44034b05364… Ascom… <NA>  <NA>  <NA>   <NA>  <NA>    <NA>   
-    ## # … with 2,738 more rows, and abbreviated variable name ¹​primary_lifestyle
+    ## # … with 2,733 more rows, and abbreviated variable name ¹​primary_lifestyle
     ## 
     ## $spe_rfy
-    ## # A tibble: 25 × 2,749
+    ## # A tibble: 25 × 2,744
     ##    field_key otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10 otu_11
     ##        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>
     ##  1         1  1043  1231    68  2346   196  1247  3507   274     0    542      0
-    ##  2         2  2888  1704   941    81   620    57   457     0     0   1783     77
-    ##  3         3   341     4   310     0   533   272   167     0    25      0    431
-    ##  4         4  1623     0     4     0  1406  2303  1491     0     0    814      0
-    ##  5         5   440    97   427     0  1135  2765  4500     0    37    998    121
-    ##  6         6   995   290   185     0   457   513   944     0  2831      0   1983
-    ##  7         7  1053  1097  1064     7   584  2516    83     0  7455      0    264
-    ##  8         8  1458   473   605  1124   519   907  1142     0    30   1223     83
-    ##  9         9  1505  1002   824     0   138  1033   725    18     0    435     60
-    ## 10        10   688   703   814   443   168   695   940  1443     0    222     27
-    ## # … with 15 more rows, and 2,737 more variables: otu_12 <dbl>, otu_13 <dbl>,
+    ##  2         2  2884  1712   949    83   613    56   458     0     0   1794     79
+    ##  3         3   341     7   317     0   546   271   163     0    28      0    426
+    ##  4         4  1607     0     5     0  1412  2331  1487     0     0    810      0
+    ##  5         5   450   106   428     0  1158  2713  4507     0    37   1007    119
+    ##  6         6  1013   299   176     0   450   516   990     0  2802      0   1976
+    ##  7         7  1033  1112  1065     9   577  2503    84     0  7438      0    264
+    ##  8         8  1429   488   613  1161   490   921  1137     0    33   1211     90
+    ##  9         9  1546   989   796     0   149  1032   752    21     0    422     54
+    ## 10        10   702   696   815   435   186   692   939  1465     0    219     30
+    ## # … with 15 more rows, and 2,732 more variables: otu_12 <dbl>, otu_13 <dbl>,
     ## #   otu_14 <dbl>, otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>,
     ## #   otu_19 <dbl>, otu_20 <dbl>, otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>,
     ## #   otu_24 <dbl>, otu_25 <dbl>, otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>,
@@ -363,12 +372,6 @@ its
     ## 
     ## $depth_rfy
     ## [1] 45478
-
-``` r
-its$spe_rfy %>% select(-starts_with("otu")) %>% colnames(.)
-```
-
-    ## [1] "field_key"
 
 ``` r
 amf <-
@@ -443,16 +446,16 @@ amf
     ## # A tibble: 25 × 146
     ##    field_key otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10 otu_11
     ##        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>
-    ##  1         1   377  1220  1243   247  2717   564   803  1838    78    132   1259
-    ##  2         2  1958    14  4201     0  1696   601   218     0   699    573      0
-    ##  3         3    31   231    18  2264   863   355   952     0   354     17      0
-    ##  4         4  1390  1987     0   716   629   676   239   957  2541    705    333
-    ##  5         5   330  1425    14    29  1933   690   319     7  1048   1266     63
-    ##  6         6   410    68  3330  2463   792   539  1489     3   376     86      3
-    ##  7         7     9     0  1059   871  3711   186    43    74    49      0      0
-    ##  8         8  1080  1001   210   329   879   772  1149   503   473   1224   1458
-    ##  9         9   365  1514   118  1482   297   274   927  2189  1091    786   2546
-    ## 10        10  1376   912   114  1147    75   474  1216  3213   175    554   1143
+    ##  1         1   368  1207  1251   247  2718   571   796  1826    75    125   1255
+    ##  2         2  2031     9  4149     0  1718   610   222     0   693    598      0
+    ##  3         3    29   231    22  2174   871   370   963     0   370     18      0
+    ##  4         4  1389  1979     0   672   640   689   234   943  2542    712    327
+    ##  5         5   369  1375    12    34  1933   693   308    10  1061   1289     63
+    ##  6         6   376    62  3382  2537   758   517  1455     3   359     82      4
+    ##  7         7    12     0  1049   866  3732   182    52    77    45      0      0
+    ##  8         8  1076  1005   224   318   834   780  1129   479   473   1222   1543
+    ##  9         9   384  1545   114  1428   290   262   946  2191  1063    830   2553
+    ## 10        10  1356   863   126  1186    60   489  1218  3245   155    536   1159
     ## # … with 15 more rows, and 134 more variables: otu_12 <dbl>, otu_13 <dbl>,
     ## #   otu_14 <dbl>, otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>,
     ## #   otu_19 <dbl>, otu_20 <dbl>, otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>,
