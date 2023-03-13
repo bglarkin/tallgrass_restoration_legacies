@@ -205,7 +205,7 @@ pcoa_its$ord <-
         ),
         caption = "Text indicates years since restoration, with corn (-) and remnants (+) never restored."
     ) +
-    lims(y = c(-0.5,0.32)) +
+    lims(y = c(-0.3,0.44)) +
     theme_bw() +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
 pcoa_its$inset <-
@@ -234,9 +234,9 @@ pcoa_its$ord +
             plot.background = element_rect(colour = "black", fill = "gray90")
         )),
         xmin = -0.38,
-        xmax = 0,
-        ymin = -0.53,
-        ymax = -0.18
+        xmax = -0.05,
+        ymin = 0.17,
+        ymax = 0.46
     )
 #' 
 #' Community trajectories revealed in the ordination clearly depend on both region and field type.
