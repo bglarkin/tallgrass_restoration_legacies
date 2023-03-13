@@ -57,15 +57,54 @@ spe <- list(
     amf_rfy = read_csv(paste0(getwd(), "/clean_data/spe_18S_rfy.csv"), 
                        show_col_types = FALSE)
 )
-#' Object *its_samp* holds raw sequence abundances for each sample. Used here for
-#' species accumulation.
-# its_samp  <- read_delim(paste0(getwd(), "/otu_tables/ITS/ITS_otu_raw.txt"), 
-#                        show_col_types = FALSE)
 #' 
 #' ## Site metadata and design
 sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>% 
     mutate(field_type = factor(field_type, ordered = TRUE, levels = c("corn", "restored", "remnant"))) %>% 
     select(-lat, -long, -yr_restore, -yr_rank)
+#' Object *its_samp* holds raw sequence abundances for each sample. Used here for
+#' species accumulation.
+its_samp_all <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_raw_samps_all.csv"),
+                         show_col_types = FALSE) %>% 
+    left_join(sites %>% select(field_key, field_name), by = join_by(field_key)) %>% 
+    select(field_name, everything(), -field_key, -sample)
+
+
+spe_accum <- function(data, n_sites=10) {
+    site <- specaccum(data[, -1], conditioned = FALSE)$site
+    richness <- specaccum(data[, -1], conditioned = FALSE)$richness
+    sd <- specaccum(data[, -1], conditioned = FALSE)$sd
+    length(site) <- n_sites
+    length(richness) <- n_sites
+    length(sd) <- n_sites
+    return(data.frame(site,richness,sd))
+}
+
+its_samp_all_accum <- bind_rows(
+    Map(spe_accum, split(its_samp_all, ~ field_name)),
+    .id = "field_name"
+) %>% left_join(sites, by = join_by(field_name))
+
+
+ggplot(its_samp_all_accum, aes(x = site, y = richness, group = field_name)) +
+    geom_line(aes(color = field_type)) +
+    geom_segment(aes(x = site, y = richness-sd, xend = site, yend = richness+sd, color = field_type)) +
+    scale_color_discrete_qualitative(palette = "Harmonic") +
+    theme_classic()
+
+
+    
+    
+    
+
+its_samp_topn <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_raw_samps_topn.csv"),
+                          show_col_types = FALSE)
+
+
+
+
+
+
 #' 
 #' # Functions
 #' The following functions are used to streamline code and reduce errors:
