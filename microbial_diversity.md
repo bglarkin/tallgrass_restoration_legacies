@@ -35,19 +35,8 @@ Last updated: 13 March, 2023
     id="toc-otus-prepost-corrections">OTUs pre/post corrections</a>
   - <a href="#microbial-diversity" id="toc-microbial-diversity">Microbial
     diversity</a>
-  - <a href="#fungi-its-gene" id="toc-fungi-its-gene">Fungi (ITS gene)</a>
-    - <a href="#diversity-across-field-types"
-      id="toc-diversity-across-field-types">Diversity across field types</a>
-    - <a href="#key-observations" id="toc-key-observations">Key
-      observations:</a>
-    - <a href="#diversity-over-time" id="toc-diversity-over-time">Diversity
-      over time</a>
-  - <a href="#amf-18s-gene" id="toc-amf-18s-gene">AMF (18S gene)</a>
-    - <a href="#key-observations-1" id="toc-key-observations-1">Key
-      observations:</a>
-    - <a href="#diversity-over-time-at-blue-mounds-amf"
-      id="toc-diversity-over-time-at-blue-mounds-amf">Diversity over time at
-      Blue Mounds (AMF)</a>
+    - <a href="#fungi-its-gene" id="toc-fungi-its-gene">Fungi (ITS gene)</a>
+    - <a href="#amf-18s-gene" id="toc-amf-18s-gene">AMF (18S gene)</a>
 
 # Description
 
@@ -345,7 +334,7 @@ ggplot(its_rarecurve, aes(x = Sample, y = Species, group = Site)) +
     labs(x = "Number of individuals (sequence abundance)",
          y = "OTUs",
          title = "Rarefaction of ITS data",
-         caption = "Curves based on sums of the top six samples per field. Vertical line shows the minimum sequence abundance for a field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
+         caption = "Curves based on sums of the top six samples per field.\nVertical line shows the minimum sequence abundance for a field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
     theme_classic()
 ```
 
@@ -353,6 +342,59 @@ ggplot(its_rarecurve, aes(x = Sample, y = Species, group = Site)) +
 
 At the minimum sequencing depth available, there is no consequential
 relationship between sequence abundance and species accumulation.
+
+This result can be corroborated by comparing the total sequences
+recovered per field vs. the richness recovered per field. A relationship
+should not be evident, or fields with more sequences could have bias to
+higher richness based on sequencing depth (or it could be real…there’s
+no way to know). This can be examined visually. The raw ITS data are
+used (these are sums of the top six samples per field as of 2023-03-13).
+
+``` r
+its_seqot <- 
+    data.frame(
+        field_key = spe$its_raw[, 1],
+        seqs = apply(spe$its_raw[, -1], 1, sum),
+        otus = apply(spe$its_raw[, -1] > 0, 1, sum)
+    ) %>% left_join(sites, by = join_by(field_key))
+```
+
+``` r
+ggplot(its_seqot, aes(x = seqs, y = otus)) +
+    geom_point(aes(fill = field_type), shape = 21, size = 2) +
+    scale_fill_discrete_qualitative(palette = "Harmonic") +
+    labs(x = "Sequence abundance per field",
+         y = "OTUs recovered per field",
+         caption = "Raw ITS data used, sum of top 6 samples per field") +
+    theme_classic()
+```
+
+<img src="microbial_diversity_files/figure-gfm/its_seqs_otus_fig-1.png" style="display: block; margin: auto;" />
+
+``` r
+summary(lm(otus ~ seqs, data = its_seqot))
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = otus ~ seqs, data = its_seqot)
+    ## 
+    ## Residuals:
+    ##      Min       1Q   Median       3Q      Max 
+    ## -115.147  -34.027    8.224   54.541   83.505 
+    ## 
+    ## Coefficients:
+    ##              Estimate Std. Error t value Pr(>|t|)  
+    ## (Intercept) 2.141e+02  1.015e+02   2.109   0.0460 *
+    ## seqs        3.335e-03  1.756e-03   1.899   0.0701 .
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 57.2 on 23 degrees of freedom
+    ## Multiple R-squared:  0.1356, Adjusted R-squared:  0.09801 
+    ## F-statistic: 3.608 on 1 and 23 DF,  p-value: 0.07012
+
+The relationship is poor and not significant.
 
 ### AMF dataset
 
@@ -430,7 +472,7 @@ ggplot(amf_rarecurve, aes(x = Sample, y = Species, group = Site)) +
     labs(x = "Number of individuals (sequence abundance)",
          y = "OTUs",
          title = "Rarefaction of 18S data",
-         caption = "Curves based on sums of the top six samples per field. Vertical line shows the minimum sequence abundance for a field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
+         caption = "Curves based on sums of the top six samples per field.\nVertical line shows the minimum sequence abundance for a field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
     theme_classic()
 ```
 
@@ -498,9 +540,9 @@ Hill’s numbers, brief description:
 div <- Map(calc_diversity, spe[c(2,4)])
 ```
 
-## Fungi (ITS gene)
+### Fungi (ITS gene)
 
-### Diversity across field types
+#### Diversity across field types
 
 Run the linear model and test differences among field types for
 diversity.
@@ -884,7 +926,7 @@ ggplot(
 
 <img src="microbial_diversity_files/figure-gfm/plot_div_its_otu_interaction-1.png" style="display: block; margin: auto;" />
 
-### Key observations:
+#### Key observations:
 
 - The restored field at LP contains very high diversity, co-dominance,
   and evenness of fungi.
@@ -892,7 +934,7 @@ ggplot(
   evenness.
 - Interactions are less an issue with $N_{0}$ and $N_{1}$
 
-### Diversity over time
+#### Diversity over time
 
 Next, trends in diversity are correlated with years since restoration.
 This can only be attempted with Fermi and Blue Mounds sites; elsewhere,
@@ -977,7 +1019,7 @@ soil properties ultimately didn’t change very much.
 Site factors (soil type) are hard to tease out, but in later analyses we
 will try using measured soil chemical properties.
 
-## AMF (18S gene)
+### AMF (18S gene)
 
 Run the linear model and test differences among field types for
 diversity.
@@ -1399,7 +1441,7 @@ ggplot(
 
 <img src="microbial_diversity_files/figure-gfm/plot_div_amf_otu_interaction-1.png" style="display: block; margin: auto;" />
 
-### Key observations:
+#### Key observations:
 
 - Cornfields differ from restored and remnant fields, with lower
   richness, fewer dominant species, and greater dominance of those
@@ -1409,7 +1451,7 @@ ggplot(
   BM and FG reversing it.
 - Particular species may be strong interactors here.
 
-### Diversity over time at Blue Mounds (AMF)
+#### Diversity over time at Blue Mounds (AMF)
 
 It’s probably justified to correlate diversity with field age in Blue
 Mounds’s restored fields. A Pearson’s correlation is used:

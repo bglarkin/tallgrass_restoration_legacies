@@ -255,6 +255,29 @@ ggplot(its_rarecurve, aes(x = Sample, y = Species, group = Site)) +
 #' At the minimum sequencing depth available, there is no consequential relationship between
 #' sequence abundance and species accumulation. 
 #' 
+#' This result can be corroborated by comparing the total sequences recovered per field vs.
+#' the richness recovered per field. A relationship should not be evident, or fields with more sequences
+#' could have bias to higher richness based on sequencing depth (or it could be real...there's no way to know). 
+#' This can be examined visually. The raw ITS data are used (these are sums of the top six samples per field
+#' as of 2023-03-13). 
+its_seqot <- 
+    data.frame(
+        field_key = spe$its_raw[, 1],
+        seqs = apply(spe$its_raw[, -1], 1, sum),
+        otus = apply(spe$its_raw[, -1] > 0, 1, sum)
+    ) %>% left_join(sites, by = join_by(field_key))
+#+ its_seqs_otus_fig,fig.width=7,fig.height=5,fig.align='center'
+ggplot(its_seqot, aes(x = seqs, y = otus)) +
+    geom_point(aes(fill = field_type), shape = 21, size = 2) +
+    scale_fill_discrete_qualitative(palette = "Harmonic") +
+    labs(x = "Sequence abundance per field",
+         y = "OTUs recovered per field",
+         caption = "Raw ITS data used, sum of top 6 samples per field") +
+    theme_classic()
+#+ its_seqs_otus_reg
+summary(lm(otus ~ seqs, data = its_seqot))
+#' The relationship is poor and not significant. 
+#' 
 #' ### AMF dataset
 #' The custom function `spe_accum()` is applied here.  
 #+ amf_accum_list
