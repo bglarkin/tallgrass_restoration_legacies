@@ -79,22 +79,6 @@ sac_data <- list(
 ) %>% 
     map(. %>% left_join(sites %>% select(field_key, field_name), by = join_by(field_key)) %>% 
             select(field_name, everything(), -field_key, -sample))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #' 
 #' # Functions
 #' The following functions are used to streamline code and reduce errors:
@@ -266,7 +250,7 @@ ggplot(its_rarecurve, aes(x = Sample, y = Species, group = Site)) +
     labs(x = "Number of individuals (sequence abundance)",
          y = "OTUs",
          title = "Rarefaction of ITS data",
-         caption = "Curves based on sums of the top six samples per field. Vertical line shows the minimum sequence abundance for a field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
+         caption = "Curves based on sums of the top six samples per field.\nVertical line shows the minimum sequence abundance for a field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
     theme_classic()
 #' At the minimum sequencing depth available, there is no consequential relationship between
 #' sequence abundance and species accumulation. 
@@ -325,7 +309,7 @@ depth <-
     pull(Sample) %>% 
     min()
 amf_at_depth <- amf_rarecurve %>% filter(Sample == depth)
-#+ its_rarefaction_curve_fig,fig.width=7,fig.height=5,fig.align='center'
+#+ amf_rarefaction_curve_fig,fig.width=7,fig.height=5,fig.align='center'
 ggplot(amf_rarecurve, aes(x = Sample, y = Species, group = Site)) +
     geom_vline(xintercept = depth, linewidth = 0.2) +
     geom_hline(data = amf_at_depth, aes(yintercept = Species), linewidth = 0.2) +
@@ -334,7 +318,7 @@ ggplot(amf_rarecurve, aes(x = Sample, y = Species, group = Site)) +
     labs(x = "Number of individuals (sequence abundance)",
          y = "OTUs",
          title = "Rarefaction of 18S data",
-         caption = "Curves based on sums of the top six samples per field. Vertical line shows the minimum sequence abundance for a field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
+         caption = "Curves based on sums of the top six samples per field.\nVertical line shows the minimum sequence abundance for a field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
     theme_classic()
 #' As expected, at the minimum sequencing depth available, there is no consequential relationship between
 #' sequence abundance and species accumulation.  
@@ -374,8 +358,8 @@ Map(function(x) ncol(x)-1, spe)
 # Rarefied tables only
 div <- Map(calc_diversity, spe[c(2,4)])
 #' 
-#' ## Fungi (ITS gene)
-#' ### Diversity across field types
+#' ### Fungi (ITS gene)
+#' #### Diversity across field types
 #' Run the linear model and test differences among field types for diversity.
 #+ test_div_its_otu
 test_diversity(div$its_rfy)
@@ -426,13 +410,13 @@ ggplot(
     scale_fill_discrete_qualitative(palette = "Dark3") +
     theme_bw()
 #' 
-#' ### Key observations:
+#' #### Key observations:
 #' 
 #' - The restored field at LP contains very high diversity, co-dominance, and evenness of fungi.
 #' - The restored field at FG contains low diversity, co-dominance, and evenness. 
 #' - Interactions are less an issue with $N_{0}$ and $N_{1}$
 #' 
-#' ### Diversity over time
+#' #### Diversity over time
 #' Next, trends in diversity are correlated with years since restoration. This can only be attempted
 #' with Fermi and Blue Mounds sites; elsewhere, blocks cannot be statistically accounted for because
 #' treatments aren't replicated within them. 
@@ -486,7 +470,7 @@ div$its_rfy %>%
 #' Site factors (soil type) are hard to tease out, but in later analyses we will try using measured 
 #' soil chemical properties. 
 #'  
-#' ## AMF (18S gene)
+#' ### AMF (18S gene)
 #' Run the linear model and test differences among field types for diversity.
 #+ test_div_amf_otu
 test_diversity(div$amf_rfy)
@@ -549,7 +533,7 @@ ggplot(
     scale_fill_discrete_qualitative(palette = "Dark3") +
     theme_bw()
 #' 
-#' ### Key observations:
+#' #### Key observations:
 #' 
 #' - Cornfields differ from restored and remnant fields, with lower richness, fewer dominant species,
 #' and greater dominance of those species. 
@@ -557,7 +541,7 @@ ggplot(
 #' and LP matching the hypothesized pattern but BM and FG reversing it. 
 #' - Particular species may be strong interactors here. 
 #' 
-#' ### Diversity over time at Blue Mounds (AMF)
+#' #### Diversity over time at Blue Mounds (AMF)
 #' It's probably justified to correlate diversity with field age in Blue Mounds's restored fields.
 #' A Pearson's correlation is used:
 #+ test_age_amf_otu
