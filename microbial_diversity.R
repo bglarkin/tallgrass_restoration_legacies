@@ -68,13 +68,13 @@ sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FAL
 #' species accumulation.
 #+ sac_data_list
 sac_data <- list(
-    its_all = read_csv(paste0(getwd(), "/clean_data/spe_ITS_raw_samps_all.csv"),
+    its_samps_raw = read_csv(paste0(getwd(), "/clean_data/spe_ITS_raw_samples.csv"),
                              show_col_types = FALSE),
-    its_topn = read_csv(paste0(getwd(), "/clean_data/spe_ITS_raw_samps_topn.csv"),
+    its_samps_rfy = read_csv(paste0(getwd(), "/clean_data/spe_ITS_rfy_samples.csv"),
                               show_col_types = FALSE),
-    amf_all = read_csv(paste0(getwd(), "/clean_data/spe_18S_raw_samps_all.csv"),
+    amf_samps_raw = read_csv(paste0(getwd(), "/clean_data/spe_18S_raw_samples.csv"),
                              show_col_types = FALSE),
-    amf_topn = read_csv(paste0(getwd(), "/clean_data/spe_18S_raw_samps_topn.csv"),
+    amf_samps_rfy = read_csv(paste0(getwd(), "/clean_data/spe_18S_rfy_samples.csv"),
                               show_col_types = FALSE)
 ) %>% 
     map(. %>% left_join(sites %>% select(field_key, field_name), by = join_by(field_key)) %>% 
@@ -86,14 +86,13 @@ sac_data <- list(
 #' ## Species accumulation and rarefaction
 #' Function `spe_accum()` uses vegan's `specaccum()` to produce accumulation 
 #' curves with the raw, samples-based data. 
-spe_accum <- function(data, n_samples=10) {
-    samples <- specaccum(data[, -1], conditioned = FALSE)$site
-    richness <- specaccum(data[, -1], conditioned = FALSE)$richness
-    sd <- specaccum(data[, -1], conditioned = FALSE)$sd
-    length(samples) <- n_samples
-    length(richness) <- n_samples
-    length(sd) <- n_samples
-    return(data.frame(samples,richness,sd))
+spe_accum <- function(data) {
+    df <- data.frame(
+        samples = specaccum(data[, -1], conditioned = FALSE)$site,
+        richness = specaccum(data[, -1], conditioned = FALSE)$richness,
+        sd = specaccum(data[, -1], conditioned = FALSE)$sd
+    )
+    return(df)
 }
 #' 
 #' ## Calculate Hill's series on a samples-species matrix
@@ -191,19 +190,21 @@ test_age <- function(data, caption=NULL) {
 #+ its_accum_list
 its_accum <- bind_rows(
     list(
-        All_samples = bind_rows(
-            split(sac_data$its_all, ~ field_name) %>% 
+        Raw = bind_rows(
+            split(sac_data$its_samps_raw, ~ field_name) %>% 
                 map(spe_accum),
             .id = "field_name"
         ),
-        TopN_samples = bind_rows(
-            split(sac_data$its_topn, ~ field_name) %>% 
-                map(spe_accum, n_samples=6),
+        Rarefied = bind_rows(
+            split(sac_data$its_samps_rfy, ~ field_name) %>% 
+                map(spe_accum),
             .id = "field_name"
         )
     ),
     .id = "dataset"
-) %>% left_join(sites, by = join_by(field_name))
+) %>% 
+    mutate(dataset = factor(dataset, ordered = TRUE, levels = c("Raw", "Rarefied"))) %>% 
+    left_join(sites, by = join_by(field_name))
 #+ its_species_accumulation_fig,warning=FALSE,message=FALSE,fig.width=8,fig.height=5,fig.align='center'
 ggplot(its_accum, aes(x = samples, y = richness, group = field_name)) +
     facet_wrap(vars(dataset), scales = "free_x") +
@@ -213,16 +214,27 @@ ggplot(its_accum, aes(x = samples, y = richness, group = field_name)) +
     labs(x = "Samples", y = expression(N[0]), 
          title = "Species accumulation of ITS data",
          caption = "Species accumulation by the \"exact\" method; standard deviation (vertical lines) conditioned by the empirical dataset.") +
+    scale_x_continuous(breaks = c(0,3,6,9)) +
     theme_bw()
+#' 
+#' 
+#' 
 #' 
 #' All fields continue to add species at the maximum available number of samples. The only good news
 #' might be that they all add species at about the same rate. But this plot is evidence of undersampling...
 #' With only six samples retained per field, many OTUs are lost, but the curves look a little flatter.
 #' It may be difficult to justify keeping only six samples; keeping 9 may be smarter. 
 #' 
+#' 
+#' 
+#' 
 #' Rarefaction is performed to assess the relationship between sequence abundance and species richness,
 #' and can help justify the decision to rarefy to the minimum sequence depth obtained. 
 #' Caution: function `rarecurve()` takes some time to execute. 
+#' 
+#' This should be done first on a per-sample basis...
+#' 
+#' 
 #+ its_rarecurve,message=FALSE,warning=FALSE
 its_rarecurve <- 
     rarecurve(

@@ -170,17 +170,16 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
         arrange(field_key, sample)
     # Remove singleton and zero abundance columns
     strip_cols1 <- which(apply(spe_topn[, -c(1,2)], 2, sum) <= 1)
-    if(length(strip_cols1) == 0) {
-        spe_samps_raw <- data.frame(spe_topn)
-    } else {
-        spe_samps_raw <- data.frame(spe_topn[, -strip_cols1])
-    }
     spe_samps_raw <- 
-        spe_samps_raw %>% 
-        mutate(field_key = as.numeric(field_key),
-               sample = as.numeric(sample)) %>% 
-        arrange(field_key, sample) %>% 
-        as_tibble()
+        if(length(strip_cols1) == 0) {
+            data.frame(spe_topn)
+        } else {
+            data.frame(spe_topn[, -strip_cols1])
+        } %>% 
+            mutate(field_key = as.numeric(field_key),
+                   sample = as.numeric(sample)) %>% 
+            arrange(field_key, sample) %>% 
+            as_tibble()
     
     # Rarefied sequence abundances, top n samples, write to file
     spe_samps_raw_df <- 
@@ -192,34 +191,34 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     spe_samps_rrfd <- Rarefy(spe_samps_raw_df)
     # Remove singleton and zero abundance columns
     strip_cols2 <- which(apply(spe_samps_rrfd$otu.tab.rff, 2, sum) <= 1)
-    if(length(strip_cols2) == 0) {
-        spe_samps_rfy <- data.frame(spe_samps_rrfd$otu.tab.rff)
-    } else {
-        spe_samps_rfy <- data.frame(spe_samps_rrfd$otu.tab.rff[, -strip_cols2])
-    }
     spe_samps_rfy <- 
-        spe_samps_rfy %>% 
-        rownames_to_column(var = "field_sample") %>%
-        separate_wider_delim(cols = field_sample, delim = "_", names = c("field_key", "sample")) %>% 
-        mutate(field_key = as.numeric(field_key),
-               sample = as.numeric(sample)) %>% 
-        arrange(field_key, sample) %>% 
-        as_tibble()
+        if(length(strip_cols2) == 0) {
+            data.frame(spe_samps_rrfd$otu.tab.rff)
+        } else {
+            spe_samps_rfy <- data.frame(spe_samps_rrfd$otu.tab.rff[, -strip_cols2])
+        } %>% 
+            rownames_to_column(var = "field_sample") %>%
+            separate_wider_delim(cols = field_sample, delim = "_", names = c("field_key", "sample")) %>% 
+            mutate(field_key = as.numeric(field_key),
+                   sample = as.numeric(sample)) %>% 
+            arrange(field_key, sample) %>% 
+            as_tibble()
     
-    # Produce averages of raw sequence data for each field, from top n samples, write to file
-    spe_raw_avg <- 
+    # Produce summaries of raw sequence data for each field, from top n samples, write to file
+    spe_raw_sum <- 
         spe_samps_raw %>% 
         group_by(field_key) %>% 
-        summarize(across(starts_with(cluster_type), ~ round(mean(.x), 0)), .groups = "drop") %>%
+        summarize(across(starts_with(cluster_type), ~ sum(.x)), .groups = "drop") %>%
         mutate(field_key = as.numeric(field_key)) %>% 
         arrange(field_key)
     # Remove singleton and zero abundance columns
-    strip_cols3 <- which(apply(spe_raw_avg, 2, sum) <= 1)
-    if(length(strip_cols3) == 0) {
-        spe_raw <- spe_raw_avg
-    } else {
-        spe_raw <- spe_raw_avg[, -strip_cols3]
-    }
+    strip_cols3 <- which(apply(spe_raw_sum, 2, sum) <= 1)
+    spe_raw <- 
+        if(length(strip_cols3) == 0) {
+            spe_raw_sum
+        } else {
+            spe_raw_sum[, -strip_cols3]
+        }
     
     # Rarefy averaged raw sequence data for each field, from top n samples, write to file
     spe_raw_df <- data.frame(spe_raw, row.names = 1)
@@ -227,17 +226,16 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     spe_rrfd <- Rarefy(spe_raw_df)
     # Remove singleton and zero abundance columns
     strip_cols4 <- which(apply(spe_rrfd$otu.tab.rff, 2, sum) <= 1)
-    if(length(strip_cols4) == 0) {
-        spe_rfy <- data.frame(spe_rrfd$otu.tab.rff)
-    } else {
-        spe_rfy <- data.frame(spe_rrfd$otu.tab.rff[, -strip_cols4])
-    }
     spe_rfy <- 
-        spe_rfy %>% 
-        rownames_to_column(var = "field_key") %>%
-        mutate(field_key = as.numeric(field_key)) %>% 
-        arrange(field_key) %>% 
-        as_tibble()
+        if(length(strip_cols4) == 0) {
+            data.frame(spe_rrfd$otu.tab.rff)
+        } else {
+            data.frame(spe_rrfd$otu.tab.rff[, -strip_cols4])
+        } %>% 
+            rownames_to_column(var = "field_key") %>%
+            mutate(field_key = as.numeric(field_key)) %>% 
+            arrange(field_key) %>% 
+            as_tibble()
     
     write_csv(meta, paste0(getwd(), folder, "/spe_", gene, "metadata.csv"))
     write_csv(spe_samps_raw, paste0(getwd(), folder, "/spe_", gene, "_raw_samples.csv"))
