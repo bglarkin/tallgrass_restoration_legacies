@@ -126,13 +126,13 @@ its_rc <-
 
 
 # Additional data and variables for plotting
-depth <- 
+its_depth <- 
     its_rc %>% 
     group_by(field_sample) %>% 
     slice_max(otus, n = 1) %>% 
     pull(seq_abund) %>% 
     min()
-its_at_depth <- its_rc %>% filter(seq_abund == depth)
+its_at_depth <- its_rc %>% filter(seq_abund == its_depth)
 #+ its_rarefaction_curve_fig,fig.width=7,fig.height=5,fig.align='center'
 ggplot(its_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
     facet_wrap(vars(field_type), ncol = 1) +
@@ -145,7 +145,7 @@ ggplot(its_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
          title = "Rarefaction of ITS data",
          caption = "Curves based on the nine most abundant samples per field.\nVertical line shows the minimum sequence abundance for any field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
     theme_bw()
-#' Minimum sequencing depth reached is `r depth`. Rarefying the data to this depth would remove
+#' Minimum sequencing depth reached is `r its_depth`. Rarefying the data to this depth would remove
 #' a great number of OTUs and leave nearly all samples poorly characterized in richness and composition. 
 #' It looks like somewhere around 5000 sequences would be more appropriate. How many samples would be lost at 
 #' 5000 sequences? 
@@ -188,6 +188,85 @@ summary(lm(otus ~ seqs, data = its_seqot))
 
 
 
+
+
+
+
+#' ### 18S dataset
+#' 
+
+amf_rc_data <- 
+    spe_samps$amf_samps_raw %>% 
+    mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+    column_to_rownames(var = "field_sample") %>% 
+    select(-field_key, -sample)
+
+#+ amf_rarecurve,message=FALSE,warning=FALSE
+amf_rc_tidy <- rarecurve(amf_rc_data, step = 1, tidy = TRUE) 
+amf_rc <- 
+    amf_rc_tidy %>% 
+    separate_wider_delim(Site, delim = "_", names = c("field_key", "sample_key"), cols_remove = FALSE) %>% 
+    rename(seq_abund = Sample, otus = Species, field_sample = Site) %>% 
+    left_join(sites %>% mutate(field_key = as.character(field_key)), by = join_by(field_key))
+
+
+# Additional data and variables for plotting
+amf_depth <- 
+    amf_rc %>% 
+    group_by(field_sample) %>% 
+    slice_max(otus, n = 1) %>% 
+    pull(seq_abund) %>% 
+    min()
+amf_at_depth <- amf_rc %>% filter(seq_abund == amf_depth)
+#+ amf_rarefaction_curve_fig,fig.width=7,fig.height=5,fig.align='center'
+ggplot(amf_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
+    facet_wrap(vars(field_type), ncol = 1) +
+    geom_vline(xintercept = amf_depth, linewidth = 0.2) +
+    geom_hline(data = amf_at_depth, aes(yintercept = otus), linewidth = 0.2) +
+    geom_line(aes(color = field_type), linewidth = 0.4) +
+    scale_color_discrete_qualitative(palette = "Harmonic") +
+    labs(x = "Number of individuals (sequence abundance)",
+         y = "OTUs",
+         title = "Rarefaction of amf data",
+         caption = "Curves based on the nine most abundant samples per field.\nVertical line shows the minimum sequence abundance for any field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
+    theme_bw()
+#' Minimum sequencing depth reached is `r amf_depth`. Rarefying the data to this depth would remove
+#' a great number of OTUs and leave nearly all samples poorly characterized in richness and composition. 
+#' It looks like somewhere around 1250 sequences would be more appropriate at bare minimum. How many samples would be lost at 
+#' 5000 sequences? 
+
+amf_rc %>% 
+    group_by(field_sample) %>% 
+    slice_max(otus, n = 1) %>% 
+    slice_max(seq_abund, n = 1) %>% 
+    arrange(seq_abund) %>% 
+    kable(format = "pandoc", caption = "Table: samples sorted by sequence abundance")
+
+#' Rarefying at 1250 would compromise six samples, including two from MBRP1. 
+
+
+#' 
+#' This result can be corroborated by comparing the total sequences recovered per field vs.
+#' the richness recovered per field. A relationship should not be evident, or fields with more sequences
+#' could have bias to higher richness based on sequencing depth (or it could be real...there's no way to know). 
+#' This can be examined visually. The raw amf data are used (these are sums of the top six samples per field
+#' as of 2023-03-13). 
+amf_seqot <- 
+    data.frame(
+        field_key = spe$amf_raw[, 1],
+        seqs = apply(spe$amf_raw[, -1], 1, sum),
+        otus = apply(spe$amf_raw[, -1] > 0, 1, sum)
+    ) %>% left_join(sites, by = join_by(field_key))
+#+ amf_seqs_otus_fig,fig.width=7,fig.height=5,fig.align='center'
+ggplot(amf_seqot, aes(x = seqs, y = otus)) +
+    geom_point(aes(fill = field_type), shape = 21, size = 2) +
+    scale_fill_discrete_qualitative(palette = "Harmonic") +
+    labs(x = "Sequence abundance per field",
+         y = "OTUs recovered per field",
+         caption = "Raw amf data used, sum of top 6 samples per field") +
+    theme_classic()
+#+ amf_seqs_otus_reg
+summary(lm(otus ~ seqs, data = amf_seqot))
 
 
 
