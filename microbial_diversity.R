@@ -11,12 +11,10 @@
 #'
 #' # Description
 #' Microbial data analyzed here include site-species tables derived from high-throughput sequencing of 
-#' ITS and 18S genes and clustering into 97% similar OTUs and 100% similar SVs.
-#' This report presents basic statistics and visualizations of species accumulation, species richness, Shannon's 
+#' ITS and 18S genes and clustering into 97% similar OTUs.
+#' This report presents basic statistics and visualizations of species richness, Shannon's 
 #' diversity/evenness, and Simpson's diversity/evenness in the microbial species data across field types. 
 #' 
-#' - Species accumulation at different sample effort levels
-#' - Rarefaction to determine adequacy of sequencing depth and justify rarefication of sequence depth
 #' - Diversity and evenness of microbial communities
 #' - Interpretation of differences in diversity among regions and field types, and over years
 #' 
@@ -64,36 +62,9 @@ spe <- list(
 sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>% 
     mutate(field_type = factor(field_type, ordered = TRUE, levels = c("corn", "restored", "remnant"))) %>% 
     select(-lat, -long, -yr_restore, -yr_rank)
-#' Object *sac_data* holds raw sequence abundances for each sample. Used here for
-#' species accumulation.
-#+ sac_data_list
-sac_data <- list(
-    its_samps_raw = read_csv(paste0(getwd(), "/clean_data/spe_ITS_raw_samples.csv"),
-                             show_col_types = FALSE),
-    its_samps_rfy = read_csv(paste0(getwd(), "/clean_data/spe_ITS_rfy_samples.csv"),
-                              show_col_types = FALSE),
-    amf_samps_raw = read_csv(paste0(getwd(), "/clean_data/spe_18S_raw_samples.csv"),
-                             show_col_types = FALSE),
-    amf_samps_rfy = read_csv(paste0(getwd(), "/clean_data/spe_18S_rfy_samples.csv"),
-                              show_col_types = FALSE)
-) %>% 
-    map(. %>% left_join(sites %>% select(field_key, field_name), by = join_by(field_key)) %>% 
-            select(field_name, everything(), -field_key, -sample))
 #' 
 #' # Functions
 #' The following functions are used to streamline code and reduce errors:
-#' 
-#' ## Species accumulation and rarefaction
-#' Function `spe_accum()` uses vegan's `specaccum()` to produce accumulation 
-#' curves with the raw, samples-based data. 
-spe_accum <- function(data) {
-    df <- data.frame(
-        samples = specaccum(data[, -1], conditioned = FALSE)$site,
-        richness = specaccum(data[, -1], conditioned = FALSE)$richness,
-        sd = specaccum(data[, -1], conditioned = FALSE)$sd
-    )
-    return(df)
-}
 #' 
 #' ## Calculate Hill's series on a samples-species matrix
 #+ calc_diversity_function
@@ -177,186 +148,6 @@ test_age <- function(data, caption=NULL) {
 }
 #' 
 #' # Analysis and Results
-#' 
-#' ## Species accumulation and rarefaction
-#' Species accumulation is performed using the "exact" method (Kindt, R., unpublished) to 
-#' examine the adequacy of field sampling. Raw ITS and 18S data with all samples is used and compared
-#' with the "topN" data sets. Some samples didn't amplify, so samples were dropped from some 
-#' fields to equalize sampling effort. As of 2023-03-13, six samples were retained from each 
-#' field, but nine would be possible to keep.
-#' 
-#' ### ITS dataset
-#' The custom function `spe_accum()` is applied here.  
-#+ its_accum_list
-its_accum <- bind_rows(
-    list(
-        Raw = bind_rows(
-            split(sac_data$its_samps_raw, ~ field_name) %>% 
-                map(spe_accum),
-            .id = "field_name"
-        ),
-        Rarefied = bind_rows(
-            split(sac_data$its_samps_rfy, ~ field_name) %>% 
-                map(spe_accum),
-            .id = "field_name"
-        )
-    ),
-    .id = "dataset"
-) %>% 
-    mutate(dataset = factor(dataset, ordered = TRUE, levels = c("Raw", "Rarefied"))) %>% 
-    left_join(sites, by = join_by(field_name))
-#+ its_species_accumulation_fig,warning=FALSE,message=FALSE,fig.width=8,fig.height=5,fig.align='center'
-ggplot(its_accum, aes(x = samples, y = richness, group = field_name)) +
-    facet_wrap(vars(dataset), scales = "free_x") +
-    geom_line(aes(color = field_type)) +
-    geom_segment(aes(x = samples, y = richness-sd, xend = samples, yend = richness+sd, color = field_type)) +
-    scale_color_discrete_qualitative(palette = "Harmonic") +
-    labs(x = "Samples", y = expression(N[0]), 
-         title = "Species accumulation of ITS data",
-         caption = "Species accumulation by the \"exact\" method; standard deviation (vertical lines) conditioned by the empirical dataset.") +
-    scale_x_continuous(breaks = c(0,3,6,9)) +
-    theme_bw()
-#' 
-#' 
-#' 
-#' 
-#' All fields continue to add species at the maximum available number of samples. The only good news
-#' might be that they all add species at about the same rate. But this plot is evidence of undersampling...
-#' With only six samples retained per field, many OTUs are lost, but the curves look a little flatter.
-#' It may be difficult to justify keeping only six samples; keeping 9 may be smarter. 
-#' 
-#' 
-#' 
-#' 
-#' Rarefaction is performed to assess the relationship between sequence abundance and species richness,
-#' and can help justify the decision to rarefy to the minimum sequence depth obtained. 
-#' Caution: function `rarecurve()` takes some time to execute. 
-#' 
-#' This should be done first on a per-sample basis...
-#' 
-#' 
-#+ its_rarecurve,message=FALSE,warning=FALSE
-its_rarecurve <- 
-    rarecurve(
-        data.frame(spe$its_raw,
-                   row.names = 1),
-        step = 1,
-        tidy = TRUE
-    ) %>% 
-    mutate(Site = as.numeric(Site)) %>% 
-    left_join(sites, by = join_by(Site == field_key))
-# Additional data and variables for plotting
-depth <- 
-    its_rarecurve %>% 
-    group_by(Site) %>% 
-    slice_max(Species, n = 1) %>% 
-    pull(Sample) %>% 
-    min()
-its_at_depth <- its_rarecurve %>% filter(Sample == depth)
-#+ its_rarefaction_curve_fig,fig.width=7,fig.height=5,fig.align='center'
-ggplot(its_rarecurve, aes(x = Sample, y = Species, group = Site)) +
-    geom_vline(xintercept = depth, linewidth = 0.2) +
-    geom_hline(data = its_at_depth, aes(yintercept = Species), linewidth = 0.2) +
-    geom_line(aes(color = field_type), linewidth = 0.8) +
-    scale_color_discrete_qualitative(palette = "Harmonic") +
-    labs(x = "Number of individuals (sequence abundance)",
-         y = "OTUs",
-         title = "Rarefaction of ITS data",
-         caption = "Curves based on sums of the top six samples per field.\nVertical line shows the minimum sequence abundance for a field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
-    theme_classic()
-#' At the minimum sequencing depth available, there is no consequential relationship between
-#' sequence abundance and species accumulation. 
-#' 
-#' This result can be corroborated by comparing the total sequences recovered per field vs.
-#' the richness recovered per field. A relationship should not be evident, or fields with more sequences
-#' could have bias to higher richness based on sequencing depth (or it could be real...there's no way to know). 
-#' This can be examined visually. The raw ITS data are used (these are sums of the top six samples per field
-#' as of 2023-03-13). 
-its_seqot <- 
-    data.frame(
-        field_key = spe$its_raw[, 1],
-        seqs = apply(spe$its_raw[, -1], 1, sum),
-        otus = apply(spe$its_raw[, -1] > 0, 1, sum)
-    ) %>% left_join(sites, by = join_by(field_key))
-#+ its_seqs_otus_fig,fig.width=7,fig.height=5,fig.align='center'
-ggplot(its_seqot, aes(x = seqs, y = otus)) +
-    geom_point(aes(fill = field_type), shape = 21, size = 2) +
-    scale_fill_discrete_qualitative(palette = "Harmonic") +
-    labs(x = "Sequence abundance per field",
-         y = "OTUs recovered per field",
-         caption = "Raw ITS data used, sum of top 6 samples per field") +
-    theme_classic()
-#+ its_seqs_otus_reg
-summary(lm(otus ~ seqs, data = its_seqot))
-#' The relationship is poor and not significant. 
-#' 
-#' ### AMF dataset
-#' The custom function `spe_accum()` is applied here.  
-#+ amf_accum_list
-amf_accum <- bind_rows(
-    list(
-        All_samples = bind_rows(
-            split(sac_data$amf_all, ~ field_name) %>% 
-                map(spe_accum),
-            .id = "field_name"
-        ),
-        TopN_samples = bind_rows(
-            split(sac_data$amf_topn, ~ field_name) %>% 
-                map(spe_accum, n_samples=6),
-            .id = "field_name"
-        )
-    ),
-    .id = "dataset"
-) %>% left_join(sites, by = join_by(field_name))
-#+ amf_species_accumulation_fig,warning=FALSE,message=FALSE,fig.width=8,fig.height=5,fig.align='center'
-ggplot(amf_accum, aes(x = samples, y = richness, group = field_name)) +
-    facet_wrap(vars(dataset), scales = "free_x") +
-    geom_line(aes(color = field_type)) +
-    geom_segment(aes(x = samples, y = richness-sd, xend = samples, yend = richness+sd, color = field_type)) +
-    scale_color_discrete_qualitative(palette = "Harmonic") +
-    labs(x = "Samples", y = expression(N[0]), 
-         title = "Species accumulation of 18S data",
-         caption = "Species accumulation by the \"exact\" method; standard deviation (vertical lines) conditioned by the empirical dataset.") +
-    theme_bw()
-#' 
-#' Some fields show very steep curves, which is unexpected. Most fields show flatter curves that were
-#' produced with the ITS data. Truncating the analysis to six samples per field shows less effect with
-#' the 18S data, but if nine are chosen for the ITS, the same should probably be done here. 
-#' 
-#' Rarefaction is performed to assess the relationship between sequence abundance and species richness,
-#' and can help justify the decision to rarefy to the minimum sequence depth obtained. 
-#' Caution: function `rarecurve()` takes some time to execute. 
-#+ amf_rarecurve,message=FALSE,warning=FALSE
-amf_rarecurve <- 
-    rarecurve(
-        data.frame(spe$amf_raw,
-                   row.names = 1),
-        step = 1,
-        tidy = TRUE
-    ) %>% 
-    mutate(Site = as.numeric(Site)) %>% 
-    left_join(sites, by = join_by(Site == field_key))
-# Additional data and variables for plotting
-depth <- 
-    amf_rarecurve %>% 
-    group_by(Site) %>% 
-    slice_max(Species, n = 1) %>% 
-    pull(Sample) %>% 
-    min()
-amf_at_depth <- amf_rarecurve %>% filter(Sample == depth)
-#+ amf_rarefaction_curve_fig,fig.width=7,fig.height=5,fig.align='center'
-ggplot(amf_rarecurve, aes(x = Sample, y = Species, group = Site)) +
-    geom_vline(xintercept = depth, linewidth = 0.2) +
-    geom_hline(data = amf_at_depth, aes(yintercept = Species), linewidth = 0.2) +
-    geom_line(aes(color = field_type), linewidth = 0.8) +
-    scale_color_discrete_qualitative(palette = "Harmonic") +
-    labs(x = "Number of individuals (sequence abundance)",
-         y = "OTUs",
-         title = "Rarefaction of 18S data",
-         caption = "Curves based on sums of the top six samples per field.\nVertical line shows the minimum sequence abundance for a field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
-    theme_classic()
-#' As expected, at the minimum sequencing depth available, there is no consequential relationship between
-#' sequence abundance and species accumulation.  
 #' 
 #' ## OTUs pre/post corrections
 #' 

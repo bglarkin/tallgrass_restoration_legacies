@@ -9,6 +9,23 @@
 #'     df_print: paged
 #' ---
 #'
+#'
+#'
+#'
+#'
+#'
+#' Don't remove singletons from raw data before rarefying. Fixed 2023-03-15
+#' 
+#' Just use rarefy() from vegan
+#' 
+#' Leave the section with abundances either summed or averaged in fields for later. Don't worry 
+#' about how to handle singletons in that part yet. 
+#'
+#'
+#'
+#'
+#'
+#'
 #' # Description
 #' Microbial sequence abundances were produced by Lorinda Bullington in QIIME2. ETL must
 #' be performed on output text files to allow downstream analysis. 
@@ -49,7 +66,7 @@
 #' 
 #' # Resources
 #' ## Packages and libraries
-packages_needed = c("tidyverse", "GUniFrac")
+packages_needed = c("tidyverse", "vegan")
 packages_installed = packages_needed %in% rownames(installed.packages())
 #+ packages,message=FALSE
 if (any(!packages_installed)) {
@@ -168,8 +185,8 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
         slice_max(sum, n=samps) %>%
         select(-sum) %>% 
         arrange(field_key, sample)
-    # Remove singleton and zero abundance columns
-    strip_cols1 <- which(apply(spe_topn[, -c(1,2)], 2, sum) <= 1)
+    # Remove zero abundance columns
+    strip_cols1 <- which(apply(spe_topn[, -c(1,2)], 2, sum) == 0)
     spe_samps_raw <- 
         if(length(strip_cols1) == 0) {
             data.frame(spe_topn)
@@ -188,14 +205,14 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
         select(field_sample, everything(), -field_key, -sample) %>% 
         data.frame(., row.names = 1)
     depth_spe_samps_rfy <- min(rowSums(spe_samps_raw_df))
-    spe_samps_rrfd <- Rarefy(spe_samps_raw_df)
+    spe_samps_rrfd <- rrarefy(spe_samps_raw_df, depth_spe_samps_rfy)
     # Remove singleton and zero abundance columns
-    strip_cols2 <- which(apply(spe_samps_rrfd$otu.tab.rff, 2, sum) <= 1)
+    strip_cols2 <- which(apply(spe_samps_rrfd, 2, sum) == 0)
     spe_samps_rfy <- 
         if(length(strip_cols2) == 0) {
-            data.frame(spe_samps_rrfd$otu.tab.rff)
+            data.frame(spe_samps_rrfd)
         } else {
-            spe_samps_rfy <- data.frame(spe_samps_rrfd$otu.tab.rff[, -strip_cols2])
+            spe_samps_rfy <- data.frame(spe_samps_rrfd[, -strip_cols2])
         } %>% 
             rownames_to_column(var = "field_sample") %>%
             separate_wider_delim(cols = field_sample, delim = "_", names = c("field_key", "sample")) %>% 
@@ -222,22 +239,22 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     
     # Rarefy averaged raw sequence data for each field, from top n samples, write to file
     spe_raw_df <- data.frame(spe_raw, row.names = 1)
-    depth_spe_rfy <- min(rowSums(spe_raw))
-    spe_rrfd <- Rarefy(spe_raw_df)
+    depth_spe_rfy <- min(rowSums(spe_raw_df))
+    spe_rrfd <- rrarefy(spe_raw_df, depth_spe_rfy)
     # Remove singleton and zero abundance columns
-    strip_cols4 <- which(apply(spe_rrfd$otu.tab.rff, 2, sum) <= 1)
+    strip_cols4 <- which(apply(spe_rrfd, 2, sum) <= 1)
     spe_rfy <- 
         if(length(strip_cols4) == 0) {
-            data.frame(spe_rrfd$otu.tab.rff)
+            data.frame(spe_rrfd)
         } else {
-            data.frame(spe_rrfd$otu.tab.rff[, -strip_cols4])
+            data.frame(spe_rrfd[, -strip_cols4])
         } %>% 
             rownames_to_column(var = "field_key") %>%
             mutate(field_key = as.numeric(field_key)) %>% 
             arrange(field_key) %>% 
             as_tibble()
     
-    write_csv(meta, paste0(getwd(), folder, "/spe_", gene, "metadata.csv"))
+    write_csv(meta, paste0(getwd(), folder, "/spe_", gene, "_metadata.csv"))
     write_csv(spe_samps_raw, paste0(getwd(), folder, "/spe_", gene, "_raw_samples.csv"))
     write_csv(spe_samps_rfy, paste0(getwd(), folder, "/spe_", gene, "_rfy_samples.csv"))
     write_csv(spe_raw, paste0(getwd(), folder, "/spe_", gene, "_raw.csv"))
