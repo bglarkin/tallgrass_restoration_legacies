@@ -9,23 +9,6 @@
 #'     df_print: paged
 #' ---
 #'
-#'
-#'
-#'
-#'
-#'
-#' Don't remove singletons from raw data before rarefying. Fixed 2023-03-15
-#' 
-#' Just use rarefy() from vegan
-#' 
-#' Leave the section with abundances either summed or averaged in fields for later. Don't worry 
-#' about how to handle singletons in that part yet. 
-#'
-#'
-#'
-#'
-#'
-#'
 #' # Description
 #' Microbial sequence abundances were produced by Lorinda Bullington in QIIME2. ETL must
 #' be performed on output text files to allow downstream analysis. 
@@ -254,11 +237,11 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
             arrange(field_key) %>% 
             as_tibble()
     
-    write_csv(meta, paste0(getwd(), folder, "/spe_", gene, "_metadata.csv"))
-    write_csv(spe_samps_raw, paste0(getwd(), folder, "/spe_", gene, "_raw_samples.csv"))
-    write_csv(spe_samps_rfy, paste0(getwd(), folder, "/spe_", gene, "_rfy_samples.csv"))
-    write_csv(spe_raw, paste0(getwd(), folder, "/spe_", gene, "_raw.csv"))
-    write_csv(spe_rfy, paste0(getwd(), folder, "/spe_", gene, "_rfy.csv"))
+    # write_csv(meta, paste0(getwd(), folder, "/spe_", gene, "_metadata.csv"))
+    # write_csv(spe_samps_raw, paste0(getwd(), folder, "/spe_", gene, "_raw_samples.csv"))
+    # write_csv(spe_samps_rfy, paste0(getwd(), folder, "/spe_", gene, "_rfy_samples.csv"))
+    # write_csv(spe_raw, paste0(getwd(), folder, "/spe_", gene, "_raw.csv"))
+    # write_csv(spe_rfy, paste0(getwd(), folder, "/spe_", gene, "_rfy.csv"))
     
     out <- list(
         min_samples         = min_samples,
@@ -324,6 +307,7 @@ amf
 #' imported back into QIIME, where sequence data can be used with abundances to 
 #' create a phylogeny and distance matrix. The data frame must be transposed and 
 #' use legal column names (i.e., non-numeric). 
+#' 
 #' Site metadata is used to create better column names.
 #' 
 #' The resultant distance matrix will be imported again when needed for multivariate
@@ -345,6 +329,3 @@ amf_export <-
     left_join(amf$spe_meta %>% select(otu_num, otu_ID), by = join_by(otu_num)) %>%
     select(otu_ID, everything(), -otu_num)
 write_tsv(amf_export, paste0(getwd(), "/otu_tables/18S/spe_18S_rfy_export.tsv"))
-
-
-# Every single output from this needs to be checked!
