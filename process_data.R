@@ -31,8 +31,8 @@
 #' For each raw table, species OTU codes must be aligned with short, unique keys, and then species
 #' tables must be transposed into sites-species matrices. Some fields only retained nine samples. 
 #' To correct for survey effort, the nine samples from each field with the 
-#' greatest total sequence abundance will be chosen, and sequences averaged for each OTU within fields.
-#' Rarefaction of sequencing depth to the minimum total number of sequences will be applied.
+#' greatest total sequence abundance will be chosen, and sequences summed for each OTU within fields.
+#' Rarefaction of sequencing depth to the minimum total number of sequences will be applied to summed OTUs.
 #' 
 #' For each taxonomy table, taxonomy strings must be parsed and unnecessary characters
 #' removed. A function is used to streamline the pipeline and to reduce errors. 
@@ -42,7 +42,8 @@
 #' For all tables, short and unique rownames must be created to allow for easy joining of species
 #' and metadata tables. 
 #' 
-#' For all sequences, zero-abundance and singleton OTUs must be removed after rarefying.
+#' For all sequences, zero-abundance and singleton OTUs must be removed after OTUs have been 
+#' rarefied and summed within fields.
 #' 
 #' For the 18S data, a second table is needed to produce a UNIFRAC distance matrix. The table
 #' must have OTUs in rows with OTU ids. 
@@ -189,7 +190,7 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
         data.frame(., row.names = 1)
     depth_spe_samps_rfy <- min(rowSums(spe_samps_raw_df))
     spe_samps_rrfd <- rrarefy(spe_samps_raw_df, depth_spe_samps_rfy)
-    # Remove singleton and zero abundance columns
+    # Remove zero abundance columns
     strip_cols2 <- which(apply(spe_samps_rrfd, 2, sum) == 0)
     spe_samps_rfy <- 
         if(length(strip_cols2) == 0) {
@@ -237,11 +238,11 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
             arrange(field_key) %>% 
             as_tibble()
     
-    # write_csv(meta, paste0(getwd(), folder, "/spe_", gene, "_metadata.csv"))
-    # write_csv(spe_samps_raw, paste0(getwd(), folder, "/spe_", gene, "_raw_samples.csv"))
-    # write_csv(spe_samps_rfy, paste0(getwd(), folder, "/spe_", gene, "_rfy_samples.csv"))
-    # write_csv(spe_raw, paste0(getwd(), folder, "/spe_", gene, "_raw.csv"))
-    # write_csv(spe_rfy, paste0(getwd(), folder, "/spe_", gene, "_rfy.csv"))
+    write_csv(meta, paste0(getwd(), folder, "/spe_", gene, "_metadata.csv"))
+    write_csv(spe_samps_raw, paste0(getwd(), folder, "/spe_", gene, "_raw_samples.csv"))
+    write_csv(spe_samps_rfy, paste0(getwd(), folder, "/spe_", gene, "_rfy_samples.csv"))
+    write_csv(spe_raw, paste0(getwd(), folder, "/spe_", gene, "_raw.csv"))
+    write_csv(spe_rfy, paste0(getwd(), folder, "/spe_", gene, "_rfy.csv"))
     
     out <- list(
         min_samples         = min_samples,
