@@ -2,22 +2,19 @@ Site locations, metadata, and climate
 ================
 Beau Larkin
 
-Last updated: 13 March, 2023
+Last updated: 06 October, 2023
 
-- <a href="#description" id="toc-description">Description</a>
-- <a href="#package-and-library-installation"
-  id="toc-package-and-library-installation">Package and library
-  installation</a>
-- <a href="#data-and-etl" id="toc-data-and-etl">Data and ETL</a>
-  - <a href="#sites" id="toc-sites">Sites</a>
-  - <a href="#climate-data" id="toc-climate-data">Climate data</a>
-    - <a href="#normals" id="toc-normals">Normals</a>
-- <a href="#results" id="toc-results">Results</a>
-  - <a href="#site-types" id="toc-site-types">Site types</a>
-  - <a href="#regional-map" id="toc-regional-map">Regional map</a>
-  - <a href="#regional-areas" id="toc-regional-areas">Regional areas</a>
-  - <a href="#precipitation-normals"
-    id="toc-precipitation-normals">Precipitation normals</a>
+- [Description](#description)
+- [Package and library installation](#package-and-library-installation)
+- [Data and ETL](#data-and-etl)
+  - [Sites](#sites)
+  - [Climate data](#climate-data)
+    - [Normals](#normals)
+- [Results](#results)
+  - [Site types](#site-types)
+  - [Regional map](#regional-map)
+  - [Regional areas](#regional-areas)
+  - [Precipitation normals](#precipitation-normals)
 
 # Description
 
@@ -166,7 +163,7 @@ map <- ggmap(get_stamenmap(
         right = -87.4,
         top = 43.4
     ),
-    zoom = 9,
+    zoom = 7,
     maptype = c("toner-lite"),
     color = c("color")
 ))

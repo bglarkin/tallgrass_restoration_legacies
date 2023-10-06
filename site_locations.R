@@ -96,7 +96,7 @@ map <- ggmap(get_stamenmap(
         right = -87.4,
         top = 43.4
     ),
-    zoom = 9,
+    zoom = 7,
     maptype = c("toner-lite"),
     color = c("color")
 ))

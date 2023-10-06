@@ -212,8 +212,8 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
         summarize(across(starts_with(cluster_type), ~ sum(.x)), .groups = "drop") %>%
         mutate(field_key = as.numeric(field_key)) %>% 
         arrange(field_key)
-    # Remove singleton and zero abundance columns
-    strip_cols3 <- which(apply(spe_raw_sum, 2, sum) <= 1)
+    # Remove zero abundance columns
+    strip_cols3 <- which(apply(spe_raw_sum, 2, sum) <= 0)
     spe_raw <- 
         if(length(strip_cols3) == 0) {
             spe_raw_sum
@@ -225,8 +225,8 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     spe_raw_df <- data.frame(spe_raw, row.names = 1)
     depth_spe_rfy <- min(rowSums(spe_raw_df))
     spe_rrfd <- rrarefy(spe_raw_df, depth_spe_rfy)
-    # Remove singleton and zero abundance columns
-    strip_cols4 <- which(apply(spe_rrfd, 2, sum) <= 1)
+    # Remove zero abundance columns
+    strip_cols4 <- which(apply(spe_rrfd, 2, sum) <= 0)
     spe_rfy <- 
         if(length(strip_cols4) == 0) {
             data.frame(spe_rrfd)
