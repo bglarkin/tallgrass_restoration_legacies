@@ -68,7 +68,7 @@ matrix. The table must have OTUs in rows with OTU ids.
 ## Packages and libraries
 
 ``` r
-packages_needed = c("tidyverse", "vegan")
+packages_needed = c("tidyverse", "vegan", "knitr")
 packages_installed = packages_needed %in% rownames(installed.packages())
 ```
 
@@ -101,7 +101,7 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     # spe             = Dataframe or tibble with QIIME2 sequence abundances output, 
     #                   OTUs in rows and samples in columns.
     # taxa            = Dataframe or tibble with QIIME2 taxonomy outputs; OTUs in
-    #                   rows and metadata in columns.   
+    #                   rows and metadata in columns. 
     # samps           = Samples to keep from each field
     # traits          = Additional dataframe of traits or guilds.
     # varname         = An unique key will be created to replace the cumbersome cluster 
@@ -189,6 +189,16 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
         pull(n) %>% 
         min()
     
+    # Display number of samples in all field
+    samples_fields <-
+        spe_t %>%
+        group_by(field_key) %>%
+        summarize(n = n(), .groups = "drop") %>%
+        mutate(field_key = as.numeric(field_key)) %>% 
+        left_join(sites, by = join_by(field_key)) %>%
+        select(field_key, field_name, region, n) %>% 
+        kable(format = "pandoc", caption = "Number of samples available in each field")
+    
     # Raw (not rarefied) sequence abundances, top n samples, write to file
     spe_topn <- 
         spe_t %>%
@@ -201,14 +211,18 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     strip_cols1 <- which(apply(spe_topn[, -c(1,2)], 2, sum) == 0)
     spe_samps_raw <- 
         if(length(strip_cols1) == 0) {
-            data.frame(spe_topn)
+            data.frame(spe_topn) %>% 
+                mutate(field_key = as.numeric(field_key),
+                       sample = as.numeric(sample)) %>% 
+                arrange(field_key, sample) %>% 
+                as_tibble()
         } else {
-            data.frame(spe_topn[, -strip_cols1])
-        } %>% 
-            mutate(field_key = as.numeric(field_key),
-                   sample = as.numeric(sample)) %>% 
-            arrange(field_key, sample) %>% 
-            as_tibble()
+            data.frame(spe_topn[, -strip_cols1]) %>% 
+                mutate(field_key = as.numeric(field_key),
+                       sample = as.numeric(sample)) %>% 
+                arrange(field_key, sample) %>% 
+                as_tibble()
+        }
     
     # Rarefied sequence abundances, top n samples, write to file
     spe_samps_raw_df <- 
@@ -222,16 +236,22 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     strip_cols2 <- which(apply(spe_samps_rrfd, 2, sum) == 0)
     spe_samps_rfy <- 
         if(length(strip_cols2) == 0) {
-            data.frame(spe_samps_rrfd)
+            data.frame(spe_samps_rrfd) %>% 
+                rownames_to_column(var = "field_sample") %>%
+                separate_wider_delim(cols = field_sample, delim = "_", names = c("field_key", "sample")) %>% 
+                mutate(field_key = as.numeric(field_key),
+                       sample = as.numeric(sample)) %>% 
+                arrange(field_key, sample) %>% 
+                as_tibble()
         } else {
-            spe_samps_rfy <- data.frame(spe_samps_rrfd[, -strip_cols2])
-        } %>% 
-            rownames_to_column(var = "field_sample") %>%
-            separate_wider_delim(cols = field_sample, delim = "_", names = c("field_key", "sample")) %>% 
-            mutate(field_key = as.numeric(field_key),
-                   sample = as.numeric(sample)) %>% 
-            arrange(field_key, sample) %>% 
-            as_tibble()
+            data.frame(spe_samps_rrfd[, -strip_cols2]) %>% 
+                rownames_to_column(var = "field_sample") %>%
+                separate_wider_delim(cols = field_sample, delim = "_", names = c("field_key", "sample")) %>% 
+                mutate(field_key = as.numeric(field_key),
+                       sample = as.numeric(sample)) %>% 
+                arrange(field_key, sample) %>% 
+                as_tibble()
+        }
     
     # Produce summaries of raw sequence data for each field, from top n samples, write to file
     spe_raw_sum <- 
@@ -257,14 +277,18 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     strip_cols4 <- which(apply(spe_rrfd, 2, sum) <= 0)
     spe_rfy <- 
         if(length(strip_cols4) == 0) {
-            data.frame(spe_rrfd)
+            data.frame(spe_rrfd) %>% 
+                rownames_to_column(var = "field_key") %>%
+                mutate(field_key = as.numeric(field_key)) %>% 
+                arrange(field_key) %>% 
+                as_tibble()
         } else {
-            data.frame(spe_rrfd[, -strip_cols4])
-        } %>% 
-            rownames_to_column(var = "field_key") %>%
-            mutate(field_key = as.numeric(field_key)) %>% 
-            arrange(field_key) %>% 
-            as_tibble()
+            data.frame(spe_rrfd[, -strip_cols4]) %>% 
+                rownames_to_column(var = "field_key") %>%
+                mutate(field_key = as.numeric(field_key)) %>% 
+                arrange(field_key) %>% 
+                as_tibble()
+        }
     
     write_csv(meta, paste0(getwd(), folder, "/spe_", gene, "_metadata.csv"))
     write_csv(spe_samps_raw, paste0(getwd(), folder, "/spe_", gene, "_raw_samples.csv"))
@@ -274,6 +298,7 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     
     out <- list(
         min_samples         = min_samples,
+        samples_fields      = samples_fields,
         spe_meta            = as_tibble(meta),
         spe_samps_raw       = as_tibble(spe_samps_raw),
         depth_spe_samps_rfy = depth_spe_samps_rfy,
@@ -304,6 +329,11 @@ amf_taxa <- read_delim(paste0(getwd(), "/otu_tables/18S/18S_otu_taxonomy.txt"),
                        show_col_types = FALSE)
 traits   <- read_csv(paste0(getwd(),   "/otu_tables/2023-02-23_fungal_traits.csv"), 
                      show_col_types = FALSE) %>% select(phylum:primary_lifestyle)
+# Site metadata
+```
+
+``` r
+sites    <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE)
 ```
 
 ## ETL using `etl()`
@@ -329,6 +359,39 @@ its
 
     ## $min_samples
     ## [1] 9
+    ## 
+    ## $samples_fields
+    ## 
+    ## 
+    ## Table: Number of samples available in each field
+    ## 
+    ##  field_key  field_name   region     n
+    ## ----------  -----------  -------  ---
+    ##          1  BBRP1        BM        10
+    ##         10  FLRP4        FL        10
+    ##         11  FLRP5        FL        10
+    ##         12  FLRSP1       FL        10
+    ##         13  FLRSP2       FL        10
+    ##         14  FLRSP3       FL         9
+    ##         15  KORP1        BM        10
+    ##         16  LPC1         LP        10
+    ##         17  LPREM1       LP        10
+    ##         18  LPRP1        LP        10
+    ##         19  LPRP2        LP        10
+    ##          2  ERRP1        BM        10
+    ##         20  MBREM1       BM        10
+    ##         21  MBRP1        BM        10
+    ##         22  MHRP1        BM        10
+    ##         23  MHRP2        BM        10
+    ##         24  PHC1         BM        10
+    ##         25  PHRP1        BM        10
+    ##          3  FGC1         FG        10
+    ##          4  FGREM1       FG        10
+    ##          5  FGRP1        FG        10
+    ##          6  FLC1         FL        10
+    ##          7  FLC2         FL        10
+    ##          8  FLREM1       FL        10
+    ##          9  FLRP1        FL         9
     ## 
     ## $spe_meta
     ## # A tibble: 3,175 × 9
@@ -372,21 +435,21 @@ its
     ## [1] 1629
     ## 
     ## $spe_samps_rfy
-    ## # A tibble: 225 × 2,765
+    ## # A tibble: 225 × 2,789
     ##    field_key sample otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10
     ##        <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>
-    ##  1         1      1    30    37     3     0     9    83   251     0     0     23
-    ##  2         1      2    19   307     0    61     6     9   124     3     0     23
-    ##  3         1      3    42     0     0   125     7    50    44   210     0      9
-    ##  4         1      4    26   191     0     0     3    18    59     0     0      5
-    ##  5         1      5    37     0     3     0     8    40   104    50     0     18
-    ##  6         1      6    29     0     3   490     7    37   207     0     0      8
-    ##  7         1      7   106     5     5     1    14    50    32     0     0     34
-    ##  8         1      9    30     6     8     0     9   158    70     0     0     25
-    ##  9         1     10    24    29     2    10     8    28    79     0     0     31
-    ## 10         2      1   160    61    40     0     9     0    21     0     0    140
+    ##  1         1      1    29    42     1     0     5    86   250     0     0     20
+    ##  2         1      2    17   352     0    55     7    10   123     3     0     19
+    ##  3         1      3    41     0     0   117     8    43    49   213     0     10
+    ##  4         1      4    18   206     1     0     1    20    60     0     0     10
+    ##  5         1      5    30     0     1     0     6    40    94    58     0     20
+    ##  6         1      6    25     0     1   535     4    37   186     0     0      6
+    ##  7         1      7    91     1     5     1    15    59    18     0     0     39
+    ##  8         1      9    29     9    10     0     9   139    69     0     0     17
+    ##  9         1     10    27    32     2     6     7    31    60     0     0     28
+    ## 10         2      1   146    73    46     0    10     0    18     0     0    137
     ## # ℹ 215 more rows
-    ## # ℹ 2,753 more variables: otu_11 <dbl>, otu_12 <dbl>, otu_13 <dbl>,
+    ## # ℹ 2,777 more variables: otu_11 <dbl>, otu_12 <dbl>, otu_13 <dbl>,
     ## #   otu_14 <dbl>, otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>,
     ## #   otu_19 <dbl>, otu_20 <dbl>, otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>,
     ## #   otu_24 <dbl>, otu_25 <dbl>, otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>,
@@ -419,21 +482,21 @@ its
     ## [1] 64141
     ## 
     ## $spe_rfy
-    ## # A tibble: 25 × 3,074
+    ## # A tibble: 25 × 3,073
     ##    field_key otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10 otu_11
     ##        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>
     ##  1         1  1374  2585   100  3003   273  2013  4392  1082     0    738      0
-    ##  2         2  4178  2293  1091    81   888   117   681     0    10   2228    198
-    ##  3         3   525     7   498     0   747   393   369     0    29      0    639
-    ##  4         4  2308    28     5     0  2104  2818  2045     0    83    871      0
-    ##  5         5   614   155   535     0  1676  3303  5305     0    89   1157    194
-    ##  6         6  1418   407   215     0   635   843  1256     0  3369      6   3188
-    ##  7         7  1615  1688  1391     8   858  3112   113     0 10647      0    372
-    ##  8         8  1885   688   913  1201  1103  1578  1932     0    33   1917    120
-    ##  9         9  2240  1199  1099   853   235  1329  1060    22     0    606     66
-    ## 10        10  1019  1006   932   507   273   920  1495  1746     0    356     26
+    ##  2         2  4152  2315  1101    84   888   117   663     0     8   2237    207
+    ##  3         3   540     6   493     0   747   398   371     0    30      0    630
+    ##  4         4  2319    30     5     0  2108  2836  2028     0    80    860      0
+    ##  5         5   621   161   559     0  1664  3294  5358     0    88   1141    195
+    ##  6         6  1426   405   230     0   656   864  1245     0  3342      4   3129
+    ##  7         7  1607  1677  1375     8   853  3113   113     0 10690      0    366
+    ##  8         8  1881   666   931  1203  1048  1549  1934     0    37   1912    119
+    ##  9         9  2300  1199  1110   856   218  1342  1052    18     0    580     58
+    ## 10        10  1020  1009   940   489   274   923  1506  1724     0    352     29
     ## # ℹ 15 more rows
-    ## # ℹ 3,062 more variables: otu_12 <dbl>, otu_13 <dbl>, otu_14 <dbl>,
+    ## # ℹ 3,061 more variables: otu_12 <dbl>, otu_13 <dbl>, otu_14 <dbl>,
     ## #   otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>, otu_19 <dbl>,
     ## #   otu_20 <dbl>, otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>, otu_24 <dbl>,
     ## #   otu_25 <dbl>, otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>, otu_29 <dbl>,
@@ -467,6 +530,39 @@ amf
     ## $min_samples
     ## [1] 9
     ## 
+    ## $samples_fields
+    ## 
+    ## 
+    ## Table: Number of samples available in each field
+    ## 
+    ##  field_key  field_name   region     n
+    ## ----------  -----------  -------  ---
+    ##          1  BBRP1        BM         9
+    ##         10  FLRP4        FL        10
+    ##         11  FLRP5        FL        10
+    ##         12  FLRSP1       FL        10
+    ##         13  FLRSP2       FL        10
+    ##         14  FLRSP3       FL         9
+    ##         15  KORP1        BM        10
+    ##         16  LPC1         LP        10
+    ##         17  LPREM1       LP        10
+    ##         18  LPRP1        LP        10
+    ##         19  LPRP2        LP        10
+    ##          2  ERRP1        BM        10
+    ##         20  MBREM1       BM        10
+    ##         21  MBRP1        BM         9
+    ##         22  MHRP1        BM        10
+    ##         23  MHRP2        BM        10
+    ##         24  PHC1         BM        10
+    ##         25  PHRP1        BM        10
+    ##          3  FGC1         FG        10
+    ##          4  FGREM1       FG        10
+    ##          5  FGRP1        FG        10
+    ##          6  FLC1         FL        10
+    ##          7  FLC2         FL        10
+    ##          8  FLREM1       FL        10
+    ##          9  FLRP1        FL         9
+    ## 
     ## $spe_meta
     ## # A tibble: 152 × 8
     ##    otu_num otu_ID                       class order family genus taxon accession
@@ -486,17 +582,17 @@ amf
     ## $spe_samps_raw
     ## # A tibble: 225 × 154
     ##    field_key sample otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10
-    ##    <chr>     <chr>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>
-    ##  1 1         1        120   195    51     0   307   120    88   143     0     18
-    ##  2 1         10       144   359   193     0   648    30    16   151     0     28
-    ##  3 1         2        102   195   378   267  1006   275   120   171    61      0
-    ##  4 1         4         17   279    30     0   395    16   184   894     0      0
-    ##  5 1         5          0     0   486    30   566   223   550    33     0     16
-    ##  6 1         6          0     0    44     0    39     0     0     0     0      0
-    ##  7 1         7         55   111   275     0   516   110    21   148     0      0
-    ##  8 1         8        130   505   129     0   113    26    55   758    26    110
-    ##  9 1         9         23    35   118     0    29     0    60    84     0      0
-    ## 10 10        1        399   256    38     0    10   190    59   599     0    321
+    ##        <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>
+    ##  1         1      1   120   195    51     0   307   120    88   143     0     18
+    ##  2         1      2   102   195   378   267  1006   275   120   171    61      0
+    ##  3         1      4    17   279    30     0   395    16   184   894     0      0
+    ##  4         1      5     0     0   486    30   566   223   550    33     0     16
+    ##  5         1      6     0     0    44     0    39     0     0     0     0      0
+    ##  6         1      7    55   111   275     0   516   110    21   148     0      0
+    ##  7         1      8   130   505   129     0   113    26    55   758    26    110
+    ##  8         1      9    23    35   118     0    29     0    60    84     0      0
+    ##  9         1     10   144   359   193     0   648    30    16   151     0     28
+    ## 10         2      1  1251     0  2407     0   275   278    30     0   293     37
     ## # ℹ 215 more rows
     ## # ℹ 142 more variables: otu_11 <dbl>, otu_12 <dbl>, otu_13 <dbl>, otu_14 <dbl>,
     ## #   otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>, otu_19 <dbl>,
@@ -509,21 +605,21 @@ amf
     ## [1] 163
     ## 
     ## $spe_samps_rfy
-    ## # A tibble: 225 × 139
+    ## # A tibble: 225 × 134
     ##    field_key sample otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10
     ##        <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>
-    ##  1         1      1    13    19     5     0    23     8    10    13     0      0
-    ##  2         1      2     4    10    17     2    37     8     6     8     6      0
-    ##  3         1      4     0    12     3     0    17     2     8    36     0      0
-    ##  4         1      5     0     0    19     1    23    10    29     4     0      0
+    ##  1         1      1    12    19     5     0    29    11     6    12     0      4
+    ##  2         1      2     5    10    14    11    30    10     5     3     3      0
+    ##  3         1      4     0     4     2     0    23     0     5    35     0      0
+    ##  4         1      5     0     0    19     7    22    12    26     2     0      2
     ##  5         1      6     0     0    44     0    39     0     0     0     0      0
-    ##  6         1      7     5    10    27     0    21     9     1    10     0      0
-    ##  7         1      8     4    30     7     0    13     0     2    43     0      9
-    ##  8         1      9     4    10    32     0    10     0    17    24     0      0
-    ##  9         1     10     6    20    17     0    34     1     3     9     0      0
-    ## 10         2      1    35     0    81     0     5    11     0     0     6      1
+    ##  6         1      7     7    12    19     0    36     7     0     8     0      0
+    ##  7         1      8    11    14     5     0     8     1     5    43     0      4
+    ##  8         1      9     9    10    36     0     4     0    22    16     0      0
+    ##  9         1     10     6    15    10     0    33     2     1     8     0      4
+    ## 10         2      1    37     0    70     0     3    10     0     0     8      1
     ## # ℹ 215 more rows
-    ## # ℹ 127 more variables: otu_11 <dbl>, otu_12 <dbl>, otu_13 <dbl>, otu_14 <dbl>,
+    ## # ℹ 122 more variables: otu_11 <dbl>, otu_12 <dbl>, otu_13 <dbl>, otu_14 <dbl>,
     ## #   otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>, otu_19 <dbl>,
     ## #   otu_20 <dbl>, otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>, otu_24 <dbl>,
     ## #   otu_25 <dbl>, otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>, otu_29 <dbl>,
@@ -556,21 +652,21 @@ amf
     ## [1] 19545
     ## 
     ## $spe_rfy
-    ## # A tibble: 25 × 150
+    ## # A tibble: 25 × 153
     ##    field_key otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10 otu_11
     ##        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>
-    ##  1         1   505  1472  1480   260  3177   691   956  2077    78    150   1280
-    ##  2         2  2173    33  4964     0  2344   675   312     0   692    645      0
-    ##  3         3    29   202    17  2577   947   426  1196     0   405     17      0
-    ##  4         4  1968  2330     0   610   701   681   355  1223  2862   1100    306
-    ##  5         5   434  1382    21    25  1998   792   473     4  1193   1655     55
-    ##  6         6   374    71  3470  2939   838  1083  1605     2   332     76      2
-    ##  7         7    12     0  1229  1153  4040   839   150    73   104      0      0
-    ##  8         8  1154  1428   225   569   953   857  1166   701   557   1169   1785
-    ##  9         9   701  1632   130  1737   306   343   966  2682  1081    886   2893
-    ## 10        10  1508  1058   123  1756   209   520  1244  3570   178    536   1398
+    ##  1         1   512  1481  1495   255  3139   698   973  2084    70    153   1278
+    ##  2         2  2210    25  4979     0  2371   660   303     0   665    639      0
+    ##  3         3    19   240    17  2570   959   435  1160     0   404     11      0
+    ##  4         4  1946  2327     0   601   696   687   352  1171  2899   1101    322
+    ##  5         5   483  1409    20    27  2026   810   472     6  1125   1620     61
+    ##  6         6   336    62  3392  2987   855  1110  1641     2   350     68      6
+    ##  7         7    10     0  1209  1200  4015   847   135    74    96      0      0
+    ##  8         8  1168  1431   228   517   957   893  1176   711   533   1121   1794
+    ##  9         9   695  1677   124  1738   276   370   965  2698  1026    881   2869
+    ## 10        10  1533  1106   123  1745   198   508  1264  3569   186    555   1362
     ## # ℹ 15 more rows
-    ## # ℹ 138 more variables: otu_12 <dbl>, otu_13 <dbl>, otu_14 <dbl>, otu_15 <dbl>,
+    ## # ℹ 141 more variables: otu_12 <dbl>, otu_13 <dbl>, otu_14 <dbl>, otu_15 <dbl>,
     ## #   otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>, otu_19 <dbl>, otu_20 <dbl>,
     ## #   otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>, otu_24 <dbl>, otu_25 <dbl>,
     ## #   otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>, otu_29 <dbl>, otu_30 <dbl>,
@@ -588,10 +684,6 @@ Site metadata is used to create better column names.
 
 The resultant distance matrix will be imported again when needed for
 multivariate analysis and ordination.
-
-``` r
-sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE)
-```
 
 ``` r
 amf_export <-

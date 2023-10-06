@@ -50,7 +50,7 @@
 #' 
 #' # Resources
 #' ## Packages and libraries
-packages_needed = c("tidyverse", "vegan")
+packages_needed = c("tidyverse", "vegan", "knitr")
 packages_installed = packages_needed %in% rownames(installed.packages())
 #+ packages,message=FALSE
 if (any(!packages_installed)) {
@@ -73,7 +73,7 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     # spe             = Dataframe or tibble with QIIME2 sequence abundances output, 
     #                   OTUs in rows and samples in columns.
     # taxa            = Dataframe or tibble with QIIME2 taxonomy outputs; OTUs in
-    #                   rows and metadata in columns.   
+    #                   rows and metadata in columns. 
     # samps           = Samples to keep from each field
     # traits          = Additional dataframe of traits or guilds.
     # varname         = An unique key will be created to replace the cumbersome cluster 
@@ -161,6 +161,16 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
         pull(n) %>% 
         min()
     
+    # Display number of samples in all field
+    samples_fields <-
+        spe_t %>%
+        group_by(field_key) %>%
+        summarize(n = n(), .groups = "drop") %>%
+        mutate(field_key = as.numeric(field_key)) %>% 
+        left_join(sites, by = join_by(field_key)) %>%
+        select(field_key, field_name, region, n) %>% 
+        kable(format = "pandoc", caption = "Number of samples available in each field")
+    
     # Raw (not rarefied) sequence abundances, top n samples, write to file
     spe_topn <- 
         spe_t %>%
@@ -173,14 +183,18 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     strip_cols1 <- which(apply(spe_topn[, -c(1,2)], 2, sum) == 0)
     spe_samps_raw <- 
         if(length(strip_cols1) == 0) {
-            data.frame(spe_topn)
+            data.frame(spe_topn) %>% 
+                mutate(field_key = as.numeric(field_key),
+                       sample = as.numeric(sample)) %>% 
+                arrange(field_key, sample) %>% 
+                as_tibble()
         } else {
-            data.frame(spe_topn[, -strip_cols1])
-        } %>% 
-            mutate(field_key = as.numeric(field_key),
-                   sample = as.numeric(sample)) %>% 
-            arrange(field_key, sample) %>% 
-            as_tibble()
+            data.frame(spe_topn[, -strip_cols1]) %>% 
+                mutate(field_key = as.numeric(field_key),
+                       sample = as.numeric(sample)) %>% 
+                arrange(field_key, sample) %>% 
+                as_tibble()
+        }
     
     # Rarefied sequence abundances, top n samples, write to file
     spe_samps_raw_df <- 
@@ -194,16 +208,22 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     strip_cols2 <- which(apply(spe_samps_rrfd, 2, sum) == 0)
     spe_samps_rfy <- 
         if(length(strip_cols2) == 0) {
-            data.frame(spe_samps_rrfd)
+            data.frame(spe_samps_rrfd) %>% 
+                rownames_to_column(var = "field_sample") %>%
+                separate_wider_delim(cols = field_sample, delim = "_", names = c("field_key", "sample")) %>% 
+                mutate(field_key = as.numeric(field_key),
+                       sample = as.numeric(sample)) %>% 
+                arrange(field_key, sample) %>% 
+                as_tibble()
         } else {
-            spe_samps_rfy <- data.frame(spe_samps_rrfd[, -strip_cols2])
-        } %>% 
-            rownames_to_column(var = "field_sample") %>%
-            separate_wider_delim(cols = field_sample, delim = "_", names = c("field_key", "sample")) %>% 
-            mutate(field_key = as.numeric(field_key),
-                   sample = as.numeric(sample)) %>% 
-            arrange(field_key, sample) %>% 
-            as_tibble()
+            data.frame(spe_samps_rrfd[, -strip_cols2]) %>% 
+                rownames_to_column(var = "field_sample") %>%
+                separate_wider_delim(cols = field_sample, delim = "_", names = c("field_key", "sample")) %>% 
+                mutate(field_key = as.numeric(field_key),
+                       sample = as.numeric(sample)) %>% 
+                arrange(field_key, sample) %>% 
+                as_tibble()
+        }
     
     # Produce summaries of raw sequence data for each field, from top n samples, write to file
     spe_raw_sum <- 
@@ -229,14 +249,18 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     strip_cols4 <- which(apply(spe_rrfd, 2, sum) <= 0)
     spe_rfy <- 
         if(length(strip_cols4) == 0) {
-            data.frame(spe_rrfd)
+            data.frame(spe_rrfd) %>% 
+                rownames_to_column(var = "field_key") %>%
+                mutate(field_key = as.numeric(field_key)) %>% 
+                arrange(field_key) %>% 
+                as_tibble()
         } else {
-            data.frame(spe_rrfd[, -strip_cols4])
-        } %>% 
-            rownames_to_column(var = "field_key") %>%
-            mutate(field_key = as.numeric(field_key)) %>% 
-            arrange(field_key) %>% 
-            as_tibble()
+            data.frame(spe_rrfd[, -strip_cols4]) %>% 
+                rownames_to_column(var = "field_key") %>%
+                mutate(field_key = as.numeric(field_key)) %>% 
+                arrange(field_key) %>% 
+                as_tibble()
+        }
     
     write_csv(meta, paste0(getwd(), folder, "/spe_", gene, "_metadata.csv"))
     write_csv(spe_samps_raw, paste0(getwd(), folder, "/spe_", gene, "_raw_samples.csv"))
@@ -246,6 +270,7 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     
     out <- list(
         min_samples         = min_samples,
+        samples_fields      = samples_fields,
         spe_meta            = as_tibble(meta),
         spe_samps_raw       = as_tibble(spe_samps_raw),
         depth_spe_samps_rfy = depth_spe_samps_rfy,
@@ -272,6 +297,9 @@ amf_taxa <- read_delim(paste0(getwd(), "/otu_tables/18S/18S_otu_taxonomy.txt"),
                        show_col_types = FALSE)
 traits   <- read_csv(paste0(getwd(),   "/otu_tables/2023-02-23_fungal_traits.csv"), 
                      show_col_types = FALSE) %>% select(phylum:primary_lifestyle)
+# Site metadata
+#+ import_sites,message=FALSE
+sites    <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE)
 #' 
 #' ## ETL using `etl()`
 #' Schema: `process_qiime(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, colname_prefix, folder)`
@@ -313,8 +341,6 @@ amf
 #' 
 #' The resultant distance matrix will be imported again when needed for multivariate
 #' analysis and ordination. 
-#+ import_sites,message=FALSE
-sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE)
 #+ wrangle_amf_spe
 amf_export <-
     data.frame(
