@@ -427,7 +427,7 @@ its_rc %>%
 
 Samples sorted by sequence abundance
 
-Six fields would be removed if we cut off the sequence depth at 5000.
+Six samples would be removed if we cut off the sequence depth at 5000.
 
 Sequence abundance jumps from 4948 to 5221, which is a big jump compared
 with the rest of the table. This makes 5000 look good as a cutoff. No
@@ -532,7 +532,7 @@ ggplot(amf_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
 
 <img src="microbial_diagnostics_files/figure-gfm/amf_rarefaction_curve_fig-1.png" style="display: block; margin: auto;" />
 
-Minimum sequencing depth reached is 160. Rarefying the data to this
+Minimum sequencing depth reached is 1811. Rarefying the data to this
 depth would remove a great number of OTUs and leave nearly all samples
 poorly characterized in richness and composition. It looks like
 somewhere around 1250 sequences would be more appropriate at bare
@@ -549,219 +549,69 @@ amf_rc %>%
 
 | field_key | sample_key | field_sample | seq_abund | otus | field_name | region | field_type | yr_since |
 |:----------|:-----------|:-------------|----------:|-----:|:-----------|:-------|:-----------|---------:|
-| 1         | 6          | 1_6          |       163 |    6 | BBRP1      | BM     | restored   |       16 |
-| 21        | 8          | 21_8         |       395 |   11 | MBRP1      | BM     | restored   |       18 |
-| 20        | 9          | 20_9         |       498 |   16 | MBREM1     | BM     | remnant    |       NA |
-| 1         | 9          | 1_9          |       623 |   19 | BBRP1      | BM     | restored   |       16 |
-| 12        | 4          | 12_4         |       713 |   19 | FLRSP1     | FL     | restored   |       10 |
-| 21        | 1          | 21_1         |      1175 |   13 | MBRP1      | BM     | restored   |       18 |
-| 20        | 6          | 20_6         |      1348 |   18 | MBREM1     | BM     | remnant    |       NA |
-| 21        | 9          | 21_9         |      1364 |   14 | MBRP1      | BM     | restored   |       18 |
-| 20        | 3          | 20_3         |      1372 |   17 | MBREM1     | BM     | remnant    |       NA |
-| 19        | 7          | 19_7         |      1432 |   13 | LPRP2      | LP     | restored   |        4 |
-| 9         | 9          | 9_9          |      1439 |   15 | FLRP1      | FL     | restored   |       40 |
-| 21        | 3          | 21_3         |      1458 |   22 | MBRP1      | BM     | restored   |       18 |
-| 10        | 2          | 10_2         |      1511 |   25 | FLRP4      | FL     | restored   |       36 |
-| 14        | 6          | 14_6         |      1546 |   23 | FLRSP3     | FL     | restored   |       10 |
-| 7         | 10         | 7_10         |      1579 |   16 | FLC2       | FL     | corn       |        0 |
-| 20        | 7          | 20_7         |      1740 |   17 | MBREM1     | BM     | remnant    |       NA |
-| 24        | 9          | 24_9         |      1741 |   13 | PHC1       | BM     | corn       |        0 |
-| 10        | 6          | 10_6         |      1807 |   17 | FLRP4      | FL     | restored   |       36 |
-| 7         | 9          | 7_9          |      1827 |   13 | FLC2       | FL     | corn       |        0 |
-| 1         | 1          | 1_1          |      1828 |   27 | BBRP1      | BM     | restored   |       16 |
-| 17        | 7          | 17_7         |      2030 |   25 | LPREM1     | LP     | remnant    |       NA |
-| 9         | 8          | 9_8          |      2112 |   24 | FLRP1      | FL     | restored   |       40 |
-| 11        | 10         | 11_10        |      2127 |   25 | FLRP5      | FL     | restored   |       35 |
-| 3         | 10         | 3_10         |      2131 |   14 | FGC1       | FG     | corn       |        0 |
-| 7         | 8          | 7_8          |      2156 |   12 | FLC2       | FL     | corn       |        0 |
-| 20        | 5          | 20_5         |      2199 |   21 | MBREM1     | BM     | remnant    |       NA |
-| 12        | 10         | 12_10        |      2238 |   21 | FLRSP1     | FL     | restored   |       10 |
-| 19        | 6          | 19_6         |      2240 |   13 | LPRP2      | LP     | restored   |        4 |
-| 6         | 10         | 6_10         |      2255 |   17 | FLC1       | FL     | corn       |        0 |
-| 21        | 10         | 21_10        |      2309 |   25 | MBRP1      | BM     | restored   |       18 |
-| 20        | 8          | 20_8         |      2313 |   17 | MBREM1     | BM     | remnant    |       NA |
-| 1         | 7          | 1_7          |      2317 |   27 | BBRP1      | BM     | restored   |       16 |
-| 8         | 10         | 8_10         |      2342 |   26 | FLREM1     | FL     | remnant    |       NA |
-| 9         | 7          | 9_7          |      2346 |   23 | FLRP1      | FL     | restored   |       40 |
-| 7         | 4          | 7_4          |      2355 |   16 | FLC2       | FL     | corn       |        0 |
-| 6         | 3          | 6_3          |      2404 |   14 | FLC1       | FL     | corn       |        0 |
-| 17        | 3          | 17_3         |      2421 |   18 | LPREM1     | LP     | remnant    |       NA |
-| 14        | 4          | 14_4         |      2435 |   18 | FLRSP3     | FL     | restored   |       10 |
-| 15        | 4          | 15_4         |      2485 |   13 | KORP1      | BM     | restored   |       28 |
-| 10        | 10         | 10_10        |      2552 |   14 | FLRP4      | FL     | restored   |       36 |
-| 4         | 8          | 4_8          |      2572 |   22 | FGREM1     | FG     | remnant    |       NA |
-| 15        | 9          | 15_9         |      2575 |   20 | KORP1      | BM     | restored   |       28 |
-| 24        | 1          | 24_1         |      2590 |   15 | PHC1       | BM     | corn       |        0 |
-| 16        | 3          | 16_3         |      2635 |   10 | LPC1       | LP     | corn       |        0 |
-| 21        | 2          | 21_2         |      2635 |   25 | MBRP1      | BM     | restored   |       18 |
-| 16        | 10         | 16_10        |      2639 |   19 | LPC1       | LP     | corn       |        0 |
-| 14        | 9          | 14_9         |      2654 |   17 | FLRSP3     | FL     | restored   |       10 |
-| 3         | 3          | 3_3          |      2704 |   13 | FGC1       | FG     | corn       |        0 |
-| 24        | 3          | 24_3         |      2726 |   18 | PHC1       | BM     | corn       |        0 |
-| 16        | 4          | 16_4         |      2741 |   19 | LPC1       | LP     | corn       |        0 |
-| 1         | 10         | 1_10         |      2766 |   24 | BBRP1      | BM     | restored   |       16 |
-| 12        | 3          | 12_3         |      2803 |   22 | FLRSP1     | FL     | restored   |       10 |
-| 14        | 2          | 14_2         |      2834 |   24 | FLRSP3     | FL     | restored   |       10 |
-| 10        | 9          | 10_9         |      2843 |   23 | FLRP4      | FL     | restored   |       36 |
-| 7         | 3          | 7_3          |      2897 |   13 | FLC2       | FL     | corn       |        0 |
-| 16        | 8          | 16_8         |      2901 |   17 | LPC1       | LP     | corn       |        0 |
-| 13        | 10         | 13_10        |      2904 |   26 | FLRSP2     | FL     | restored   |       10 |
-| 5         | 10         | 5_10         |      2908 |   20 | FGRP1      | FG     | restored   |       15 |
-| 3         | 9          | 3_9          |      2916 |   16 | FGC1       | FG     | corn       |        0 |
-| 16        | 1          | 16_1         |      2918 |   15 | LPC1       | LP     | corn       |        0 |
-| 11        | 9          | 11_9         |      2934 |   23 | FLRP5      | FL     | restored   |       35 |
-| 15        | 2          | 15_2         |      2964 |   28 | KORP1      | BM     | restored   |       28 |
-| 12        | 1          | 12_1         |      2976 |   25 | FLRSP1     | FL     | restored   |       10 |
-| 22        | 3          | 22_3         |      2984 |   24 | MHRP1      | BM     | restored   |        7 |
-| 17        | 2          | 17_2         |      3001 |   20 | LPREM1     | LP     | remnant    |       NA |
-| 22        | 8          | 22_8         |      3001 |   22 | MHRP1      | BM     | restored   |        7 |
-| 13        | 2          | 13_2         |      3015 |   19 | FLRSP2     | FL     | restored   |       10 |
-| 17        | 9          | 17_9         |      3031 |   22 | LPREM1     | LP     | remnant    |       NA |
-| 24        | 10         | 24_10        |      3043 |   17 | PHC1       | BM     | corn       |        0 |
-| 17        | 10         | 17_10        |      3056 |   20 | LPREM1     | LP     | remnant    |       NA |
-| 1         | 8          | 1_8          |      3069 |   29 | BBRP1      | BM     | restored   |       16 |
 | 20        | 4          | 20_4         |      3071 |   23 | MBREM1     | BM     | remnant    |       NA |
-| 3         | 8          | 3_8          |      3101 |   23 | FGC1       | FG     | corn       |        0 |
-| 9         | 3          | 9_3          |      3121 |   22 | FLRP1      | FL     | restored   |       40 |
-| 11        | 3          | 11_3         |      3132 |   29 | FLRP5      | FL     | restored   |       35 |
-| 15        | 10         | 15_10        |      3134 |   21 | KORP1      | BM     | restored   |       28 |
-| 12        | 9          | 12_9         |      3190 |   19 | FLRSP1     | FL     | restored   |       10 |
-| 11        | 1          | 11_1         |      3206 |   19 | FLRP5      | FL     | restored   |       35 |
-| 19        | 4          | 19_4         |      3248 |   19 | LPRP2      | LP     | restored   |        4 |
-| 8         | 8          | 8_8          |      3252 |   34 | FLREM1     | FL     | remnant    |       NA |
-| 25        | 9          | 25_9         |      3258 |   30 | PHRP1      | BM     | restored   |       11 |
-| 13        | 3          | 13_3         |      3262 |   24 | FLRSP2     | FL     | restored   |       10 |
-| 24        | 8          | 24_8         |      3286 |   21 | PHC1       | BM     | corn       |        0 |
-| 19        | 10         | 19_10        |      3287 |   21 | LPRP2      | LP     | restored   |        4 |
 | 21        | 5          | 21_5         |      3312 |   24 | MBRP1      | BM     | restored   |       18 |
-| 22        | 9          | 22_9         |      3322 |   27 | MHRP1      | BM     | restored   |        7 |
-| 13        | 9          | 13_9         |      3359 |   19 | FLRSP2     | FL     | restored   |       10 |
-| 25        | 8          | 25_8         |      3378 |   21 | PHRP1      | BM     | restored   |       11 |
-| 9         | 2          | 9_2          |      3391 |   32 | FLRP1      | FL     | restored   |       40 |
-| 4         | 9          | 4_9          |      3396 |   25 | FGREM1     | FG     | remnant    |       NA |
 | 21        | 7          | 21_7         |      3402 |   25 | MBRP1      | BM     | restored   |       18 |
-| 14        | 3          | 14_3         |      3406 |   21 | FLRSP3     | FL     | restored   |       10 |
-| 11        | 5          | 11_5         |      3412 |   29 | FLRP5      | FL     | restored   |       35 |
-| 10        | 4          | 10_4         |      3413 |   17 | FLRP4      | FL     | restored   |       36 |
-| 5         | 9          | 5_9          |      3424 |   23 | FGRP1      | FG     | restored   |       15 |
-| 7         | 2          | 7_2          |      3435 |   19 | FLC2       | FL     | corn       |        0 |
-| 10        | 1          | 10_1         |      3452 |   26 | FLRP4      | FL     | restored   |       36 |
-| 23        | 9          | 23_9         |      3464 |   25 | MHRP2      | BM     | restored   |        2 |
-| 1         | 5          | 1_5          |      3473 |   24 | BBRP1      | BM     | restored   |       16 |
-| 22        | 7          | 22_7         |      3481 |   25 | MHRP1      | BM     | restored   |        7 |
-| 8         | 3          | 8_3          |      3481 |   29 | FLREM1     | FL     | remnant    |       NA |
-| 23        | 10         | 23_10        |      3491 |   29 | MHRP2      | BM     | restored   |        2 |
+| 1         | 5          | 1_5          |      3434 |   22 | BBRP1      | BM     | restored   |       16 |
 | 21        | 4          | 21_4         |      3495 |   16 | MBRP1      | BM     | restored   |       18 |
-| 24        | 4          | 24_4         |      3500 |   17 | PHC1       | BM     | corn       |        0 |
-| 2         | 4          | 2_4          |      3527 |   20 | ERRP1      | BM     | restored   |        3 |
-| 25        | 2          | 25_2         |      3537 |   24 | PHRP1      | BM     | restored   |       11 |
-| 19        | 3          | 19_3         |      3552 |   17 | LPRP2      | LP     | restored   |        4 |
-| 3         | 2          | 3_2          |      3553 |   12 | FGC1       | FG     | corn       |        0 |
-| 11        | 4          | 11_4         |      3571 |   33 | FLRP5      | FL     | restored   |       35 |
-| 14        | 1          | 14_1         |      3576 |   21 | FLRSP3     | FL     | restored   |       10 |
 | 10        | 3          | 10_3         |      3608 |   27 | FLRP4      | FL     | restored   |       36 |
 | 10        | 7          | 10_7         |      3653 |   28 | FLRP4      | FL     | restored   |       36 |
-| 17        | 1          | 17_1         |      3662 |   21 | LPREM1     | LP     | remnant    |       NA |
-| 23        | 3          | 23_3         |      3668 |   20 | MHRP2      | BM     | restored   |        2 |
-| 12        | 7          | 12_7         |      3695 |   26 | FLRSP1     | FL     | restored   |       10 |
-| 18        | 10         | 18_10        |      3700 |   23 | LPRP1      | LP     | restored   |        4 |
-| 15        | 3          | 15_3         |      3723 |   22 | KORP1      | BM     | restored   |       28 |
-| 8         | 4          | 8_4          |      3724 |   33 | FLREM1     | FL     | remnant    |       NA |
-| 5         | 4          | 5_4          |      3727 |   30 | FGRP1      | FG     | restored   |       15 |
 | 24        | 2          | 24_2         |      3731 |   18 | PHC1       | BM     | corn       |        0 |
-| 6         | 9          | 6_9          |      3737 |   15 | FLC1       | FL     | corn       |        0 |
-| 5         | 3          | 5_3          |      3739 |   24 | FGRP1      | FG     | restored   |       15 |
-| 16        | 2          | 16_2         |      3759 |   17 | LPC1       | LP     | corn       |        0 |
-| 22        | 1          | 22_1         |      3781 |   26 | MHRP1      | BM     | restored   |        7 |
-| 13        | 8          | 13_8         |      3784 |   22 | FLRSP2     | FL     | restored   |       10 |
-| 4         | 4          | 4_4          |      3789 |   21 | FGREM1     | FG     | remnant    |       NA |
-| 23        | 7          | 23_7         |      3824 |   34 | MHRP2      | BM     | restored   |        2 |
-| 6         | 2          | 6_2          |      3847 |   15 | FLC1       | FL     | corn       |        0 |
-| 9         | 10         | 9_10         |      3848 |   23 | FLRP1      | FL     | restored   |       40 |
 | 11        | 8          | 11_8         |      3849 |   31 | FLRP5      | FL     | restored   |       35 |
-| 23        | 2          | 23_2         |      3858 |   26 | MHRP2      | BM     | restored   |        2 |
-| 8         | 2          | 8_2          |      3864 |   34 | FLREM1     | FL     | remnant    |       NA |
-| 4         | 2          | 4_2          |      3869 |   23 | FGREM1     | FG     | remnant    |       NA |
 | 1         | 4          | 1_4          |      3876 |   21 | BBRP1      | BM     | restored   |       16 |
-| 6         | 4          | 6_4          |      3884 |   15 | FLC1       | FL     | corn       |        0 |
 | 12        | 5          | 12_5         |      3894 |   22 | FLRSP1     | FL     | restored   |       10 |
-| 3         | 4          | 3_4          |      3895 |   23 | FGC1       | FG     | corn       |        0 |
-| 18        | 3          | 18_3         |      3941 |   22 | LPRP1      | LP     | restored   |        4 |
-| 13        | 7          | 13_7         |      3964 |   21 | FLRSP2     | FL     | restored   |       10 |
+| 20        | 1          | 20_1         |      3939 |   20 | MBREM1     | BM     | remnant    |       NA |
 | 11        | 6          | 11_6         |      3967 |   27 | FLRP5      | FL     | restored   |       35 |
-| 2         | 2          | 2_2          |      3972 |   20 | ERRP1      | BM     | restored   |        3 |
-| 20        | 1          | 20_1         |      3984 |   21 | MBREM1     | BM     | remnant    |       NA |
-| 23        | 1          | 23_1         |      3986 |   31 | MHRP2      | BM     | restored   |        2 |
-| 19        | 1          | 19_1         |      3993 |   27 | LPRP2      | LP     | restored   |        4 |
-| 8         | 9          | 8_9          |      4004 |   23 | FLREM1     | FL     | remnant    |       NA |
 | 14        | 5          | 14_5         |      4042 |   19 | FLRSP3     | FL     | restored   |       10 |
 | 20        | 2          | 20_2         |      4069 |   26 | MBREM1     | BM     | remnant    |       NA |
 | 12        | 8          | 12_8         |      4096 |   25 | FLRSP1     | FL     | restored   |       10 |
-| 2         | 9          | 2_9          |      4098 |   19 | ERRP1      | BM     | restored   |        3 |
 | 3         | 1          | 3_1          |      4115 |   14 | FGC1       | FG     | corn       |        0 |
-| 4         | 1          | 4_1          |      4151 |   24 | FGREM1     | FG     | remnant    |       NA |
 | 13        | 4          | 13_4         |      4176 |   27 | FLRSP2     | FL     | restored   |       10 |
 | 7         | 5          | 7_5          |      4207 |    7 | FLC2       | FL     | corn       |        0 |
-| 25        | 3          | 25_3         |      4235 |   28 | PHRP1      | BM     | restored   |       11 |
 | 1         | 2          | 1_2          |      4257 |   25 | BBRP1      | BM     | restored   |       16 |
-| 2         | 3          | 2_3          |      4262 |   27 | ERRP1      | BM     | restored   |        3 |
-| 4         | 3          | 4_3          |      4324 |   24 | FGREM1     | FG     | remnant    |       NA |
-| 25        | 1          | 25_1         |      4350 |   27 | PHRP1      | BM     | restored   |       11 |
-| 18        | 4          | 18_4         |      4386 |   25 | LPRP1      | LP     | restored   |        4 |
-| 19        | 8          | 19_8         |      4453 |   26 | LPRP2      | LP     | restored   |        4 |
-| 18        | 2          | 18_2         |      4525 |   17 | LPRP1      | LP     | restored   |        4 |
+| 19        | 8          | 19_8         |      4449 |   25 | LPRP2      | LP     | restored   |        4 |
 | 19        | 2          | 19_2         |      4663 |   25 | LPRP2      | LP     | restored   |        4 |
-| 25        | 10         | 25_10        |      4665 |   24 | PHRP1      | BM     | restored   |       11 |
-| 18        | 8          | 18_8         |      4678 |   22 | LPRP1      | LP     | restored   |        4 |
 | 17        | 4          | 17_4         |      4796 |   22 | LPREM1     | LP     | remnant    |       NA |
-| 15        | 5          | 15_5         |      4890 |   22 | KORP1      | BM     | restored   |       28 |
-| 23        | 4          | 23_4         |      4909 |   28 | MHRP2      | BM     | restored   |        2 |
+| 23        | 4          | 23_4         |      4900 |   27 | MHRP2      | BM     | restored   |        2 |
 | 3         | 6          | 3_6          |      4918 |   19 | FGC1       | FG     | corn       |        0 |
-| 18        | 7          | 18_7         |      4941 |   17 | LPRP1      | LP     | restored   |        4 |
 | 15        | 1          | 15_1         |      4948 |   22 | KORP1      | BM     | restored   |       28 |
 | 18        | 1          | 18_1         |      4951 |   24 | LPRP1      | LP     | restored   |        4 |
 | 9         | 1          | 9_1          |      4969 |   26 | FLRP1      | FL     | restored   |       40 |
-| 5         | 2          | 5_2          |      5072 |   24 | FGRP1      | FG     | restored   |       15 |
-| 6         | 5          | 6_5          |      5077 |   18 | FLC1       | FL     | corn       |        0 |
-| 16        | 7          | 16_7         |      5099 |   22 | LPC1       | LP     | corn       |        0 |
+| 16        | 7          | 16_7         |      4978 |   21 | LPC1       | LP     | corn       |        0 |
+| 4         | 7          | 4_7          |      5113 |   21 | FGREM1     | FG     | remnant    |       NA |
 | 7         | 7          | 7_7          |      5127 |   16 | FLC2       | FL     | corn       |        0 |
 | 25        | 4          | 25_4         |      5131 |   23 | PHRP1      | BM     | restored   |       11 |
-| 4         | 7          | 4_7          |      5165 |   23 | FGREM1     | FG     | remnant    |       NA |
-| 4         | 5          | 4_5          |      5167 |   27 | FGREM1     | FG     | remnant    |       NA |
+| 4         | 5          | 4_5          |      5164 |   26 | FGREM1     | FG     | remnant    |       NA |
+| 17        | 5          | 17_5         |      5194 |   18 | LPREM1     | LP     | remnant    |       NA |
 | 13        | 1          | 13_1         |      5198 |   20 | FLRSP2     | FL     | restored   |       10 |
-| 17        | 5          | 17_5         |      5200 |   20 | LPREM1     | LP     | remnant    |       NA |
-| 2         | 8          | 2_8          |      5201 |   22 | ERRP1      | BM     | restored   |        3 |
 | 13        | 5          | 13_5         |      5225 |   26 | FLRSP2     | FL     | restored   |       10 |
-| 19        | 5          | 19_5         |      5321 |   20 | LPRP2      | LP     | restored   |        4 |
+| 19        | 5          | 19_5         |      5257 |   18 | LPRP2      | LP     | restored   |        4 |
 | 18        | 5          | 18_5         |      5424 |   24 | LPRP1      | LP     | restored   |        4 |
 | 12        | 6          | 12_6         |      5427 |   24 | FLRSP1     | FL     | restored   |       10 |
 | 10        | 5          | 10_5         |      5432 |   32 | FLRP4      | FL     | restored   |       36 |
 | 14        | 8          | 14_8         |      5498 |   27 | FLRSP3     | FL     | restored   |       10 |
-| 2         | 6          | 2_6          |      5554 |   25 | ERRP1      | BM     | restored   |        3 |
 | 9         | 6          | 9_6          |      5566 |   22 | FLRP1      | FL     | restored   |       40 |
-| 6         | 8          | 6_8          |      5609 |   38 | FLC1       | FL     | corn       |        0 |
-| 5         | 5          | 5_5          |      5669 |   28 | FGRP1      | FG     | restored   |       15 |
+| 6         | 8          | 6_8          |      5588 |   37 | FLC1       | FL     | corn       |        0 |
 | 2         | 1          | 2_1          |      5679 |   25 | ERRP1      | BM     | restored   |        3 |
-| 22        | 2          | 22_2         |      5685 |   26 | MHRP1      | BM     | restored   |        7 |
 | 14        | 7          | 14_7         |      5689 |   24 | FLRSP3     | FL     | restored   |       10 |
 | 8         | 6          | 8_6          |      5734 |   24 | FLREM1     | FL     | remnant    |       NA |
 | 18        | 6          | 18_6         |      5809 |   22 | LPRP1      | LP     | restored   |        4 |
-| 5         | 8          | 5_8          |      5839 |   36 | FGRP1      | FG     | restored   |       15 |
+| 5         | 8          | 5_8          |      5822 |   35 | FGRP1      | FG     | restored   |       15 |
 | 16        | 5          | 16_5         |      5878 |   21 | LPC1       | LP     | corn       |        0 |
 | 17        | 6          | 17_6         |      5900 |   21 | LPREM1     | LP     | remnant    |       NA |
 | 23        | 5          | 23_5         |      6004 |   26 | MHRP2      | BM     | restored   |        2 |
 | 8         | 5          | 8_5          |      6010 |   22 | FLREM1     | FL     | remnant    |       NA |
 | 11        | 7          | 11_7         |      6032 |   29 | FLRP5      | FL     | restored   |       35 |
-| 25        | 5          | 25_5         |      6042 |   26 | PHRP1      | BM     | restored   |       11 |
+| 25        | 5          | 25_5         |      6037 |   25 | PHRP1      | BM     | restored   |       11 |
 | 24        | 6          | 24_6         |      6045 |   20 | PHC1       | BM     | corn       |        0 |
 | 2         | 5          | 2_5          |      6136 |   18 | ERRP1      | BM     | restored   |        3 |
-| 3         | 7          | 3_7          |      6194 |   24 | FGC1       | FG     | corn       |        0 |
+| 3         | 7          | 3_7          |      6162 |   23 | FGC1       | FG     | corn       |        0 |
 | 22        | 6          | 22_6         |      6277 |   28 | MHRP1      | BM     | restored   |        7 |
 | 6         | 7          | 6_7          |      6281 |   19 | FLC1       | FL     | corn       |        0 |
 | 6         | 6          | 6_6          |      6382 |   28 | FLC1       | FL     | corn       |        0 |
 | 22        | 5          | 22_5         |      6390 |   24 | MHRP1      | BM     | restored   |        7 |
 | 24        | 5          | 24_5         |      6416 |   18 | PHC1       | BM     | corn       |        0 |
-| 25        | 6          | 25_6         |      6536 |   27 | PHRP1      | BM     | restored   |       11 |
+| 25        | 6          | 25_6         |      6529 |   26 | PHRP1      | BM     | restored   |       11 |
 | 7         | 6          | 7_6          |      6563 |    9 | FLC2       | FL     | corn       |        0 |
 | 5         | 6          | 5_6          |      6655 |   31 | FGRP1      | FG     | restored   |       15 |
 | 4         | 6          | 4_6          |      6658 |   20 | FGREM1     | FG     | remnant    |       NA |
@@ -818,18 +668,18 @@ summary(lm(otus ~ seqs, data = amf_seqot))
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -17.066  -3.499   1.117   6.036  11.744 
+    ## -17.161  -3.449   2.047   5.267   9.167 
     ## 
     ## Coefficients:
     ##              Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept) 4.731e+01  8.134e+00   5.816 6.31e-06 ***
-    ## seqs        9.132e-05  2.299e-04   0.397    0.695    
+    ## (Intercept) 3.462e+01  7.812e+00   4.432 0.000192 ***
+    ## seqs        1.600e-04  4.764e-04   0.336 0.740041    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 8 on 23 degrees of freedom
-    ## Multiple R-squared:  0.006811,   Adjusted R-squared:  -0.03637 
-    ## F-statistic: 0.1577 on 1 and 23 DF,  p-value: 0.6949
+    ## Residual standard error: 6.88 on 23 degrees of freedom
+    ## Multiple R-squared:  0.00488,    Adjusted R-squared:  -0.03839 
+    ## F-statistic: 0.1128 on 1 and 23 DF,  p-value: 0.74
 
 The custom function `spe_accum()` is applied here.
 
