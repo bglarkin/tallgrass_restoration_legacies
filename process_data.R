@@ -62,11 +62,11 @@ for (i in 1:length(packages_needed)) {
 }
 #' 
 #' ## Functions
-#' *NOTE:* all `write_csv()` steps have been commented out as of 2023-03-14 to prevent overwriting
-#' existing files. This is because function `Rarefy()` produces inconsistent results. Due to rounding,
-#' a very few OTUs are retained or lost (<1%) when this function is rerun. These different outcomes 
+#' *NOTE:* Due to rounding,
+#' a very few OTUs are retained or lost (<1%) when function `Rarefy()` is rerun. These different outcomes 
 #' change nothing about how results would be interpreted, but they do change axis limits and other trivial
-#' parameters that cause headaches later. 
+#' parameters that cause headaches later. Be advised that downstream changes will be needed if `Rarefy()` 
+#' is rerun and new files are created by `write_csv()` in the steps at the end of this function.
 etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, colname_prefix, folder) {
     
     # Variable definitions
@@ -246,13 +246,13 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     
     out <- list(
         min_samples         = min_samples,
-        spe_meta            = meta,
-        spe_samps_raw       = spe_samps_raw,
+        spe_meta            = as_tibble(meta),
+        spe_samps_raw       = as_tibble(spe_samps_raw),
         depth_spe_samps_rfy = depth_spe_samps_rfy,
-        spe_samps_rfy       = spe_samps_rfy,
-        spe_raw             = spe_raw,
+        spe_samps_rfy       = as_tibble(spe_samps_rfy),
+        spe_raw             = as_tibble(spe_raw),
         depth_spe_rfy       = depth_spe_rfy,
-        spe_rfy             = spe_rfy
+        spe_rfy             = as_tibble(spe_rfy)
     )
     
     return(out)
