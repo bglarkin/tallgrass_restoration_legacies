@@ -161,7 +161,7 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
         pull(n) %>% 
         min()
     
-    # Display number of samples in all field
+    # Display number of samples in all fields
     samples_fields <-
         spe_t %>%
         group_by(field_key) %>%
