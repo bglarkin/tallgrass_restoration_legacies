@@ -340,7 +340,7 @@ amf_accum <- bind_rows(
     mutate(dataset = factor(dataset, ordered = TRUE, levels = c("Raw", "Rarefied")),
            field_key = as.numeric(field_key)) %>% 
     left_join(sites, by = join_by(field_key))
-#+ its_species_accumulation_fig,warning=FALSE,message=FALSE,fig.width=8,fig.height=5,fig.align='center'
+#+ amf_species_accumulation_fig,warning=FALSE,message=FALSE,fig.width=8,fig.height=5,fig.align='center'
 ggplot(amf_accum, aes(x = samples, y = richness, group = field_name)) +
     facet_wrap(vars(dataset), scales = "free_x") +
     geom_line(aes(color = field_type)) +
