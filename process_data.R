@@ -74,7 +74,7 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     #                   OTUs in rows and samples in columns.
     # taxa            = Dataframe or tibble with QIIME2 taxonomy outputs; OTUs in
     #                   rows and metadata in columns.   
-    # samps           = Samples to keep from each field, default=6
+    # samps           = Samples to keep from each field
     # traits          = Additional dataframe of traits or guilds.
     # varname         = An unique key will be created to replace the cumbersome cluster 
     #                   hash which is produced by QIIME2. Varname, a string, begins the
