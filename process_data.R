@@ -306,7 +306,7 @@ amf <-
     etl(
         spe = amf_otu,
         taxa = amf_taxa,
-        samps = 3,
+        samps = 9,
         varname = otu_num,
         gene = "18S",
         cluster_type = "otu",
