@@ -148,7 +148,7 @@ its_rc %>%
     slice_max(seq_abund, n = 1) %>% 
     arrange(seq_abund) %>% 
     kable(format = "pandoc", caption = "Samples sorted by sequence abundance")
-#' Six fields would be removed if we cut off the sequence depth at 5000. 
+#' Six samples would be removed if we cut off the sequence depth at 5000. 
 #' 
 #' Sequence abundance jumps from 4948 to 5221, which is a big jump compared with the rest of
 #' the table. This makes 5000 look good as a cutoff. No two samples below 5000 come from the 
