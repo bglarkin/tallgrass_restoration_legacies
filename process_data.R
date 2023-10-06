@@ -221,7 +221,7 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
             spe_raw_sum[, -strip_cols3]
         }
     
-    # Rarefy averaged raw sequence data for each field, from top n samples, write to file
+    # Rarefy summed raw sequence data for each field, from top n samples, write to file
     spe_raw_df <- data.frame(spe_raw, row.names = 1)
     depth_spe_rfy <- min(rowSums(spe_raw_df))
     spe_rrfd <- rrarefy(spe_raw_df, depth_spe_rfy)

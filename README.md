@@ -11,8 +11,14 @@ The file [site_locations.md](site_locations.md) shows locations of regions and s
 The site data also include several tables which aren't wrangled in scripts, including:
 
 - [Soil chemical properties](clean_data/soil.csv)
+- Water stable aggregates
+- PLFA/NLFA
+- Other?
 
 Sites are tested for autocorrelation between geographic distance and fungal species or soil chemical properties in [spatial_correlation.md](spatial_correlation.md). Mild or insignificant autocorrelation was found, particularly in the Blue Mounds restored fields, suggesting that we can at least present these fields as a pseudochronosequence. 
+
+## Diagnostics
+Point out the rarefaction step which shows how severely fields were undersampled.
 
 ## Microbial Species Diversity
 Microbial data analyzed here include site-species tables derived from high-throughput sequencing of ITS and 18S genes 

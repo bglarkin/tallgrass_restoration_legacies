@@ -17,7 +17,7 @@
 #' actions are performed:
 #' 
 #' - Individual-based rarefaction at the sample level to determine the adequacy of sequence depth and 
-#' justify rarefication of sequence abundances. 
+#' justify rarefaction of sequence abundances. 
 #' - Species accumulation at the field level to determine the adequacy of sampling effort and 
 #' justify characterization of alpha/beta diversity. 
 #' 
@@ -43,7 +43,7 @@ for (i in 1:length(packages_needed)) {
 sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>% 
     mutate(field_type = factor(field_type, ordered = TRUE, levels = c("corn", "restored", "remnant"))) %>% 
     select(-lat, -long, -yr_restore, -yr_rank)
-#' Object *spe_samps* holds raw sequence abundances for each sample. Used here for
+#' Object *spe_samps* holds sequence abundances for each sample. Used here for
 #' species accumulation.
 #+ spe_samps_list
 spe_samps <- list(
@@ -58,7 +58,8 @@ spe_samps <- list(
 )
 #' 
 #' ## Sites-species tables
-#' List *spe* holds average sequence abundances for the top 6 samples per field. 
+#' List *spe* holds average sequence abundances per field. Number of samples per field 
+#' which were retained is defined in `process_data.R`.
 #' CSV files were produced in `process_data.R`
 spe <- list(
     its_raw = read_csv(paste0(getwd(), "/clean_data/spe_ITS_raw.csv"), 
@@ -105,17 +106,11 @@ spe_accum <- function(data) {
 #' and can help justify the decision to rarefy to the minimum sequence depth obtained. 
 #' Caution: function `rarecurve()` takes some time to execute. 
 #' 
-#' This should be done first on a per-sample basis...
-#' 
-#' This takes a long time...
-
-
 its_rc_data <- 
     spe_samps$its_samps_raw %>% 
     mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
     column_to_rownames(var = "field_sample") %>% 
     select(-field_key, -sample)
-
 #+ its_rarecurve,message=FALSE,warning=FALSE
 its_rc_tidy <- rarecurve(its_rc_data, step = 1, tidy = TRUE) 
 its_rc <- 
@@ -123,8 +118,6 @@ its_rc <-
     separate_wider_delim(Site, delim = "_", names = c("field_key", "sample_key"), cols_remove = FALSE) %>% 
     rename(seq_abund = Sample, otus = Species, field_sample = Site) %>% 
     left_join(sites %>% mutate(field_key = as.character(field_key)), by = join_by(field_key))
-
-
 # Additional data and variables for plotting
 its_depth <- 
     its_rc %>% 
@@ -136,7 +129,7 @@ its_at_depth <- its_rc %>% filter(seq_abund == its_depth)
 #+ its_rarefaction_curve_fig,fig.width=7,fig.height=5,fig.align='center'
 ggplot(its_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
     facet_wrap(vars(field_type), ncol = 1) +
-    geom_vline(xintercept = depth, linewidth = 0.2) +
+    geom_vline(xintercept = its_depth, linewidth = 0.2) +
     geom_hline(data = its_at_depth, aes(yintercept = otus), linewidth = 0.2) +
     geom_line(aes(color = field_type), linewidth = 0.4) +
     scale_color_discrete_qualitative(palette = "Harmonic") +
@@ -149,19 +142,17 @@ ggplot(its_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
 #' a great number of OTUs and leave nearly all samples poorly characterized in richness and composition. 
 #' It looks like somewhere around 5000 sequences would be more appropriate. How many samples would be lost at 
 #' 5000 sequences? 
-
 its_rc %>% 
     group_by(field_sample) %>% 
     slice_max(otus, n = 1) %>% 
     slice_max(seq_abund, n = 1) %>% 
     arrange(seq_abund) %>% 
-    kable(format = "pandoc", caption = "Table: samples sorted by sequence abundance")
-
+    kable(format = "pandoc", caption = "Samples sorted by sequence abundance")
+#' Six fields would be removed if we cut off the sequence depth at 5000. 
+#' 
 #' Sequence abundance jumps from 4948 to 5221, which is a big jump compared with the rest of
 #' the table. This makes 5000 look good as a cutoff. No two samples below 5000 come from the 
-#' same field. 
-
-
+#' same field, so the lost data shouldn't affect the overall analysis too much.
 #' 
 #' This result can be corroborated by comparing the total sequences recovered per field vs.
 #' the richness recovered per field. A relationship should not be evident, or fields with more sequences
@@ -184,7 +175,8 @@ ggplot(its_seqot, aes(x = seqs, y = otus)) +
     theme_classic()
 #+ its_seqs_otus_reg
 summary(lm(otus ~ seqs, data = its_seqot))
-#' The relationship is poor and not significant. 
+#' The relationship is poor and not significant. Richness is not related to recovered sequence depth, 
+#' suggesting that our methods are on track.
 
 
 
@@ -233,14 +225,14 @@ ggplot(amf_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
 #' Minimum sequencing depth reached is `r amf_depth`. Rarefying the data to this depth would remove
 #' a great number of OTUs and leave nearly all samples poorly characterized in richness and composition. 
 #' It looks like somewhere around 1250 sequences would be more appropriate at bare minimum. How many samples would be lost at 
-#' 5000 sequences? 
+#' this depth? 
 
 amf_rc %>% 
     group_by(field_sample) %>% 
     slice_max(otus, n = 1) %>% 
     slice_max(seq_abund, n = 1) %>% 
     arrange(seq_abund) %>% 
-    kable(format = "pandoc", caption = "Table: samples sorted by sequence abundance")
+    kable(format = "pandoc", caption = "Samples sorted by sequence abundance")
 
 #' Rarefying at 1250 would compromise six samples, including two from MBRP1. 
 
@@ -282,20 +274,21 @@ summary(lm(otus ~ seqs, data = amf_seqot))
 its_accum <- bind_rows(
     list(
         Raw = bind_rows(
-            split(sac_data$its_samps_raw, ~ field_name) %>% 
+            split(spe_samps$its_samps_raw, ~ field_key) %>% 
                 map(spe_accum),
-            .id = "field_name"
+            .id = "field_key"
         ),
         Rarefied = bind_rows(
-            split(sac_data$its_samps_rfy, ~ field_name) %>% 
+            split(spe_samps$its_samps_rfy, ~ field_key) %>% 
                 map(spe_accum),
-            .id = "field_name"
+            .id = "field_key"
         )
     ),
     .id = "dataset"
 ) %>% 
-    mutate(dataset = factor(dataset, ordered = TRUE, levels = c("Raw", "Rarefied"))) %>% 
-    left_join(sites, by = join_by(field_name))
+    mutate(dataset = factor(dataset, ordered = TRUE, levels = c("Raw", "Rarefied")),
+           field_key = as.numeric(field_key)) %>% 
+    left_join(sites, by = join_by(field_key))
 #+ its_species_accumulation_fig,warning=FALSE,message=FALSE,fig.width=8,fig.height=5,fig.align='center'
 ggplot(its_accum, aes(x = samples, y = richness, group = field_name)) +
     facet_wrap(vars(dataset), scales = "free_x") +
@@ -319,3 +312,4 @@ ggplot(its_accum, aes(x = samples, y = richness, group = field_name)) +
 #' 
 #' 
 #' 
+
