@@ -124,7 +124,7 @@ its_depth <-
     pull(seq_abund) %>% 
     min()
 its_at_depth <- its_rc %>% filter(seq_abund == its_depth)
-#+ its_rarefaction_curve_fig,fig.width=7,fig.height=5,fig.align='center'
+#+ its_rarefaction_curve_fig,fig.width=7,fig.height=9,fig.align='center'
 ggplot(its_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
     facet_wrap(vars(field_type), ncol = 1) +
     geom_vline(xintercept = its_depth, linewidth = 0.2) +
@@ -217,7 +217,7 @@ amf_depth <-
     pull(seq_abund) %>% 
     min()
 amf_at_depth <- amf_rc %>% filter(seq_abund == amf_depth)
-#+ amf_rarefaction_curve_fig,fig.width=7,fig.height=5,fig.align='center'
+#+ amf_rarefaction_curve_fig,fig.width=7,fig.height=9,fig.align='center'
 ggplot(amf_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
     facet_wrap(vars(field_type), ncol = 1) +
     geom_vline(xintercept = amf_depth, linewidth = 0.2) +
@@ -318,7 +318,8 @@ ggplot(its_accum, aes(x = samples, y = richness, group = field_name)) +
 #' All fields continue to add species at the maximum available number of samples. The only good news
 #' might be that they all add species at about the same rate. But this plot is evidence of undersampling...
 #' With only six samples retained per field, many OTUs are lost, but the curves look a little flatter (not shown).
-#' We will see how 8 looks in a separate analysis. 
+#' We will see how 8 looks in a separate analysis. It's possible that the rarefied curves will improve 
+#' as the lowest abundance samples are dropped...
 #' 
 #' ### 18S
 #+ amf_accum_list
