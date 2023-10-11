@@ -145,11 +145,14 @@ ggplot(its_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
          title = "Rarefaction of ITS data",
          caption = "Curves based on the nine most abundant samples per field.\nVertical line shows the minimum sequence abundance for any field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
     theme_bw()
-#' Minimum sequencing depth reached is `r its_depth`. Rarefying the data to this depth caused the 
+#' Minimum sequencing depth reached by `rarecurve()` is `r its_depth`. Rarefying the data to this depth caused the 
 #' removal of a few samples. In each field, the top 8 samples (based on sequence abundance) were
 #' retained. **At this new minimum sequencing depth, all samples retained are well-characterized,**
 #' with the rarefication threshold (shown above by the vertical line) lying on the flat part of 
 #' all sample curves.
+#' 
+#' Rarefying the raw data to 8 samples per field in `process_data.R` used `rrarefy()` from package Vegan, and resulted
+#' in a slightly different sequencing depth per sample of **`r apply(spe_samps$its_samps_rfy[,-c(1,2)], 1, sum)[1]`.**
 #' 
 #' This result can be corroborated by comparing the total sequences recovered per field vs.
 #' the richness recovered per field. A relationship should not be evident, or fields with more sequences
@@ -217,6 +220,9 @@ ggplot(amf_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
 #' retained. **At this new minimum sequencing depth, all samples retained are well-characterized,**
 #' with the rarefication threshold (shown above by the vertical line) lying on the flat part of 
 #' all sample curves.
+#' 
+#' Rarefying the raw data to 8 samples per field in `process_data.R` used `rrarefy()` from package Vegan, and resulted
+#' in a slightly different sequencing depth per sample of **`r apply(spe_samps$amf_samps_rfy[,-c(1,2)], 1, sum)[1]`.**
 #' 
 #' This result can be corroborated by comparing the total sequences recovered per field vs.
 #' the richness recovered per field. A relationship should not be evident, or fields with more sequences

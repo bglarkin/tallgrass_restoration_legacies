@@ -121,7 +121,7 @@ test_diversity <- function(data) {
 }
 #' ## Change in diversity over time 
 #' Do Hill's numbers correlate with years since restoration?
-#' This is only appropriate to attempt in the Blue Mounds region, and even there, it will be difficult
+#' This may only be appropriate to attempt in the Blue Mounds region, and even there, it may be difficult
 #' to justify that the area meets the criteria for a chronosequence. 
 test_age <- function(data, caption=NULL) {
     temp_df <-
@@ -153,7 +153,7 @@ test_age <- function(data, caption=NULL) {
 #' 
 #' Datasets were corrected for survey effort (min samples per field) and sequencing depth 
 #' (min sequences per field). What was the effect of these actions on the number of OTUs recovered?
-#' After rarefying, zero-abundance and singleton OTUs were removed.  
+#' After rarefying, zero-abundance OTUs were removed.  
 #' Few were lost due to rarefying, as we can see by counting columns (less column 1 because it 
 #' has field site keys):
 Map(function(x) ncol(x)-1, spe) 
@@ -168,9 +168,9 @@ Map(function(x) ncol(x)-1, spe)
 #' Correlations are then produced to visualize change in diversity trends over time, 
 #' with similar mixed-effects tests performed. 
 #' 
-#' The statistical tests are not valid due to pseudoreplication, but are presented here as an 
+#' The statistical tests are on shaky ground due to imbalance, but are presented here as an 
 #' attempt to at least explore some differences and think more later about how we could 
-#' present them in a valid way. 
+#' present them in a more valid way. 
 #' 
 #' Hill's numbers, brief description:
 #' 
@@ -209,7 +209,7 @@ labs_its <- data.frame(
                         levels = c("N0", "N1", "N2", "E10", "E20")),
     lab = c("a", "b", "b", "a", "b", "b"),
     xpos = rep(c(1,2,3), 2),
-    ypos = rep(c(560, 160), each = 3)
+    ypos = rep(c(580, 160), each = 3)
 )
 #+ plot_div_its_rfy,fig.width=9,fig.height=7,fig.align='center'
 ggplot(div$its_rfy, aes(x = field_type, y = value)) +
@@ -266,10 +266,11 @@ test_age(div$its_rfy,
          caption = "Correlation between Hill's numbers and field age in the Blue Mounds region: ITS, 97% OTU")
 #' 
 #' Hill's $N_{1}$ decreases with age since restoration in the Blue Mounds area, but the 
-#' decline isn't significant ($R^2$=-0.67, p>0.05). It's driven primarily by an old restored 
+#' decline isn't significant ($R$=-0.85, p<0.05). It's driven primarily by an old restored 
 #' field, I'm guessing Karla Ott's grass plantation.  
 #' This is odd and points to a confounding effect driven by difference in restoration strategy over time.
-#' It's possible that site differences (soils, etc.) also confound this relationship. It's possible
+#' Karla Ott's field is heavily dominated by a C4 grass and has relatively poor plant species diversity.
+#' It's possible that other site differences (soils, etc.) also confound this relationship. It's possible
 #' that we cannot attempt to present this as a time-based result at all. Or, maybe the number of
 #' functionally dominant species slowly declines over time due to lack of disturbance and substrate 
 #' diversity.
@@ -295,6 +296,7 @@ div$its_rfy %>%
 #' 
 #' Site factors (soil type) are hard to tease out, but in later analyses we will try using measured 
 #' soil chemical properties. 
+#'  
 #'  
 #' ### AMF (18S gene)
 #' Run the linear model and test differences among field types for diversity.
@@ -326,7 +328,7 @@ labs_amf <- data.frame(
     hill_index = factor(c(rep("N0", 3), rep("N1", 3), rep("N2", 3), rep("E10", 3)), 
                         ordered = TRUE, 
                         levels = c("N0", "N1", "N2", "E10", "E20")),
-    lab = c("a", "b", "ab", "a", "b", "b", "a", "b", "b", "a", "ab", "b"),
+    lab = c("a", "b", "b", "a", "b", "b", "a", "b", "b", "a", "a", "b"),
     xpos = rep(c(1,2,3), 4),
     ypos = rep(c(64, 33, 25, 0.59), each = 3)
 )
@@ -340,7 +342,7 @@ ggplot(div$amf_rfy, aes(x = field_type, y = value)) +
          caption = "N0-richness, N1-e^Shannon, N2-Simpson, E10=N1/N0, E20=N2/N0, width=n,\nletters indicate significant differences at p<0.05") +
     scale_fill_discrete_qualitative(palette = "Dark3") +
     theme_bw()
-#' Richness increases from corn, to restored, to remnant fields, and some 
+#' Richness increases from corn, to restored and remnant fields, and some 
 #' support exists for this pattern to occur across regions. The trend is weakest with $N_{0}$, suggesting
 #' that both restored and remnant soils contain more functionally abundant and co-dominant species than are found in cornfields, 
 #' but some cornfields have "long tails" of rare species. Wide variances stifle inferences. The 

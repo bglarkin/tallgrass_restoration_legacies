@@ -204,12 +204,16 @@ ggplot(its_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
 
 <img src="microbial_diagnostics_post_files/figure-gfm/its_rarefaction_curve_fig-1.png" style="display: block; margin: auto;" />
 
-Minimum sequencing depth reached is 5320. Rarefying the data to this
-depth caused the removal of a few samples. In each field, the top 8
-samples (based on sequence abundance) were retained. **At this new
-minimum sequencing depth, all samples retained are well-characterized,**
-with the rarefication threshold (shown above by the vertical line) lying
-on the flat part of all sample curves.
+Minimum sequencing depth reached by `rarecurve()` is 5320. Rarefying the
+data to this depth caused the removal of a few samples. In each field,
+the top 8 samples (based on sequence abundance) were retained. **At this
+new minimum sequencing depth, all samples retained are
+well-characterized,** with the rarefication threshold (shown above by
+the vertical line) lying on the flat part of all sample curves.
+
+Rarefying the raw data to 8 samples per field in `process_data.R` used
+`rrarefy()` from package Vegan, and resulted in a slightly different
+sequencing depth per sample of **5321.**
 
 This result can be corroborated by comparing the total sequences
 recovered per field vs. the richness recovered per field. A relationship
@@ -320,6 +324,10 @@ samples (based on sequence abundance) were retained. **At this new
 minimum sequencing depth, all samples retained are well-characterized,**
 with the rarefication threshold (shown above by the vertical line) lying
 on the flat part of all sample curves.
+
+Rarefying the raw data to 8 samples per field in `process_data.R` used
+`rrarefy()` from package Vegan, and resulted in a slightly different
+sequencing depth per sample of **1364.**
 
 This result can be corroborated by comparing the total sequences
 recovered per field vs. the richness recovered per field. A relationship

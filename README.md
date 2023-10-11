@@ -18,7 +18,17 @@ The site data also include several tables which aren't wrangled in scripts, incl
 Sites are tested for autocorrelation between geographic distance and fungal species or soil chemical properties in [spatial_correlation.md](spatial_correlation.md). Mild or insignificant autocorrelation was found, particularly in the Blue Mounds restored fields, suggesting that we can at least present these fields as a pseudochronosequence. 
 
 ## Diagnostics
-Point out the rarefaction step which shows how severely fields were undersampled.
+In iterative workflow is used to discover the optimal number of samples to keep from each field to ensure equal 
+sampling effort and an adequate representation of diversity. For details, see the associated scripts listed here.
+
+### Workflow
+1. The script `process_data.R` is run first.
+1. Next, `microbial_diagnostics_pre.R` is run to investigate sequencing depth in samples 
+and species accumulation in fields.
+1. Then, `process_data.R` is run again, this time with the number of samples retained
+per field set to the levels recommended in `microbial_diagnostics_pre.R`. 
+1. Finally, `microbial_diagnostics_post.R` is run. It is very similar to the "_pre" script,
+but a different file is used so that the two may be compared. 
 
 ## Microbial Species Diversity
 Microbial data analyzed here include site-species tables derived from high-throughput sequencing of ITS and 18S genes 
