@@ -23,7 +23,8 @@
 #' have so far.
 #' 
 #' Species distance matrices are resampled to the minimum number which successfully amplified per
-#' field. This was done to equalize sampling effort. This procedure can easily be undone in 
+#' field. This was done to equalize sampling effort and remove the few samples with very few sequences. 
+#' This procedure can easily be undone in 
 #' the [process_data script](process_data.md)
 #' 
 #' # Packages and libraries
@@ -474,3 +475,4 @@ amf_uni_resto_scores %>%
 #' 
 
 #' Try fitting years since restoration with envfit...
+
