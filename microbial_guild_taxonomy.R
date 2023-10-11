@@ -74,29 +74,17 @@ spe <- list(
     )
 )
 #' ## Species metadata
-#' Load taxonomy for all and guilds (`primary_lifestyle` in Fungal Traits)
+#' Load taxonomy for all and guilds (called *primary lifestyle* in Fungal Traits)
 #' for ITS OTUs.
 meta <- list(
-    its_raw = 
-        read_csv(
-            paste0(getwd(), "/clean_data/spe_ITS_raw_taxonomy.csv"),
-            show_col_types = FALSE
-        ),
-    its_rfy = 
-        read_csv(
-            paste0(getwd(), "/clean_data/spe_ITS_rfy_taxonomy.csv"),
-            show_col_types = FALSE
-        ),
-    amf_raw = 
-        read_csv(
-            paste0(getwd(), "/clean_data/spe_18S_raw_taxonomy.csv"),
-            show_col_types = FALSE
-        ),
-    amf_rfy = 
-        read_csv(
-            paste0(getwd(), "/clean_data/spe_18S_rfy_taxonomy.csv"),
-            show_col_types = FALSE
-        )
+    its = read_csv(
+        paste0(getwd(), "/clean_data/spe_ITS_metadata.csv"),
+        show_col_types = FALSE
+    ),
+    amf = read_csv(
+        paste0(getwd(), "/clean_data/spe_18S_metadata.csv"),
+        show_col_types = FALSE
+    )
 )
 #' ## Site metadata and design
 sites   <-
@@ -126,16 +114,16 @@ join_spe_meta <-
 #+ spe_meta_list
 spe_meta <- list(
     its_raw = 
-        join_spe_meta(spe$its_raw, meta$its_raw) %>%
+        join_spe_meta(spe$its_raw, meta$its) %>%
         write_csv(paste0(getwd(), "/clean_data/speTaxa_ITS_raw.csv")),
     its_rfy = 
-        join_spe_meta(spe$its_rfy, meta$its_rfy) %>%
+        join_spe_meta(spe$its_rfy, meta$its) %>%
         write_csv(paste0(getwd(), "/clean_data/speTaxa_ITS_rfy.csv")),
     amf_raw = 
-        join_spe_meta(spe$amf_raw, meta$amf_raw) %>%
+        join_spe_meta(spe$amf_raw, meta$amf) %>%
         write_csv(paste0(getwd(), "/clean_data/speTaxa_18S_raw.csv")),
     amf_rfy = 
-        join_spe_meta(spe$amf_rfy, meta$amf_rfy) %>%
+        join_spe_meta(spe$amf_rfy, meta$amf) %>%
         write_csv(paste0( getwd(), "/clean_data/speTaxa_18S_rfy.csv" ))
 )
 #' 
@@ -765,8 +753,8 @@ its_taxaGuild(spe_meta$its_rfy)
 #+ its_guilds_otu,message=FALSE
 its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
 #' 
-#' Model tests on `field_type` are technically invalid due to pseudoreplication, but are included here
-#' to point out trends that we may be able to present in some other valid way. Trends 
+#' Model tests on `field_type` are shaky due to unbalance, but are included here
+#' to point out trends that we may be able to present in some better way. Trends 
 #' with restoration age in Blue Mounds are clearly justified. Results are shown in descending 
 #' order based on sequence abundance in remnants:
 #' 
@@ -780,7 +768,7 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
 #' #### ITS-based indicators
 #' An indicator species analysis is warranted, identifying which species correlate strongly with `field_type`. 
 #' Performing this with all ITS data may identify particular species to further examine, although it remains
-#' a problem that we cannot distinguish field type from an individual field due to pseudoreplication. 
+#' a weakness that we lack replication within blocks for `field_type` in some regions. 
 #' 
 #' Following the indicator species analysis, richness and composition of selected guilds is 
 #' calculated. These calculations are done with data re-rarefied into 
@@ -794,7 +782,7 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
 its_inspan <- 
     spe$its_rfy %>% 
     left_join(sites, by = join_by(field_key)) %>% 
-    inspan(., 1999, meta$its_rfy)
+    inspan(., 1999, meta$its)
 #+ its_inspan_stats
 its_inspan %>%
     mutate(field_type = factor(
@@ -811,7 +799,7 @@ its_inspan %>%
     kable(format = "pandoc", caption = "Indicator species stats of entire rarefied ITS table")
 #' Potential indicators were filtered to p.value<0.05 before this summary was produced. 
 #' Cornfields are a restrictive habitat for soil microbes, and that is reflected in the results here.
-#' More species have higher specificity and fidelity to cornfields than the other field types. The top ten
+#' More species have higher specificity and fidelity to cornfields than to the other field types. The top ten
 #' indicators for each field type are printed here; the entire table is available for further use.
 #+ its_inspan_top10
 its_inspan %>% 
@@ -837,10 +825,10 @@ guiltime("soil_saprotroph")
 #' 
 #' #### Diversity
 #+ ssap_filgu
-ssap <- filgu(spe$its_rfy, meta$its_rfy, primary_lifestyle, "soil_saprotroph", sites)
-#' Out of 2752 OTUs, 249 are in this group.
+ssap <- filgu(spe$its_rfy, meta$its, primary_lifestyle, "soil_saprotroph", sites)
+#' Out of 2889 OTUs, 260 are in this group.
 #' Most OTUs contain few sequences, but several range from hundreds to 25,000 sequences.
-#' The 25 samples are all retained, and vary from 4000 to 14000 sequences. None are so small that 
+#' The 25 samples are all retained, and vary from 4000 to 16000 sequences. None are so small that 
 #' results would be biased by poor representation bias from being rarefied.
 #+ ssap_div
 ssap_div <- calc_diversity(ssap$filspe)
@@ -867,7 +855,7 @@ ssap_comp <- gudicom(ssap_div, ssap$filspeTaxa, "soil_saprotroph")
 ssap_inspan <- 
     ssap$filspe %>% 
     left_join(sites, by = join_by(field_key)) %>% 
-    inspan(., 1999, meta$its_raw)
+    inspan(., 1999, meta$its)
 #+ ssap_inspan_stats
 ssap_inspan %>%
     mutate(field_type = factor(
@@ -908,9 +896,9 @@ guiltime("plant_pathogen")
 #' 
 #' #### Diversity
 #+ ppat_filgu
-ppat <- filgu(spe$its_rfy, meta$its_rfy, primary_lifestyle, "plant_pathogen", sites)
-#' Out of 2752 OTUs, 159 are in this group. 
-#' All samples are retained and contain 2000-12000 sequences, so none are so limited as to bias 
+ppat <- filgu(spe$its_rfy, meta$its, primary_lifestyle, "plant_pathogen", sites)
+#' Out of 2889 OTUs, 159 are in this group. 
+#' All samples are retained and contain 3000-16000 sequences, so none are so limited as to bias 
 #' results. 
 #+ ppat_div
 ppat_div <- calc_diversity(ppat$filspe)
@@ -935,7 +923,7 @@ ppat_comp <- gudicom(ppat_div, ppat$filspeTaxa, "plant_pathogen", other_threshol
 ppat_inspan <- 
     ppat$filspe %>% 
     left_join(sites, by = join_by(field_key)) %>% 
-    inspan(., 1999, meta$its_raw)
+    inspan(., 1999, meta$its)
 #+ ppat_inspan_stats
 ppat_inspan %>%
     mutate(field_type = factor(
@@ -975,8 +963,8 @@ guiltime("wood_saprotroph")
 #' 
 #' #### Diversity
 #+ wsap_filgu
-wsap <- filgu(spe$its_rfy, meta$its_rfy, primary_lifestyle, "wood_saprotroph", sites)
-#' Out of 2752 OTUs, 120 are in this group. 
+wsap <- filgu(spe$its_rfy, meta$its, primary_lifestyle, "wood_saprotroph", sites)
+#' Out of 2889 OTUs, 120 are in this group. 
 #' Samples contain 800-4400 sequences. Sequence depth is low; these aren't abundant or numerous taxa.
 #' Only 123 OTUs comprise this group. 
 #+ wsap_div
@@ -998,7 +986,7 @@ wasp_comp <- gudicom(wsap_div, wsap$filspeTaxa, "wood_saprotroph", other_thresho
 wsap_inspan <- 
     wsap$filspe %>% 
     left_join(sites, by = join_by(field_key)) %>% 
-    inspan(., 1999, meta$its_raw)
+    inspan(., 1999, meta$its)
 #+ wsap_inspan_stats
 wsap_inspan %>%
     mutate(field_type = factor(
@@ -1032,8 +1020,8 @@ guiltime("litter_saprotroph")
 #' 
 #' #### Diversity
 #+ lsap_filgu
-lsap <- filgu(spe$its_rfy, meta$its_rfy, primary_lifestyle, "litter_saprotroph", sites)
-#' Out of 2752 OTUs, 139 are in this group. 
+lsap <- filgu(spe$its_rfy, meta$its, primary_lifestyle, "litter_saprotroph", sites)
+#' Out of 2889 OTUs, 139 are in this group. 
 #' Slightly more numerous than the wood saprotrophs, but similarly not abundant or numerous. Recall that 
 #' when this group was rarefied in the guild, sampling depth was 297, or an order of magnitude less 
 #' than what we have here. Several OTUs were lost. 
@@ -1049,7 +1037,7 @@ lsap_comp <- gudicom(lsap_div, lsap$filspeTaxa, "litter_saprotroph")
 lsap_inspan <- 
     lsap$filspe %>% 
     left_join(sites, by = join_by(field_key)) %>% 
-    inspan(., 1999, meta$its_raw)
+    inspan(., 1999, meta$its)
 #+ lsap_inspan_stats
 lsap_inspan %>%
     mutate(field_type = factor(
@@ -1139,8 +1127,8 @@ amf_summary %>%
 #' 
 #' ### Claroideoglomeraceae
 #+ claroid_filgu
-claroid <- filgu(spe$amf_rfy, meta$amf_rfy, family, "Claroideoglomeraceae", sites)
-#' Out of 143 AMF OTUs, 17 map to this family. Most are low abundance across sites, but all
+claroid <- filgu(spe$amf_rfy, meta$amf, family, "Claroideoglomeraceae", sites)
+#' Out of 144 AMF OTUs, 17 map to this family. Most are low abundance across sites, but all
 #' samples are retained and contain sufficient sequences to draw meaningful conclusions. 
 #+ claroid_div
 claroid_div <- calc_diversity(claroid$filspe)
@@ -1151,8 +1139,8 @@ gudicom(claroid_div, claroid$filspeTaxa, "Claroideoglomeraceae", gene = "amf")
 #' 
 #' ### Paraglomeraceae
 #+ para_filgu
-para <- filgu(spe$amf_rfy, meta$amf_rfy, family, "Paraglomeraceae", sites)
-#' Out of 143 AMF OTUs, only 6 map to this family. Most are low abundance across sites, but all
+para <- filgu(spe$amf_rfy, meta$amf, family, "Paraglomeraceae", sites)
+#' Out of 144 AMF OTUs, only 6 map to this family. Most are low abundance across sites, but all
 #' samples are retained. Any interpretation here is likely to be dominated by a couple high-abundance
 #' OTUs, and a couple of samples have close to zero detections. Is this real?
 #+ para_div
@@ -1164,8 +1152,8 @@ gudicom(para_div, para$filspeTaxa, "Paraglomeraceae", gene = "amf")
 #' 
 #' ### Diversisporaceae
 #+ diver_filgu
-diver <- filgu(spe$amf_rfy, meta$amf_rfy, family, "Diversisporaceae", sites)
-#' Out of 143 AMF OTUs, only 8 map to this family. Most are low abundance across sites, but all
+diver <- filgu(spe$amf_rfy, meta$amf, family, "Diversisporaceae", sites)
+#' Out of 144 AMF OTUs, only 8 map to this family. Most are low abundance across sites, but all
 #' samples are retained. Any interpretation here is likely to be dominated by a couple high-abundance
 #' OTUs, and a couple of samples have close to zero detections. Is this real?
 #+ diver_div
@@ -1177,8 +1165,8 @@ gudicom(diver_div, diver$filspeTaxa, "Diversisporaceae", gene = "amf")
 #' 
 #' ### Gigasporaceae
 #+ giga_filgu
-giga <- filgu(spe$amf_rfy, meta$amf_rfy, family, "Gigasporaceae", sites)
-#' Out of 143 AMF OTUs, only 4 map to this family. Most are low abundance across sites, and 
+giga <- filgu(spe$amf_rfy, meta$amf, family, "Gigasporaceae", sites)
+#' Out of 144 AMF OTUs, only 4 map to this family. Most are low abundance across sites, and 
 #' only 19 samples contain these taxa. Any interpretation here is likely to be dominated by a couple high-abundance
 #' OTUs, and a couple of samples have close to zero detections. Is this real? 
 #' 
@@ -1255,10 +1243,10 @@ giga$filspeTaxa %>%
 #' First, post-rarefied datasets are produced for the guilds of interest in this report. Then,
 #' the Hill's series of diversity metrics are calculated. 
 #' 
-ssap_rrfd <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "soil_saprotroph", sites)
-ppat_rrfd <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "plant_pathogen", sites)
-wsap_rrfd <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "wood_saprotroph", sites)
-lsap_rrfd <- rerare(spe$its_raw, meta$its_raw, primary_lifestyle, "litter_saprotroph", sites)
+ssap_rrfd <- rerare(spe$its_raw, meta$its, primary_lifestyle, "soil_saprotroph", sites)
+ppat_rrfd <- rerare(spe$its_raw, meta$its, primary_lifestyle, "plant_pathogen", sites)
+wsap_rrfd <- rerare(spe$its_raw, meta$its, primary_lifestyle, "wood_saprotroph", sites)
+lsap_rrfd <- rerare(spe$its_raw, meta$its, primary_lifestyle, "litter_saprotroph", sites)
 #' 
 #' The diversity metrics are bound to the pre-rarefied sets produced earlier in this report.
 #' These data are wrangled to facilitate plotting. 
