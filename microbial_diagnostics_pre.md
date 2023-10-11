@@ -5,6 +5,7 @@ Beau Larkin
 Last updated: 11 October, 2023
 
 - [Description](#description)
+- [Clean the environment](#clean-the-environment)
 - [Packages and libraries](#packages-and-libraries)
 - [Data](#data)
   - [Site metadata and design](#site-metadata-and-design)
@@ -15,12 +16,12 @@ Last updated: 11 October, 2023
 - [Analysis and Results](#analysis-and-results)
   - [Species accumulation and
     rarefaction](#species-accumulation-and-rarefaction-1)
-    - [ITS dataset](#its-dataset)
-    - [18S dataset](#18s-dataset)
-  - [Samples-based species
-    accumulation](#samples-based-species-accumulation)
     - [ITS](#its)
     - [18S](#18s)
+  - [Samples-based species
+    accumulation](#samples-based-species-accumulation)
+    - [ITS](#its-1)
+    - [18S](#18s-1)
 
 # Description
 
@@ -36,6 +37,21 @@ species data for further analyses. The following actions are performed:
   abundances.
 - Species accumulation at the field level to determine the adequacy of
   sampling effort and justify characterization of alpha/beta diversity.
+
+This script is run after the first use of `process_data.R`. It uses the
+top 9 samples by sequence abundance from each field. Some of these nine
+still contain very few sequences, and this script will help determine
+the consequence of that.
+
+# Clean the environment
+
+Because many names are shared between the `microbial_diagnostics_x.R`
+scripts, it’s important to prevent confusion and clear the named
+objects.
+
+``` r
+rm(list=ls())
+```
 
 # Packages and libraries
 
@@ -89,9 +105,9 @@ spe_samps <- list(
 
 ## Sites-species tables
 
-List *spe* holds average sequence abundances per field. Number of
-samples per field which were retained is defined in `process_data.R`.
-CSV files were produced in `process_data.R`
+List *spe* holds summed sequence abundances per field. Number of samples
+per field which were retained is defined in `process_data.R`. CSV files
+were produced in `process_data.R`
 
 ``` r
 spe <- list(
@@ -137,7 +153,7 @@ Some samples didn’t amplify, so samples were dropped from some fields to
 equalize sampling effort. As of 2023-03-13, six samples were retained
 from each field, but nine would be possible to keep.
 
-### ITS dataset
+### ITS
 
 Individual-based rarefaction on samples
 
@@ -303,7 +319,7 @@ recovered sequence depth, suggesting that our methods are on track.
 We have a choice to make. Limit samples per field to 8 or try to justify
 keeping them. My call is to be conservative and limit samples to 8.
 
-### 18S dataset
+### 18S
 
 Individual-based rarefaction
 

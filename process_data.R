@@ -315,7 +315,7 @@ its <-
     etl(
         spe = its_otu,
         taxa = its_taxa,
-        samps = 8,
+        samps = 9,
         traits = traits,
         varname = otu_num,
         gene = "ITS",
@@ -329,7 +329,7 @@ amf <-
     etl(
         spe = amf_otu,
         taxa = amf_taxa,
-        samps = 7,
+        samps = 9,
         varname = otu_num,
         gene = "18S",
         cluster_type = "otu",
