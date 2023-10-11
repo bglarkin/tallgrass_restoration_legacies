@@ -28,6 +28,8 @@
 #' per field set to the levels recommended in `microbial_diagnostics_pre.R`. 
 #' As of 2023-10-11, the recommended number of samples to keep from all fields is **8 from the ITS dataset** and 
 #' **7 from the 18S dataset.**
+#'    - If downstream analyses have been completed, then it's likely that the `process_data.R`
+#'    script has been left at this step. 
 #' 1. Finally, `microbial_diagnostics_post.R` is run. It is very similar to the "_pre" script,
 #' but a different file is used so that the two may be compared. 
 #' 
@@ -272,6 +274,7 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     
     out <- list(
         min_samples         = min_samples,
+        samples_retained    = samps,
         samples_fields      = samples_fields,
         spe_meta            = meta,
         spe_samps_raw       = spe_samps_raw,
@@ -315,7 +318,7 @@ its <-
     etl(
         spe = its_otu,
         taxa = its_taxa,
-        samps = 9,
+        samps = 8,
         traits = traits,
         varname = otu_num,
         gene = "ITS",
@@ -324,12 +327,12 @@ its <-
         folder = "/clean_data"
     )
 its
-#+ otu_18S,message=FALSE
+#+ otu_18S,message=FALSE,warning=FALSE
 amf <-
     etl(
         spe = amf_otu,
         taxa = amf_taxa,
-        samps = 9,
+        samps = 7,
         varname = otu_num,
         gene = "18S",
         cluster_type = "otu",

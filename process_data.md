@@ -42,6 +42,8 @@ adequate representation of diversity.
     `microbial_diagnostics_pre.R`. As of 2023-10-11, the recommended
     number of samples to keep from all fields is **8 from the ITS
     dataset** and **7 from the 18S dataset.**
+    - If downstream analyses have been completed, then it’s likely that
+      the `process_data.R` script has been left at this step.
 4.  Finally, `microbial_diagnostics_post.R` is run. It is very similar
     to the “\_pre” script, but a different file is used so that the two
     may be compared.
@@ -306,6 +308,7 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     
     out <- list(
         min_samples         = min_samples,
+        samples_retained    = samps,
         samples_fields      = samples_fields,
         spe_meta            = meta,
         spe_samps_raw       = spe_samps_raw,
@@ -360,7 +363,7 @@ its <-
     etl(
         spe = its_otu,
         taxa = its_taxa,
-        samps = 9,
+        samps = 8,
         traits = traits,
         varname = otu_num,
         gene = "ITS",
@@ -373,6 +376,9 @@ its
 
     ## $min_samples
     ## [1] 9
+    ## 
+    ## $samples_retained
+    ## [1] 8
     ## 
     ## $samples_fields
     ## 
@@ -424,21 +430,21 @@ its
     ## # ℹ 3,165 more rows
     ## 
     ## $spe_samps_raw
-    ## # A tibble: 225 × 3,127
+    ## # A tibble: 200 × 3,032
     ##    field_key sample otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10
     ##        <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>
     ##  1         1      1   170   241     8     0    45   469  1502     0     0    108
     ##  2         1      2    72  1320     0   231    28    42   502    10     0     80
-    ##  3         1      3   144     0     0   426    16   159   166   798     0     34
-    ##  4         1      4   102   842     3     0    19    80   239     0     0     31
-    ##  5         1      5   153     0     4     0    27   203   498   274     0     98
-    ##  6         1      6   117     0    13  2286    24   152   862     0     0     33
-    ##  7         1      7   416    11    25     6    48   225   112     0     0    154
-    ##  8         1      9   115    34    32     0    33   565   217     0     0     82
-    ##  9         1     10    85   137    15    54    33   118   294     0     0    118
-    ## 10         2      1   721   352   199     0    93     0    84     0     0    680
-    ## # ℹ 215 more rows
-    ## # ℹ 3,115 more variables: otu_11 <dbl>, otu_12 <dbl>, otu_13 <dbl>,
+    ##  3         1      4   102   842     3     0    19    80   239     0     0     31
+    ##  4         1      5   153     0     4     0    27   203   498   274     0     98
+    ##  5         1      6   117     0    13  2286    24   152   862     0     0     33
+    ##  6         1      7   416    11    25     6    48   225   112     0     0    154
+    ##  7         1      9   115    34    32     0    33   565   217     0     0     82
+    ##  8         1     10    85   137    15    54    33   118   294     0     0    118
+    ##  9         2      1   721   352   199     0    93     0    84     0     0    680
+    ## 10         2      2    90   212    42     0    51     0    43     0     0    233
+    ## # ℹ 190 more rows
+    ## # ℹ 3,020 more variables: otu_11 <dbl>, otu_12 <dbl>, otu_13 <dbl>,
     ## #   otu_14 <dbl>, otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>,
     ## #   otu_19 <dbl>, otu_20 <dbl>, otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>,
     ## #   otu_24 <dbl>, otu_25 <dbl>, otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>,
@@ -446,24 +452,24 @@ its
     ## #   otu_34 <dbl>, otu_35 <dbl>, otu_36 <dbl>, otu_37 <dbl>, otu_38 <dbl>, …
     ## 
     ## $depth_spe_samps_rfy
-    ## [1] 1629
+    ## [1] 5321
     ## 
     ## $spe_samps_rfy
-    ## # A tibble: 225 × 2,774
+    ## # A tibble: 200 × 2,873
     ##    field_key sample otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10
     ##        <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>
-    ##  1         1      1    22    40     1     0     7    79   243     0     0     19
-    ##  2         1      2    16   322     0    72     6     7   103     2     0     14
-    ##  3         1      3    35     0     0   107     7    44    39   206     0     10
-    ##  4         1      4    27   189     1     0     2    14    61     0     0      2
-    ##  5         1      5    27     0     1     0     4    38    93    66     0     20
-    ##  6         1      6    24     0     2   510     2    39   217     0     0      8
-    ##  7         1      7   104     2     5     1    12    58    28     0     0     29
-    ##  8         1      9    28     5     6     0    10   146    67     0     0     20
-    ##  9         1     10    13    31     4    10     9    36    53     0     0     22
-    ## 10         2      1   132    72    39     0    20     0    15     0     0    143
-    ## # ℹ 215 more rows
-    ## # ℹ 2,762 more variables: otu_11 <dbl>, otu_12 <dbl>, otu_13 <dbl>,
+    ##  1         1      1    93   144     3     0    22   264   850     0     0     73
+    ##  2         1      2    58  1056     0   194    20    39   405     7     0     66
+    ##  3         1      4    73   631     2     0    16    55   180     0     0     26
+    ##  4         1      5   110     0     2     0    14   125   336   188     0     74
+    ##  5         1      6    95     0     9  1676    18   121   622     0     0     28
+    ##  6         1      7   314     9    16     6    34   176    82     0     0    129
+    ##  7         1      9   104    29    28     0    32   473   194     0     0     74
+    ##  8         1     10    65   114    11    39    29    94   221     0     0     92
+    ##  9         2      1   468   225   125     0    61     0    53     0     0    448
+    ## 10         2      2    57   145    32     0    36     0    29     0     0    145
+    ## # ℹ 190 more rows
+    ## # ℹ 2,861 more variables: otu_11 <dbl>, otu_12 <dbl>, otu_13 <dbl>,
     ## #   otu_14 <dbl>, otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>,
     ## #   otu_19 <dbl>, otu_20 <dbl>, otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>,
     ## #   otu_24 <dbl>, otu_25 <dbl>, otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>,
@@ -471,21 +477,21 @@ its
     ## #   otu_34 <dbl>, otu_35 <dbl>, otu_36 <dbl>, otu_37 <dbl>, otu_38 <dbl>, …
     ## 
     ## $spe_raw
-    ## # A tibble: 25 × 3,078
+    ## # A tibble: 25 × 2,896
     ##    field_key otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10 otu_11
     ##        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>
-    ##  1         1  1374  2585   100  3003   273  2013  4392  1082     0    738      0
-    ##  2         2  4709  2575  1247    92   986   131   762     0    11   2520    235
-    ##  3         3   593     7   567     0   854   435   413     0    30      0    716
-    ##  4         4  2456    31     5     0  2233  3000  2161     0    85    917      0
-    ##  5         5   745   191   665     0  2012  3948  6380     0   101   1381    231
-    ##  6         6  1746   490   282     0   795  1044  1553     0  4117      6   3906
-    ##  7         7  1914  1999  1639     9  1008  3690   134     0 12627      0    434
-    ##  8         8  2198   785  1067  1395  1244  1815  2211     0    38   2189    137
-    ##  9         9  2954  1581  1446  1143   306  1765  1397    27     0    777     79
-    ## 10        10  1187  1170  1108   586   318  1087  1762  2037     0    403     34
+    ##  1         1  1230  2585   100  2577   257  1854  4226   284     0    704      0
+    ##  2         2  4082  2526  1231    92   855   131   632     0    11   2344    140
+    ##  3         3   492     7   489     0   808   387   379     0    30      0    692
+    ##  4         4  2351     0     5     0  1779  2874  2036     0    85    917      0
+    ##  5         5   663   191   648     0  1798  3766  6229     0   101   1306    196
+    ##  6         6  1717   490   282     0   774  1033  1548     0  4099      6   3816
+    ##  7         7  1831  1922  1503     9   902  3530   126     0 11026      0    410
+    ##  8         8  1950   696   973  1395  1143  1672  2090     0    38   1967    108
+    ##  9         9  2835  1581  1414  1143   306  1704  1397    27     0    754     79
+    ## 10        10  1001  1033  1007   540   266   938  1573  2037     0    318     34
     ## # ℹ 15 more rows
-    ## # ℹ 3,066 more variables: otu_12 <dbl>, otu_13 <dbl>, otu_14 <dbl>,
+    ## # ℹ 2,884 more variables: otu_12 <dbl>, otu_13 <dbl>, otu_14 <dbl>,
     ## #   otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>, otu_19 <dbl>,
     ## #   otu_20 <dbl>, otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>, otu_24 <dbl>,
     ## #   otu_25 <dbl>, otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>, otu_29 <dbl>,
@@ -493,24 +499,24 @@ its
     ## #   otu_35 <dbl>, otu_36 <dbl>, otu_37 <dbl>, otu_38 <dbl>, otu_39 <dbl>, …
     ## 
     ## $depth_spe_rfy
-    ## [1] 64141
+    ## [1] 58170
     ## 
     ## $spe_rfy
-    ## # A tibble: 25 × 3,074
+    ## # A tibble: 25 × 2,890
     ##    field_key otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10 otu_11
     ##        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>
-    ##  1         1  1374  2585   100  3003   273  2013  4392  1082     0    738      0
-    ##  2         2  4196  2261  1113    77   852   119   670     0    11   2248    211
-    ##  3         3   527     6   493     0   758   383   356     0    28      0    643
-    ##  4         4  2334    31     5     0  2110  2818  2038     0    79    851      0
-    ##  5         5   622   151   549     0  1695  3288  5296     0    81   1156    201
-    ##  6         6  1418   395   230     0   651   862  1283     0  3332      5   3155
-    ##  7         7  1654  1682  1377     8   872  3160   116     0 10653      0    366
-    ##  8         8  1908   674   928  1209  1077  1531  1938     0    32   1902    120
-    ##  9         9  2265  1216  1097   878   239  1340  1066    24     0    603     57
-    ## 10        10  1018  1002   939   503   267   918  1501  1758     0    351     30
+    ##  1         1  1230  2585   100  2577   257  1854  4226   284     0    704      0
+    ##  2         2  3623  2244  1071    81   772   112   564     0     9   2065    123
+    ##  3         3   446     7   431     0   727   329   326     0    25      0    608
+    ##  4         4  2233     0     5     0  1695  2714  1912     0    81    865      0
+    ##  5         5   565   155   524     0  1472  3087  5103     0    82   1062    163
+    ##  6         6  1337   390   214     0   610   809  1210     0  3211      6   3017
+    ##  7         7  1520  1634  1269     8   757  2925    98     0  9303      0    351
+    ##  8         8  1651   579   836  1185   977  1441  1769     0    32   1700     94
+    ##  9         9  2034  1072  1017   833   220  1185   968    21     0    520     59
+    ## 10        10   840   866   857   460   219   790  1350  1708     0    274     30
     ## # ℹ 15 more rows
-    ## # ℹ 3,062 more variables: otu_12 <dbl>, otu_13 <dbl>, otu_14 <dbl>,
+    ## # ℹ 2,878 more variables: otu_12 <dbl>, otu_13 <dbl>, otu_14 <dbl>,
     ## #   otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>, otu_19 <dbl>,
     ## #   otu_20 <dbl>, otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>, otu_24 <dbl>,
     ## #   otu_25 <dbl>, otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>, otu_29 <dbl>,
@@ -522,27 +528,21 @@ amf <-
     etl(
         spe = amf_otu,
         taxa = amf_taxa,
-        samps = 9,
+        samps = 7,
         varname = otu_num,
         gene = "18S",
         cluster_type = "otu",
         colname_prefix = "X18S_TGP_",
         folder = "/clean_data"
     )
-```
-
-    ## Warning in rrarefy(spe_samps_raw_df, depth_spe_samps_rfy): function should be
-    ## used for observed counts, but smallest count is 2
-
-    ## Warning in rrarefy(spe_raw_df, depth_spe_rfy): function should be used for
-    ## observed counts, but smallest count is 2
-
-``` r
 amf
 ```
 
     ## $min_samples
     ## [1] 9
+    ## 
+    ## $samples_retained
+    ## [1] 7
     ## 
     ## $samples_fields
     ## 
@@ -594,21 +594,21 @@ amf
     ## # ℹ 142 more rows
     ## 
     ## $spe_samps_raw
-    ## # A tibble: 225 × 154
+    ## # A tibble: 175 × 151
     ##    field_key sample otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10
     ##        <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>
     ##  1         1      1   120   195    51     0   307   120    88   143     0     18
     ##  2         1      2   102   195   378   267  1006   275   120   171    61      0
     ##  3         1      4    17   279    30     0   395    16   184   894     0      0
     ##  4         1      5     0     0   486    30   566   223   550    33     0     16
-    ##  5         1      6     0     0    44     0    39     0     0     0     0      0
-    ##  6         1      7    55   111   275     0   516   110    21   148     0      0
-    ##  7         1      8   130   505   129     0   113    26    55   758    26    110
-    ##  8         1      9    23    35   118     0    29     0    60    84     0      0
-    ##  9         1     10   144   359   193     0   648    30    16   151     0     28
-    ## 10         2      1  1251     0  2407     0   275   278    30     0   293     37
-    ## # ℹ 215 more rows
-    ## # ℹ 142 more variables: otu_11 <dbl>, otu_12 <dbl>, otu_13 <dbl>, otu_14 <dbl>,
+    ##  5         1      7    55   111   275     0   516   110    21   148     0      0
+    ##  6         1      8   130   505   129     0   113    26    55   758    26    110
+    ##  7         1     10   144   359   193     0   648    30    16   151     0     28
+    ##  8         2      1  1251     0  2407     0   275   278    30     0   293     37
+    ##  9         2      3   454    25    84     0   265   541    95     0   288    352
+    ## 10         2      5   393     0  2247     0  1381    26     0     0   294    109
+    ## # ℹ 165 more rows
+    ## # ℹ 139 more variables: otu_11 <dbl>, otu_12 <dbl>, otu_13 <dbl>, otu_14 <dbl>,
     ## #   otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>, otu_19 <dbl>,
     ## #   otu_20 <dbl>, otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>, otu_24 <dbl>,
     ## #   otu_25 <dbl>, otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>, otu_29 <dbl>,
@@ -616,24 +616,24 @@ amf
     ## #   otu_35 <dbl>, otu_36 <dbl>, otu_37 <dbl>, otu_38 <dbl>, otu_39 <dbl>, …
     ## 
     ## $depth_spe_samps_rfy
-    ## [1] 163
+    ## [1] 1364
     ## 
     ## $spe_samps_rfy
-    ## # A tibble: 225 × 135
+    ## # A tibble: 175 × 145
     ##    field_key sample otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10
     ##        <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>
-    ##  1         1      1     9    16     3     0    23    10     9    14     0      1
-    ##  2         1      2     2    10    12    15    43     9     3     2     5      0
-    ##  3         1      4     3    10     0     0    13     0     7    47     0      0
-    ##  4         1      5     0     0    20     1    25    12    29     0     0      1
-    ##  5         1      6     0     0    44     0    39     0     0     0     0      0
-    ##  6         1      7     5    14    16     0    38    10     0    16     0      0
-    ##  7         1      8     6    24     8     0     7     2     3    32     1      7
-    ##  8         1      9     8     6    31     0    12     0    16    13     0      0
-    ##  9         1     10    10    26     8     0    36     2     0    10     0      4
-    ## 10         2      1    30     0    74     0    13     6     1     0     7      1
-    ## # ℹ 215 more rows
-    ## # ℹ 123 more variables: otu_11 <dbl>, otu_12 <dbl>, otu_13 <dbl>, otu_14 <dbl>,
+    ##  1         1      1    94   148    42     0   224    90    67   100     0     11
+    ##  2         1      2    35    70   122    85   328    92    39    44    20      0
+    ##  3         1      4     4    80     9     0   127     8    56   325     0      0
+    ##  4         1      5     0     0   192     8   233    89   204    11     0      8
+    ##  5         1      7    34    63   153     0   300    59    12   100     0      0
+    ##  6         1      8    55   217    56     0    51    14    27   359     8     48
+    ##  7         1     10    73   178    94     0   322    13     8    77     0     14
+    ##  8         2      1   312     0   551     0    68    74    10     0    72      9
+    ##  9         2      3   144    10    26     0    77   198    26     0    89    119
+    ## 10         2      5    90     0   523     0   297     8     0     0    57     19
+    ## # ℹ 165 more rows
+    ## # ℹ 133 more variables: otu_11 <dbl>, otu_12 <dbl>, otu_13 <dbl>, otu_14 <dbl>,
     ## #   otu_15 <dbl>, otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>, otu_19 <dbl>,
     ## #   otu_20 <dbl>, otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>, otu_24 <dbl>,
     ## #   otu_25 <dbl>, otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>, otu_29 <dbl>,
@@ -641,21 +641,21 @@ amf
     ## #   otu_35 <dbl>, otu_36 <dbl>, otu_37 <dbl>, otu_38 <dbl>, otu_39 <dbl>, …
     ## 
     ## $spe_raw
-    ## # A tibble: 25 × 153
+    ## # A tibble: 25 × 147
     ##    field_key otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10 otu_11
     ##        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>
-    ##  1         1   591  1679  1704   297  3619   800  1094  2382    87    172   1485
-    ##  2         2  5102    72 11494     0  5482  1552   690     0  1575   1469      0
-    ##  3         3    44   370    31  4403  1677   759  2001     0   651     25      0
-    ##  4         4  3960  4657     0  1223  1407  1376   707  2436  5684   2194    614
-    ##  5         5  1058  3181    37    58  4505  1760  1078    18  2655   3749    127
-    ##  6         6   742   134  6900  6012  1723  2200  3213     5   725    149      6
-    ##  7         7    16     0  1860  1817  6286  1326   214   112   166      0      0
-    ##  8         8  2504  3105   498  1181  2049  1896  2504  1475  1176   2419   3883
-    ##  9         9  1246  2938   225  3035   521   635  1701  4710  1811   1587   5032
-    ## 10        10  2255  1547   169  2511   282   737  1840  5165   265    783   2017
+    ##  1         1   568  1644  1542   297  3551   800  1034  2298    87    172   1485
+    ##  2         2  4373    25  9072     0  4175  1415   462     0  1400   1265      0
+    ##  3         3    44   350    31  3454  1386   595  1974     0   570     25      0
+    ##  4         4  3402  3525     0  1223  1124  1298   466  1810  5069   2188    580
+    ##  5         5   755  2901    27    58  4195  1675   779    18  2256   3249    123
+    ##  6         6   725   125  6648  4679  1610  1895  2840     5   725    149      6
+    ##  7         7    16     0  1677  1294  5984  1262    67   112   166      0      0
+    ##  8         8  2221  2617   454   624  1688  1706  2341  1161  1126   2343   3033
+    ##  9         9   725  2699   211  3035   487   489  1616  4418  1811   1397   4372
+    ## 10        10  1850  1234   165  2431   192   708  1627  4483   228    737   1832
     ## # ℹ 15 more rows
-    ## # ℹ 141 more variables: otu_12 <dbl>, otu_13 <dbl>, otu_14 <dbl>, otu_15 <dbl>,
+    ## # ℹ 135 more variables: otu_12 <dbl>, otu_13 <dbl>, otu_14 <dbl>, otu_15 <dbl>,
     ## #   otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>, otu_19 <dbl>, otu_20 <dbl>,
     ## #   otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>, otu_24 <dbl>, otu_25 <dbl>,
     ## #   otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>, otu_29 <dbl>, otu_30 <dbl>,
@@ -663,24 +663,24 @@ amf
     ## #   otu_36 <dbl>, otu_37 <dbl>, otu_38 <dbl>, otu_39 <dbl>, otu_40 <dbl>, …
     ## 
     ## $depth_spe_rfy
-    ## [1] 19545
+    ## [1] 17975
     ## 
     ## $spe_rfy
-    ## # A tibble: 25 × 153
+    ## # A tibble: 25 × 145
     ##    field_key otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10 otu_11
     ##        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>
-    ##  1         1   520  1468  1493   262  3185   681   956  2076    82    151   1285
-    ##  2         2  2220    30  4950     0  2366   685   305     0   692    604      0
-    ##  3         3    18   218    11  2547   960   429  1150     0   355     17      0
-    ##  4         4  1967  2301     0   599   718   675   346  1223  2893   1084    286
-    ##  5         5   475  1404    13    25  1996   770   492     8  1152   1687     47
-    ##  6         6   390    69  3381  2971   834  1082  1634     2   354     77      2
-    ##  7         7    13     0  1199  1184  4086   873   132    71   110      0      0
-    ##  8         8  1177  1495   212   572   937   903  1165   652   553   1147   1823
-    ##  9         9   691  1694   119  1700   290   359   963  2706  1053    893   2843
-    ## 10        10  1526  1079   109  1718   196   511  1269  3574   173    532   1412
+    ##  1         1   471  1390  1273   247  2954   636   881  1915    72    143   1232
+    ##  2         2  2046    14  4313     0  1997   664   231     0   655    613      0
+    ##  3         3    31   201    22  2159   886   371  1197     0   362     16      0
+    ##  4         4  1854  1910     0   651   603   746   259   974  2743   1232    308
+    ##  5         5   383  1378    10    29  1973   807   377     9  1109   1530     68
+    ##  6         6   365    68  3458  2404   822   977  1450     3   355     86      4
+    ##  7         7    10     0  1145   860  3979   839    41    76   122      0      0
+    ##  8         8  1084  1318   242   330   859   837  1206   569   543   1174   1524
+    ##  9         9   402  1600   114  1783   292   278   963  2610  1057    819   2512
+    ## 10        10  1339   899   122  1744   139   500  1140  3214   167    534   1313
     ## # ℹ 15 more rows
-    ## # ℹ 141 more variables: otu_12 <dbl>, otu_13 <dbl>, otu_14 <dbl>, otu_15 <dbl>,
+    ## # ℹ 133 more variables: otu_12 <dbl>, otu_13 <dbl>, otu_14 <dbl>, otu_15 <dbl>,
     ## #   otu_16 <dbl>, otu_17 <dbl>, otu_18 <dbl>, otu_19 <dbl>, otu_20 <dbl>,
     ## #   otu_21 <dbl>, otu_22 <dbl>, otu_23 <dbl>, otu_24 <dbl>, otu_25 <dbl>,
     ## #   otu_26 <dbl>, otu_27 <dbl>, otu_28 <dbl>, otu_29 <dbl>, otu_30 <dbl>,
