@@ -11,7 +11,25 @@
 #'
 #' # Description
 #' Microbial sequence abundances were produced by Lorinda Bullington in QIIME2. ETL must
-#' be performed on output text files to allow downstream analysis. 
+#' be performed on output text files to allow downstream analysis. Iterative steps are needed
+#' to find out the optimal number of samples to keep from each field to ensure equal 
+#' sampling effort and adequate representation of diversity. 
+#' 
+#' ## Workflow
+#' 1. The script `process_data.R` is run first. A few samples failed to amplify, resulting in
+#' some fields characterized by 9 samples and others by 10. To balance sampling effort
+#' across fields, the top 9 samples by sequence abundance are chosen from each field. 
+#' 1. Next, `microbial_diagnostics_pre.R` is run to investigate sequencing depth in samples 
+#' and species accumulation in fields. A few samples are known to have low sequence abundance 
+#' (an order of magnitude lower than the maximum), and the consequence of rarefying to this 
+#' small depth must be known. A new cutoff for sequence depth, and definition of further 
+#' samples which must be cut, is recommended. 
+#' 1. Then, `process_data.R` is run again, this time with the number of samples retained
+#' per field set to the levels recommended in `microbial_diagnostics_pre.R`. 
+#' As of 2023-10-11, the recommended number of samples to keep from all fields is **8 from the ITS dataset** and 
+#' **7 from the 18S dataset.**
+#' 1. Finally, `microbial_diagnostics_post.R` is run. It is very similar to the "_pre" script,
+#' but a different file is used so that the two may be compared. 
 #' 
 #' ## ITS data (all fungi)
 #' Sequence abundances in 97% similar OTUs in individual samples form the base data. 
@@ -287,12 +305,17 @@ sites    <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = 
 #' 
 #' ## ETL using `etl()`
 #' Schema: `process_qiime(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, colname_prefix, folder)`
+#' **Note:** If doing the first step of this workflow, retain 9 samples per field from each dataset and proceed
+#' to further diagnostics in `microbial_diagnostics_pre.R`.
+#' **Note:** If doing the third step of this workflow, Retain 8 samples from ITS and 7 samples from 18S
+#' per field based on results from `microbial_diagnostics_pre.R`. Proceed to `microbial_diagnostics_post.R` for 
+#' final exploration of the datasets. 
 #+ otu_its,message=FALSE
 its <-
     etl(
         spe = its_otu,
         taxa = its_taxa,
-        samps = 9,
+        samps = 8,
         traits = traits,
         varname = otu_num,
         gene = "ITS",
@@ -306,7 +329,7 @@ amf <-
     etl(
         spe = amf_otu,
         taxa = amf_taxa,
-        samps = 9,
+        samps = 7,
         varname = otu_num,
         gene = "18S",
         cluster_type = "otu",

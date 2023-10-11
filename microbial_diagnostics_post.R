@@ -21,6 +21,11 @@
 #' - Species accumulation at the field level to determine the adequacy of sampling effort and 
 #' justify characterization of alpha/beta diversity. 
 #' 
+#' This script is run after `process_data.R` and `microbial_diagnostics_pre.R` have been run, with the 
+#' latter providing recommendations and justification for further reduction of samples from each field.
+#' As of 2023-10-11, the recommended number of samples to keep from all fields is **8 from the ITS dataset** and 
+#' **7 from the 18S dataset.**
+#' 
 #' # Packages and libraries
 packages_needed = c(
     "tidyverse",

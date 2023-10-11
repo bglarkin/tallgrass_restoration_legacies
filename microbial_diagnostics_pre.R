@@ -21,6 +21,10 @@
 #' - Species accumulation at the field level to determine the adequacy of sampling effort and 
 #' justify characterization of alpha/beta diversity. 
 #' 
+#' This script is run after the first use of `process_data.R`. It uses the top
+#' 9 samples by sequence abundance from each field. Some of these nine still contain very few sequences, 
+#' and this script will help determine the consequence of that. 
+#' 
 #' # Packages and libraries
 packages_needed = c(
     "tidyverse",
@@ -96,7 +100,7 @@ spe_accum <- function(data) {
 #' fields to equalize sampling effort. As of 2023-03-13, six samples were retained from each 
 #' field, but nine would be possible to keep.
 #' 
-#' ### ITS dataset
+#' ### ITS
 #' 
 #' Individual-based rarefaction on samples
 #' 
@@ -194,7 +198,7 @@ summary(lm(otus ~ seqs, data = its_seqot))
 #' We have a choice to make. Limit samples per field to 8 or try to justify keeping them. My call is to 
 #' be conservative and limit samples to 8. 
 #' 
-#' ### 18S dataset
+#' ### 18S
 #' 
 #' Individual-based rarefaction
 amf_rc_data <- 
