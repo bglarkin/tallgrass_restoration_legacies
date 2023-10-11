@@ -25,6 +25,11 @@
 #' 9 samples by sequence abundance from each field. Some of these nine still contain very few sequences, 
 #' and this script will help determine the consequence of that. 
 #' 
+#' # Clean the environment
+#' Because many names are shared between the `microbial_diagnostics_x.R` scripts, it's important 
+#' to prevent confusion and clear the named objects. 
+rm(list=ls())
+#' 
 #' # Packages and libraries
 packages_needed = c(
     "tidyverse",
@@ -62,7 +67,7 @@ spe_samps <- list(
 )
 #' 
 #' ## Sites-species tables
-#' List *spe* holds average sequence abundances per field. Number of samples per field 
+#' List *spe* holds summed sequence abundances per field. Number of samples per field 
 #' which were retained is defined in `process_data.R`.
 #' CSV files were produced in `process_data.R`
 spe <- list(

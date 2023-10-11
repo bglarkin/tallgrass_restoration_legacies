@@ -26,6 +26,11 @@
 #' As of 2023-10-11, the recommended number of samples to keep from all fields is **8 from the ITS dataset** and 
 #' **7 from the 18S dataset.**
 #' 
+#' # Clean the environment
+#' Because many names are shared between the `microbial_diagnostics_x.R` scripts, it's important 
+#' to prevent confusion and clear the named objects. 
+rm(list=ls())
+#' 
 #' # Packages and libraries
 packages_needed = c(
     "tidyverse",
@@ -63,7 +68,7 @@ spe_samps <- list(
 )
 #' 
 #' ## Sites-species tables
-#' List *spe* holds average sequence abundances per field. Number of samples per field 
+#' List *spe* holds summed sequence abundances per field. Number of samples per field 
 #' which were retained is defined in `process_data.R`.
 #' CSV files were produced in `process_data.R`
 spe <- list(
@@ -97,11 +102,10 @@ spe_accum <- function(data) {
 #' ## Species accumulation and rarefaction
 #' Species accumulation is performed using the "exact" method (Kindt, R., unpublished) to 
 #' examine the adequacy of field sampling. Raw ITS and 18S data with all samples is used and compared
-#' with the "topN" data sets. Some samples didn't amplify, so samples were dropped from some 
-#' fields to equalize sampling effort. As of 2023-03-13, six samples were retained from each 
-#' field, but nine would be possible to keep.
+#' with the "topN" data sets. After diagnostic analysis in `microbial_diagnostics_pre.R`, it was
+#' determined to keep 8 samples per field for ITS and 7 for 18S. 
 #' 
-#' ### ITS dataset
+#' ### ITS
 #' 
 #' Individual-based rarefaction on samples
 #' 
@@ -135,42 +139,17 @@ ggplot(its_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
     geom_vline(xintercept = its_depth, linewidth = 0.2) +
     geom_hline(data = its_at_depth, aes(yintercept = otus), linewidth = 0.2) +
     geom_line(aes(color = field_type), linewidth = 0.4) +
-    scale_color_discrete_qualitative(palette = "Harmonic") +
+    scale_color_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
     labs(x = "Number of individuals (sequence abundance)",
          y = "OTUs",
          title = "Rarefaction of ITS data",
          caption = "Curves based on the nine most abundant samples per field.\nVertical line shows the minimum sequence abundance for any field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
     theme_bw()
-#' Minimum sequencing depth reached is `r its_depth`. Rarefying the data to this depth would remove
-#' a great number of OTUs and leave nearly all samples poorly characterized in richness and composition. 
-#' It looks like somewhere around 5000 sequences would be more appropriate. How many samples would be lost at 
-#' 5000 sequences? 
-#+ its_seq_abund_table
-its_rc %>% 
-    group_by(field_sample) %>% 
-    slice_max(otus, n = 1) %>% 
-    slice_max(seq_abund, n = 1) %>%
-    ungroup() %>%
-    arrange(seq_abund) %>% 
-    slice_head(n = 20) %>%
-    kable(format = "pandoc", caption = "ITS samples sorted by sequence abundance, lowest 20 shown")
-#' Six samples would be removed if we cut off the sequence depth at 5000. 
-#' 
-#' Sequence abundance jumps from 4948 to 5221, which is a big jump compared with the rest of
-#' the table. This makes 5000 look good as a cutoff. No two samples below 5000 come from the 
-#' same field, so the lost data shouldn't affect the overall analysis too much.
-#' 
-#' Looking back at `process_data.R`, we can compare the fields where we'd lose a sample to the
-#' maximum number of samples available. 
-#' - FLRP1 already had only 9 samples
-#' - FLRSP3 already had only 9 samples
-#' - FLRSP1 had 10
-#' - LPRP2 had 10
-#' - MHRP2 had 10
-#' - LPRP1 had 10
-#' 
-#' If we cut these samples with fewer than 5000 sequences, we will have to take the number of 
-#' samples selected from each field down to 8. This would be re-run in `process_data.R`.
+#' Minimum sequencing depth reached is `r its_depth`. Rarefying the data to this depth caused the 
+#' removal of a few samples. In each field, the top 8 samples (based on sequence abundance) were
+#' retained. **At this new minimum sequencing depth, all samples retained are well-characterized,**
+#' with the rarefication threshold (shown above by the vertical line) lying on the flat part of 
+#' all sample curves.
 #' 
 #' This result can be corroborated by comparing the total sequences recovered per field vs.
 #' the richness recovered per field. A relationship should not be evident, or fields with more sequences
@@ -196,10 +175,9 @@ summary(lm(otus ~ seqs, data = its_seqot))
 #' The relationship is poor and not significant. Richness is not related to recovered sequence depth, 
 #' suggesting that our methods are on track.
 #' 
-#' We have a choice to make. Limit samples per field to 8 or try to justify keeping them. My call is to 
-#' be conservative and limit samples to 8. 
+#' **Limiting samples per field to 8 seems to make sense with the ITS data.**
 #' 
-#' ### 18S dataset
+#' ### 18S
 #' 
 #' Individual-based rarefaction
 amf_rc_data <- 
@@ -234,25 +212,11 @@ ggplot(amf_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
          title = "Rarefaction of amf data",
          caption = "Curves based on the nine most abundant samples per field.\nVertical line shows the minimum sequence abundance for any field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
     theme_bw()
-#' Minimum sequencing depth reached is `r amf_depth`. Rarefying the data to this depth would remove
-#' a great number of OTUs and leave nearly all samples poorly characterized in richness and composition. 
-#' It looks like somewhere around 1250 sequences would be more appropriate at bare minimum. How many samples would be lost at 
-#' this depth? 
-#+ amf_seq_abund_table
-amf_rc %>% 
-    group_by(field_sample) %>% 
-    slice_max(otus, n = 1) %>% 
-    slice_max(seq_abund, n = 1) %>%
-    ungroup() %>% 
-    arrange(seq_abund) %>% 
-    slice_head(n = 20) %>% 
-    kable(format = "pandoc", caption = "AMF amples sorted by sequence abundance")
-#' Rarefying at 1250 would compromise six samples, including two from MBRP1. Let's look back at the 
-#' minimum number of samples available in `process_data.R` to see how low we have to go. 
-#' - BBRP1 already had 9, we'd have to drop two more
-#' - MBRP1 already had 9, we'h have to drop two more
-#' - MBREM1 had 10
-#' - FLRSP1 had 10
+#' Minimum sequencing depth reached is `r amf_depth`. Rarefying the data to this depth caused the 
+#' removal of a few samples. In each field, the top 7 samples (based on sequence abundance) were
+#' retained. **At this new minimum sequencing depth, all samples retained are well-characterized,**
+#' with the rarefication threshold (shown above by the vertical line) lying on the flat part of 
+#' all sample curves.
 #' 
 #' This result can be corroborated by comparing the total sequences recovered per field vs.
 #' the richness recovered per field. A relationship should not be evident, or fields with more sequences
@@ -278,8 +242,7 @@ summary(lm(otus ~ seqs, data = amf_seqot))
 #' The relationship is poor and not significant. Richness is not related to recovered sequence depth, 
 #' suggesting that our methods are on track.
 #' 
-#' We have a choice to make. Limit samples per field to 8 or try to justify keeping them. My call is to 
-#' be conservative and limit samples to 7. 
+#' **Limiting samples per field to 7 seems to make sense with the ITS data.**
 #' 
 #' ## Samples-based species accumulation
 #' 
@@ -316,15 +279,14 @@ ggplot(its_accum, aes(x = samples, y = richness, group = field_name)) +
     scale_color_discrete_qualitative(palette = "Harmonic") +
     labs(x = "Samples", y = expression(N[0]), 
          title = "Species accumulation of ITS data",
-         caption = "Species accumulation by the \"exact\" method; standard deviation (vertical lines) conditioned by the empirical dataset.") +
+         caption = "Species accumulation by the \"exact\" method; standard deviation (vertical lines) are conditioned by the empirical dataset.") +
     scale_x_continuous(breaks = c(0,3,6,9)) +
     theme_bw()
 #' 
 #' All fields continue to add species at the maximum available number of samples. The only good news
 #' might be that they all add species at about the same rate. But this plot is evidence of undersampling...
-#' With only six samples retained per field, many OTUs are lost, but the curves look a little flatter (not shown).
-#' We will see how 8 looks in a separate analysis. It's possible that the rarefied curves will improve 
-#' as the lowest abundance samples are dropped...
+#' It's evident in `microbial_diagnostics_pre.R` that they are undersampled in any case. Even using all 
+#' available samples, these curves are still very steep. 
 #' 
 #' ### 18S
 #+ amf_accum_list
@@ -359,6 +321,5 @@ ggplot(amf_accum, aes(x = samples, y = richness, group = field_name)) +
     theme_bw()
 #' 
 #' All fields continue to add species at the maximum available number of samples, but the curves aren't very steep. 
-#' It's also good news that they all add species at about the same rate. But this plot is evidence of undersampling...
-#' With only six samples retained per field, many OTUs are lost, but the curves look a little flatter (not shown).
-#' We will see how 7 looks in a separate analysis. 
+#' It's also good news that they all add species at about the same rate. With samples limited to 7 per field, 
+#' the community is still characterized fairly well, and isn't much different from retaining all samples. 
