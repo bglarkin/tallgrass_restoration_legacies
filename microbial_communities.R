@@ -16,16 +16,13 @@
 #' clustering in QIIME by Lorinda Bullington and PLFA/NLFA data which Ylva Lekberg did. 
 #' 
 #' This presents basic visualizations of community differences among sites/regions
-#' based on ITS data. 
+#' based on ITS and 18S data. 
 #' 
-#' One goal here is to see whether choosing OTU or SV clusters presents qualitatively different
-#' outcomes in ordinations. We will choose one (OTUs) if they start to look similar, as they 
-#' have so far.
-#' 
-#' Species distance matrices are resampled to the minimum number which successfully amplified per
-#' field. This was done to equalize sampling effort and remove the few samples with very few sequences. 
-#' This procedure can easily be undone in 
-#' the [process_data script](process_data.md)
+#' During data processing, not all samples were retained. Some had failed to amplify and others
+#' had very few sequences, leading to the potential for a loss of information during rarefication. 
+#' With the loss of some samples, all fields were resampled to the same lower number of samples. 
+#' This was done to equalize sampling effort (from a statistical perspective). 
+#' This procedure can easily be undone in the [process_data script](process_data.md)
 #' 
 #' # Packages and libraries
 packages_needed = c("tidyverse", "vegan", "colorspace", "ape", "knitr")
@@ -71,7 +68,8 @@ spe_meta <- list(
 )
 #' 
 #' ## Site metadata
-#' Needed for figure interpretation and permanova designs.
+#' Needed for figure interpretation and permanova designs. The subset of restored fields in Blue Mounds 
+#' only will also be used and is parsed here.
 sites <-
     read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>%
     mutate(
@@ -83,21 +81,30 @@ sites <-
         yr_since = replace(yr_since, which(field_type == "corn"), "-")) %>%
     select(-lat, -long, -yr_restore, -yr_rank) %>% 
     arrange(field_key)
+sites_resto_bm <- 
+    sites %>% 
+    filter(field_type == "restored",
+           region == "BM") %>% 
+    select(-field_name, -region) %>% 
+    mutate(yr_since = as.numeric(yr_since))
 #' 
 #' ## Distance tables
 #' Creating distance objects from the samples-species tables is done with the typical 
 #' process of `vegdist()` in vegan.
-#' Bray-Curtis or Ruzicka distance are both appropriate methods for these data, but Bray-Curtis has 
-#' produced axes with better explanatory power (Ruzicka is used with method="jaccard")
+#' Bray-Curtis or Ruzicka (used with method="jaccard") distance are both appropriate 
+#' methods for these data, but Bray-Curtis has produced axes with better explanatory power. 
 #' With the 18S data, we can take advantage of phylogenetic relationships in a UNIFRAC distance
 #' matrix. The UNIFRAC distance was produced in QIIME II and needs some wrangling to 
 #' conform to the standards of a distance object in R. The following list contains vegdist-produced
 #' distance objects for ITS and 18S, and it includes UNIFRAC distance for 18S. 
 #' 
 distab <- list(
-    its = vegdist(data.frame(spe$its, row.names = 1), method = "bray"),
-    amf_bray = vegdist(data.frame(spe$amf, row.names = 1), method = "bray"),
-    amf_uni = sites %>%
+    its       = vegdist(data.frame(spe$its, row.names = 1), method = "bray"),
+    its_resto_bm = vegdist(
+        data.frame(spe$its %>% filter(field_key %in% sites_resto_bm$field_key), row.names = 1), 
+        method = "bray"),
+    amf_bray  = vegdist(data.frame(spe$amf, row.names = 1), method = "bray"),
+    amf_uni   = sites %>%
         select(field_name, field_key) %>%
         left_join(read_delim(
             paste0(getwd(), "/otu_tables/18S/18S_weighted_Unifrac.tsv"),
@@ -160,20 +167,20 @@ pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
         left_join(sites, by = "field_key") %>% 
         select(-field_name)
     # Output data
-    output <- list(dataset = df_name,
+    output <- list(dataset                        = df_name,
                    components_exceed_broken_stick = p_ncomp,
-                   correction_note = p$note,
-                   values = p_vals[1:(ncomp+1), ], 
-                   eigenvalues = eig,
-                   site_vectors = scores,
-                   broken_stick_plot = p_bstick,
-                   permanova = p_permtest)
+                   correction_note                = p$note,
+                   values                         = p_vals[1:(ncomp+1), ], 
+                   eigenvalues                    = eig,
+                   site_vectors                   = scores,
+                   broken_stick_plot              = p_bstick,
+                   permanova                      = p_permtest)
     return(output)
 }
 #' # Results
 #' ## Ordinations
 #' Bray-Curtis or Ruzicka distance are both appropriate, but Bray-Curtis has 
-#' produced axes with better explanatory power (Ruzicka is used with method="jaccard")
+#' produced axes with better explanatory power.
 #' 
 #' In trial runs, no negative eigenvalues were observed (not shown). No 
 #' correction is needed for these ordinations.
@@ -206,7 +213,7 @@ pcoa_its$ord <-
         ),
         caption = "Text indicates years since restoration, with corn (-) and remnants (+) never restored."
     ) +
-    lims(y = c(-0.3,0.44)) +
+    lims(y = c(-0.35,0.44)) +
     theme_bw() +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
 pcoa_its$inset <-
@@ -282,10 +289,60 @@ its_resto_scores %>%
     scale_linetype_manual(values = c('solid', 'dashed'), guide = "none") +
     theme_bw()
 #' 
-#' Indeed, Axis 1 does correlate well with age $(R^2_{Adj}=0.51, p<0.005)$.
+#' Indeed, Axis 1 does correlate well with age $(R^2_{Adj}=0.51, p<0.005)$. But it isn't appropriate
+#' to use these scores for the correlation because they were created with the corn and remnant fields
+#' in the ordination as well. 
 #' 
-#' It's probably better to do with with a new ordination of just restoration sites
-#' and a constrained ordination with years and other environmental variables.
+#' It's probably better to do this with a new ordination of just restoration sites
+#' and a constrained ordination with years and other environmental variables. With only restored sites,
+#' we can take advantage of the sub-sample data, at least for plotting.
+
+
+
+ord <- pcoa(distab$its_resto_bm)
+ord_sc <- ord$vectors[,c(1,2)]
+fit <- with(sites_resto_bm, envfit(ord_sc, sites_resto_bm$yr_since, permutations = 1999))
+fit_sc <- scores(fit, c("vectors"))
+plot_data <- 
+    ord_sc %>% 
+    data.frame() %>% 
+    rownames_to_column(var = "field_key") %>% 
+    mutate(field_key = as.numeric(field_key)) %>% 
+    left_join(sites_resto_bm, by = join_by(field_key))
+
+ggplot(plot_data, aes(x = Axis.1, y = Axis.2)) +
+    geom_point(shape = 21, fill = "#5CBD92", size = 10) +
+    geom_text(aes(label = yr_since)) +
+    geom_segment(aes(x = 0, y = 0, xend = fit_sc[1] * 0.5, yend = fit_sc[2] * 0.5),
+                 color = "blue", arrow = arrow(length = unit(3, "mm"))) +
+    # labs(
+    #     x = paste0("Axis 1 (", pcoa_its$eig[1], "%)"),
+    #     y = paste0("Axis 2 (", pcoa_its$eig[2], "%)"),
+    #     title = paste0(
+    #         "PCoA Ordination of field-averaged species data (",
+    #         pcoa_its$dataset,
+    #         ")"
+    #     ),
+    #     caption = "Text indicates years since restoration, with corn (-) and remnants (+) never restored."
+    # ) +
+    # lims(y = c(-0.35,0.44)) +
+    theme_bw()
+
+# Needs for further development
+# Use sub-sample data
+# Need more diagnostics on axis significance...
+# Use field as a strata
+# Probably new analysis and plotting function?
+# New data imports...
+# What are the changes in guilds or taxa? Very easy to do with just these sites in microbial_guild_taxonomy.R!!!
+
+# Stop this for now (12 October 2023). Proceed with soil analysis and stuff like that, get to the end,
+# then come back to develop this. It will work, you just need to know where to go with it.
+
+
+
+
+
 #' 
 #' ### PCoA with 18S gene, uninformed distance
 #' "Uninformed" refers to Bray-Curtis or another distance informational metric available in `vegdist()`.
@@ -474,5 +531,4 @@ amf_uni_resto_scores %>%
 #' is close with $(R^2_{Adj}=0.30, p<0.05)$ 
 #' 
 
-#' Try fitting years since restoration with envfit...
 
