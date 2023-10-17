@@ -46,7 +46,7 @@ spe <- list(
         paste0(getwd(), "/clean_data/spe_ITS_rfy.csv"),
         show_col_types = FALSE
     ),
-    its_samples = read_csv(
+    its_samps = read_csv(
         paste0(getwd(), "/clean_data/spe_ITS_rfy_samples.csv"),
         show_col_types = FALSE
     ),
@@ -105,15 +105,17 @@ sites_resto_bm <-
 #' 
 #' **List of objects in `distab`**
 #' - its: the rarefied data, summed from 8 samples in each field
+#' - its_samps: rarefied data from 8 samples per field, all fields retained
 #' - its_resto_bm: rarefied data, summed from 8 samples in each field, filtered to include Blue Mounds region only
-#' - its_resto_samples_bm: rarefied data from 8 samples in each field, not summed, filtered to include Blue Mounds region only
+#' - its_resto_samps_bm: rarefied data from 8 samples in each field, not summed, filtered to include Blue Mounds region only
 #' - amf_bray: rarefied data, summed from 7 samples from each field, bray-curtis distance
 #' - amf_uni: rarefied data, summed from 7 samples from each field, UNIFRAC distance
+#+ distab_list
 distab <- list(
     its       = vegdist(data.frame(spe$its, row.names = 1), method = "bray"),
     its_samps = vegdist(
         data.frame(
-            spe$its_samples %>% 
+            spe$its_samps %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
@@ -126,9 +128,9 @@ distab <- list(
             row.names = 1
             ), 
         method = "bray"),
-    its_resto_samples_bm = vegdist(
+    its_resto_samps_bm = vegdist(
         data.frame(
-            spe$its_samples %>% 
+            spe$its_samps %>% 
                 filter(field_key %in% sites_resto_bm$field_key) %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
@@ -150,8 +152,12 @@ distab <- list(
 #' 
 #' ## Functions
 #' Functions handle the Principal Components Analysis (PCoA) diagnostics, with outputs and figures 
-#' saved to a list for later use. `pcoa_fun()` is used with data where samples have been summed in 
-#' fields. `pcoa_samples_fun()` is used for the subsample data from Blue Mounds restored fields.
+#' saved to a list for later use. 
+#' 
+#' - `pcoa_fun()` is used with data where samples have been summed in fields. 
+#' - `pcoa_samps_fun()` is used with rarefied subsample data from all fields.
+#' - `pcoa_samps_bm_fun()` is used for the subsample data from Blue Mounds restored fields. The variable 
+#' **yr_since** is continuous with this dataset and is tested with `envfit()`.
 #+ pcoa_function
 pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
     set.seed <- 397
@@ -212,8 +218,111 @@ pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
     return(output)
 }
 #' 
-#+ pcoa_samples_fun
-pcoa_samples_fun <- function(s, d, meta=sites_resto_bm, corr="none", df_name, nperm=1999) {
+
+
+
+
+
+
+
+
+
+
+s=spe$its_samps
+d=distab$its_samps
+df_name="temp"
+env=sites
+corr="lingoes"
+nperm=1999
+
+
+
+#+ pcoa_samps_function
+pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
+    set.seed <- 438
+    # Multivariate analysis
+    p <- pcoa(d, correction = corr)
+    p_vals <- data.frame(p$values) %>% 
+        rownames_to_column(var = "Dim") %>% 
+        mutate(Dim = as.integer(Dim))
+    p_vec <- data.frame(p$vectors)
+    # Wrangle site data
+    env_w <- env %>% 
+        left_join(s %>% select(field_key, sample), by = join_by(field_key)) %>% 
+        mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+        column_to_rownames(var = "field_sample")
+    # Permutation tests (PERMANOVA)
+    # Fields as replicate strata with subsamples
+    # Regions as blocks
+    h <- with(env_w, 
+             how(within = Within(type="free"), 
+                 plots  = Plots(strata=field_key, type="free"),
+                 blocks = region,
+                 nperm  = nperm))
+    p_permtest <- adonis2(
+        d ~ field_type,
+        data = env_w,
+        permutations = h)
+    # Diagnostic plots
+    if(corr == "none" | ncol(p_vals) == 6) {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
+    } else {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
+    }
+    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
+    # Ordination plot
+    scores <-
+        p_vec[, 1:ncomp] %>%
+        rownames_to_column(var = "field_sample") %>%
+        separate_wider_delim(field_sample, delim = "_", names = c("field_key", "sample_key"), cols_remove = TRUE) %>% 
+        mutate(field_key = as.integer(field_key)) %>%
+        left_join(env, by = join_by(field_key)) %>% 
+        select(-field_type)
+    # Output data
+    output <- list(dataset                        = df_name,
+                   components_exceed_broken_stick = p_ncomp,
+                   correction_note                = p$note,
+                   values                         = p_vals[1:(ncomp+1), ], 
+                   eigenvalues                    = eig,
+                   site_vectors                   = scores,
+                   broken_stick_plot              = p_bstick,
+                   permanova                      = p_permtest)
+    return(output)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#+ pcoa_samps_bm_function
+pcoa_samps_bm_fun <- function(s, d, env=sites_resto_bm, corr="none", df_name, nperm=1999) {
     set.seed <- 845
     # Multivariate analysis
     p <- pcoa(d, correction = corr)
@@ -222,12 +331,12 @@ pcoa_samples_fun <- function(s, d, meta=sites_resto_bm, corr="none", df_name, np
         mutate(Dim = as.integer(Dim))
     p_vec <- data.frame(p$vectors)
     # Wrangle site data
-    env <- meta %>% 
+    env_w <- env %>% 
         left_join(s %>% select(field_key, sample), by = join_by(field_key)) %>% 
         mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
         column_to_rownames(var = "field_sample")
     # Permutation test (PERMANOVA)
-    p_permtest <- adonis2(d ~ field_key, data = env, permutations = nperm)
+    p_permtest <- adonis2(d ~ field_key, data = env_w, permutations = nperm)
     # Diagnostic plots
     if(corr == "none" | ncol(p_vals) == 6) {
         p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
@@ -253,11 +362,11 @@ pcoa_samples_fun <- function(s, d, meta=sites_resto_bm, corr="none", df_name, np
     ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
     # Permutation test (ENVFIT)
     # Fields as strata
-    h = with(env, 
+    h = with(env_w, 
              how(within = Within(type="free"), 
                  plots = Plots(strata=field_key, type="free"), 
                  nperm = nperm))
-    fit <- envfit(p_vec ~ yr_since, env, permutations = h, choices = c(1:ncomp))
+    fit <- envfit(p_vec ~ yr_since, env_w, permutations = h, choices = c(1:ncomp))
     fit_sc <- scores(fit, c("vectors"))
     # Ordination plotting data
     scores <-
@@ -265,7 +374,7 @@ pcoa_samples_fun <- function(s, d, meta=sites_resto_bm, corr="none", df_name, np
         rownames_to_column(var = "field_sample") %>%
         separate_wider_delim(field_sample, delim = "_", names = c("field_key", "sample_key"), cols_remove = TRUE) %>% 
         mutate(field_key = as.integer(field_key)) %>%
-        left_join(meta, by = join_by(field_key)) %>% 
+        left_join(env, by = join_by(field_key)) %>% 
         select(-field_type)
     # Output data
     output <- list(dataset                        = df_name,
