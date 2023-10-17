@@ -38,11 +38,16 @@ for (i in 1:length(packages_needed)) {
 #' 
 #' # Data
 #' ## Sites-species tables
-#' Samples-species tables with rarefied sequence abundances. 
+#' Sites-species tables with rarefied sequence abundances. This list includes
+#' composition summarized by fields or unsummarized (all samples). 
 #' CSV files were produced in [process_data.R](process_data.md)
 spe <- list(
     its = read_csv(
         paste0(getwd(), "/clean_data/spe_ITS_rfy.csv"),
+        show_col_types = FALSE
+    ),
+    its_samples = read_csv(
+        paste0(getwd(), "/clean_data/spe_ITS_rfy_samples.csv"),
         show_col_types = FALSE
     ),
     amf = read_csv(
@@ -86,7 +91,7 @@ sites_resto_bm <-
     filter(field_type == "restored",
            region == "BM") %>% 
     select(-field_name, -region) %>% 
-    mutate(yr_since = as.numeric(yr_since))
+    mutate(yr_since = as.numeric(yr_since))   
 #' 
 #' ## Distance tables
 #' Creating distance objects from the samples-species tables is done with the typical 
@@ -98,10 +103,37 @@ sites_resto_bm <-
 #' conform to the standards of a distance object in R. The following list contains vegdist-produced
 #' distance objects for ITS and 18S, and it includes UNIFRAC distance for 18S. 
 #' 
+#' **List of objects in `distab`**
+#' - its: the rarefied data, summed from 8 samples in each field
+#' - its_resto_bm: rarefied data, summed from 8 samples in each field, filtered to include Blue Mounds region only
+#' - its_resto_samples_bm: rarefied data from 8 samples in each field, not summed, filtered to include Blue Mounds region only
+#' - amf_bray: rarefied data, summed from 7 samples from each field, bray-curtis distance
+#' - amf_uni: rarefied data, summed from 7 samples from each field, UNIFRAC distance
 distab <- list(
     its       = vegdist(data.frame(spe$its, row.names = 1), method = "bray"),
+    its_samps = vegdist(
+        data.frame(
+            spe$its_samples %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        )
+    ),
     its_resto_bm = vegdist(
-        data.frame(spe$its %>% filter(field_key %in% sites_resto_bm$field_key), row.names = 1), 
+        data.frame(
+            spe$its %>% 
+                filter(field_key %in% sites_resto_bm$field_key), 
+            row.names = 1
+            ), 
+        method = "bray"),
+    its_resto_samples_bm = vegdist(
+        data.frame(
+            spe$its_samples %>% 
+                filter(field_key %in% sites_resto_bm$field_key) %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+            ),
         method = "bray"),
     amf_bray  = vegdist(data.frame(spe$amf, row.names = 1), method = "bray"),
     amf_uni   = sites %>%
@@ -117,10 +149,12 @@ distab <- list(
 ) 
 #' 
 #' ## Functions
-#' A function handles the Principal Components Analysis (PCoA) diagnostics, with outputs and figures 
-#' saved to a list for later use. 
+#' Functions handle the Principal Components Analysis (PCoA) diagnostics, with outputs and figures 
+#' saved to a list for later use. `pcoa_fun()` is used with data where samples have been summed in 
+#' fields. `pcoa_samples_fun()` is used for the subsample data from Blue Mounds restored fields.
 #+ pcoa_function
 pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
+    set.seed <- 397
     # Multivariate analysis
     p <- pcoa(d, correction = corr)
     p_vals <- data.frame(p$values) %>% 
@@ -177,6 +211,76 @@ pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
                    permanova                      = p_permtest)
     return(output)
 }
+#' 
+#+ pcoa_samples_fun
+pcoa_samples_fun <- function(s, d, meta=sites_resto_bm, corr="none", df_name, nperm=1999) {
+    set.seed <- 845
+    # Multivariate analysis
+    p <- pcoa(d, correction = corr)
+    p_vals <- data.frame(p$values) %>% 
+        rownames_to_column(var = "Dim") %>% 
+        mutate(Dim = as.integer(Dim))
+    p_vec <- data.frame(p$vectors)
+    # Wrangle site data
+    env <- meta %>% 
+        left_join(s %>% select(field_key, sample), by = join_by(field_key)) %>% 
+        mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+        column_to_rownames(var = "field_sample")
+    # Permutation test (PERMANOVA)
+    p_permtest <- adonis2(d ~ field_key, data = env, permutations = nperm)
+    # Diagnostic plots
+    if(corr == "none" | ncol(p_vals) == 6) {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
+    } else {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
+    }
+    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
+    # Permutation test (ENVFIT)
+    # Fields as strata
+    h = with(env, 
+             how(within = Within(type="free"), 
+                 plots = Plots(strata=field_key, type="free"), 
+                 nperm = nperm))
+    fit <- envfit(p_vec ~ yr_since, env, permutations = h, choices = c(1:ncomp))
+    fit_sc <- scores(fit, c("vectors"))
+    # Ordination plotting data
+    scores <-
+        p_vec[, 1:ncomp] %>%
+        rownames_to_column(var = "field_sample") %>%
+        separate_wider_delim(field_sample, delim = "_", names = c("field_key", "sample_key"), cols_remove = TRUE) %>% 
+        mutate(field_key = as.integer(field_key)) %>%
+        left_join(meta, by = join_by(field_key)) %>% 
+        select(-field_type)
+    # Output data
+    output <- list(dataset                        = df_name,
+                   components_exceed_broken_stick = p_ncomp,
+                   correction_note                = p$note,
+                   values                         = p_vals[1:(ncomp+1), ], 
+                   eigenvalues                    = eig,
+                   site_vectors                   = scores,
+                   broken_stick_plot              = p_bstick,
+                   permanova                      = p_permtest,
+                   vector_fit                     = fit,
+                   vector_fit_scores              = fit_sc)
+    return(output)
+}
+#' 
 #' # Results
 #' ## Ordinations
 #' Bray-Curtis or Ruzicka distance are both appropriate, but Bray-Curtis has 
@@ -293,13 +397,70 @@ its_resto_scores %>%
 #' to use these scores for the correlation because they were created with the corn and remnant fields
 #' in the ordination as well. 
 #' 
-#' It's probably better to do this with a new ordination of just restoration sites
-#' and a constrained ordination with years and other environmental variables. With only restored sites,
-#' we can take advantage of the sub-sample data, at least for plotting.
+#' The most appropriate way to look at communities vs. field age is with the Blue Mounds restored
+#' fields. The function `pcoa_samples_fun()` will take care of this. 
+#' 
+#' ### PCoA with ITS gene, OTU clusters, Blue Mounds restored fields, all samples
+#+ pcoa_its_otu,fig.align='center'
+(pcoa_its_samples <- pcoa_samples_fun(spe$its_sampl, 
+                                      distab$its_resto_samples_bm, 
+                                      sites_resto_bm, 
+                                      df_name="BM restored, ITS gene, 97% OTU"))
+#' 
+#' Axis 1 explains `r pcoa_its_samples$eigenvalues[1]`% and axis 2 
+#' explains `r pcoa_its_samples$eigenvalues[2]`% of the variation in the community data. Both axes are important
+#' based on the broken stick model. The relatively low percent variation explained is partly due to the 
+#' high number of dimensions used when all samples from fields are included. 
+#' The fidelity of samples to fields was strong based on a permutation test
+#' $(R^2=`r round(pcoa_its_samples$permanova$R2[1], 2)`, p=`r pcoa_its_samples$permanova$Pr[1]`)$. 
+#' 
+#' Years since restoration was significant with a permutation test where samples were constrained within
+#' fields to account for lack of independence $(R^2=`r round(pcoa_its_samples$vector_fit$vectors$r, 2`) 
+#' 
+#' Plot
+
+pcoa_its_samples$vector_fit$vectors$r
+
+centroid_its <- aggregate(cbind(Axis.1, Axis.2) ~ field_key, data = pcoa_its_samples$site_vectors, mean) %>% 
+    left_join(sites %>% select(field_key, yr_since), by = join_by(field_key))
+
+hull_its <- pcoa_its_samples$site_vectors %>% 
+    group_by(field_key) %>% 
+    slice(chull(Axis.1, Axis.2))
+
+pcoa_its_samples$eigenvalues
+
+ggplot(pcoa_its_samples$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_point(aes(fill = as.character(field_key)), shape = 21) +
+    geom_polygon(data = hull_its, aes(fill = as.character(field_key)), alpha = 0.3) +
+    geom_point(data = centroid_its, aes(fill = as.character(field_key)), size = 8, shape = 21) +
+    geom_text(data = centriod_its, aes(label = yr_since)) +
+    labs(
+        x = paste0("Axis 1 (", pcoa_its_samples$eigenvalues[1], "%)"),
+        y = paste0("Axis 2 (", pcoa_its_samples$eigenvalues[2], "%)"),
+        title = paste0(
+            "PCoA Ordination (",
+            pcoa_its_samples$dataset,
+            ")"
+        ),
+        caption = "Text indicates years since restoration.\nYears since restoration significant at p<0.05."
+    ) +
+    scale_fill_discrete_qualitative(palette = "Harmonic") +
+    scale_color_discrete_qualitative(palette = "Harmonic") +
+    theme_bw() +
+    theme(legend.position = "none")
+
+
+with(pcoa_its_samples$site_vectors)
 
 
 
-ord <- pcoa(distab$its_resto_bm)
+
+
+
+
+
+ ord <- pcoa(distab$its_resto_bm)
 ord_sc <- ord$vectors[,c(1,2)]
 fit <- with(sites_resto_bm, envfit(ord_sc, sites_resto_bm$yr_since, permutations = 1999))
 fit_sc <- scores(fit, c("vectors"))
@@ -338,6 +499,13 @@ ggplot(plot_data, aes(x = Axis.1, y = Axis.2)) +
 
 # Stop this for now (12 October 2023). Proceed with soil analysis and stuff like that, get to the end,
 # then come back to develop this. It will work, you just need to know where to go with it.
+
+
+
+
+
+
+
 
 
 
