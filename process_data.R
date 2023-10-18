@@ -111,6 +111,8 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     #                   Include the "/" before the folder name. If no folder 
     #                   name is desired, use "".
     
+    set.seed <- 397
+    
     varname <- enquo(varname)
     
     data <- spe %>% left_join(taxa, by = join_by(`#OTU ID`))

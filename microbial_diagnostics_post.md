@@ -2,7 +2,7 @@ Microbial data: diagnostics of sequence data
 ================
 Beau Larkin
 
-Last updated: 11 October, 2023
+Last updated: 18 October, 2023
 
 - [Description](#description)
 - [Clean the environment](#clean-the-environment)

@@ -18,11 +18,13 @@
 #' This presents basic visualizations of community differences among sites/regions
 #' based on ITS and 18S data. 
 #' 
-#' During data processing, not all samples were retained. Some had failed to amplify and others
+#' During data processing, not all subsamples were retained. Some had failed to amplify and others
 #' had very few sequences, leading to the potential for a loss of information during rarefication. 
-#' With the loss of some samples, all fields were resampled to the same lower number of samples. 
+#' With the loss of some subsamples, all fields were resampled to the same lower number of samples. 
 #' This was done to equalize sampling effort (from a statistical perspective). 
-#' This procedure can easily be undone in the [process_data script](process_data.md)
+#' This procedure can easily be undone in the [process_data script](process_data.md). Whether
+#' 9, 8, or 7 subsamples are retained, the interpretation of analyses presented here would be the same
+#' (not shown). 
 #' 
 #' # Packages and libraries
 packages_needed = c("tidyverse", "vegan", "colorspace", "ape", "knitr")
