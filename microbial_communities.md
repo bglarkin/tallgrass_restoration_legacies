@@ -13,18 +13,22 @@ Last updated: 18 October, 2023
   - [Distance tables](#distance-tables)
   - [Functions](#functions)
 - [Results](#results)
-  - [Ordinations](#ordinations)
-    - [PCoA with ITS gene, OTU
-      clusters](#pcoa-with-its-gene-otu-clusters)
-    - [PCoA with ITS gene, OTU clusters, Blue Mounds restored fields,
-      all
-      subsamples](#pcoa-with-its-gene-otu-clusters-blue-mounds-restored-fields-all-subsamples)
-    - [PCoA with ITS gene, OTU clusters, all fields and regions, all
-      subsamples](#pcoa-with-its-gene-otu-clusters-all-fields-and-regions-all-subsamples)
-    - [PCoA with 18S gene, uninformed
-      distance](#pcoa-with-18s-gene-uninformed-distance)
-    - [PCoA with 18S gene, UNIFRAC
-      distance](#pcoa-with-18s-gene-unifrac-distance)
+  - [ITS gene, OTU clustering](#its-gene-otu-clustering)
+    - [PCoA with abundances summed in
+      fields](#pcoa-with-abundances-summed-in-fields)
+    - [PCoA with Blue Mounds restored fields, all
+      subsamples](#pcoa-with-blue-mounds-restored-fields-all-subsamples)
+    - [PCoA with all fields and regions, all
+      subsamples](#pcoa-with-all-fields-and-regions-all-subsamples)
+  - [18S gene, OTU clustering](#18s-gene-otu-clustering)
+    - [PCoA with abundances summed in fields, Bray-Curtis
+      distance](#pcoa-with-abundances-summed-in-fields-bray-curtis-distance)
+    - [PCoA with abundances summed in fields, UNIFRAC
+      distance](#pcoa-with-abundances-summed-in-fields-unifrac-distance)
+    - [PCoA with Blue Mounds restored fields, all
+      subsamples](#pcoa-with-blue-mounds-restored-fields-all-subsamples-1)
+    - [PCoA with all fields and regions, all
+      subsamples](#pcoa-with-all-fields-and-regions-all-subsamples-1)
 
 # Description
 
@@ -84,6 +88,10 @@ spe <- list(
     ),
     amf = read_csv(
         paste0(getwd(), "/clean_data/spe_18S_rfy.csv"),
+        show_col_types = FALSE
+    ),
+    amf_samps = read_csv(
+        paste0(getwd(), "/clean_data/spe_18S_rfy_samples.csv"),
         show_col_types = FALSE
     )
 )
@@ -191,6 +199,30 @@ distab <- list(
             ),
         method = "bray"),
     amf_bray  = vegdist(data.frame(spe$amf, row.names = 1), method = "bray"),
+    amf_samps = vegdist(
+        data.frame(
+            spe$amf_samps %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        )
+    ),
+    amf_resto_bm = vegdist(
+        data.frame(
+            spe$amf %>% 
+                filter(field_key %in% sites_resto_bm$field_key), 
+            row.names = 1
+        ), 
+        method = "bray"),
+    amf_resto_samps_bm = vegdist(
+        data.frame(
+            spe$amf_samps %>% 
+                filter(field_key %in% sites_resto_bm$field_key) %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ),
+        method = "bray"),
     amf_uni   = sites %>%
         select(field_name, field_key) %>%
         left_join(read_delim(
@@ -296,7 +328,7 @@ pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
     # Fields as replicate strata with subsamples
     # Regions as blocks
     h <- with(env_w, 
-              how(within = Within(type="free"), 
+              how(within = Within(type="none"), 
                   plots  = Plots(strata=field_key, type="free"),
                   blocks = region,
                   nperm  = nperm))
@@ -333,8 +365,7 @@ pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
         rownames_to_column(var = "field_sample") %>%
         separate_wider_delim(field_sample, delim = "_", names = c("field_key", "sample_key"), cols_remove = TRUE) %>% 
         mutate(field_key = as.integer(field_key)) %>%
-        left_join(env, by = join_by(field_key)) %>% 
-        select(-field_type)
+        left_join(env, by = join_by(field_key))
     # Output data
     output <- list(dataset                        = df_name,
                    components_exceed_broken_stick = p_ncomp,
@@ -420,12 +451,14 @@ pcoa_samps_bm_fun <- function(s, d, env=sites_resto_bm, corr="none", df_name, np
 
 # Results
 
-## Ordinations
+#### Ordinations
 
 Bray-Curtis or Ruzicka distance are both appropriate, but Bray-Curtis
 has produced axes with better explanatory power.
 
-### PCoA with ITS gene, OTU clusters
+## ITS gene, OTU clustering
+
+### PCoA with abundances summed in fields
 
 In trial runs, no negative eigenvalues were observed (not shown). No
 correction is needed for these ordinations.
@@ -506,7 +539,7 @@ be on the first axis, although axis 2 explains 11.5% of the variation
 and was very close to the broken stick value. Testing the design factor
 *field_type* (with *region* treated as a block using the `strata`
 argument of `adonis2`) revealed a significant clustering
-$(R^2=0.18, p=5\times 10^{-4})$.
+$(R^2=0.18,~p=5\times 10^{-4})$.
 
 Let’s view a plot with abundances of community subgroups inset.
 
@@ -640,7 +673,7 @@ its_resto_scores %>%
 
 <img src="microbial_communities_files/figure-gfm/its_resto_scores_fig-1.png" style="display: block; margin: auto;" />
 
-Indeed, Axis 1 does correlate well with age $(R^2_{Adj}=0.51, p<0.005)$.
+Indeed, Axis 1 does correlate well with age $(R^2_{Adj}=0.51,~p<0.005)$.
 But it isn’t appropriate to use these scores for the correlation because
 they were created with the corn and remnant fields in the ordination as
 well.
@@ -650,7 +683,7 @@ the Blue Mounds restored fields. The function `pcoa_its_samps_bm()` will
 take care of this. Field age will be fitted to the ordination and tested
 using `envfit()`.
 
-### PCoA with ITS gene, OTU clusters, Blue Mounds restored fields, all subsamples
+### PCoA with Blue Mounds restored fields, all subsamples
 
 In trial runs, no negative eigenvalues were observed (not shown). No
 correction is needed for these ordinations.
@@ -741,7 +774,7 @@ community data. Both axes are important based on the broken stick model.
 The relatively low percent variation explained is partly due to the high
 number of dimensions used when all samples from fields are included. The
 fidelity of samples to fields was significant based on a permutation
-test $(R^2=0.04, p=5\times 10^{-4})$. In this case, the partial $R^2$
+test $(R^2=0.04,~p=5\times 10^{-4})$. In this case, the partial $R^2$
 shows the proportion of sum of squares from the total. It is a low
 number here because so much unexplained variation exists, resulting in a
 high sum of squares that is outside the assignment of subsamples to
@@ -749,8 +782,8 @@ fields.
 
 Years since restoration has a moderately strong correlation with
 communities and was significant with a permutation test where samples
-were constrained within fields to account for lack of independence
-$(R^2=0.72)$.
+were constrained within fields to account for lack of independence \#’
+$(R^2=0.72,~p=0.02)$.
 
 Let’s view an ordination plot with hulls around subsamples and a fitted
 vector for field age overlaid.
@@ -791,7 +824,7 @@ ggplot(pcoa_its_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
 
 <img src="microbial_communities_files/figure-gfm/its_samps_bm_fig-1.png" style="display: block; margin: auto;" />
 
-### PCoA with ITS gene, OTU clusters, all fields and regions, all subsamples
+### PCoA with all fields and regions, all subsamples
 
 This leverages the information from all subsamples. Modifications to
 `how()` from package
@@ -835,7 +868,7 @@ correction was applied.
     ## [1] 8.2 5.0
     ## 
     ## $site_vectors
-    ## # A tibble: 200 × 15
+    ## # A tibble: 200 × 16
     ##    field_key sample_key  Axis.1   Axis.2  Axis.3  Axis.4   Axis.5   Axis.6
     ##        <dbl> <chr>        <dbl>    <dbl>   <dbl>   <dbl>    <dbl>    <dbl>
     ##  1         1 1          -0.188  -0.132    0.0428 -0.0633  0.0617  -0.118  
@@ -849,8 +882,8 @@ correction was applied.
     ##  9         2 1           0.0564  0.00296 -0.325   0.0570 -0.0677  -0.00108
     ## 10         2 2           0.0371  0.0536  -0.0926  0.0208 -0.130   -0.130  
     ## # ℹ 190 more rows
-    ## # ℹ 7 more variables: Axis.7 <dbl>, Axis.8 <dbl>, Axis.9 <dbl>, Axis.10 <dbl>,
-    ## #   field_name <chr>, region <chr>, yr_since <chr>
+    ## # ℹ 8 more variables: Axis.7 <dbl>, Axis.8 <dbl>, Axis.9 <dbl>, Axis.10 <dbl>,
+    ## #   field_name <chr>, region <chr>, field_type <ord>, yr_since <chr>
     ## 
     ## $broken_stick_plot
 
@@ -862,7 +895,7 @@ correction was applied.
     ## Terms added sequentially (first to last)
     ## Blocks:  region 
     ## Plots: field_key, plot permutation: free
-    ## Permutation: free
+    ## Permutation: none
     ## Number of permutations: 1999
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
@@ -881,13 +914,47 @@ variation explained on axes 1 and 2 is partly due to the high number of
 dimensions used when all samples from fields are included. The fidelity
 of samples to fields was strong based on a permutation test when
 restricting permutations to fields (=plots in `how()`) within regions
-(=blocks in `how()`) $(R^2=0.08, p=5\times 10^{-4})$.
+(=blocks in `how()`) $(R^2=0.08,~p=5\times 10^{-4})$.
 
-### PCoA with 18S gene, uninformed distance
+Let’s view an ordination plot with hulls around subsamples.
 
-“Uninformed” refers to Bray-Curtis or another distance informational
-metric available in `vegdist()`. It is as opposed to UNIFRAC distance,
-which is informed by phylogeny.
+``` r
+centroid_its <- aggregate(cbind(Axis.1, Axis.2) ~ field_key, data = pcoa_its_samps$site_vectors, mean) %>% 
+    left_join(sites %>% select(field_key, yr_since, field_type, region), by = join_by(field_key))
+hull_its <- pcoa_its_samps$site_vectors %>% 
+    group_by(field_key) %>% 
+    slice(chull(Axis.1, Axis.2))
+```
+
+``` r
+ggplot(pcoa_its_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_point(aes(fill = field_type), shape = 21) +
+    geom_polygon(data = hull_its, aes(group = field_key, fill = field_type), alpha = 0.3) +
+    geom_point(data = centroid_its, aes(fill = field_type, shape = region), size = 8) +
+    geom_text(data = centroid_its, aes(label = yr_since)) +
+    labs(
+        x = paste0("Axis 1 (", pcoa_its_samps$eigenvalues[1], "%)"),
+        y = paste0("Axis 2 (", pcoa_its_samps$eigenvalues[2], "%)"),
+        title = paste0(
+            "PCoA Ordination (",
+            pcoa_its_samps$dataset,
+            ")"
+        ),
+        caption = "Text indicates years since restoration."
+    ) +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
+    theme_bw() +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
+```
+
+<img src="microbial_communities_files/figure-gfm/its_samps_fig-1.png" style="display: block; margin: auto;" />
+
+## 18S gene, OTU clustering
+
+### PCoA with abundances summed in fields, Bray-Curtis distance
+
+No negative eigenvalues produced, no correction applied.
 
 ``` r
 (pcoa_amf_bray <- pcoa_fun(distab$amf_bray, df_name = "18S gene, 97% OTU, Bray-Curtis distance"))
@@ -987,7 +1054,7 @@ which is informed by phylogeny.
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, strata = region)
     ##            Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type  2   1.0956 0.24872 3.6417  0.002 **
+    ## field_type  2   1.0956 0.24872 3.6417 0.0015 **
     ## Residual   22   3.3094 0.75128                 
     ## Total      24   4.4050 1.00000                 
     ## ---
@@ -1000,7 +1067,7 @@ substantial variation here is on the first axis (27.5%) with Axis 2
 explaining 17.8% of the variation in AMF abundances. Testing the design
 factor *field_type* (with *region* treated as a block using the `strata`
 argument of `adonis2`) revealed a significant clustering
-$(R^2=0.25, p=0.002)$.
+$(R^2=0.25,~p=0.002)$.
 
 Let’s view a plot with abundances of community subgroups inset.
 
@@ -1140,10 +1207,10 @@ amf_resto_scores %>%
 
 Both axes correlate significantly and strongly with years since
 restoration. Axis 2 shows a stronger relationship
-$(R^2_{Adj}=0.61, p<0.001)$, and Axis 1 shows a moderately strong
-relationship $(R^2_{Adj}=0.46, p<0.005)$
+$(R^2_{Adj}=0.64,~p<0.001)$, and Axis 1 shows a moderately strong
+relationship $(R^2_{Adj}=0.56,~p<0.005)$
 
-### PCoA with 18S gene, UNIFRAC distance
+### PCoA with abundances summed in fields, UNIFRAC distance
 
 ``` r
 (pcoa_amf_uni <- pcoa_fun(distab$amf_uni, df_name = "18S gene, 97% OTU, UNIFRAC distance", corr = "lingoes"))
@@ -1215,7 +1282,7 @@ relationship $(R^2_{Adj}=0.46, p<0.005)$
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, strata = region)
     ##            Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type  2 0.054762 0.22505 3.1945  0.003 **
+    ## field_type  2 0.054762 0.22505 3.1945 0.0035 **
     ## Residual   22 0.188572 0.77495                 
     ## Total      24 0.243335 1.00000                 
     ## ---
@@ -1227,7 +1294,7 @@ substantial variation here is on the first axis (23%) with Axis 2
 explaining 15% of the variation in AMF abundances. Testing the design
 factor *field_type* (with *region* treated as a block using the `strata`
 argument of `adonis2`) revealed a significant clustering
-$(R^2=0.23, p=0.003)$.
+$(R^2=0.23,~p=0.004)$.
 
 Let’s view a plot with abundances of community subgroups inset.
 
@@ -1356,5 +1423,282 @@ amf_uni_resto_scores %>%
 
 Both axes correlate significantly but with less than moderate strength
 with years since restoration. Axis 2 again shows a stronger relationship
-$(R^2_{Adj}=0.31, p<0.05)$, and Axis 1 is close with
-$(R^2_{Adj}=0.30, p<0.05)$
+$(R^2_{Adj}=0.31,~p<0.05)$, and Axis 1 is close with
+$(R^2_{Adj}=0.30,~p<0.05)$
+
+Correlating age with axis scores isn’t appropriate because the axis
+scores were produced with corn and remnant fields included. A better way
+is to look at the Blue Mounds restored fields only. For now, we’ll
+return to Bray-Curtis distance.
+
+### PCoA with Blue Mounds restored fields, all subsamples
+
+**Bray-Curtis distance used**. A Lingoes correction was applied to the
+negative eigenvalues.
+
+``` r
+(pcoa_amf_samps_bm <- pcoa_samps_bm_fun(spe$amf_samps, 
+                                        distab$amf_resto_samps_bm, 
+                                        sites_resto_bm, 
+                                        corr="lingoes",
+                                        df_name="BM restored, 18S gene, 97% OTU, BC dist."))
+```
+
+    ## Set of permutations < 'minperm'. Generating entire set.
+    ## Set of permutations < 'minperm'. Generating entire set.
+
+    ## $dataset
+    ## [1] "BM restored, 18S gene, 97% OTU, BC dist."
+    ## 
+    ## $components_exceed_broken_stick
+    ## [1] 5
+    ## 
+    ## $correction_note
+    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.118461986124927 , except diagonal elements"
+    ## 
+    ## $values
+    ##   Dim Eigenvalues  Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig Cum_br_stick
+    ## 1   1   2.7147856 2.8332476   0.16059179   0.09442476    0.1605918   0.09442476
+    ## 2   2   2.0384681 2.1569301   0.12225733   0.07314817    0.2828491   0.16757293
+    ## 3   3   0.9970199 1.1154819   0.06322682   0.06250987    0.3460759   0.23008280
+    ## 4   4   0.8933980 1.0118600   0.05735341   0.05541767    0.4034294   0.28550047
+    ## 5   5   0.8078265 0.9262885   0.05250312   0.05009852    0.4559325   0.33559899
+    ## 6   6   0.6244827 0.7429446   0.04211097   0.04584320    0.4980434   0.38144219
+    ## 
+    ## $eigenvalues
+    ## [1] 16.1 12.2
+    ## 
+    ## $site_vectors
+    ## # A tibble: 49 × 8
+    ##    field_key sample_key  Axis.1  Axis.2  Axis.3  Axis.4  Axis.5 yr_since
+    ##        <dbl> <chr>        <dbl>   <dbl>   <dbl>   <dbl>   <dbl>    <dbl>
+    ##  1         1 1          -0.117  -0.0647 -0.151   0.0587 -0.0934       16
+    ##  2         1 2          -0.155  -0.296  -0.126   0.161  -0.118        16
+    ##  3         1 4          -0.471   0.188  -0.115   0.146   0.0755       16
+    ##  4         1 5          -0.0621 -0.352  -0.287   0.0839  0.167        16
+    ##  5         1 7          -0.263  -0.353  -0.0834  0.143  -0.0648       16
+    ##  6         1 8          -0.366   0.0809 -0.0579 -0.165  -0.123        16
+    ##  7         1 10         -0.386  -0.182  -0.0630  0.131  -0.0348       16
+    ##  8         2 1           0.0588 -0.284   0.350  -0.0973  0.0737        3
+    ##  9         2 3           0.170  -0.122   0.0879 -0.148  -0.0368        3
+    ## 10         2 5           0.0297 -0.419   0.200   0.0979  0.0852        3
+    ## # ℹ 39 more rows
+    ## 
+    ## $broken_stick_plot
+
+<img src="microbial_communities_files/figure-gfm/pcoa_amf_samps_bm-1.png" style="display: block; margin: auto;" />
+
+    ## 
+    ## $permanova
+    ## Permutation test for adonis under reduced model
+    ## Terms added sequentially (first to last)
+    ## Permutation: free
+    ## Number of permutations: 1999
+    ## 
+    ## adonis2(formula = d ~ field_key, data = env_w, permutations = nperm)
+    ##           Df SumOfSqs     R2      F Pr(>F)    
+    ## field_key  1   1.3894 0.1162 6.1796  5e-04 ***
+    ## Residual  47  10.5670 0.8838                  
+    ## Total     48  11.9564 1.0000                  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $vector_fit
+    ## 
+    ## ***VECTORS
+    ## 
+    ##            Axis.1   Axis.2   Axis.3   Axis.4   Axis.5     r2 Pr(>r)  
+    ## yr_since -0.84928  0.37660 -0.19661 -0.19812  0.24287 0.7715 0.0205 *
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## Plots: field_key, plot permutation: free
+    ## Permutation: none
+    ## Number of permutations: 5039
+    ## 
+    ## 
+    ## 
+    ## $vector_fit_scores
+    ##              Axis.1   Axis.2     Axis.3     Axis.4    Axis.5
+    ## yr_since -0.7459905 0.330793 -0.1727015 -0.1740235 0.2133327
+
+Axis 1 explains 16.1% and axis 2 explains 12.2% of the variation in the
+community data. Both axes are important based on the broken stick model
+(5 relative corrected eigenvalues exceed the broken stick model). The
+relatively low percent variation explained is partly due to the high
+number of dimensions used when all samples from fields are included. The
+fidelity of samples to fields was significant based on a permutation
+test $(R^2=0.12,~p=5\times 10^{-4})$. In this case, the partial $R^2$
+shows the proportion of sum of squares from the total. It is a low
+number here because so much unexplained variation exists, resulting in a
+high sum of squares that is outside the assignment of subsamples to
+fields.
+
+Years since restoration has a moderately strong correlation with
+communities and was significant with a permutation test where samples
+were constrained within fields to account for lack of independence
+$(R^2=0.77,~p=0.02)$.
+
+Let’s view an ordination plot with hulls around subsamples and a fitted
+vector for field age overlaid.
+
+``` r
+centroid_amf_bm <- aggregate(cbind(Axis.1, Axis.2) ~ field_key, data = pcoa_amf_samps_bm$site_vectors, mean) %>% 
+    left_join(sites %>% select(field_key, yr_since), by = join_by(field_key))
+hull_amf_bm <- pcoa_amf_samps_bm$site_vectors %>% 
+    group_by(field_key) %>% 
+    slice(chull(Axis.1, Axis.2))
+```
+
+``` r
+ggplot(pcoa_amf_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_point(fill = "#5CBD92", shape = 21) +
+    geom_polygon(data = hull_amf_bm, aes(group = as.character(field_key)), fill = "#5CBD92", alpha = 0.3) +
+    geom_point(data = centroid_amf_bm, fill = "#5CBD92", size = 8, shape = 21) +
+    geom_text(data = centroid_amf_bm, aes(label = yr_since)) +
+    geom_segment(aes(x = 0, 
+                     y = 0, 
+                     xend = pcoa_amf_samps_bm$vector_fit_scores[1] * 0.6, 
+                     yend = pcoa_amf_samps_bm$vector_fit_scores[2] * 0.6),
+                 color = "blue", 
+                 arrow = arrow(length = unit(3, "mm"))) +
+    labs(
+        x = paste0("Axis 1 (", pcoa_amf_samps_bm$eigenvalues[1], "%)"),
+        y = paste0("Axis 2 (", pcoa_amf_samps_bm$eigenvalues[2], "%)"),
+        title = paste0(
+            "PCoA Ordination (",
+            pcoa_amf_samps_bm$dataset,
+            ")"
+        ),
+        caption = "Text indicates years since restoration.\nYears since restoration significant at p<0.05."
+    ) +
+    theme_bw() +
+    theme(legend.position = "none")
+```
+
+<img src="microbial_communities_files/figure-gfm/amf_samps_bm_fig-1.png" style="display: block; margin: auto;" />
+
+### PCoA with all fields and regions, all subsamples
+
+**Bray-Curtis distance used.** This leverages the information from all
+subsamples. Modifications to `how()` from package
+[permute](https://cran.r-project.org/package=permute) allow for the more
+complex design.
+
+Negative eigenvalues were produced in trial runs (not shown). A Lingoes
+correction was applied.
+
+``` r
+(pcoa_amf_samps <- pcoa_samps_fun(spe$amf_samps, 
+                                  distab$amf_samps, 
+                                  corr="lingoes", 
+                                  df_name = "18S gene, 97% OTU"))
+```
+
+    ## $dataset
+    ## [1] "18S gene, 97% OTU"
+    ## 
+    ## $components_exceed_broken_stick
+    ## [1] 10
+    ## 
+    ## $correction_note
+    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.365873210752633 , except diagonal elements"
+    ## 
+    ## $values
+    ##    Dim Eigenvalues Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig Cum_br_stick
+    ## 1    1    7.675622 8.041495   0.07114237   0.03314101   0.07114237   0.03314101
+    ## 2    2    5.335948 5.701821   0.05044349   0.02736066   0.12158586   0.06050167
+    ## 3    3    5.249690 5.615564   0.04968038   0.02447049   0.17126624   0.08497216
+    ## 4    4    4.198505 4.564378   0.04038064   0.02254371   0.21164688   0.10751587
+    ## 5    5    3.121552 3.487426   0.03085293   0.02109862   0.24249981   0.12861449
+    ## 6    6    2.469330 2.835203   0.02508278   0.01994255   0.26758259   0.14855704
+    ## 7    7    2.248764 2.614637   0.02313145   0.01897916   0.29071404   0.16753620
+    ## 8    8    2.047241 2.413114   0.02134860   0.01815340   0.31206264   0.18568960
+    ## 9    9    1.766395 2.132269   0.01886399   0.01743085   0.33092663   0.20312045
+    ## 10  10    1.621128 1.987001   0.01757882   0.01678859   0.34850544   0.21990904
+    ## 11  11    1.421855 1.787728   0.01581586   0.01621056   0.36432131   0.23611960
+    ## 
+    ## $eigenvalues
+    ## [1] 7.1 5.0
+    ## 
+    ## $site_vectors
+    ## # A tibble: 175 × 16
+    ##    field_key sample_key   Axis.1  Axis.2  Axis.3    Axis.4  Axis.5    Axis.6
+    ##        <dbl> <chr>         <dbl>   <dbl>   <dbl>     <dbl>   <dbl>     <dbl>
+    ##  1         1 1          -0.0838  -0.0456  0.0139 -0.0788   -0.187  -0.0384  
+    ##  2         1 2          -0.0947  -0.323  -0.0487  0.0226   -0.110  -0.152   
+    ##  3         1 4          -0.367   -0.0777  0.279  -0.140    -0.124   0.0617  
+    ##  4         1 5           0.0909  -0.303  -0.158  -0.232    -0.0826 -0.0915  
+    ##  5         1 7          -0.168   -0.363  -0.0498  0.0128   -0.106   0.000557
+    ##  6         1 8          -0.358   -0.0291  0.120  -0.112    -0.0257  0.0340  
+    ##  7         1 10         -0.325   -0.261   0.0323  0.000590 -0.192   0.0127  
+    ##  8         2 1          -0.0353  -0.131  -0.329   0.137     0.241   0.196   
+    ##  9         2 3          -0.00617  0.0745 -0.260   0.174    -0.0233  0.0334  
+    ## 10         2 5          -0.0345  -0.316  -0.343   0.166     0.0102  0.0979  
+    ## # ℹ 165 more rows
+    ## # ℹ 8 more variables: Axis.7 <dbl>, Axis.8 <dbl>, Axis.9 <dbl>, Axis.10 <dbl>,
+    ## #   field_name <chr>, region <chr>, field_type <ord>, yr_since <chr>
+    ## 
+    ## $broken_stick_plot
+
+<img src="microbial_communities_files/figure-gfm/pcoa_amf_samps-1.png" style="display: block; margin: auto;" />
+
+    ## 
+    ## $permanova
+    ## Permutation test for adonis under reduced model
+    ## Terms added sequentially (first to last)
+    ## Blocks:  region 
+    ## Plots: field_key, plot permutation: free
+    ## Permutation: none
+    ## Number of permutations: 1999
+    ## 
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
+    ##             Df SumOfSqs      R2     F Pr(>F)   
+    ## field_type   2    5.367 0.10872 10.49 0.0025 **
+    ## Residual   172   44.004 0.89128                
+    ## Total      174   49.372 1.00000                
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Axis 1 explains 7.1% and axis 2 explains 5% of the variation in the
+community data. Both axes are important based on the broken stick model,
+in fact, the broken stick model shows that 10 axes are important in
+explaining variation with this dataset. The relatively low percent
+variation explained on axes 1 and 2 is partly due to the high number of
+dimensions used when all samples from fields are included. The fidelity
+of samples to fields was strong based on a permutation test when
+restricting permutations to fields (=plots in `how()`) within regions
+(=blocks in `how()`) $(R^2=0.11,~p=0.0025)$.
+
+Let’s view an ordination plot with hulls around subsamples.
+
+``` r
+centroid_amf <- aggregate(cbind(Axis.1, Axis.2) ~ field_key, data = pcoa_amf_samps$site_vectors, mean) %>% 
+    left_join(sites %>% select(field_key, yr_since, field_type, region), by = join_by(field_key))
+hull_amf <- pcoa_amf_samps$site_vectors %>% 
+    group_by(field_key) %>% 
+    slice(chull(Axis.1, Axis.2))
+```
+
+``` r
+ggplot(pcoa_amf_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_point(aes(fill = field_type), shape = 21) +
+    geom_polygon(data = hull_amf, aes(group = field_key, fill = field_type), alpha = 0.3) +
+    geom_point(data = centroid_amf, aes(fill = field_type, shape = region), size = 8) +
+    geom_text(data = centroid_amf, aes(label = yr_since)) +
+    labs(
+        x = paste0("Axis 1 (", pcoa_amf_samps$eigenvalues[1], "%)"),
+        y = paste0("Axis 2 (", pcoa_amf_samps$eigenvalues[2], "%)"),
+        title = paste0(
+            "PCoA Ordination (",
+            pcoa_amf_samps$dataset,
+            ")"
+        ),
+        caption = "Text indicates years since restoration."
+    ) +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
+    theme_bw() +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
+```
+
+<img src="microbial_communities_files/figure-gfm/amf_samps_fig-1.png" style="display: block; margin: auto;" />
