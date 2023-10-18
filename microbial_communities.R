@@ -104,12 +104,14 @@ sites_resto_bm <-
 #' distance objects for ITS and 18S, and it includes UNIFRAC distance for 18S. 
 #' 
 #' **List of objects in `distab`**
+#' 
 #' - its: the rarefied data, summed from 8 samples in each field
 #' - its_samps: rarefied data from 8 samples per field, all fields retained
 #' - its_resto_bm: rarefied data, summed from 8 samples in each field, filtered to include Blue Mounds region only
 #' - its_resto_samps_bm: rarefied data from 8 samples in each field, not summed, filtered to include Blue Mounds region only
 #' - amf_bray: rarefied data, summed from 7 samples from each field, bray-curtis distance
 #' - amf_uni: rarefied data, summed from 7 samples from each field, UNIFRAC distance
+#' 
 #+ distab_list
 distab <- list(
     its       = vegdist(data.frame(spe$its, row.names = 1), method = "bray"),
@@ -158,6 +160,7 @@ distab <- list(
 #' - `pcoa_samps_fun()` is used with rarefied subsample data from all fields.
 #' - `pcoa_samps_bm_fun()` is used for the subsample data from Blue Mounds restored fields. The variable 
 #' **yr_since** is continuous with this dataset and is tested with `envfit()`.
+#' 
 #+ pcoa_function
 pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
     set.seed <- 397
@@ -218,25 +221,6 @@ pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
     return(output)
 }
 #' 
-
-
-
-
-
-
-
-
-
-
-s=spe$its_samps
-d=distab$its_samps
-df_name="temp"
-env=sites
-corr="lingoes"
-nperm=1999
-
-
-
 #+ pcoa_samps_function
 pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
     set.seed <- 438
@@ -255,10 +239,10 @@ pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
     # Fields as replicate strata with subsamples
     # Regions as blocks
     h <- with(env_w, 
-             how(within = Within(type="free"), 
-                 plots  = Plots(strata=field_key, type="free"),
-                 blocks = region,
-                 nperm  = nperm))
+              how(within = Within(type="free"), 
+                  plots  = Plots(strata=field_key, type="free"),
+                  blocks = region,
+                  nperm  = nperm))
     p_permtest <- adonis2(
         d ~ field_type,
         data = env_w,
@@ -305,22 +289,7 @@ pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
                    permanova                      = p_permtest)
     return(output)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#' 
 #+ pcoa_samps_bm_function
 pcoa_samps_bm_fun <- function(s, d, env=sites_resto_bm, corr="none", df_name, nperm=1999) {
     set.seed <- 845
@@ -363,7 +332,7 @@ pcoa_samps_bm_fun <- function(s, d, env=sites_resto_bm, corr="none", df_name, np
     # Permutation test (ENVFIT)
     # Fields as strata
     h = with(env_w, 
-             how(within = Within(type="free"), 
+             how(within = Within(type="none"), 
                  plots = Plots(strata=field_key, type="free"), 
                  nperm = nperm))
     fit <- envfit(p_vec ~ yr_since, env_w, permutations = h, choices = c(1:ncomp))
@@ -395,10 +364,9 @@ pcoa_samps_bm_fun <- function(s, d, env=sites_resto_bm, corr="none", df_name, np
 #' Bray-Curtis or Ruzicka distance are both appropriate, but Bray-Curtis has 
 #' produced axes with better explanatory power.
 #' 
+#' ### PCoA with ITS gene, OTU clusters
 #' In trial runs, no negative eigenvalues were observed (not shown). No 
 #' correction is needed for these ordinations.
-#' 
-#' ### PCoA with ITS gene, OTU clusters
 #+ pcoa_its_otu,fig.align='center'
 (pcoa_its <- pcoa_fun(distab$its, df_name = "ITS gene, 97% OTU"))
 #' 
@@ -507,119 +475,84 @@ its_resto_scores %>%
 #' in the ordination as well. 
 #' 
 #' The most appropriate way to look at communities vs. field age is with the Blue Mounds restored
-#' fields. The function `pcoa_samples_fun()` will take care of this. 
+#' fields. The function `pcoa_its_samps_bm()` will take care of this. Field age will be fitted 
+#' to the ordination and tested using `envfit()`.  
 #' 
-#' ### PCoA with ITS gene, OTU clusters, Blue Mounds restored fields, all samples
-#+ pcoa_its_otu,fig.align='center'
-(pcoa_its_samples <- pcoa_samples_fun(spe$its_sampl, 
-                                      distab$its_resto_samples_bm, 
-                                      sites_resto_bm, 
-                                      df_name="BM restored, ITS gene, 97% OTU"))
+#' ### PCoA with ITS gene, OTU clusters, Blue Mounds restored fields, all subsamples
+#' In trial runs, no negative eigenvalues were observed (not shown). No 
+#' correction is needed for these ordinations.
+#+ pcoa_its_samps_bm,fig.align='center'
+(pcoa_its_samps_bm <- pcoa_samps_bm_fun(spe$its_samps, 
+                                        distab$its_resto_samps_bm, 
+                                        sites_resto_bm, 
+                                        df_name="BM restored, ITS gene, 97% OTU"))
 #' 
-#' Axis 1 explains `r pcoa_its_samples$eigenvalues[1]`% and axis 2 
-#' explains `r pcoa_its_samples$eigenvalues[2]`% of the variation in the community data. Both axes are important
+#' Axis 1 explains `r pcoa_its_samps_bm$eigenvalues[1]`% and axis 2 
+#' explains `r pcoa_its_samps_bm$eigenvalues[2]`% of the variation in the community data. Both axes are important
 #' based on the broken stick model. The relatively low percent variation explained is partly due to the 
 #' high number of dimensions used when all samples from fields are included. 
-#' The fidelity of samples to fields was strong based on a permutation test
-#' $(R^2=`r round(pcoa_its_samples$permanova$R2[1], 2)`, p=`r pcoa_its_samples$permanova$Pr[1]`)$. 
+#' The fidelity of samples to fields was significant based on a permutation test
+#' $(R^2=`r round(pcoa_its_samps_bm$permanova$R2[1], 2)`, p=`r pcoa_its_samps_bm$permanova$Pr[1]`)$. 
+#' In this case, the partial $R^2$ shows the proportion of sum of squares from the total. It is a low number
+#' here because so much unexplained variation exists, resulting in a high sum of squares that is outside 
+#' the assignment of subsamples to fields.
 #' 
-#' Years since restoration was significant with a permutation test where samples were constrained within
-#' fields to account for lack of independence $(R^2=`r round(pcoa_its_samples$vector_fit$vectors$r, 2`) 
+#' Years since restoration has a moderately strong correlation with communities and was significant 
+#' with a permutation test where samples were constrained within
+#' fields to account for lack of independence $(R^2=`r round(pcoa_its_samps_bm$vector_fit$vectors$r, 2)`)$.
 #' 
-#' Plot
-
-pcoa_its_samples$vector_fit$vectors$r
-
-centroid_its <- aggregate(cbind(Axis.1, Axis.2) ~ field_key, data = pcoa_its_samples$site_vectors, mean) %>% 
+#' Let's view an ordination plot with hulls around subsamples and a fitted vector for field age overlaid.  
+#+ its_samps_bm_plotdata
+centroid_its_bm <- aggregate(cbind(Axis.1, Axis.2) ~ field_key, data = pcoa_its_samps_bm$site_vectors, mean) %>% 
     left_join(sites %>% select(field_key, yr_since), by = join_by(field_key))
-
-hull_its <- pcoa_its_samples$site_vectors %>% 
+hull_its_bm <- pcoa_its_samps_bm$site_vectors %>% 
     group_by(field_key) %>% 
     slice(chull(Axis.1, Axis.2))
-
-pcoa_its_samples$eigenvalues
-
-ggplot(pcoa_its_samples$site_vectors, aes(x = Axis.1, y = Axis.2)) +
-    geom_point(aes(fill = as.character(field_key)), shape = 21) +
-    geom_polygon(data = hull_its, aes(fill = as.character(field_key)), alpha = 0.3) +
-    geom_point(data = centroid_its, aes(fill = as.character(field_key)), size = 8, shape = 21) +
-    geom_text(data = centriod_its, aes(label = yr_since)) +
+#+ its_samps_bm_fig,fig.align='center',message=FALSE
+ggplot(pcoa_its_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_point(fill = "#5CBD92", shape = 21) +
+    geom_polygon(data = hull_its_bm, aes(group = as.character(field_key)), fill = "#5CBD92", alpha = 0.3) +
+    geom_point(data = centroid_its_bm, fill = "#5CBD92", size = 8, shape = 21) +
+    geom_text(data = centroid_its_bm, aes(label = yr_since)) +
+    geom_segment(aes(x = 0, 
+                     y = 0, 
+                     xend = pcoa_its_samps_bm$vector_fit_scores[1] * 0.4, 
+                     yend = pcoa_its_samps_bm$vector_fit_scores[2] * 0.4),
+                 color = "blue", 
+                 arrow = arrow(length = unit(3, "mm"))) +
     labs(
-        x = paste0("Axis 1 (", pcoa_its_samples$eigenvalues[1], "%)"),
-        y = paste0("Axis 2 (", pcoa_its_samples$eigenvalues[2], "%)"),
+        x = paste0("Axis 1 (", pcoa_its_samps_bm$eigenvalues[1], "%)"),
+        y = paste0("Axis 2 (", pcoa_its_samps_bm$eigenvalues[2], "%)"),
         title = paste0(
             "PCoA Ordination (",
-            pcoa_its_samples$dataset,
+            pcoa_its_samps_bm$dataset,
             ")"
         ),
         caption = "Text indicates years since restoration.\nYears since restoration significant at p<0.05."
     ) +
-    scale_fill_discrete_qualitative(palette = "Harmonic") +
-    scale_color_discrete_qualitative(palette = "Harmonic") +
     theme_bw() +
     theme(legend.position = "none")
-
-
-with(pcoa_its_samples$site_vectors)
-
-
-
-
-
-
-
-
- ord <- pcoa(distab$its_resto_bm)
-ord_sc <- ord$vectors[,c(1,2)]
-fit <- with(sites_resto_bm, envfit(ord_sc, sites_resto_bm$yr_since, permutations = 1999))
-fit_sc <- scores(fit, c("vectors"))
-plot_data <- 
-    ord_sc %>% 
-    data.frame() %>% 
-    rownames_to_column(var = "field_key") %>% 
-    mutate(field_key = as.numeric(field_key)) %>% 
-    left_join(sites_resto_bm, by = join_by(field_key))
-
-ggplot(plot_data, aes(x = Axis.1, y = Axis.2)) +
-    geom_point(shape = 21, fill = "#5CBD92", size = 10) +
-    geom_text(aes(label = yr_since)) +
-    geom_segment(aes(x = 0, y = 0, xend = fit_sc[1] * 0.5, yend = fit_sc[2] * 0.5),
-                 color = "blue", arrow = arrow(length = unit(3, "mm"))) +
-    # labs(
-    #     x = paste0("Axis 1 (", pcoa_its$eig[1], "%)"),
-    #     y = paste0("Axis 2 (", pcoa_its$eig[2], "%)"),
-    #     title = paste0(
-    #         "PCoA Ordination of field-averaged species data (",
-    #         pcoa_its$dataset,
-    #         ")"
-    #     ),
-    #     caption = "Text indicates years since restoration, with corn (-) and remnants (+) never restored."
-    # ) +
-    # lims(y = c(-0.35,0.44)) +
-    theme_bw()
-
-# Needs for further development
-# Use sub-sample data
-# Need more diagnostics on axis significance...
-# Use field as a strata
-# Probably new analysis and plotting function?
-# New data imports...
-# What are the changes in guilds or taxa? Very easy to do with just these sites in microbial_guild_taxonomy.R!!!
-
-# Stop this for now (12 October 2023). Proceed with soil analysis and stuff like that, get to the end,
-# then come back to develop this. It will work, you just need to know where to go with it.
-
-
-
-
-
-
-
-
-
-
-
-
+#' 
+#' ### PCoA with ITS gene, OTU clusters, all fields and regions, all subsamples
+#' This leverages the information from all subsamples. Modifications to `how()` from 
+#' package [permute](https://cran.r-project.org/package=permute) allow for the more complex design. 
+#' 
+#' Negative eigenvalues were produced in trial runs (not shown). A Lingoes correction was applied.
+#+ pcoa_its_samps,fig.align='center'
+(pcoa_its_samps <- pcoa_samps_fun(spe$its_samps, 
+                                  distab$its_samps, 
+                                  corr="lingoes", 
+                                  df_name = "ITS gene, 97% OTU"))
+#' 
+#' Axis 1 explains `r pcoa_its_samps$eigenvalues[1]`% and axis 2 
+#' explains `r pcoa_its_samps$eigenvalues[2]`% of the variation in the community data. Both axes are important
+#' based on the broken stick model, in fact, the broken stick model shows that `r pcoa_its_samps$components_exceed_broken_stick`
+#' axes are important in explaining variation with this dataset. 
+#' The relatively low percent variation explained on axes 1 and 2 is partly due to the 
+#' high number of dimensions used when all samples from fields are included. 
+#' The fidelity of samples to fields was strong based on a permutation test when restricting permutations to
+#' fields (=plots in `how()`) within regions (=blocks in `how()`) 
+#' $(R^2=`r round(pcoa_its_samps$permanova$R2[1], 2)`, p=`r pcoa_its_samps$permanova$Pr[1]`)$. 
 #' 
 #' ### PCoA with 18S gene, uninformed distance
 #' "Uninformed" refers to Bray-Curtis or another distance informational metric available in `vegdist()`.

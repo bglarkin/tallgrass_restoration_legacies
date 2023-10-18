@@ -2,7 +2,7 @@ Microbial data: community differences
 ================
 Beau Larkin
 
-Last updated: 11 October, 2023
+Last updated: 18 October, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -16,6 +16,11 @@ Last updated: 11 October, 2023
   - [Ordinations](#ordinations)
     - [PCoA with ITS gene, OTU
       clusters](#pcoa-with-its-gene-otu-clusters)
+    - [PCoA with ITS gene, OTU clusters, Blue Mounds restored fields,
+      all
+      subsamples](#pcoa-with-its-gene-otu-clusters-blue-mounds-restored-fields-all-subsamples)
+    - [PCoA with ITS gene, OTU clusters, all fields and regions, all
+      subsamples](#pcoa-with-its-gene-otu-clusters-all-fields-and-regions-all-subsamples)
     - [PCoA with 18S gene, uninformed
       distance](#pcoa-with-18s-gene-uninformed-distance)
     - [PCoA with 18S gene, UNIFRAC
@@ -28,16 +33,14 @@ sequencing and clustering in QIIME by Lorinda Bullington and PLFA/NLFA
 data which Ylva Lekberg did.
 
 This presents basic visualizations of community differences among
-sites/regions based on ITS data.
+sites/regions based on ITS and 18S data.
 
-One goal here is to see whether choosing OTU or SV clusters presents
-qualitatively different outcomes in ordinations. We will choose one
-(OTUs) if they start to look similar, as they have so far.
-
-Species distance matrices are resampled to the minimum number which
-successfully amplified per field. This was done to equalize sampling
-effort and remove the few samples with very few sequences. This
-procedure can easily be undone in the [process_data
+During data processing, not all samples were retained. Some had failed
+to amplify and others had very few sequences, leading to the potential
+for a loss of information during rarefication. With the loss of some
+samples, all fields were resampled to the same lower number of samples.
+This was done to equalize sampling effort (from a statistical
+perspective). This procedure can easily be undone in the [process_data
 script](process_data.md)
 
 # Packages and libraries
@@ -63,13 +66,18 @@ for (i in 1:length(packages_needed)) {
 
 ## Sites-species tables
 
-Samples-species tables with rarefied sequence abundances. CSV files were
-produced in [process_data.R](process_data.md)
+Sites-species tables with rarefied sequence abundances. This list
+includes composition summarized by fields or unsummarized (all samples).
+CSV files were produced in [process_data.R](process_data.md)
 
 ``` r
 spe <- list(
     its = read_csv(
         paste0(getwd(), "/clean_data/spe_ITS_rfy.csv"),
+        show_col_types = FALSE
+    ),
+    its_samps = read_csv(
+        paste0(getwd(), "/clean_data/spe_ITS_rfy_samples.csv"),
         show_col_types = FALSE
     ),
     amf = read_csv(
@@ -103,7 +111,9 @@ spe_meta <- list(
 
 ## Site metadata
 
-Needed for figure interpretation and permanova designs.
+Needed for figure interpretation and permanova designs. The subset of
+restored fields in Blue Mounds only will also be used and is parsed
+here.
 
 ``` r
 sites <-
@@ -117,26 +127,69 @@ sites <-
         yr_since = replace(yr_since, which(field_type == "corn"), "-")) %>%
     select(-lat, -long, -yr_restore, -yr_rank) %>% 
     arrange(field_key)
+sites_resto_bm <- 
+    sites %>% 
+    filter(field_type == "restored",
+           region == "BM") %>% 
+    select(-field_name, -region) %>% 
+    mutate(yr_since = as.numeric(yr_since))   
 ```
 
 ## Distance tables
 
 Creating distance objects from the samples-species tables is done with
 the typical process of `vegdist()` in vegan. Bray-Curtis or Ruzicka
-distance are both appropriate methods for these data, but Bray-Curtis
-has produced axes with better explanatory power (Ruzicka is used with
-method=“jaccard”) With the 18S data, we can take advantage of
-phylogenetic relationships in a UNIFRAC distance matrix. The UNIFRAC
-distance was produced in QIIME II and needs some wrangling to conform to
-the standards of a distance object in R. The following list contains
+(used with method=“jaccard”) distance are both appropriate methods for
+these data, but Bray-Curtis has produced axes with better explanatory
+power. With the 18S data, we can take advantage of phylogenetic
+relationships in a UNIFRAC distance matrix. The UNIFRAC distance was
+produced in QIIME II and needs some wrangling to conform to the
+standards of a distance object in R. The following list contains
 vegdist-produced distance objects for ITS and 18S, and it includes
 UNIFRAC distance for 18S.
 
+**List of objects in `distab`**
+
+- its: the rarefied data, summed from 8 samples in each field
+- its_samps: rarefied data from 8 samples per field, all fields retained
+- its_resto_bm: rarefied data, summed from 8 samples in each field,
+  filtered to include Blue Mounds region only
+- its_resto_samps_bm: rarefied data from 8 samples in each field, not
+  summed, filtered to include Blue Mounds region only
+- amf_bray: rarefied data, summed from 7 samples from each field,
+  bray-curtis distance
+- amf_uni: rarefied data, summed from 7 samples from each field, UNIFRAC
+  distance
+
 ``` r
 distab <- list(
-    its = vegdist(data.frame(spe$its, row.names = 1), method = "bray"),
-    amf_bray = vegdist(data.frame(spe$amf, row.names = 1), method = "bray"),
-    amf_uni = sites %>%
+    its       = vegdist(data.frame(spe$its, row.names = 1), method = "bray"),
+    its_samps = vegdist(
+        data.frame(
+            spe$its_samps %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        )
+    ),
+    its_resto_bm = vegdist(
+        data.frame(
+            spe$its %>% 
+                filter(field_key %in% sites_resto_bm$field_key), 
+            row.names = 1
+            ), 
+        method = "bray"),
+    its_resto_samps_bm = vegdist(
+        data.frame(
+            spe$its_samps %>% 
+                filter(field_key %in% sites_resto_bm$field_key) %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+            ),
+        method = "bray"),
+    amf_bray  = vegdist(data.frame(spe$amf, row.names = 1), method = "bray"),
+    amf_uni   = sites %>%
         select(field_name, field_key) %>%
         left_join(read_delim(
             paste0(getwd(), "/otu_tables/18S/18S_weighted_Unifrac.tsv"),
@@ -151,11 +204,20 @@ distab <- list(
 
 ## Functions
 
-A function handles the Principal Components Analysis (PCoA) diagnostics,
+Functions handle the Principal Components Analysis (PCoA) diagnostics,
 with outputs and figures saved to a list for later use.
+
+- `pcoa_fun()` is used with data where samples have been summed in
+  fields.
+- `pcoa_samps_fun()` is used with rarefied subsample data from all
+  fields.
+- `pcoa_samps_bm_fun()` is used for the subsample data from Blue Mounds
+  restored fields. The variable **yr_since** is continuous with this
+  dataset and is tested with `envfit()`.
 
 ``` r
 pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
+    set.seed <- 397
     # Multivariate analysis
     p <- pcoa(d, correction = corr)
     p_vals <- data.frame(p$values) %>% 
@@ -202,14 +264,154 @@ pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
         left_join(sites, by = "field_key") %>% 
         select(-field_name)
     # Output data
-    output <- list(dataset = df_name,
+    output <- list(dataset                        = df_name,
                    components_exceed_broken_stick = p_ncomp,
-                   correction_note = p$note,
-                   values = p_vals[1:(ncomp+1), ], 
-                   eigenvalues = eig,
-                   site_vectors = scores,
-                   broken_stick_plot = p_bstick,
-                   permanova = p_permtest)
+                   correction_note                = p$note,
+                   values                         = p_vals[1:(ncomp+1), ], 
+                   eigenvalues                    = eig,
+                   site_vectors                   = scores,
+                   broken_stick_plot              = p_bstick,
+                   permanova                      = p_permtest)
+    return(output)
+}
+```
+
+``` r
+pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
+    set.seed <- 438
+    # Multivariate analysis
+    p <- pcoa(d, correction = corr)
+    p_vals <- data.frame(p$values) %>% 
+        rownames_to_column(var = "Dim") %>% 
+        mutate(Dim = as.integer(Dim))
+    p_vec <- data.frame(p$vectors)
+    # Wrangle site data
+    env_w <- env %>% 
+        left_join(s %>% select(field_key, sample), by = join_by(field_key)) %>% 
+        mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+        column_to_rownames(var = "field_sample")
+    # Permutation tests (PERMANOVA)
+    # Fields as replicate strata with subsamples
+    # Regions as blocks
+    h <- with(env_w, 
+              how(within = Within(type="free"), 
+                  plots  = Plots(strata=field_key, type="free"),
+                  blocks = region,
+                  nperm  = nperm))
+    p_permtest <- adonis2(
+        d ~ field_type,
+        data = env_w,
+        permutations = h)
+    # Diagnostic plots
+    if(corr == "none" | ncol(p_vals) == 6) {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
+    } else {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
+    }
+    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
+    # Ordination plot
+    scores <-
+        p_vec[, 1:ncomp] %>%
+        rownames_to_column(var = "field_sample") %>%
+        separate_wider_delim(field_sample, delim = "_", names = c("field_key", "sample_key"), cols_remove = TRUE) %>% 
+        mutate(field_key = as.integer(field_key)) %>%
+        left_join(env, by = join_by(field_key)) %>% 
+        select(-field_type)
+    # Output data
+    output <- list(dataset                        = df_name,
+                   components_exceed_broken_stick = p_ncomp,
+                   correction_note                = p$note,
+                   values                         = p_vals[1:(ncomp+1), ], 
+                   eigenvalues                    = eig,
+                   site_vectors                   = scores,
+                   broken_stick_plot              = p_bstick,
+                   permanova                      = p_permtest)
+    return(output)
+}
+```
+
+``` r
+pcoa_samps_bm_fun <- function(s, d, env=sites_resto_bm, corr="none", df_name, nperm=1999) {
+    set.seed <- 845
+    # Multivariate analysis
+    p <- pcoa(d, correction = corr)
+    p_vals <- data.frame(p$values) %>% 
+        rownames_to_column(var = "Dim") %>% 
+        mutate(Dim = as.integer(Dim))
+    p_vec <- data.frame(p$vectors)
+    # Wrangle site data
+    env_w <- env %>% 
+        left_join(s %>% select(field_key, sample), by = join_by(field_key)) %>% 
+        mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+        column_to_rownames(var = "field_sample")
+    # Permutation test (PERMANOVA)
+    p_permtest <- adonis2(d ~ field_key, data = env_w, permutations = nperm)
+    # Diagnostic plots
+    if(corr == "none" | ncol(p_vals) == 6) {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
+    } else {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
+    }
+    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
+    # Permutation test (ENVFIT)
+    # Fields as strata
+    h = with(env_w, 
+             how(within = Within(type="none"), 
+                 plots = Plots(strata=field_key, type="free"), 
+                 nperm = nperm))
+    fit <- envfit(p_vec ~ yr_since, env_w, permutations = h, choices = c(1:ncomp))
+    fit_sc <- scores(fit, c("vectors"))
+    # Ordination plotting data
+    scores <-
+        p_vec[, 1:ncomp] %>%
+        rownames_to_column(var = "field_sample") %>%
+        separate_wider_delim(field_sample, delim = "_", names = c("field_key", "sample_key"), cols_remove = TRUE) %>% 
+        mutate(field_key = as.integer(field_key)) %>%
+        left_join(env, by = join_by(field_key)) %>% 
+        select(-field_type)
+    # Output data
+    output <- list(dataset                        = df_name,
+                   components_exceed_broken_stick = p_ncomp,
+                   correction_note                = p$note,
+                   values                         = p_vals[1:(ncomp+1), ], 
+                   eigenvalues                    = eig,
+                   site_vectors                   = scores,
+                   broken_stick_plot              = p_bstick,
+                   permanova                      = p_permtest,
+                   vector_fit                     = fit,
+                   vector_fit_scores              = fit_sc)
     return(output)
 }
 ```
@@ -219,13 +421,12 @@ pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
 ## Ordinations
 
 Bray-Curtis or Ruzicka distance are both appropriate, but Bray-Curtis
-has produced axes with better explanatory power (Ruzicka is used with
-method=“jaccard”)
+has produced axes with better explanatory power.
+
+### PCoA with ITS gene, OTU clusters
 
 In trial runs, no negative eigenvalues were observed (not shown). No
 correction is needed for these ordinations.
-
-### PCoA with ITS gene, OTU clusters
 
 ``` r
 (pcoa_its <- pcoa_fun(distab$its, df_name = "ITS gene, 97% OTU"))
@@ -290,10 +491,10 @@ correction is needed for these ordinations.
     ## Number of permutations: 1999
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, strata = region)
-    ##            Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type  2   1.2189 0.17762 2.3758 0.0015 **
-    ## Residual   22   5.6438 0.82238                 
-    ## Total      24   6.8627 1.00000                 
+    ##            Df SumOfSqs      R2      F Pr(>F)    
+    ## field_type  2   1.2189 0.17762 2.3758  5e-04 ***
+    ## Residual   22   5.6438 0.82238                  
+    ## Total      24   6.8627 1.00000                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -303,7 +504,7 @@ be on the first axis, although axis 2 explains 11.5% of the variation
 and was very close to the broken stick value. Testing the design factor
 *field_type* (with *region* treated as a block using the `strata`
 argument of `adonis2`) revealed a significant clustering
-$(R^2=0.18, p=0.0015)$.
+$(R^2=0.18, p=5\times 10^{-4})$.
 
 Let’s view a plot with abundances of community subgroups inset.
 
@@ -324,7 +525,7 @@ pcoa_its$ord <-
         ),
         caption = "Text indicates years since restoration, with corn (-) and remnants (+) never restored."
     ) +
-    lims(y = c(-0.3,0.44)) +
+    lims(y = c(-0.35,0.44)) +
     theme_bw() +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
 pcoa_its$inset <-
@@ -360,10 +561,6 @@ pcoa_its$ord +
         ymax = 0.46
     )
 ```
-
-    ## Warning: Removed 1 rows containing missing values (`geom_point()`).
-
-    ## Warning: Removed 1 rows containing missing values (`geom_text()`).
 
 <img src="microbial_communities_files/figure-gfm/its_guilds_fig-1.png" style="display: block; margin: auto;" />
 
@@ -442,10 +639,247 @@ its_resto_scores %>%
 <img src="microbial_communities_files/figure-gfm/its_resto_scores_fig-1.png" style="display: block; margin: auto;" />
 
 Indeed, Axis 1 does correlate well with age $(R^2_{Adj}=0.51, p<0.005)$.
+But it isn’t appropriate to use these scores for the correlation because
+they were created with the corn and remnant fields in the ordination as
+well.
 
-It’s probably better to do with with a new ordination of just
-restoration sites and a constrained ordination with years and other
-environmental variables.
+The most appropriate way to look at communities vs. field age is with
+the Blue Mounds restored fields. The function `pcoa_its_samps_bm()` will
+take care of this. Field age will be fitted to the ordination and tested
+using `envfit()`.
+
+### PCoA with ITS gene, OTU clusters, Blue Mounds restored fields, all subsamples
+
+In trial runs, no negative eigenvalues were observed (not shown). No
+correction is needed for these ordinations.
+
+``` r
+(pcoa_its_samps_bm <- pcoa_samps_bm_fun(spe$its_samps, 
+                                        distab$its_resto_samps_bm, 
+                                        sites_resto_bm, 
+                                        df_name="BM restored, ITS gene, 97% OTU"))
+```
+
+    ## Set of permutations < 'minperm'. Generating entire set.
+    ## Set of permutations < 'minperm'. Generating entire set.
+
+    ## $dataset
+    ## [1] "BM restored, ITS gene, 97% OTU"
+    ## 
+    ## $components_exceed_broken_stick
+    ## [1] 2
+    ## 
+    ## $correction_note
+    ## [1] "There were no negative eigenvalues. No correction was applied"
+    ## 
+    ## $values
+    ##   Dim Eigenvalues Relative_eig Broken_stick Cumul_eig Cumul_br_stick
+    ## 1   1    2.133078   0.11483922   0.08352022 0.1148392     0.08352022
+    ## 2   2    1.427775   0.07686758   0.06533840 0.1917068     0.14885863
+    ## 3   3    1.036148   0.05578344   0.05624749 0.2474902     0.20510612
+    ## 
+    ## $eigenvalues
+    ## [1] 11.5  7.7
+    ## 
+    ## $site_vectors
+    ## # A tibble: 56 × 5
+    ##    field_key sample_key  Axis.1  Axis.2 yr_since
+    ##        <dbl> <chr>        <dbl>   <dbl>    <dbl>
+    ##  1         1 1          -0.194  -0.194        16
+    ##  2         1 2          -0.219  -0.0553       16
+    ##  3         1 4          -0.183  -0.0668       16
+    ##  4         1 5          -0.280  -0.137        16
+    ##  5         1 6          -0.331  -0.159        16
+    ##  6         1 7          -0.103  -0.0802       16
+    ##  7         1 9          -0.208  -0.153        16
+    ##  8         1 10         -0.242  -0.0266       16
+    ##  9         2 1           0.242   0.216         3
+    ## 10         2 2           0.0928  0.0872        3
+    ## # ℹ 46 more rows
+    ## 
+    ## $broken_stick_plot
+
+<img src="microbial_communities_files/figure-gfm/pcoa_its_samps_bm-1.png" style="display: block; margin: auto;" />
+
+    ## 
+    ## $permanova
+    ## Permutation test for adonis under reduced model
+    ## Terms added sequentially (first to last)
+    ## Permutation: free
+    ## Number of permutations: 1999
+    ## 
+    ## adonis2(formula = d ~ field_key, data = env_w, permutations = nperm)
+    ##           Df SumOfSqs      R2     F Pr(>F)    
+    ## field_key  1   0.7907 0.04257 2.401  5e-04 ***
+    ## Residual  54  17.7837 0.95743                 
+    ## Total     55  18.5745 1.00000                 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $vector_fit
+    ## 
+    ## ***VECTORS
+    ## 
+    ##             Axis.1    Axis.2     r2 Pr(>r)  
+    ## yr_since -0.996630  0.081979 0.7285 0.0205 *
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## Plots: field_key, plot permutation: free
+    ## Permutation: none
+    ## Number of permutations: 5039
+    ## 
+    ## 
+    ## 
+    ## $vector_fit_scores
+    ##             Axis.1     Axis.2
+    ## yr_since -0.850678 0.06997293
+
+Axis 1 explains 11.5% and axis 2 explains 7.7% of the variation in the
+community data. Both axes are important based on the broken stick model.
+The relatively low percent variation explained is partly due to the high
+number of dimensions used when all samples from fields are included. The
+fidelity of samples to fields was significant based on a permutation
+test $(R^2=0.04, p=5\times 10^{-4})$. In this case, the partial $R^2$
+shows the proportion of sum of squares from the total. It is a low
+number here because so much unexplained variation exists, resulting in a
+high sum of squares that is outside the assignment of subsamples to
+fields.
+
+Years since restoration has a moderately strong correlation with
+communities and was significant with a permutation test where samples
+were constrained within fields to account for lack of independence
+$(R^2=0.73)$.
+
+Let’s view an ordination plot with hulls around subsamples and a fitted
+vector for field age overlaid.
+
+``` r
+centroid_its_bm <- aggregate(cbind(Axis.1, Axis.2) ~ field_key, data = pcoa_its_samps_bm$site_vectors, mean) %>% 
+    left_join(sites %>% select(field_key, yr_since), by = join_by(field_key))
+hull_its_bm <- pcoa_its_samps_bm$site_vectors %>% 
+    group_by(field_key) %>% 
+    slice(chull(Axis.1, Axis.2))
+```
+
+``` r
+ggplot(pcoa_its_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_point(fill = "#5CBD92", shape = 21) +
+    geom_polygon(data = hull_its_bm, aes(group = as.character(field_key)), fill = "#5CBD92", alpha = 0.3) +
+    geom_point(data = centroid_its_bm, fill = "#5CBD92", size = 8, shape = 21) +
+    geom_text(data = centroid_its_bm, aes(label = yr_since)) +
+    geom_segment(aes(x = 0, 
+                     y = 0, 
+                     xend = pcoa_its_samps_bm$vector_fit_scores[1] * 0.4, 
+                     yend = pcoa_its_samps_bm$vector_fit_scores[2] * 0.4),
+                 color = "blue", 
+                 arrow = arrow(length = unit(3, "mm"))) +
+    labs(
+        x = paste0("Axis 1 (", pcoa_its_samps_bm$eigenvalues[1], "%)"),
+        y = paste0("Axis 2 (", pcoa_its_samps_bm$eigenvalues[2], "%)"),
+        title = paste0(
+            "PCoA Ordination (",
+            pcoa_its_samps_bm$dataset,
+            ")"
+        ),
+        caption = "Text indicates years since restoration.\nYears since restoration significant at p<0.05."
+    ) +
+    theme_bw() +
+    theme(legend.position = "none")
+```
+
+<img src="microbial_communities_files/figure-gfm/its_samps_bm_fig-1.png" style="display: block; margin: auto;" />
+
+### PCoA with ITS gene, OTU clusters, all fields and regions, all subsamples
+
+This leverages the information from all subsamples. Modifications to
+`how()` from package
+[permute](https://cran.r-project.org/package=permute) allow for the more
+complex design.
+
+Negative eigenvalues were produced in trial runs (not shown). A Lingoes
+correction was applied.
+
+``` r
+(pcoa_its_samps <- pcoa_samps_fun(spe$its_samps, 
+                                  distab$its_samps, 
+                                  corr="lingoes", 
+                                  df_name = "ITS gene, 97% OTU"))
+```
+
+    ## $dataset
+    ## [1] "ITS gene, 97% OTU"
+    ## 
+    ## $components_exceed_broken_stick
+    ## [1] 10
+    ## 
+    ## $correction_note
+    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.0573041578256672 , except diagonal elements"
+    ## 
+    ## $values
+    ##    Dim Eigenvalues Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig Cum_br_stick
+    ## 1    1    6.688218 6.745522   0.08173811   0.02963639   0.08173811   0.02963639
+    ## 2    2    4.136197 4.193501   0.05081428   0.02458589   0.13255240   0.05422228
+    ## 3    3    3.315460 3.372764   0.04086909   0.02206064   0.17342149   0.07628292
+    ## 4    4    2.632045 2.689349   0.03258789   0.02037713   0.20600938   0.09666005
+    ## 5    5    2.132678 2.189982   0.02653686   0.01911451   0.23254624   0.11577456
+    ## 6    6    2.025277 2.082582   0.02523545   0.01810441   0.25778169   0.13387896
+    ## 7    7    1.691608 1.748912   0.02119225   0.01726266   0.27897395   0.15114162
+    ## 8    8    1.488491 1.545796   0.01873101   0.01654115   0.29770495   0.16768277
+    ## 9    9    1.347531 1.404836   0.01702294   0.01590984   0.31472789   0.18359262
+    ## 10  10    1.291010 1.348314   0.01633805   0.01534867   0.33106594   0.19894129
+    ## 11  11    1.165587 1.222891   0.01481825   0.01484362   0.34588418   0.21378492
+    ## 
+    ## $eigenvalues
+    ## [1] 8.2 5.1
+    ## 
+    ## $site_vectors
+    ## # A tibble: 200 × 15
+    ##    field_key sample_key  Axis.1   Axis.2  Axis.3  Axis.4   Axis.5   Axis.6
+    ##        <dbl> <chr>        <dbl>    <dbl>   <dbl>   <dbl>    <dbl>    <dbl>
+    ##  1         1 1           0.186  -0.130   -0.0367 -0.0640  0.0754  -0.105  
+    ##  2         1 2           0.223   0.0732  -0.0260 -0.0145  0.0412  -0.216  
+    ##  3         1 4           0.196  -0.0473  -0.0133  0.0262 -0.00645 -0.130  
+    ##  4         1 5           0.178  -0.0133  -0.121  -0.206  -0.0348   0.0215 
+    ##  5         1 6           0.212   0.00541 -0.117  -0.173   0.0334  -0.169  
+    ##  6         1 7           0.0497 -0.0479   0.0220 -0.109  -0.0426   0.0127 
+    ##  7         1 9           0.119  -0.0863  -0.0587 -0.0990  0.0623  -0.0324 
+    ##  8         1 10          0.187   0.0135  -0.0704 -0.0394 -0.0233  -0.0261 
+    ##  9         2 1          -0.0542 -0.00306  0.326   0.0518 -0.0599  -0.00542
+    ## 10         2 2          -0.0373  0.0504   0.101   0.0261 -0.106   -0.155  
+    ## # ℹ 190 more rows
+    ## # ℹ 7 more variables: Axis.7 <dbl>, Axis.8 <dbl>, Axis.9 <dbl>, Axis.10 <dbl>,
+    ## #   field_name <chr>, region <chr>, yr_since <chr>
+    ## 
+    ## $broken_stick_plot
+
+<img src="microbial_communities_files/figure-gfm/pcoa_its_samps-1.png" style="display: block; margin: auto;" />
+
+    ## 
+    ## $permanova
+    ## Permutation test for adonis under reduced model
+    ## Terms added sequentially (first to last)
+    ## Blocks:  region 
+    ## Plots: field_key, plot permutation: free
+    ## Permutation: free
+    ## Number of permutations: 1999
+    ## 
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
+    ##             Df SumOfSqs     R2      F Pr(>F)    
+    ## field_type   2    5.775 0.0812 8.7045  5e-04 ***
+    ## Residual   197   65.348 0.9188                  
+    ## Total      199   71.123 1.0000                  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Axis 1 explains 8.2% and axis 2 explains 5.1% of the variation in the
+community data. Both axes are important based on the broken stick model,
+in fact, the broken stick model shows that 10 axes are important in
+explaining variation with this dataset. The relatively low percent
+variation explained on axes 1 and 2 is partly due to the high number of
+dimensions used when all samples from fields are included. The fidelity
+of samples to fields was strong based on a permutation test when
+restricting permutations to fields (=plots in `how()`) within regions
+(=blocks in `how()`) $(R^2=0.08, p=5\times 10^{-4})$.
 
 ### PCoA with 18S gene, uninformed distance
 
@@ -553,7 +987,7 @@ which is informed by phylogeny.
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, strata = region)
     ##            Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type  2   1.0913 0.24796 3.6268  0.002 **
+    ## field_type  2   1.0913 0.24796 3.6268  0.003 **
     ## Residual   22   3.3100 0.75204                 
     ## Total      24   4.4013 1.00000                 
     ## ---
@@ -566,7 +1000,7 @@ substantial variation here is on the first axis (27.4%) with Axis 2
 explaining 17.9% of the variation in AMF abundances. Testing the design
 factor *field_type* (with *region* treated as a block using the `strata`
 argument of `adonis2`) revealed a significant clustering
-$(R^2=0.25, p=0.002)$.
+$(R^2=0.25, p=0.003)$.
 
 Let’s view a plot with abundances of community subgroups inset.
 
@@ -781,7 +1215,7 @@ relationship $(R^2_{Adj}=0.46, p<0.005)$
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, strata = region)
     ##            Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type  2 0.054762 0.22505 3.1945  0.004 **
+    ## field_type  2 0.054762 0.22505 3.1945  0.003 **
     ## Residual   22 0.188572 0.77495                 
     ## Total      24 0.243335 1.00000                 
     ## ---
@@ -793,7 +1227,7 @@ substantial variation here is on the first axis (23%) with Axis 2
 explaining 15% of the variation in AMF abundances. Testing the design
 factor *field_type* (with *region* treated as a block using the `strata`
 argument of `adonis2`) revealed a significant clustering
-$(R^2=0.23, p=0.004)$.
+$(R^2=0.23, p=0.003)$.
 
 Let’s view a plot with abundances of community subgroups inset.
 
@@ -924,5 +1358,3 @@ Both axes correlate significantly but with less than moderate strength
 with years since restoration. Axis 2 again shows a stronger relationship
 $(R^2_{Adj}=0.31, p<0.05)$, and Axis 1 is close with
 $(R^2_{Adj}=0.30, p<0.05)$
-
-Try fitting years since restoration with envfit…
