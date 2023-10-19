@@ -7,15 +7,16 @@ Raw source data were output from QIIME2. ETL of these files is accomplished in [
 ## Site Data
 The file [site_locations.md](site_locations.md) shows locations of regions and sites and displays associated metadata. Climate data (precipitation) are also downloaded, processed, and displayed by this script. 
 
+Sites are tested for autocorrelation between geographic distance and fungal species or soil chemical properties in [spatial_correlation.md](spatial_correlation.md). Mild or insignificant autocorrelation was found, particularly in the Blue Mounds restored fields, suggesting that we can at least present these fields as a pseudochronosequence. 
+
 ### Additional Site Data
 The site data also include several tables which aren't wrangled in scripts, including:
 
-- [Soil chemical properties](clean_data/soil.csv)
+- [Soil abiotic properties](soil_properties.md): This script provides a quick overview of the soil abiotic property data and produces products (e.g., ordination axis values) for use in downstream analysis. A basic correlation with microbial biomass 
+is also displayed. 
 - Water stable aggregates
 - PLFA/NLFA
 - Other?
-
-Sites are tested for autocorrelation between geographic distance and fungal species or soil chemical properties in [spatial_correlation.md](spatial_correlation.md). Mild or insignificant autocorrelation was found, particularly in the Blue Mounds restored fields, suggesting that we can at least present these fields as a pseudochronosequence. 
 
 ## Diagnostics
 In iterative workflow is used to discover the optimal number of samples to keep from each field to ensure equal 
