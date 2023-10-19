@@ -33,6 +33,7 @@ if (any(!packages_installed)) {
 for (i in 1:length(packages_needed)) {
     library(packages_needed[i], character.only = T)
 }
+#+ conflicts
 conflicts_prefer(dplyr::select)
 conflicts_prefer(dplyr::filter)
 #' 
@@ -75,10 +76,11 @@ wsa_mod_tuk <- glht(wsa_mod, linfct = mcp(field_type = "Tukey"), test = adjusted
 #' Model summaries: display results of fitted model, null model, and the likelihood ratio test of the 
 #' null vs. tested model to assess significance of field type. 
 summary(wsa_mod)
-wsa_nht <- anova(wsa_mod, wsa_mod_null)
-wsa_nht
+#+ lik_ratio_test,message=FALSE
+print(anova(wsa_mod, wsa_mod_null, REML = FALSE))
 summary(wsa_mod_tuk)
 cld(wsa_mod_tuk)
+#+ wsa_effect_table
 wsa %>% 
     group_by(field_type) %>% 
     summarize(wsa_avg = round(mean(wsa), 1), .groups = "drop") %>% 
@@ -93,14 +95,14 @@ sig_letters <- data.frame(
     xpos = c(1,2,3),
     ypos = rep(85,3)
 )
-#+ wsa_regions_fieldtypes_fig,fig.align='center',fig.width=4
+#+ wsa_regions_fieldtypes_fig,fig.align='center',fig.width=5,fig.height=5
 ggplot(wsa, 
        aes(x = field_type, y = wsa)) +
     geom_boxplot(fill = "gray90", varwidth = FALSE, outlier.shape = NA) +
     geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
     geom_text(data = sig_letters, aes(x = xpos, y = ypos, label = lab)) +
     labs(x = "", y = "Water stable aggregates (%)",
-         caption = "Linear mixed models with region as random effect.\nLetters show differences based on Tukey's post hoc with Holm correction at p<0.05") +
+         caption = "Linear mixed models with region as random effect.\nLetters show differences based on Tukey's post hoc\nwith Holm correction at p<0.05") +
     scale_fill_discrete_qualitative(name = "Region", palette = "Dark2") +
     theme_bw()
 #' 

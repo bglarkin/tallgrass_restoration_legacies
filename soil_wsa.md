@@ -8,6 +8,9 @@ Last updated: 19 October, 2023
 - [Packages and libraries](#packages-and-libraries)
 - [Data](#data)
 - [Results](#results)
+  - [WSA in field types and regions](#wsa-in-field-types-and-regions)
+  - [WSA over time in restored
+    fields](#wsa-over-time-in-restored-fields)
 
 # Description
 
@@ -40,8 +43,19 @@ if (any(!packages_installed)) {
 for (i in 1:length(packages_needed)) {
     library(packages_needed[i], character.only = T)
 }
+```
+
+``` r
 conflicts_prefer(dplyr::select)
 ```
+
+    ## [conflicted] Will prefer dplyr::select over any other package.
+
+``` r
+conflicts_prefer(dplyr::filter)
+```
+
+    ## [conflicted] Will prefer dplyr::filter over any other package.
 
 # Data
 
@@ -66,6 +80,8 @@ wsa <- read_csv(paste0(getwd(), "/clean_data/wsa.csv"), show_col_types = FALSE)[
 ```
 
 # Results
+
+## WSA in field types and regions
 
 Let’s first visualize the data across regions and field types
 
@@ -94,7 +110,7 @@ wsa_mod_tuk <- glht(wsa_mod, linfct = mcp(field_type = "Tukey"), test = adjusted
 ```
 
 Model summaries: display results of fitted model, null model, and the
-maximum likelihood ratio test of the null vs. tested model to assess
+likelihood ratio test of the null vs. tested model to assess
 significance of field type.
 
 ``` r
@@ -129,22 +145,18 @@ summary(wsa_mod)
     ## field_typ.Q 0.162  0.096
 
 ``` r
-wsa_nht <- anova(wsa_mod, wsa_mod_null)
+print(anova(wsa_mod, wsa_mod_null, REML = FALSE))
 ```
 
-    ## refitting model(s) with ML (instead of REML)
-
-``` r
-wsa_nht
-```
-
-<div data-pagedtable="false">
-
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["npar"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["AIC"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["BIC"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["logLik"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["deviance"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Chisq"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"3","2":"198.7187","3":"202.3753","4":"-96.35935","5":"192.7187","6":"NA","7":"NA","8":"NA","_rn_":"wsa_mod_null"},{"1":"5","2":"190.4850","3":"196.5794","4":"-90.24252","5":"180.4850","6":"12.23367","7":"2","8":"0.002205427","_rn_":"wsa_mod"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-
-</div>
+    ## Data: wsa
+    ## Models:
+    ## wsa_mod_null: wsa ~ 1 + (1 | region)
+    ## wsa_mod: wsa ~ field_type + (1 | region)
+    ##              npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)   
+    ## wsa_mod_null    3 198.72 202.38 -96.359   192.72                        
+    ## wsa_mod         5 190.49 196.58 -90.243   180.49 12.234  2   0.002205 **
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 ``` r
 summary(wsa_mod_tuk)
@@ -160,9 +172,9 @@ summary(wsa_mod_tuk)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)   
-    ## restored - corn == 0      14.538      4.183   3.475   0.0014 **
-    ## remnant - corn == 0        3.227      5.365   0.602   0.8172   
-    ## remnant - restored == 0  -11.311      4.593  -2.462   0.0360 * 
+    ## restored - corn == 0      14.538      4.183   3.475  0.00149 **
+    ## remnant - corn == 0        3.227      5.365   0.602  0.81715   
+    ## remnant - restored == 0  -11.311      4.593  -2.462  0.03613 * 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## (Adjusted p values reported -- single-step method)
@@ -188,9 +200,11 @@ wsa %>%
 | restored   |    68.1 | b   |
 | remnant    |    55.1 | a   |
 
-Percent water stable aggregates in restored fields was 14.2% higher than
-in corn fields and 13% higher than in remnant fields based on a maximum
-likelihood ratio test ($\chi^2(2)=12.23,~p<0.05$) Plot the result
+Percent water stable aggregates differed by field type based on a
+likelihood ratio test ($\chi^2(2)=12.23,~p<0.05$). In restored fields,
+water stable aggregates were 14.2% higher than in corn fields and 13%
+higher than in remnant fields based on Tukey’s post hoc test ($p<0.05$).
+Let’s view a boxplot of the result.
 
 ``` r
 sig_letters <- data.frame(
@@ -207,13 +221,46 @@ ggplot(wsa,
     geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
     geom_text(data = sig_letters, aes(x = xpos, y = ypos, label = lab)) +
     labs(x = "", y = "Water stable aggregates (%)",
-         caption = "Linear mixed models with region as random effect.\nLetters show differences based on Tukey's post hoc with Holm correction at p<0.05") +
+         caption = "Linear mixed models with region as random effect.\nLetters show differences based on Tukey's post hoc\nwith Holm correction at p<0.05") +
     scale_fill_discrete_qualitative(name = "Region", palette = "Dark2") +
     theme_bw()
 ```
 
 <img src="soil_wsa_files/figure-gfm/wsa_regions_fieldtypes_fig-1.png" style="display: block; margin: auto;" />
 
+## WSA over time in restored fields
+
+Percent WSA varies greatly across restored fields. Can some of this
+variation be explained by how long it’s been since the field was
+restored? This comparison can only be justified in the Blue Mounds area.
+
 ``` r
-# Within restored, look for signal with years since
+wsa_bm_resto <- 
+    wsa %>% 
+    filter(field_type == "restored", region == "BM") %>% 
+    mutate(yr_since = as.numeric(yr_since))
+wsa_bm_resto_lm <- 
+    lm(wsa ~ yr_since, data = wsa_bm_resto)
+summary(wsa_bm_resto_lm)
 ```
+
+    ## 
+    ## Call:
+    ## lm(formula = wsa ~ yr_since, data = wsa_bm_resto)
+    ## 
+    ## Residuals:
+    ##       1       2       3       4       5       6       7 
+    ##  -3.079  -2.905  11.311 -16.425  -1.210   9.999   2.309 
+    ## 
+    ## Coefficients:
+    ##             Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept) 64.87484    6.69682   9.687 0.000199 ***
+    ## yr_since     0.07465    0.45048   0.166 0.874868    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 10.22 on 5 degrees of freedom
+    ## Multiple R-squared:  0.005463,   Adjusted R-squared:  -0.1934 
+    ## F-statistic: 0.02746 on 1 and 5 DF,  p-value: 0.8749
+
+WSA doesn’t change based on time in the Blue Mounds restored fields.
