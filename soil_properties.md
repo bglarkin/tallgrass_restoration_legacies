@@ -10,6 +10,12 @@ Last updated: 19 October, 2023
 - [Data](#data)
 - [Results](#results)
   - [PCA ordination](#pca-ordination)
+  - [Variance inflation and
+    collinearity](#variance-inflation-and-collinearity)
+  - [Compare nutrients and microbial
+    biomass](#compare-nutrients-and-microbial-biomass)
+    - [Bacterial biomass correlations](#bacterial-biomass-correlations)
+    - [Fungal biomass correlations](#fungal-biomass-correlations)
 
 # Description
 
@@ -72,6 +78,12 @@ sites <-
 soil <- read_csv(paste0(getwd(), "/clean_data/soil.csv"), show_col_types = FALSE)[-c(26:27), ]
 ```
 
+Fatty acid data is used here to show constrasts with soil properties.
+
+``` r
+fa <- read_csv(paste0(getwd(), "/clean_data/plfa.csv"), show_col_types = FALSE)
+```
+
 # Results
 
 ## PCA ordination
@@ -108,6 +120,9 @@ soil_pca %>% summary(., display = NULL)
     ## * Sites are unscaled: weighted dispersion equal on all dimensions
     ## * General scaling constant of scores:
 
+Axes 1 and 2 explain 52% of the variation in sites. Not bad. Axes 1
+through 5 account for 86%.
+
 ``` r
 screeplot(soil_pca, bstick = TRUE)
 ```
@@ -133,3 +148,107 @@ remnants are associates with soil organic matter. Blue Mounds fields are
 associated with manganese, but since manganese isn’t a very strong
 element in this ordination, these fields may also be very low in soild
 organic matter, magnesium, or calcium.
+
+## Variance inflation and collinearity
+
+Using these abiotic properties in models or forward selection procedures
+later will require that we know about their collinearity. Let’s test
+that here.
+
+``` r
+sort(diag(solve(cor(data.frame(soil[, -1], row.names = 1)))), decreasing = TRUE)
+```
+
+    ##        OM         P        Ca       NO3         K        Mn        pH        Na 
+    ## 26.691234 16.835301 16.660895  8.406986  7.189305  6.200678  6.144903  5.470299 
+    ##        Mg        Fe       SO4        Cu        Zn 
+    ##  5.445119  5.252802  4.574149  2.006058  1.993519
+
+Variance inflation factors greater than 10 are evidence of collinearity
+[(Borcard et
+al. 20180)](http://link.springer.com/10.1007/978-3-319-71404-2). Soil
+organic matter, phosphorus, and calcium show VIF greater than 10. Later,
+when constrained ordinations are done, forward selection will likely
+prevent the inclusion of collinear variables. But which ones to choose?
+Soil organic matter is important to this story, but other soil
+properties may be less so. Removing calcium drops the VIF for all
+properties to near or below 10. Removing calcium may be warranted.
+
+``` r
+sort(diag(solve(cor(data.frame(soil[, -1], row.names = 1) %>% select(-Ca)))), decreasing = TRUE)
+```
+
+    ##         P        OM       NO3        Mn         K        pH        Mg        Na 
+    ## 11.511246  9.800941  8.355535  5.965700  5.801322  5.571081  5.368703  5.226920 
+    ##        Fe       SO4        Cu        Zn 
+    ##  5.130920  4.574088  1.968208  1.918143
+
+## Compare nutrients and microbial biomass
+
+Pairs panels help to quickly identify strong pairwise correlations. The
+first figure shows bacterial groups, the second shows fungal groups.
+Based on the identification of VIF above, we’ll remove Ca for now to
+simplify the pairs panels a little. We will also only include variables
+that exceed or were close to the unit circle in `cleanplot.pca()` above.
+
+### Bacterial biomass correlations
+
+Bacteria aren’t a focus of this work, but let’s have a look at these
+data anyway.
+
+``` r
+soil %>% 
+    left_join(fa %>% select(field_key, gram_pos, gram_neg, bacteria, actinomycetes), by = "field_key") %>% 
+    left_join(sites %>% select(field_key, field_type), by = "field_key") %>% 
+    select(starts_with("field"), OM, P, NO3, K, Mn, pH, Mg, SO4, gram_pos, gram_neg, bacteria, actinomycetes) %>% 
+    ggpairs(columns = 4:ncol(.), 
+            aes(color = as.character(field_type)), 
+            upper = list(continuous = wrap("cor", size = 2)))
+```
+
+<img src="soil_properties_files/figure-gfm/soil_bacteria_pairs_fig-1.png" style="display: block; margin: auto;" />
+
+- Soil organic matter strongly correlates with bacterial biomass in
+  restored fields. With corn and remnant fields, the correlation likely
+  is based more on regional differences in SOM.
+- Bacterial biomass increase as potassium increases with a moderate
+  correlation in restored fields.
+- Bacterial biomass decreases with increasing manganese, moderate
+  correlation but messier.
+- Bacterial biomass increases with magnesium, moderate to strong
+  correlations.
+- Bacterial biomass increases with sulfate, moderate correlations.
+
+It remains to be seen how these data may be interpreted. It’s possible
+that these correlations will highlight particular groups and add some
+material for the discussion.
+
+### Fungal biomass correlations
+
+The following panels examine correlations between soil abiotic
+properties, fungal, and amf biomass.
+
+``` r
+soil %>% 
+    left_join(fa %>% select(field_key, fungi, amf), by = "field_key") %>% 
+    left_join(sites %>% select(field_key, field_type), by = "field_key") %>% 
+    select(starts_with("field"), OM, P, NO3, K, Mn, pH, Mg, SO4, fungi, amf) %>% 
+    ggpairs(columns = 4:ncol(.), 
+            aes(color = as.character(field_type)), 
+            upper = list(continuous = wrap("cor", size = 2)))
+```
+
+<img src="soil_properties_files/figure-gfm/soil_fungi_pairs_fig-1.png" style="display: block; margin: auto;" />
+
+- AMF biomass isn’t particularly responsive to soil abiotic properties.
+  There’s one big field with high AMF biomass.
+- Fungal biomass increases with SOM in restored and remnant fields. It
+  should. SOM appears higher in a couple of cornfields than I thought it
+  would.
+- Fungal biomass increases with potassium, magnesium, and sulfate in
+  restored fields.
+
+Fungal biomass increases with SOM and some nutrients. Do these nutrients
+vary over time or with regions? The correlations look continuous, with
+no apparent regional breaks, but it can’t be known from these pairs
+plots.
