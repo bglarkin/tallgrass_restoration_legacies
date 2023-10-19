@@ -10,13 +10,15 @@ The file [site_locations.md](site_locations.md) shows locations of regions and s
 Sites are tested for autocorrelation between geographic distance and fungal species or soil chemical properties in [spatial_correlation.md](spatial_correlation.md). Mild or insignificant autocorrelation was found, particularly in the Blue Mounds restored fields, suggesting that we can at least present these fields as a pseudochronosequence. 
 
 ### Additional Site Data
-The site data also include several tables which aren't wrangled in scripts, including:
+Site data include experimental metadata as described above. It also includes some measured data that is aggregated and the field 
+level rather than containing subsamples in fields:
 
 - [Soil abiotic properties](soil_properties.md): This script provides a quick overview of the soil abiotic property data and produces products (e.g., ordination axis values) for use in downstream analysis. A basic correlation with microbial biomass 
 is also displayed. 
 - [Percent water stable aggregates](soil_wsa.md): This script provides a quick overview of WSA in fields and
 regions. WSA is higher in restored fields based on a mixed linear model, but isn't correlated with years 
 since restoration. 
+- Microbial biomass (PLFA/NLFA)
 
 ## Diagnostics
 In iterative workflow is used to discover the optimal number of samples to keep from each field to ensure equal 
@@ -48,8 +50,6 @@ In [this report](microbial_communities.md), multivariate analysis is performed o
 Bray-Curtis distance), and 18S (rarefied, UNIFRAC distance). Unconstrained ordinations are produced. Cornfields clustered away from all other field types, but separation of remnants and restored fields differed among datasets. With ITS, years since restoration looked like a strong signal among restored fields, but remnants appeared intermediate among restored fields where age is concerned. This could be evidence of a "novel microbial assemblage" as a successional endpoint in restored fields (although other scenarios are equally plausible). With both 18S datasets, remnant and restored fields clustered closer together, and away from corn. Years since restoration was still a significant signal, but less so than with ITS. 
 
 Years since will also be tested **post-hoc** using `envfit()`. 
-
-## Microbial Biomass
 
 ## Plant Composition
 
