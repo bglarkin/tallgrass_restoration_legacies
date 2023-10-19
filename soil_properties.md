@@ -1,4 +1,4 @@
-Soil Abiotic Properties
+Soil abiotic properties
 ================
 Beau Larkin
 

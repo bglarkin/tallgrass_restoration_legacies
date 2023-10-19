@@ -1,5 +1,5 @@
 #' ---
-#' title: "Soil Abiotic Properties"
+#' title: "Soil abiotic properties"
 #' author: "Beau Larkin\n"
 #' date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
 #' output:
