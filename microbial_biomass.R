@@ -19,7 +19,7 @@
 #' quantification.
 #' 
 #' # Packages and libraries
-packages_needed = c("GGally", "rsq", "lme4", "multcomp", "tidyverse", "vegan", "ggbeeswarm", "knitr", "conflicted", "colorspace")
+packages_needed = c("GGally", "tidyverse", "vegan", "colorspace")
 packages_installed = packages_needed %in% rownames(installed.packages())
 #+ packages,message=FALSE
 if (any(!packages_installed)) {
@@ -29,9 +29,6 @@ if (any(!packages_installed)) {
 for (i in 1:length(packages_needed)) {
     library(packages_needed[i], character.only = T)
 }
-#+ conflicts
-conflicts_prefer(dplyr::select)
-conflicts_prefer(dplyr::filter)
 #' 
 #' # Functions
 #' Cleanplot PCA produces informative visualizations of PCA ordinations 
@@ -86,4 +83,49 @@ ggplot(
 #' notable exceptions for actionmycetes and Fermilab. In Blue Mounds, the pattern is consistent across field types,
 #' and the magnitude of difference isn't large. 
 #' 
+#' ## Ordination with PCA
+fa_z <- decostand(data.frame(fa_meta %>% select(field_name, starts_with("fa")), row.names = 1), "standardize")
+fa_pca <- rda(fa_z)
+fa_pca %>% summary(., display = NULL)
+#' Axes 1 and 2 explain 85% of the variation in sites. 
+#+ fa_screeplot_fig,fig.align='center'
+screeplot(fa_pca, bstick = TRUE)
+#' Only the first eigenvalue exceeds the broken stick model, which is unsurprising because Axis 1 explains
+#' 77% of the total variation. This will make these data very easy to use if it holds up. 
+#+ fa_cleanplot_fig,fig.align='center'
+cleanplot.pca(fa_pca)
+#' This shows that all the biomass indices increase along Axis 1. Cornfields appear on the left with low biomass,
+#' but as biomass increases, the signal is based on regions, with Blue Mounds, then Faville Grove, and then
+#' Fermi fields appearing in order. Let's look at the summary fields to see if there's anything interesting 
+#' left. 
+fa_sum_z <- decostand(data.frame(fa_meta %>% 
+                                 select(field_name, gram_pos, gram_neg, bacteria, fungi, actinomycetes, amf), 
+                             row.names = 1), 
+                  "standardize")
+fa_sum_pca <- rda(fa_sum_z)
+fa_sum_pca %>% summary(., display = NULL)
+#' Axes 1 and 2 explain 96% of the variation in sites. 
+#+ fa_sum_screeplot_fig,fig.align='center'
+screeplot(fa_sum_pca, bstick = TRUE)
+#' Only the first eigenvalue exceeds the broken stick model, which is unsurprising because Axis 1 explains
+#' 81% of the total variation. This will make these data very easy to use if it holds up. 
+#+ fa_sum_cleanplot_fig,fig.align='center'
+cleanplot.pca(fa_sum_pca)
+#' AMF have a strong correlation on a weak axis. It appears that some of the restored fields have the 
+#' most AMF, which is what we saw in the visualization earlier. In this PCA, columns were standardized
+#' to highlight effect sizes and de-emphasize magnitudes. This could be argued because gram_pos and gram_neg
+#' are derivatives of bacteria, for example. This was run once with raw data (not shown), and the patterns
+#' were the same. The second axis had more importance, showing that the signal with AMF is probably 
+#' worth holding on to. 
 #' 
+#' ## Nutrients and microbial biomass
+#' See [Soil abiotic properties](soil_properties.md) for a basic comparison and correlation. 
+#' 
+#' ## Biomass over field age
+#' We can compare biomass with restoration age in Blue Mounds fields.
+fa_meta %>% 
+    filter(region == "BM", field_type == "restored") %>% 
+    mutate(yr_since = as.numeric(yr_since)) %>% 
+    select(field_name, yr_since, gram_pos, gram_neg, bacteria, fungi, actinomycetes, amf) %>% 
+    ggpairs(columns = 2:ncol(.)) + theme_bw()
+#' AMF decline with moderate strength as fields age. 
