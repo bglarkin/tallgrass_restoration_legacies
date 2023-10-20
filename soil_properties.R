@@ -106,7 +106,8 @@ soil %>%
     select(starts_with("field"), OM, P, NO3, K, Mn, pH, Mg, SO4, gram_pos, gram_neg, bacteria, actinomycetes) %>% 
     ggpairs(columns = 4:ncol(.), 
             aes(color = as.character(field_type)), 
-            upper = list(continuous = wrap("cor", size = 2)))
+            upper = list(continuous = wrap("cor", size = 2))) +
+    theme_bw()
 #' 
 #' - Soil organic matter strongly correlates with bacterial biomass in restored fields. With corn and remnant fields, 
 #' the correlation likely is based more on regional differences in SOM. 
@@ -127,7 +128,8 @@ soil %>%
     select(starts_with("field"), OM, P, NO3, K, Mn, pH, Mg, SO4, fungi, amf) %>% 
     ggpairs(columns = 4:ncol(.), 
             aes(color = as.character(field_type)), 
-            upper = list(continuous = wrap("cor", size = 2)))
+            upper = list(continuous = wrap("cor", size = 2))) +
+    theme_bw()
 #' 
 #' - AMF biomass isn't particularly responsive to soil abiotic properties. There's one big field with high 
 #' AMF biomass. 

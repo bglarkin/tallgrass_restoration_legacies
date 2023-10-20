@@ -2,7 +2,7 @@ Soil abiotic properties
 ================
 Beau Larkin
 
-Last updated: 19 October, 2023
+Last updated: 20 October, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -203,7 +203,8 @@ soil %>%
     select(starts_with("field"), OM, P, NO3, K, Mn, pH, Mg, SO4, gram_pos, gram_neg, bacteria, actinomycetes) %>% 
     ggpairs(columns = 4:ncol(.), 
             aes(color = as.character(field_type)), 
-            upper = list(continuous = wrap("cor", size = 2)))
+            upper = list(continuous = wrap("cor", size = 2))) +
+    theme_bw()
 ```
 
 <img src="soil_properties_files/figure-gfm/soil_bacteria_pairs_fig-1.png" style="display: block; margin: auto;" />
@@ -235,7 +236,8 @@ soil %>%
     select(starts_with("field"), OM, P, NO3, K, Mn, pH, Mg, SO4, fungi, amf) %>% 
     ggpairs(columns = 4:ncol(.), 
             aes(color = as.character(field_type)), 
-            upper = list(continuous = wrap("cor", size = 2)))
+            upper = list(continuous = wrap("cor", size = 2))) +
+    theme_bw()
 ```
 
 <img src="soil_properties_files/figure-gfm/soil_fungi_pairs_fig-1.png" style="display: block; margin: auto;" />
