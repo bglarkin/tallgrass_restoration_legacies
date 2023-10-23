@@ -164,16 +164,17 @@ p_pr_trait_pca %>% summary(., display = NULL)
 screeplot(p_pr_trait_pca, bstick = TRUE)
 #+ p_pr_trait_pca_cleanplot,fig.align='center'
 cleanplot.pca(p_pr_trait_pca)
-#' Axis 1 explains 89% of the variation. Its eigenvalue is the only one which exceeds a broken stick model.
-#' Traits forb, perennial, native, nonnative, and C4 grass exceed the unit circle, suggesting a strong correlation
+#' Axis 1 & 2 explain 79% of the variation. The axis 1 eigenvalue is the only one which exceeds a broken stick model.
+#' Traits forb, biennial, perennial, native, and nonnative exceed the unit circle, suggesting a strong correlation
 #' with site differences. Traits appear collinear, explore which ones produce high VIF. 
 sort(diag(solve(cor(data.frame(p_pr_trait, row.names = 1)))), decreasing = TRUE) 
 #' Many are very high, and lie in opposition by factor levels as in the abundance data, but possibly 
-#' a little less strong in terms of pure linear correlation. 
-sort(diag(solve(cor(data.frame(p_pr_trait, row.names = 1) %>% select(-annual, -nonnative, -C4_grass)))), decreasing = TRUE)
+#' a little less strong in terms of pure linear correlation. Biennial probably describes forbs, and can 
+#' easily be discarded. It also looks like most perennials are also native? 
+sort(diag(solve(cor(data.frame(p_pr_trait, row.names = 1) %>% select(-nonnative, -biennial, -native)))), decreasing = TRUE)
 #' It's clear that some are correlated and there is good reason to remove them. It's useful here because 
 #' even after these are removed, they suggest their opposite factor level. This will help inform forward selection later. 
 #' Export the traits matrix for sites with abundance data:
-#+ p_ab_trait_export
+#+ p_pr_trait_export
 write_csv(p_ab_trait, paste0(getwd(), "/clean_data/plant_trait_abund.csv"))
 #' 
