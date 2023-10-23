@@ -35,7 +35,7 @@
 #' [Kattge et al. 2011](https://onlinelibrary.wiley.com/doi/10.1111/j.1365-2486.2011.02451.x)) in 2016.
 #' 
 #' # Packages and libraries
-packages_needed = c("GGally", "tidyverse", "vegan", "colorspace")
+packages_needed = c("GGally", "tidyverse", "vegan", "colorspace", "ape")
 packages_installed = packages_needed %in% rownames(installed.packages())
 #+ packages,message=FALSE
 if (any(!packages_installed)) {
@@ -47,10 +47,71 @@ for (i in 1:length(packages_needed)) {
 }
 #' 
 #' # Functions
+#' ## Cleanplot PCA
 #' Cleanplot PCA produces informative visualizations of PCA ordinations 
 #' [(Borcard et al. 2018)](http://link.springer.com/10.1007/978-3-319-71404-2)
 #+ cleanplot_pca
 source(paste0(getwd(), "/supporting_files/cleanplot_pca.txt"))
+#' 
+#' ## PCoA
+#+ pcoa_function
+pcoa_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
+    set.seed <- 397
+    # Multivariate analysis
+    p <- pcoa(d, correction = corr)
+    p_vals <- data.frame(p$values) %>% 
+        rownames_to_column(var = "Dim") %>% 
+        mutate(Dim = as.integer(Dim))
+    p_vec <- data.frame(p$vectors)
+    # Wrangle site data
+    env_w <- env %>% filter(field_name %in% s$field_name)
+    # Permutation tests (PERMANOVA)
+    h <- with(env_w, 
+              how(within = Within(type="none"), 
+                  plots  = Plots(strata=field_name, type="free"),
+                  blocks = region,
+                  nperm  = nperm))
+    p_permtest <- adonis2(d ~ field_type, data = env_w, permutations = h)
+    # Diagnostic plots
+    if(corr == "none" | ncol(p_vals) == 6) {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
+    } else {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
+    }
+    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
+    # Ordination plot
+    scores <-
+        p_vec[, 1:ncomp] %>%
+        rownames_to_column(var = "field_name") %>%
+        left_join(sites, by = "field_name")
+    # Output data
+    output <- list(dataset                        = df_name,
+                   components_exceed_broken_stick = p_ncomp,
+                   correction_note                = p$note,
+                   values                         = p_vals[1:(ncomp+1), ], 
+                   eigenvalues                    = eig,
+                   site_vectors                   = scores,
+                   broken_stick_plot              = p_bstick,
+                   permanova                      = p_permtest)
+    return(output)
+}
+#' 
 #' 
 #' # Data
 #' Plant community data includes:
@@ -84,6 +145,13 @@ sites <-
 #+ sites_no_cornfields
 sites_noc <- sites %>% 
     filter(field_type != "corn")
+#' Distance matrices are needed for ordinations of the plant data. Bray-Curtis distance is used 
+#' for abundance data, the Jaccard similarity is used for binary data.
+#+ distab_list
+distab = list(
+    p_ab = vegdist(data.frame(plant$ab, row.names = 1), method = "bray"),
+    p_pr = vegdist(data.frame(plant$pr, row.names = 1), method = "jac", binary = TRUE)
+)
 #' 
 #' ## Data wrangling: traits data
 #' ### Abundance data (16 sites)
@@ -128,7 +196,7 @@ p_pr_trait <-
     select(field_name, annual, biennial, perennial, native, nonnative, C3_grass, C4_grass, forb, legume, shrubTree)
 #' 
 #' # Results
-#' ## Visualization and output of abundance data
+#' ## Traits: sites with abundance data
 #' Run a PCA on chord-transformed traits data from sites with abundance data, perform 
 #' typical basic diagnostics. This should be done without corn fields because they exert 
 #' too strong a difference on everything else. 
@@ -154,7 +222,7 @@ sort(diag(solve(cor(data.frame(p_ab_trait, row.names = 1) %>% select(-annual, -n
 #+ p_ab_trait_export
 write_csv(p_ab_trait, paste0(getwd(), "/clean_data/plant_trait_abund.csv"))
 #' 
-#' ## Visualization and output of presence data
+#' ## Traits: sites with presence data
 #' Run a PCA on chord-transformed traits data from sites with abundance data, perform 
 #' typical basic diagnostics.
 p_pr_trait_ch <- decostand(data.frame(p_pr_trait %>% filter(field_name %in% sites_noc$field_name), row.names = 1), "normalize")
@@ -178,3 +246,70 @@ sort(diag(solve(cor(data.frame(p_pr_trait, row.names = 1) %>% select(-nonnative,
 #+ p_pr_trait_export
 write_csv(p_pr_trait, paste0(getwd(), "/clean_data/plant_trait_presence.csv"))
 #' 
+#' ## Plant Communities
+#' In restored fields, plant communities don't reflect natural community assembly. Still, it's useful to 
+#' examine an ordination of sites to develop an understanding of how they differ. Plant traits data are probably 
+#' more useful to looking at development of plant communities over time after restoration. Traits may be filtered
+#' more than species, and species' occurrence may not be uniform across sites, though a species' realized niche may 
+#' include sites where it is not found. 
+#' ### Sites with abundance data
+#' An ordiation is run on plant abundance data using `pcoa_fun()`.
+#+ pcoa_ab
+(pcoa_ab <- pcoa_fun(plant$ab, distab$p_ab, corr="lingoes", df_name = "plant abundance data, 16 sites"))
+#' Axis 1 explains `r pcoa_ab$eigenvalues[1]`% of the variation and is the only eigenvalue that exceeds a 
+#' broken stick model. The most substantial variation here will be on the first axis.
+#' Axis 2 explains `r pcoa_ab$eigenvalues[2]`% of the variation and was not very close to the broken
+#' stick value. Testing the design factor *field_type* (with *region* treated as a block 
+#' using arguments to `how()` revealed a significant
+#' clustering $(R^2=`r round(pcoa_ab$permanova$R2[1], 2)`,~p=`r pcoa_ab$permanova$Pr[1]`)$. 
+#' Let's view a plot of these results. 
+#+ pcoa_ab_fig,fig.align='center'
+ggplot(pcoa_ab$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_point(aes(fill = field_type, shape = region), size = 10) +
+    geom_text(aes(label = yr_since)) +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "harmonic") +
+    scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
+    labs(
+        x = paste0("Axis 1 (", pcoa_ab$eig[1], "%)"),
+        y = paste0("Axis 2 (", pcoa_ab$eig[2], "%)"),
+        title = paste0(
+            "PCoA Ordination of field-averaged species data (",
+            pcoa_ab$dataset,
+            ")"
+        ),
+        caption = "Text indicates years since restoration, with corn (-) and remnants (+) never restored."
+    ) +
+    theme_bw() +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
+#" ### Sites with presence data
+#' An ordiation is run on plant presence data using `pcoa_fun()`. The dataset includes 20 sites. This 
+#' analysis isn't appropriate because the blocks are unbalanced (no cornfield data from Fermi), but it 
+#' still shows differences with plant data. 
+#+ pcoa_pr
+(pcoa_pr <- pcoa_fun(plant$pr, distab$p_pr, corr="none", df_name = "plant presence data, 20 sites"))
+#' Axis 1 explains `r pcoa_pr$eigenvalues[1]`% of the variation and axis 2 explains `r pcoa_ab$eigenvalues[2]`% 
+#' of the variation. These two eigenvalues exceed the broken stick value. 
+#' stick value. Testing the design factor *field_type* (with *region* treated as a block 
+#' using arguments to `how()` revealed a significant
+#' clustering $(R^2=`r round(pcoa_pr$permanova$R2[1], 2)`,~p=`r pcoa_pr$permanova$Pr[1]`)$. 
+#' Let's view a plot of these results. 
+#+ pcoa_pr_fig,fig.align='center'
+ggplot(pcoa_pr$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_point(aes(fill = field_type, shape = region), size = 10) +
+    geom_text(aes(label = yr_since)) +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "harmonic") +
+    scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
+    labs(
+        x = paste0("Axis 1 (", pcoa_pr$eig[1], "%)"),
+        y = paste0("Axis 2 (", pcoa_pr$eig[2], "%)"),
+        title = paste0(
+            "PCoA Ordination of field-averaged species data (",
+            pcoa_pr$dataset,
+            ")"
+        ),
+        caption = "Text indicates years since restoration, with corn (-) and remnants (+) never restored."
+    ) +
+    theme_bw() +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
+#' The regional signal is most obvious here. 
+

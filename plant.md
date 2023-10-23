@@ -7,15 +7,17 @@ Last updated: 23 October, 2023
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
 - [Functions](#functions)
+  - [Cleanplot PCA](#cleanplot-pca)
+  - [PCoA](#pcoa)
 - [Data](#data)
   - [Data wrangling: traits data](#data-wrangling-traits-data)
     - [Abundance data (16 sites)](#abundance-data-16-sites)
     - [Presence data (20 sites)](#presence-data-20-sites)
 - [Results](#results)
-  - [Visualization and output of abundance
-    data](#visualization-and-output-of-abundance-data)
-  - [Visualization and output of presence
-    data](#visualization-and-output-of-presence-data)
+  - [Traits: sites with abundance
+    data](#traits-sites-with-abundance-data)
+  - [Traits: sites with presence data](#traits-sites-with-presence-data)
+  - [Plant Communities](#plant-communities)
 
 # Description
 
@@ -51,7 +53,7 @@ in 2016.
 # Packages and libraries
 
 ``` r
-packages_needed = c("GGally", "tidyverse", "vegan", "colorspace")
+packages_needed = c("GGally", "tidyverse", "vegan", "colorspace", "ape")
 packages_installed = packages_needed %in% rownames(installed.packages())
 ```
 
@@ -69,12 +71,75 @@ for (i in 1:length(packages_needed)) {
 
 # Functions
 
+## Cleanplot PCA
+
 Cleanplot PCA produces informative visualizations of PCA ordinations
 [(Borcard et
 al. 2018)](http://link.springer.com/10.1007/978-3-319-71404-2)
 
 ``` r
 source(paste0(getwd(), "/supporting_files/cleanplot_pca.txt"))
+```
+
+## PCoA
+
+``` r
+pcoa_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
+    set.seed <- 397
+    # Multivariate analysis
+    p <- pcoa(d, correction = corr)
+    p_vals <- data.frame(p$values) %>% 
+        rownames_to_column(var = "Dim") %>% 
+        mutate(Dim = as.integer(Dim))
+    p_vec <- data.frame(p$vectors)
+    # Wrangle site data
+    env_w <- env %>% filter(field_name %in% s$field_name)
+    # Permutation tests (PERMANOVA)
+    h <- with(env_w, 
+              how(within = Within(type="none"), 
+                  plots  = Plots(strata=field_name, type="free"),
+                  blocks = region,
+                  nperm  = nperm))
+    p_permtest <- adonis2(d ~ field_type, data = env_w, permutations = h)
+    # Diagnostic plots
+    if(corr == "none" | ncol(p_vals) == 6) {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
+    } else {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
+    }
+    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
+    # Ordination plot
+    scores <-
+        p_vec[, 1:ncomp] %>%
+        rownames_to_column(var = "field_name") %>%
+        left_join(sites, by = "field_name")
+    # Output data
+    output <- list(dataset                        = df_name,
+                   components_exceed_broken_stick = p_ncomp,
+                   correction_note                = p$note,
+                   values                         = p_vals[1:(ncomp+1), ], 
+                   eigenvalues                    = eig,
+                   site_vectors                   = scores,
+                   broken_stick_plot              = p_bstick,
+                   permanova                      = p_permtest)
+    return(output)
+}
 ```
 
 # Data
@@ -116,6 +181,17 @@ sites <-
 ``` r
 sites_noc <- sites %>% 
     filter(field_type != "corn")
+```
+
+Distance matrices are needed for ordinations of the plant data.
+Bray-Curtis distance is used for abundance data, the Jaccard similarity
+is used for binary data.
+
+``` r
+distab = list(
+    p_ab = vegdist(data.frame(plant$ab, row.names = 1), method = "bray"),
+    p_pr = vegdist(data.frame(plant$pr, row.names = 1), method = "jac", binary = TRUE)
+)
 ```
 
 ## Data wrangling: traits data
@@ -186,7 +262,7 @@ p_pr_trait <-
 
 # Results
 
-## Visualization and output of abundance data
+## Traits: sites with abundance data
 
 Run a PCA on chord-transformed traits data from sites with abundance
 data, perform typical basic diagnostics. This should be done without
@@ -274,7 +350,7 @@ selection later. Export the traits matrix for sites with abundance data:
 write_csv(p_ab_trait, paste0(getwd(), "/clean_data/plant_trait_abund.csv"))
 ```
 
-## Visualization and output of presence data
+## Traits: sites with presence data
 
 Run a PCA on chord-transformed traits data from sites with abundance
 data, perform typical basic diagnostics.
@@ -356,5 +432,214 @@ suggest their opposite factor level. This will help inform forward
 selection later. Export the traits matrix for sites with abundance data:
 
 ``` r
-write_csv(p_ab_trait, paste0(getwd(), "/clean_data/plant_trait_abund.csv"))
+write_csv(p_pr_trait, paste0(getwd(), "/clean_data/plant_trait_presence.csv"))
 ```
+
+## Plant Communities
+
+In restored fields, plant communities don’t reflect natural community
+assembly. Still, it’s useful to examine an ordination of sites to
+develop an understanding of how they differ. Plant traits data are
+probably more useful to looking at development of plant communities over
+time after restoration. Traits may be filtered more than species, and
+species’ occurrence may not be uniform across sites, though a species’
+realized niche may include sites where it is not found. \### Sites with
+abundance data An ordiation is run on plant abundance data using
+`pcoa_fun()`.
+
+``` r
+(pcoa_ab <- pcoa_fun(plant$ab, distab$p_ab, corr="lingoes", df_name = "plant abundance data, 16 sites"))
+```
+
+    ## $dataset
+    ## [1] "plant abundance data, 16 sites"
+    ## 
+    ## $components_exceed_broken_stick
+    ## [1] 1
+    ## 
+    ## $correction_note
+    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.000809415888073743 , except diagonal elements"
+    ## 
+    ## $values
+    ##   Dim Eigenvalues  Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig Cum_br_stick
+    ## 1   1   1.6884108 1.6892202    0.3128013    0.2322545    0.3128013    0.2322545
+    ## 2   2   0.6812888 0.6820982    0.1263075    0.1608259    0.4391088    0.3930803
+    ## 3   3   0.5707939 0.5716033    0.1058466    0.1251116    0.5449554    0.5181919
+    ## 
+    ## $eigenvalues
+    ## [1] 31.3 12.6
+    ## 
+    ## $site_vectors
+    ##    field_name      Axis.1      Axis.2 field_key region field_type yr_since
+    ## 1       BBRP1  0.24056775 -0.16522640         1     BM   restored       16
+    ## 2       ERRP1  0.08413967  0.41643560         2     BM   restored        3
+    ## 3        FGC1 -0.66433300 -0.03290989         3     FG       corn        -
+    ## 4      FGREM1  0.04431444 -0.01450857         4     FG    remnant        +
+    ## 5       FGRP1  0.12276250 -0.15986548         5     FG   restored       15
+    ## 6       KORP1  0.15461767 -0.26031738        15     BM   restored       28
+    ## 7        LPC1 -0.66168712 -0.03298898        16     LP       corn        -
+    ## 8      LPREM1  0.15732628  0.05593888        17     LP    remnant        +
+    ## 9       LPRP1  0.20256709  0.11248606        18     LP   restored        4
+    ## 10      LPRP2  0.22751545 -0.02626885        19     LP   restored        4
+    ## 11     MBREM1  0.17430970 -0.33069721        20     BM    remnant        +
+    ## 12      MBRP1  0.18213508 -0.20141260        21     BM   restored       18
+    ## 13      MHRP1  0.18090418  0.03336249        22     BM   restored        7
+    ## 14      MHRP2  0.04005768  0.39612929        23     BM   restored        2
+    ## 15       PHC1 -0.67283397 -0.03367491        24     BM       corn        -
+    ## 16      PHRP1  0.18763660  0.24351797        25     BM   restored       11
+    ## 
+    ## $broken_stick_plot
+
+![](plant_files/figure-gfm/pcoa_ab-1.png)<!-- -->
+
+    ## 
+    ## $permanova
+    ## Permutation test for adonis under reduced model
+    ## Terms added sequentially (first to last)
+    ## Blocks:  region 
+    ## Plots: field_name, plot permutation: free
+    ## Permutation: none
+    ## Number of permutations: 1999
+    ## 
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
+    ##            Df SumOfSqs      R2      F Pr(>F)   
+    ## field_type  2   1.9713 0.36586 3.7501 0.0025 **
+    ## Residual   13   3.4169 0.63414                 
+    ## Total      15   5.3882 1.00000                 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Axis 1 explains 31.3% of the variation and is the only eigenvalue that
+exceeds a broken stick model. The most substantial variation here will
+be on the first axis. Axis 2 explains 12.6% of the variation and was not
+very close to the broken stick value. Testing the design factor
+*field_type* (with *region* treated as a block using arguments to
+`how()` revealed a significant clustering $(R^2=0.37,~p=0.0025)$. Let’s
+view a plot of these results.
+
+``` r
+ggplot(pcoa_ab$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_point(aes(fill = field_type, shape = region), size = 10) +
+    geom_text(aes(label = yr_since)) +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "harmonic") +
+    scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
+    labs(
+        x = paste0("Axis 1 (", pcoa_ab$eig[1], "%)"),
+        y = paste0("Axis 2 (", pcoa_ab$eig[2], "%)"),
+        title = paste0(
+            "PCoA Ordination of field-averaged species data (",
+            pcoa_ab$dataset,
+            ")"
+        ),
+        caption = "Text indicates years since restoration, with corn (-) and remnants (+) never restored."
+    ) +
+    theme_bw() +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
+```
+
+<img src="plant_files/figure-gfm/pcoa_ab_fig-1.png" style="display: block; margin: auto;" />
+
+``` r
+#" ### Sites with presence data
+```
+
+An ordiation is run on plant presence data using `pcoa_fun()`. The
+dataset includes 20 sites. This analysis isn’t appropriate because the
+blocks are unbalanced (no cornfield data from Fermi), but it still shows
+differences with plant data.
+
+``` r
+(pcoa_pr <- pcoa_fun(plant$pr, distab$p_pr, corr="none", df_name = "plant presence data, 20 sites"))
+```
+
+    ## $dataset
+    ## [1] "plant presence data, 20 sites"
+    ## 
+    ## $components_exceed_broken_stick
+    ## [1] 2
+    ## 
+    ## $correction_note
+    ## [1] "There were no negative eigenvalues. No correction was applied"
+    ## 
+    ## $values
+    ##   Dim Eigenvalues Relative_eig Broken_stick Cumul_eig Cumul_br_stick
+    ## 1   1   1.4264339   0.19876306    0.1867231 0.1987631      0.1867231
+    ## 2   2   1.2066484   0.16813758    0.1340916 0.3669006      0.3208147
+    ## 3   3   0.6135197   0.08548946    0.1077758 0.4523901      0.4285905
+    ## 
+    ## $eigenvalues
+    ## [1] 19.9 16.8
+    ## 
+    ## $site_vectors
+    ##    field_name       Axis.1      Axis.2 field_key region field_type yr_since
+    ## 1       BBRP1  0.007406404  0.24131308         1     BM   restored       16
+    ## 2       ERRP1  0.067469134  0.21951909         2     BM   restored        3
+    ## 3        FGC1  0.512236442 -0.22516150         3     FG       corn        -
+    ## 4      FGREM1 -0.057759438 -0.02094116         4     FG    remnant        +
+    ## 5       FGRP1 -0.035178611  0.12877987         5     FG   restored       15
+    ## 6      FLREM1 -0.346670841 -0.38303529         8     FL    remnant        +
+    ## 7       FLRP1 -0.367062459 -0.37699824         9     FL   restored       40
+    ## 8       FLRP4 -0.366696539 -0.38481716        10     FL   restored       36
+    ## 9       FLRP5 -0.321881936 -0.25314288        11     FL   restored       35
+    ## 10      KORP1  0.054932725  0.16097174        15     BM   restored       28
+    ## 11       LPC1  0.582345898 -0.29432253        16     LP       corn        -
+    ## 12     LPREM1 -0.022447100  0.25575985        17     LP    remnant        +
+    ## 13      LPRP1 -0.024723803  0.26041246        18     LP   restored        4
+    ## 14      LPRP2 -0.099697392  0.22860489        19     LP   restored        4
+    ## 15     MBREM1 -0.028171733  0.07734331        20     BM    remnant        +
+    ## 16      MBRP1 -0.072344127  0.13855455        21     BM   restored       18
+    ## 17      MHRP1  0.021730449  0.21161280        22     BM   restored        7
+    ## 18      MHRP2  0.002954358  0.12383740        23     BM   restored        2
+    ## 19       PHC1  0.547087359 -0.32089787        24     BM       corn        -
+    ## 20      PHRP1 -0.053528790  0.21260759        25     BM   restored       11
+    ## 
+    ## $broken_stick_plot
+
+![](plant_files/figure-gfm/pcoa_pr-1.png)<!-- -->
+
+    ## 
+    ## $permanova
+    ## Permutation test for adonis under reduced model
+    ## Terms added sequentially (first to last)
+    ## Blocks:  region 
+    ## Plots: field_name, plot permutation: free
+    ## Permutation: none
+    ## Number of permutations: 1999
+    ## 
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
+    ##            Df SumOfSqs    R2      F Pr(>F)    
+    ## field_type  2   1.6722 0.233 2.5822  5e-04 ***
+    ## Residual   17   5.5044 0.767                  
+    ## Total      19   7.1766 1.000                  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Axis 1 explains 19.9% of the variation and axis 2 explains 12.6% of the
+variation. These two eigenvalues exceed the broken stick value. stick
+value. Testing the design factor *field_type* (with *region* treated as
+a block using arguments to `how()` revealed a significant clustering
+$(R^2=0.23,~p=5\times 10^{-4})$. Let’s view a plot of these results.
+
+``` r
+ggplot(pcoa_pr$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_point(aes(fill = field_type, shape = region), size = 10) +
+    geom_text(aes(label = yr_since)) +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "harmonic") +
+    scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
+    labs(
+        x = paste0("Axis 1 (", pcoa_pr$eig[1], "%)"),
+        y = paste0("Axis 2 (", pcoa_pr$eig[2], "%)"),
+        title = paste0(
+            "PCoA Ordination of field-averaged species data (",
+            pcoa_pr$dataset,
+            ")"
+        ),
+        caption = "Text indicates years since restoration, with corn (-) and remnants (+) never restored."
+    ) +
+    theme_bw() +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
+```
+
+<img src="plant_files/figure-gfm/pcoa_pr_fig-1.png" style="display: block; margin: auto;" />
+
+The regional signal is most obvious here.
