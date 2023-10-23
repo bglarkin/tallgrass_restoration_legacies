@@ -63,7 +63,7 @@ fa_grp <-
 #' # Results
 #' ## Biomass in field types and regions
 #' Let's first visualize the data across regions and field types
-#+ wsa_visual_fig,fig.align='center'
+#+ fa_visual_fig,fig.align='center'
 ggplot(
     fa_grp %>% 
         group_by(field_type, region, group) %>% 
@@ -123,6 +123,7 @@ cleanplot.pca(fa_sum_pca)
 #' 
 #' ## Biomass over field age
 #' We can compare biomass with restoration age in Blue Mounds fields.
+#+ fa_yr_since_fig,fig.align='center'
 fa_meta %>% 
     filter(region == "BM", field_type == "restored") %>% 
     mutate(yr_since = as.numeric(yr_since)) %>% 

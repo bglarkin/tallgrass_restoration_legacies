@@ -2,7 +2,7 @@ Microbial data: fatty acids (biomass)
 ================
 Beau Larkin
 
-Last updated: 20 October, 2023
+Last updated: 23 October, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -106,7 +106,7 @@ ggplot(
     theme_bw()
 ```
 
-<img src="microbial_biomass_files/figure-gfm/wsa_visual_fig-1.png" style="display: block; margin: auto;" />
+<img src="microbial_biomass_files/figure-gfm/fa_visual_fig-1.png" style="display: block; margin: auto;" />
 
 We see a variety of patterns across field types. Most often, biomass is
 highest in restored fields, with notable exceptions for actionmycetes
@@ -254,6 +254,6 @@ fa_meta %>%
     ggpairs(columns = 2:ncol(.)) + theme_bw()
 ```
 
-![](microbial_biomass_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+<img src="microbial_biomass_files/figure-gfm/fa_yr_since_fig-1.png" style="display: block; margin: auto;" />
 
 AMF decline with moderate strength as fields age.
