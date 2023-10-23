@@ -176,5 +176,5 @@ sort(diag(solve(cor(data.frame(p_pr_trait, row.names = 1) %>% select(-nonnative,
 #' even after these are removed, they suggest their opposite factor level. This will help inform forward selection later. 
 #' Export the traits matrix for sites with abundance data:
 #+ p_pr_trait_export
-write_csv(p_ab_trait, paste0(getwd(), "/clean_data/plant_trait_abund.csv"))
+write_csv(p_pr_trait, paste0(getwd(), "/clean_data/plant_trait_presence.csv"))
 #' 
