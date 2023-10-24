@@ -2,7 +2,7 @@ Plant data: communities and traits
 ================
 Beau Larkin
 
-Last updated: 23 October, 2023
+Last updated: 24 October, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -21,11 +21,11 @@ Last updated: 23 October, 2023
 
 # Description
 
-Plant data comprises two separate data sets. Mike Healy did quadrat
-surveys at all sites except Fermi, recording plant abundance. At Fermi,
-we only have relevé data with presence/absence. These data were provided
-by Mike Miller. Wisconsin sites were surveyed in Aug-Sept 2016. Fermi
-sites were surveyed in summer 2017
+Plant data comprises two data sets. Mike Healy did quadrat surveys at
+all sites except Fermi, recording plant abundance. At Fermi, we only
+have relevé data with presence/absence. These data were provided by Mike
+Miller. Wisconsin sites were surveyed in Aug-Sept 2016. Fermi sites were
+surveyed in summer 2017
 
 Plant metadata includes taxonomy and life history traits, and should
 cover both plant data sets. With the abundance-data sites, trait data
@@ -503,7 +503,7 @@ abundance data An ordiation is run on plant abundance data using
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
     ##            Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type  2   1.9713 0.36586 3.7501 0.0025 **
+    ## field_type  2   1.9713 0.36586 3.7501  0.005 **
     ## Residual   13   3.4169 0.63414                 
     ## Total      15   5.3882 1.00000                 
     ## ---
@@ -514,7 +514,7 @@ exceeds a broken stick model. The most substantial variation here will
 be on the first axis. Axis 2 explains 12.6% of the variation and was not
 very close to the broken stick value. Testing the design factor
 *field_type* (with *region* treated as a block using arguments to
-`how()` revealed a significant clustering $(R^2=0.37,~p=0.0025)$. Let’s
+`how()` revealed a significant clustering $(R^2=0.37,~p=0.005)$. Let’s
 view a plot of these results.
 
 ``` r

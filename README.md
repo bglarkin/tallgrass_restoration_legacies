@@ -18,7 +18,9 @@ is also displayed.
 - [Percent water stable aggregates](soil_wsa.md): This script provides a quick overview of WSA in fields and
 regions. WSA is higher in restored fields based on a mixed linear model, but isn't correlated with years 
 since restoration. 
-- Microbial biomass (PLFA/NLFA)
+- [Microbial biomass](microbial_biomass.md) data include site-species tables derived from high-throughput sequencing and PLFA/NLFA extractions 
+and analysis data which Ylva did. This report presents basic visualizations of microbial biomass inferred with PLFA/NLFA 
+quantification.
 
 ## Diagnostics
 In iterative workflow is used to discover the optimal number of samples to keep from each field to ensure equal 
@@ -52,6 +54,13 @@ Bray-Curtis distance), and 18S (rarefied, UNIFRAC distance). Unconstrained ordin
 Years since will also be tested **post-hoc** using `envfit()`. 
 
 ## Plant Composition
+Plant data comprises two data sets. Quadrat surveys from 10 plots in each field were done in Wisconsin sites 
+in 2016. At Fermi, we only have relevé data with presence/absence from summer 2017. Plant metadata includes 
+taxonomy and life history traits, and should coverboth plant data sets. With the abundance-data sites, trait 
+data are reported in percent cover. In the presence-data sites, traits are in counts of species with that trait per field. 
+
+This [report](plant.md) produces basic visualization and diagnostic views of the plant data. Two traits matrices
+are output, one for sites with abundance data (16 sites), and one for sites with presence data only (20 sites). 
 
 ## Constrained Analyses
 

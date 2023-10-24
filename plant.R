@@ -12,7 +12,7 @@
 #' ---
 #'
 #' # Description
-#' Plant data comprises two separate data sets. Mike Healy did quadrat surveys at 
+#' Plant data comprises two data sets. Mike Healy did quadrat surveys at 
 #' all sites except Fermi, recording plant abundance. At Fermi, we only 
 #' have relevé data with presence/absence. These data were provided by Mike Miller. 
 #' Wisconsin sites were surveyed in Aug-Sept 2016. Fermi sites were surveyed in summer 2017
