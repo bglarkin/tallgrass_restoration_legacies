@@ -250,3 +250,39 @@ pprfgenv <-
         pco = FALSE
     )
 plot(pprfgenv)
+
+
+
+
+
+
+#' In blue mounds restored fields, 
+#' does SOM increase over time?
+#' does WSA increase over time?
+#' does biomass increase over time?
+#' 
+#' What is the effect of controlling for plant functional groups on the above questions?
+#' 
+#' does the microbial community change over time with soil nutrients controlled?
+#' 
+#' Are the microbes explained by plants (and field type maybe, resto vs remnant) in the presence of soil nutrients?
+#' This could be done with all fields and field types...well in Wisconsin anyway. Could try with the plant presence too.
+#' Could remove corn from this because it's too different. 
+#' - Filtering soil nutrients into covariates or explanatory. Maybe keep the fertilizer ones as explanatory?
+#' 
+#' another try.
+#' Are microbes explained by plant traits, ppt, and fertilizer nutrients with resto and remnant fields?
+#' - Blue Mounds and Wisconsin
+#' - ITS and 18S
+#' Consider doing this procedure with only restored fields, and then with remnants, and see if they tell the same story
+#' (you should redo plant traits without cornfields to see if resto and remnant are different)
+#' Then, do axis values correlate with WSA, PLFA/NLFA, yr_since, SOM?
+#' Do guilds correlate with axis values?
+#' 
+#' Could start with variation partitioning:
+#' Effect of plant traits and soil nutrients on microbial data, assess contribution of each and together
+#' Might have to do this with restored fields only. 
+#' Then how do you get an axis to compare with responses? 
+#' You'd need to do the forward selection db-RDA with covariables as described above. 
+#' 
+#' We already have years correlating with microbial communities in restored fields. How does that fact fit in?
