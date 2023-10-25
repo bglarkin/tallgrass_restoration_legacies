@@ -148,22 +148,29 @@ soil_ppr <- soil %>% filter(field_name %in% ppr_fields)
 #' 
 #' ## Microbial data
 #' ### Fungal communities
-#' Fungal species matrices must have field names instead of field keys to align all datasets
+#' Fungal species matrices must have field names instead of field keys to align all datasets.
 #' Create subsets of fungal species matrices to align with plant abundance or presence sites
+#' Sites-species tables contain rarefied sequence abundances. This list includes
+#' composition summarized in fields. 
+#' CSV files were produced in [process_data.R](process_data.md)
+spe <- list(
+    its = read_csv(paste0(getwd(), "/clean_data/spe_ITS_rfy.csv"), show_col_types = FALSE),
+    amf = read_csv(paste0(getwd(), "/clean_data/spe_18S_rfy.csv"), show_col_types = FALSE)
+) %>% map(function(x) x %>% 
+              left_join(sites %>% select(field_key, field_name), by = join_by("field_key")) %>% 
+              select(field_name, everything(), -field_key))
+spe$its_pab <- spe$its %>% filter(field_name %in% pab_fields)
+spe$its_ppr <- spe$its %>% filter(field_name %in% ppr_fields)
+spe$amf_pab <- spe$amf %>% filter(field_name %in% pab_fields)
+spe$amf_ppr <- spe$amf %>% filter(field_name %in% ppr_fields)
 #' 
-#' #### ITS-based fungi
-fung_savg <- read_csv(paste0(getwd(), "/clean_data/spe_ITS_rfy.csv"), show_col_types = FALSE) %>% 
-    left_join(sites %>% select(field_key, field_name), by = join_by("field_key")) %>% 
-    select(field_name, everything(), -field_key)
-fung_savg_pab <- fung_savg %>% filter(field_name %in% pab_fields)
-fung_savg_ppr <- fung_savg %>% filter(field_name %in% ppr_fields)
-#' 
-#' #### 18S-based fungi
-amf_savg <- read_csv(paste0(getwd(), "/clean_data/spe_18S_rfy.csv"), show_col_types = FALSE) %>% 
-    left_join(sites %>% select(field_key, field_name), by = join_by("field_key")) %>% 
-    select(field_name, everything(), -field_key)
-amf_savg_pab <- amf_savg %>% filter(field_name %in% pab_fields)
-amf_savg_ppr <- amf_savg %>% filter(field_name %in% ppr_fields)
+#' ### Species metadata
+#' The OTUs and sequence abundances in these files matches the rarefied data in `spe$` above.
+#' CSV files were produced in the [microbial diversity script](microbial_diversity.md).
+spe_meta <- list(
+    its = read_csv(paste0(getwd(), "/clean_data/speTaxa_ITS_rfy.csv"), show_col_types = FALSE),
+    amf =  read_csv(paste0(getwd(), "/clean_data/speTaxa_18S_rfy.csv"), show_col_types = FALSE)
+)
 #' 
 #' ### Fungal biomass
 fa <- read_csv(paste0(getwd(), "/clean_data/plfa.csv"), show_col_types = FALSE) %>% 
@@ -179,6 +186,7 @@ fa <- read_csv(paste0(getwd(), "/clean_data/plfa.csv"), show_col_types = FALSE) 
 #' that into functional group abundance is maybe questionable. 
 #' 
 #' 1. CoIA
+#' This analysis isn't useful and will be removed. 
 #'   a. Starting with plant abundance data and the 16 sites where we have this:
 #'   b. Symmetrical ordination of plant site-species matrix and soil data will inform 
 #'      the relative contributions of each. 
@@ -286,3 +294,8 @@ plot(pprfgenv)
 #' You'd need to do the forward selection db-RDA with covariables as described above. 
 #' 
 #' We already have years correlating with microbial communities in restored fields. How does that fact fit in?
+#' 
+#' 
+#' 
+#' ## Variation Partitioning
+#' 
