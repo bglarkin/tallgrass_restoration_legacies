@@ -119,32 +119,36 @@ sites <-
 #' 
 #' ## Plant data
 #' ### Traits
-#' Plant abundance data was only available at 16 sites (none at Fermi).
-#' A vector of site names produced to filter species and env tables in later analysis.
-plant_func_ab <- read_csv(paste0(getwd(), "/clean_data/plant_trait_abund.csv"), show_col_types = FALSE)
-pab_fields <- plant_func_ab$field_name
-#' Plant releve data was available from four Fermi sites. This was added to the abundance
-#' data set, and then the entire matrix was transformed into presence-absence data. Note 
-#' that survey effort are not correctable between Fermi and the other sites in this data
-#' table. 
-plant_func_pr <- read_csv(paste0(getwd(), "/clean_data/plant_trait_presence.csv"), show_col_types = FALSE)
-ppr_fields <- plant_func_pr$field_name
+#' Plant abundance data was only available at 16 sites (none at Fermi). These were translated into 
+#' percent cover of traits in `plant.R`. Site metadata are joined to allow custom filtering of sites
+#' later.
+ptr <- read_csv(paste0(getwd(), "/clean_data/plant_trait_abund.csv"), show_col_types = FALSE) %>% 
+    left_join(sites %>% select(starts_with("field"), region), by = join_by("field_name")) %>% 
+    select(field_name, field_type, region, everything(), -field_key)
+#' Plant releve data was available from four Fermi sites, but survey data aren't correctable 
+#' between Fermi and other sites. Also, translating counts of species to counts of traits isn't appropriate.
+#' Trait data isn't included for the plant presence dataset. 
 #' 
 #' ### Plant communities
-#' Plant site-species matrices use field names for rows 
-plant_spe_ab <- read_csv(paste0(getwd(), "/clean_data/spe_plant_abund.csv"), show_col_types = FALSE) %>% rename(field_name = SITE)
-plant_spe_pr <- read_csv(paste0(getwd(), "/clean_data/spe_plant_presence.csv"), show_col_types = FALSE) %>% rename(field_name = SITE)
+#' Both abundance and presence data are used. 
+#' Plant site-species matrices use field names for rows, site metadata will be joined. 
+pspe <- list(
+    ab = read_csv(paste0(getwd(), "/clean_data/spe_plant_abund.csv"), show_col_types = FALSE),
+    pr = read_csv(paste0(getwd(), "/clean_data/spe_plant_presence.csv"), show_col_types = FALSE)
+) %>% map(function(x) x %>% 
+              rename(field_name = SITE) %>% 
+              left_join(sites %>% select(starts_with("field"), region), by = join_by("field_name")) %>% 
+              select(field_name, field_type, region, everything(), -field_key))
 #' 
 #' ## Environmental data
 #' Use precipitation as proxy for soil moisture
-ppt = read_csv(paste0(getwd(), "/clean_data/site_precip_normal.csv"), show_col_types = FALSE)
+rain = read_csv(paste0(getwd(), "/clean_data/site_precip_normal.csv"), show_col_types = FALSE)
 #' Create subsets of soil environmental data to align with plant abundance or presence sites
 soil <- read_csv(paste0(getwd(), "/clean_data/soil.csv"), show_col_types = FALSE) %>% 
-    left_join(ppt, by = join_by("field_key")) %>% 
+    left_join(rain, by = join_by("field_key")) %>% 
     filter(field_key %in% sites$field_key) %>% 
-    select(-field_key)
-soil_pab <- soil %>% filter(field_name %in% pab_fields)
-soil_ppr <- soil %>% filter(field_name %in% ppr_fields)
+    left_join(sites %>% select(starts_with("field"), region), by = join_by("field_name", "field_key")) %>% 
+    select(field_name, field_type, region, everything(), -field_key)
 #' 
 #' ## Microbial data
 #' ### Fungal communities
@@ -153,28 +157,25 @@ soil_ppr <- soil %>% filter(field_name %in% ppr_fields)
 #' Sites-species tables contain rarefied sequence abundances. This list includes
 #' composition summarized in fields. 
 #' CSV files were produced in [process_data.R](process_data.md)
-spe <- list(
+fspe <- list(
     its = read_csv(paste0(getwd(), "/clean_data/spe_ITS_rfy.csv"), show_col_types = FALSE),
     amf = read_csv(paste0(getwd(), "/clean_data/spe_18S_rfy.csv"), show_col_types = FALSE)
 ) %>% map(function(x) x %>% 
-              left_join(sites %>% select(field_key, field_name), by = join_by("field_key")) %>% 
-              select(field_name, everything(), -field_key))
-spe$its_pab <- spe$its %>% filter(field_name %in% pab_fields)
-spe$its_ppr <- spe$its %>% filter(field_name %in% ppr_fields)
-spe$amf_pab <- spe$amf %>% filter(field_name %in% pab_fields)
-spe$amf_ppr <- spe$amf %>% filter(field_name %in% ppr_fields)
+              left_join(sites %>% select(starts_with("field"), region), by = join_by("field_key")) %>% 
+              select(field_name, field_type, region, everything(), -field_key))
 #' 
 #' ### Species metadata
 #' The OTUs and sequence abundances in these files matches the rarefied data in `spe$` above.
 #' CSV files were produced in the [microbial diversity script](microbial_diversity.md).
-spe_meta <- list(
+fspe_meta <- list(
     its = read_csv(paste0(getwd(), "/clean_data/speTaxa_ITS_rfy.csv"), show_col_types = FALSE),
     amf =  read_csv(paste0(getwd(), "/clean_data/speTaxa_18S_rfy.csv"), show_col_types = FALSE)
 )
 #' 
 #' ### Fungal biomass
-fa <- read_csv(paste0(getwd(), "/clean_data/plfa.csv"), show_col_types = FALSE) %>% 
-    select(-field_key)
+fb <- read_csv(paste0(getwd(), "/clean_data/plfa.csv"), show_col_types = FALSE) %>% 
+    left_join(sites %>% select(starts_with("field"), region), by = join_by("field_key", "field_name")) %>% 
+    select(field_name, field_type, region, everything(), -field_key)
 #' 
 #' # Analysis and Results
 #' This is a stepwise analysis procedure to work through to find the most useful 
@@ -221,43 +222,7 @@ fa <- read_csv(paste0(getwd(), "/clean_data/plfa.csv"), show_col_types = FALSE) 
 #' X. Water stable aggregates
 #'   a.
 #' 
-#' ## CoIA
 
-
-
-
-pabenv <- 
-    coia_fun(
-        sqrt(vegdist(data.frame(plant_spe_ab, row.names = 1), "bray")),
-        decostand(data.frame(soil_pab, row.names = 1), "standardize"),
-        pco = TRUE
-    )
-plot(pabenv)
-#' 
-#' 
-pabfgenv <- 
-    coia_fun(
-        decostand(data.frame(plant_func_ab, row.names = 1), "normalize"),
-        decostand(data.frame(soil_pab, row.names = 1), "standardize"),
-        pco = FALSE
-    )
-plot(pabfgenv)
-#' 
-#' 
-pprenv <- 
-    coia_fun(
-        sqrt(vegdist(data.frame(plant_spe_pr, row.names = 1), "jaccard")),
-        decostand(data.frame(soil_ppr, row.names = 1), "standardize"),
-        pco = TRUE
-    )
-plot(pprenv)
-pprfgenv <- 
-    coia_fun(
-        decostand(data.frame(plant_func_pr, row.names = 1), "normalize"),
-        decostand(data.frame(soil_ppr, row.names = 1), "standardize"),
-        pco = FALSE
-    )
-plot(pprfgenv)
 
 
 
@@ -298,4 +263,79 @@ plot(pprfgenv)
 #' 
 #' 
 #' ## Variation Partitioning
+#' This analysis will show the relative explanatory power of soil and/or plant trait data on microbial communities. 
+#' It's useful here as it will also reveal the more important explanatory variables from either
+#' data set through forward selection. 
 #' 
+#' With so many possible ways to parse the data, it will be easy to get carried away with variation 
+#' partitioning. Let's exclude some potentials here. Cornfields won't be included because soil and plant 
+#' data are discontinuous with the rest of the fields. Should restored fields be included? Using plant
+#' data as explanatory makes sense in restored fields because the plants were seeded as they would be 
+#' in a designed experiment. This might be less relevant in remnant fields where plants and soils have 
+#' co-filtered through feedbacks. 
+#' 
+#' Plant trait data restricts this to only those fields which have plant abundance because counts 
+#' traits isn't appropriate to use. If the larger 
+#' number of fields is important to look at later, variation partitioning could be run with the plant
+#' presence community data transformed into axes instead. Finally, it must be decided whether to include
+#' all the plant abundance sites or just use Blue Mounds because it's closest to a chronosequence. 
+#' Since years since restoration doesn't fit well in variation partitioning as a variable, I don't think
+#' we need to stick with the best chronosequence, though. But, if we end up doing that later, it would
+#' be good to know what the outcome of variation partitioning was.  
+#' 
+#' Maybe it's best to create a list of possible analyses and rank them from most to least important.
+#' 
+#' - Plant abundance regions, restored sites only, 18S and ITS
+#'    - If warranted, Blue Mounds, restored sites only, 18S and ITS
+#' - Plant abundance regions, restored and remnant sites, 18S and ITS
+#' - Plant presence regions, restored and remnant sites, 18S and ITS
+#'    - Use significant axes from PCoA for plant community data. 
+
+
+# LETS MAKE THIS INTO A FUNCTION! Possible, or is each analysis too different?
+# First, just fiddle around with this and keep a list of what works and what doesn't. 
+
+
+
+
+
+fspe_bray <- vegdist(
+    data.frame(
+        fspe$its %>% 
+            filter(field_type != "corn", region != "FL") %>% 
+            select(-field_type, -region),
+        row.names = 1))
+fspe_pcoa <- pcoa(fspe_bray)
+
+ptr_norm <- decostand(
+    data.frame(
+        ptr %>% 
+            filter(field_type != "corn", region != "FL") %>% 
+            select(-field_type, -region),
+        row.names = 1),
+    "normalize")
+
+soil_z <- decostand(
+    data.frame(
+        soil %>% 
+            filter(field_type != "corn", region != "FL") %>% 
+            select(-field_type, -region),
+        row.names = 1),
+    "standardize")
+
+f_ptr_dbrda <- dbrda(fspe_bray ~., ptr_norm, add = FALSE)
+f_ptr_dbrda_null <- dbrda(fspe_bray ~ 1, ptr_norm, add = FALSE)
+
+with(sites %>% filter(field_type != "corn", region != "FL"),
+     ordistep(f_ptr_dbrda_null, 
+              scope = formula(f_ptr_dbrda), 
+              direction = "forward", 
+              permutations = how(within = Within(type="free"), 
+                                 plots  = Plots(type="free"),
+                                 blocks = region,
+                                 nperm  = 1999))
+     )
+
+ordistep(f_ptr_dbrda_null, scope = formula(f_ptr_dbrda), direction = "forward", permutations = how(nperm = 9999))
+
+
