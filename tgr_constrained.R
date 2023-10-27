@@ -296,21 +296,22 @@ fb <- read_csv(paste0(getwd(), "/clean_data/plfa.csv"), show_col_types = FALSE) 
 # First, just fiddle around with this and keep a list of what works and what doesn't. 
 
 
-
-
+ft <- "restored"
+rg <- c("BM", "FG", "LP")
 
 fspe_bray <- vegdist(
     data.frame(
         fspe$its %>% 
-            filter(field_type != "corn", region != "FL") %>% 
+            filter(field_type == ft, region %in% rg) %>% 
             select(-field_type, -region),
         row.names = 1))
+
 fspe_pcoa <- pcoa(fspe_bray)
 
 ptr_norm <- decostand(
     data.frame(
         ptr %>% 
-            filter(field_type != "corn", region != "FL") %>% 
+            filter(field_type == ft, region %in% rg) %>% 
             select(-field_type, -region),
         row.names = 1),
     "normalize")
@@ -318,7 +319,7 @@ ptr_norm <- decostand(
 soil_z <- decostand(
     data.frame(
         soil %>% 
-            filter(field_type != "corn", region != "FL") %>% 
+            filter(field_type == ft, region %in% rg) %>% 
             select(-field_type, -region),
         row.names = 1),
     "standardize")
@@ -326,7 +327,7 @@ soil_z <- decostand(
 f_ptr_dbrda <- dbrda(fspe_bray ~., ptr_norm, add = FALSE)
 f_ptr_dbrda_null <- dbrda(fspe_bray ~ 1, ptr_norm, add = FALSE)
 
-with(sites %>% filter(field_type != "corn", region != "FL"),
+with(sites %>% filter(field_type == ft, region %in% rg),
      ordistep(f_ptr_dbrda_null, 
               scope = formula(f_ptr_dbrda), 
               direction = "forward", 
@@ -338,4 +339,24 @@ with(sites %>% filter(field_type != "corn", region != "FL"),
 
 ordistep(f_ptr_dbrda_null, scope = formula(f_ptr_dbrda), direction = "forward", permutations = how(nperm = 9999))
 
+# C4 grass is all for Wisconsin restored, ITS fungi
 
+f_soil_dbrda <- dbrda(fspe_bray ~., soil_z, add = FALSE)
+f_soil_dbrda_null <- dbrda(fspe_bray ~ 1, soil_z, add = FALSE)
+
+with(sites %>% filter(field_type == ft, region %in% rg),
+     ordistep(f_soil_dbrda_null, 
+              scope = formula(f_soil_dbrda), 
+              direction = "forward", 
+              permutations = how(within = Within(type="free"), 
+                                 plots  = Plots(type="free"),
+                                 blocks = region,
+                                 nperm  = 1999))
+)
+
+ordistep(f_soil_dbrda_null, scope = formula(f_soil_dbrda), direction = "forward", permutations = how(nperm = 9999))
+
+# Magnesium is all? Jesus Christ. For Wisconsin restored, ITS fungi
+
+# Try with plant axes, then with ITS and AMF in varpart. But this isn't looking useful. 
+# Just use abiotic soil as covariates? In partial RDA?
