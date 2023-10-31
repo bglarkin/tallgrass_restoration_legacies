@@ -186,25 +186,14 @@ fb <- read_csv(paste0(getwd(), "/clean_data/plfa.csv"), show_col_types = FALSE) 
 #' is more complicated to justify. As a binary matrix, it's fine, but transforming 
 #' that into functional group abundance is maybe questionable. 
 #' 
-#' 1. CoIA
-#' This analysis isn't useful and will be removed. 
-#'   a. Starting with plant abundance data and the 16 sites where we have this:
-#'   b. Symmetrical ordination of plant site-species matrix and soil data will inform 
-#'      the relative contributions of each. 
-#'   c. Symmetrical ordination of plant abundance in functional groups will inform how 
-#'      well the functional groups table aligns with the plant species data.
-#'   d. A and B can be repeated with the plant presence-absence data, which expands 
-#'      on the number of available sites, to compare results.
-#'   e. Finally, comparing the plant abundance and plant presence matrices might help 
-#'      justify (or not) their similarity. 
-#' 2. Variation Partitioning
+#' 1. Variation Partitioning
 #'   a. Asymmetrical ordination but assesses relative contribution and interactions 
 #'      among multiple ENV data sets. ENV must have fewer columns than sites. 
 #'   b. Use db-RDA to produce the plant species response matrix. Use chord normalization
 #'      to handle the soil data.
 #'      as comparative ENV sets. 
 #'   c. B can be repeated with the plant presence data set.
-#' 3. Db-RDA
+#' 1. Db-RDA
 #'   a. Although this was done initially in variation partitioning, at this point 
 #'      I will have more information about which environmental variables to include. 
 #'      The key question is whether or not to include plant data, and how, since plant 
@@ -214,12 +203,12 @@ fb <- read_csv(paste0(getwd(), "/clean_data/plfa.csv"), show_col_types = FALSE) 
 #'   c. Step 2 is to use the information from 1 and 2 to add an additional constrained 
 #'      analysis based on whatever sites are a best choice. 
 #'   d. Try envfit or ordi-functions to overlay experimental items like yr_since
-#' 4. LDA
+#' 1. LDA
 #'   a. This might be worth trying to test any selected variables against a priori 
 #'      treatment clusters. 
-#' X. Biomass 
+#' 1. Biomass 
 #'   a. 
-#' X. Water stable aggregates
+#' 1. Water stable aggregates
 #'   a.
 #' 
 
@@ -297,7 +286,7 @@ fb <- read_csv(paste0(getwd(), "/clean_data/plfa.csv"), show_col_types = FALSE) 
 
 
 ft <- "restored"
-rg <- c("BM", "FG", "LP")
+rg <- c("BM")
 
 fspe_bray <- vegdist(
     data.frame(
@@ -339,7 +328,8 @@ with(sites %>% filter(field_type == ft, region %in% rg),
 
 ordistep(f_ptr_dbrda_null, scope = formula(f_ptr_dbrda), direction = "forward", permutations = how(nperm = 9999))
 
-# C4 grass is all for Wisconsin restored, ITS fungi
+# C4 grass is all for Wisconsin restored, ITS fungi and AMF
+# C$ grass (forb is close) is all for Blue Mounds too, AMF and ITS
 
 f_soil_dbrda <- dbrda(fspe_bray ~., soil_z, add = FALSE)
 f_soil_dbrda_null <- dbrda(fspe_bray ~ 1, soil_z, add = FALSE)
@@ -357,6 +347,8 @@ with(sites %>% filter(field_type == ft, region %in% rg),
 ordistep(f_soil_dbrda_null, scope = formula(f_soil_dbrda), direction = "forward", permutations = how(nperm = 9999))
 
 # Magnesium is all? Jesus Christ. For Wisconsin restored, ITS fungi
+# No soil variables hit with AMF
+# No soil variables hit with ITS or AMF with Blue Mounds only
 
 # Try with plant axes, then with ITS and AMF in varpart. But this isn't looking useful. 
 # Just use abiotic soil as covariates? In partial RDA?
