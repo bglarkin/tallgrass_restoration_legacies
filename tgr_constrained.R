@@ -266,6 +266,11 @@ pcoa_fun <- function(s, ft=c("restored"), rg, method="bray", binary=FALSE, corr=
 pspe_pcoa_ab <- pcoa_fun(pspe$ab, rg = c("BM", "FG", "LP"))
 pspe_pcoa_pr <- pcoa_fun(pspe$pr, rg = c("BM", "FG", "LP", "FL"), method = "jaccard", binary = TRUE)
 
+
+pspe_pcoa_ab$site_vectors %>% rownames_to_column("field_name") %>% 
+    rename(pl1 = Axis.1, pl2 = Axis.2)
+
+
 #' 
 
 
@@ -279,13 +284,13 @@ pspe_pcoa_pr <- pcoa_fun(pspe$pr, rg = c("BM", "FG", "LP", "FL"), method = "jacc
 fspe
 
 
-s <- fspe$its
+s <- fspe$amf
+pspe_pcoa <- pspe_pcoa_pr$site_vectors
 ft <- c("restored")
-rg <- c("BM", "LP", "FG")
+rg <- c("BM", "LP", "FG", "FL") # need to get rid of switchgrass prairies
 
 
-
-dbrda_fun <- function(s, ft, rg) {
+dbrda_fun <- function(s, pspe_pcoa="none", ft, rg) {
     fspe_bray <- vegdist(
         data.frame(
             fspe$its %>% 
@@ -293,45 +298,50 @@ dbrda_fun <- function(s, ft, rg) {
                 select(-field_type, -region),
             row.names = 1),
         method = "bray")
+    pspe_ax <- pspe_pcoa %>% 
+        rownames_to_column("field_name") %>% 
+        rename(pl1 = Axis.1, pl2 = Axis.2)
     ptr_norm <- decostand(
         data.frame(
             ptr %>% 
                 filter(field_type %in% ft, region %in% rg) %>% 
                 select(-field_type, -region),
             row.names = 1),
-        "normalize")
+        "normalize") %>% 
+        rownames_to_column("field_name")
     soil_z <- decostand(
         data.frame(
             soil %>% 
                 filter(field_type %in% ft, region %in% rg) %>% 
                 select(-field_type, -region),
             row.names = 1),
-        "standardize")
-    # Forward select on plant traits
-    f_ptr_dbrda <- dbrda(fspe_bray ~., ptr_norm, add = FALSE)
-    f_ptr_dbrda_null <- dbrda(fspe_bray ~ 1, ptr_norm, add = FALSE)
-    ptr_os <- with(sites %>% filter(field_type %in% ft, region %in% rg),
-                   ordistep(f_ptr_dbrda_null, 
-                            scope = formula(f_ptr_dbrda), 
-                            direction = "forward", 
-                            permutations = how(within = Within(type="free"), 
-                                               plots  = Plots(type="free"),
-                                               blocks = region,
-                                               nperm  = 1999))
-    )
-    # Forward select on soil chemical data
-    f_soil_dbrda <- dbrda(fspe_bray ~., soil_z, add = FALSE)
-    f_soil_dbrda_null <- dbrda(fspe_bray ~ 1, soil_z, add = FALSE)
-    soil_os <- with(sites %>% filter(field_type %in% ft, region %in% rg),
-                    ordistep(f_soil_dbrda_null, 
-                             scope = formula(f_soil_dbrda), 
-                             direction = "forward", 
-                             permutations = how(within = Within(type="free"), 
-                                                plots  = Plots(type="free"),
-                                                blocks = region,nperm  = 1999))
-    )
+        "standardize") %>% 
+        rownames_to_column("field_name")
+    # Create explanatory data frame and covariables matrix
+    env <- if(is.data.frame(pspe_pcoa) == FALSE) {
+        soil_z %>% 
+            relocate(OM, NO3, P, K, .after = last_col()) %>% 
+            left_join(ptr_norm, by = join_by(field_name)) %>% 
+            left_join(sites %>% select(field_name, yr_since), by = join_by(field_name)) %>% 
+            column_to_rownames("field_name")
+    } else {
+        soil_z %>% 
+            relocate(OM, NO3, P, K, .after = last_col()) %>% 
+            left_join(pspe_ax, by = join_by(field_name)) %>% 
+            left_join(sites %>% select(field_name, yr_since), by = join_by(field_name)) %>% 
+            column_to_rownames("field_name")
+    }
+    covars <- as.matrix(env[, 1:10])
+    expl <- env[, 11:ncol(env)]
+    # Forward select on explanatory data with covariables
+    
+    mod_full <- dbrda(fspe_bray ~ . + Condition(covars), data = expl, sqrt.dist = TRUE)
+    mod_null <- dbrda(fspe_bray ~ 1 + Condition(covars), data = expl, sqrt.dist = TRUE)
+    mod_step <- ordistep(mod_null, scope = formula(mod_full), direction = "forward", permutations = 1999)
+    
+    
     return(list(
         plant_traits_sel = ptr_os,
-        soil_traits_sel. = soil_os
+        soil_traits_sel = soil_os
     ))
 }
