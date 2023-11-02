@@ -371,7 +371,7 @@ fwsel_fun <- function(s, ft, rg) {
                                                plots  = Plots(type="free"),
                                                blocks = region,
                                                nperm  = 1999))
-                   )
+    )
     # Forward select on soil chemical data
     f_soil_dbrda <- dbrda(fspe_bray ~., soil_z, add = FALSE)
     f_soil_dbrda_null <- dbrda(fspe_bray ~ 1, soil_z, add = FALSE)
@@ -382,14 +382,14 @@ fwsel_fun <- function(s, ft, rg) {
                              permutations = how(within = Within(type="free"), 
                                                 plots  = Plots(type="free"),
                                                 blocks = region,nperm  = 1999))
-                    )
+    )
     return(list(
         plant_traits_sel = ptr_os,
-        soil_traits_sel. = soil_os
+        soil_traits_sel = soil_os
     ))
 }
 
-test <- fwsel_fun(fspe$its, c("restored", "remnant"), c("BM", "FG", "LP"))
+test <- fwsel_fun(fspe$its, c("restored"), c("BM", "FG", "LP"))
 
 
 
@@ -402,3 +402,72 @@ test <- fwsel_fun(fspe$its, c("restored", "remnant"), c("BM", "FG", "LP"))
 # No soil variables hit with ITS or AMF with Blue Mounds only
 
 # Try with plant axes, then with ITS and AMF in varpart. 
+
+
+
+#' dbrda
+#' four approaches with restored only fields, with its and amf
+#' plant abundance sites with soil and plant functional trait vars
+#' plant abundance sites with soil and plant community axes (maybe)
+#' Blue Mounds sites with soil and plant functional trait vars
+#' plant presence sites with soil and plant community axes
+
+fspe
+
+
+s <- fspe$its
+ft <- c("restored")
+rg <- c("BM", "LP", "FG")
+
+
+
+dbrda_fun <- function(s, ft, rg) {
+    fspe_bray <- vegdist(
+        data.frame(
+            fspe$its %>% 
+                filter(field_type %in% ft, region %in% rg) %>% 
+                select(-field_type, -region),
+            row.names = 1),
+        method = "bray")
+    ptr_norm <- decostand(
+        data.frame(
+            ptr %>% 
+                filter(field_type %in% ft, region %in% rg) %>% 
+                select(-field_type, -region),
+            row.names = 1),
+        "normalize")
+    soil_z <- decostand(
+        data.frame(
+            soil %>% 
+                filter(field_type %in% ft, region %in% rg) %>% 
+                select(-field_type, -region),
+            row.names = 1),
+        "standardize")
+    # Forward select on plant traits
+    f_ptr_dbrda <- dbrda(fspe_bray ~., ptr_norm, add = FALSE)
+    f_ptr_dbrda_null <- dbrda(fspe_bray ~ 1, ptr_norm, add = FALSE)
+    ptr_os <- with(sites %>% filter(field_type %in% ft, region %in% rg),
+                   ordistep(f_ptr_dbrda_null, 
+                            scope = formula(f_ptr_dbrda), 
+                            direction = "forward", 
+                            permutations = how(within = Within(type="free"), 
+                                               plots  = Plots(type="free"),
+                                               blocks = region,
+                                               nperm  = 1999))
+    )
+    # Forward select on soil chemical data
+    f_soil_dbrda <- dbrda(fspe_bray ~., soil_z, add = FALSE)
+    f_soil_dbrda_null <- dbrda(fspe_bray ~ 1, soil_z, add = FALSE)
+    soil_os <- with(sites %>% filter(field_type %in% ft, region %in% rg),
+                    ordistep(f_soil_dbrda_null, 
+                             scope = formula(f_soil_dbrda), 
+                             direction = "forward", 
+                             permutations = how(within = Within(type="free"), 
+                                                plots  = Plots(type="free"),
+                                                blocks = region,nperm  = 1999))
+    )
+    return(list(
+        plant_traits_sel = ptr_os,
+        soil_traits_sel. = soil_os
+    ))
+}
