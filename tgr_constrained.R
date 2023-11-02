@@ -45,62 +45,8 @@ conflict_prefer("select", "dplyr")
 #' 
 #' # Functions
 #' PCoA Function returns basic diagnostics
-pcoa_fun <- function(data, ax, corr="none") {
-    # ax = number of axes desired in the output
-    p <- pcoa(data, correction = corr)
-    p_vals <- data.frame(p$values) %>% 
-        rownames_to_column(var = "Dim") %>% 
-        mutate(Dim = as.integer(Dim))
-    p_vec <- data.frame(p$vectors)
-    
-    if(corr == "none" | ncol(p_vals) == 6) {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", title = "PCoA Eigenvalues and Broken Stick Model") +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
-        print(p_bstick)
-    } else {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", title = "PCoA Eigenvalues and Broken Stick Model") +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
-        print(p_bstick)
-    }
-    
-    output <- list(
-        values         = p_vals[1:(ax+1), ], 
-        site_vectors   = p_vec[, 1:ax],
-        comp_exceed_bs = p_ncomp)
-    
-    return(output)
-}
-#' CoIA runs a coinertia analysis and randomization test. 
-coia_fun <- function(data1, data2, pco=TRUE) {
-    if(isTRUE(pco)) {
-        dudi1 <- dudi.pco(data1, scannf = FALSE)
-        dudi2 <- dudi.pca(data2, scale = FALSE, center = FALSE, scannf = FALSE)
-        coin <- coinertia(dudi1, dudi2, scannf = FALSE, nf = 2)
-        print(summary(coin))
-        print(procuste.randtest(dudi1$tab, dudi2$tab, 9999))
-        
-        return(coin)
-        
-    } else {
-        dudi1 <- dudi.pca(data1, scale = FALSE, center = FALSE, scannf = FALSE)
-        dudi2 <- dudi.pca(data2, scale = FALSE, center = FALSE, scannf = FALSE)
-        coin <- coinertia(dudi1, dudi2, scannf = FALSE, nf = 2)
-        
-        print(summary(coin))
-        print(randtest(coin, 9999))
-        return(coin)
-    }
-}
+
+
 #' 
 #' # Data
 #' ## Site metadata and experimental design
@@ -287,130 +233,48 @@ fb <- read_csv(paste0(getwd(), "/clean_data/plfa.csv"), show_col_types = FALSE) 
 
 
 #+ pcoa_function
-pcoa_fun <- function(d, env=sites, corr="none", df_name) {
-    set.seed <- 983
-    # Multivariate analysis
+pcoa_fun <- function(s, ft=c("restored"), rg, method="bray", binary=FALSE, corr="none") {
+    d <- vegdist(
+        data.frame(
+            s %>% 
+                filter(field_type %in% ft, region %in% rg) %>% 
+                select(-field_type, -region),
+            row.names = 1),
+        method = method,
+        binary = binary)
     p <- pcoa(d, correction = corr)
     p_vals <- data.frame(p$values) %>% 
         rownames_to_column(var = "Dim") %>% 
         mutate(Dim = as.integer(Dim))
     p_vec <- data.frame(p$vectors)
-    # Diagnostic plots
     if(corr == "none" | ncol(p_vals) == 6) {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
         p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
     } else {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
         p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
     }
     ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
     # Ordination plot
-    scores <-
-        p_vec[, 1:ncomp] %>%
-        rownames_to_column(var = "field_key") %>%
-        mutate(field_key = as.integer(field_key)) %>%
-        left_join(sites, by = "field_key") %>% 
-        select(-field_name)
+    scores <- p_vec[, 1:2]
     # Output data
-    output <- list(dataset                        = df_name,
-                   components_exceed_broken_stick = p_ncomp,
+    output <- list(important_components           = p_ncomp,
                    correction_note                = p$note,
-                   values                         = p_vals[1:(ncomp+1), ], 
-                   eigenvalues                    = eig,
-                   site_vectors                   = scores,
-                   broken_stick_plot              = p_bstick)
+                   values                         = p_vals[1:(ncomp+1), ],
+                   site_vectors                   = scores)
     return(output)
 }
+
+pspe_pcoa_ab <- pcoa_fun(pspe$ab, rg = c("BM", "FG", "LP"))
+pspe_pcoa_pr <- pcoa_fun(pspe$pr, rg = c("BM", "FG", "LP", "FL"), method = "jaccard", binary = TRUE)
+
 #' 
-
-#+ fwsel_fun
-fwsel_fun <- function(s, ft, rg) {
-    fspe_bray <- vegdist(
-        data.frame(
-            fspe$its %>% 
-                filter(field_type %in% ft, region %in% rg) %>% 
-                select(-field_type, -region),
-            row.names = 1),
-        method = "bray")
-    ptr_norm <- decostand(
-        data.frame(
-            ptr %>% 
-                filter(field_type %in% ft, region %in% rg) %>% 
-                select(-field_type, -region),
-            row.names = 1),
-        "normalize")
-    soil_z <- decostand(
-        data.frame(
-            soil %>% 
-                filter(field_type %in% ft, region %in% rg) %>% 
-                select(-field_type, -region),
-            row.names = 1),
-        "standardize")
-    # Forward select on plant traits
-    f_ptr_dbrda <- dbrda(fspe_bray ~., ptr_norm, add = FALSE)
-    f_ptr_dbrda_null <- dbrda(fspe_bray ~ 1, ptr_norm, add = FALSE)
-    ptr_os <- with(sites %>% filter(field_type %in% ft, region %in% rg),
-                   ordistep(f_ptr_dbrda_null, 
-                            scope = formula(f_ptr_dbrda), 
-                            direction = "forward", 
-                            permutations = how(within = Within(type="free"), 
-                                               plots  = Plots(type="free"),
-                                               blocks = region,
-                                               nperm  = 1999))
-    )
-    # Forward select on soil chemical data
-    f_soil_dbrda <- dbrda(fspe_bray ~., soil_z, add = FALSE)
-    f_soil_dbrda_null <- dbrda(fspe_bray ~ 1, soil_z, add = FALSE)
-    soil_os <- with(sites %>% filter(field_type %in% ft, region %in% rg),
-                    ordistep(f_soil_dbrda_null, 
-                             scope = formula(f_soil_dbrda), 
-                             direction = "forward", 
-                             permutations = how(within = Within(type="free"), 
-                                                plots  = Plots(type="free"),
-                                                blocks = region,nperm  = 1999))
-    )
-    return(list(
-        plant_traits_sel = ptr_os,
-        soil_traits_sel = soil_os
-    ))
-}
-
-test <- fwsel_fun(fspe$its, c("restored"), c("BM", "FG", "LP"))
-
-
-
-# C4 grass is all for Wisconsin restored, ITS fungi and AMF
-# C4 grass (forb is close) is all for Blue Mounds too, AMF and ITS
-
-
-# Magnesium is all? Jesus Christ. For Wisconsin restored, ITS fungi
-# No soil variables hit with AMF
-# No soil variables hit with ITS or AMF with Blue Mounds only
-
-# Try with plant axes, then with ITS and AMF in varpart. 
-
 
 
 #' dbrda
 #' four approaches with restored only fields, with its and amf
 #' plant abundance sites with soil and plant functional trait vars
-#' plant abundance sites with soil and plant community axes (maybe)
+#' plant abundance sites with soil and plant community axes (no axes significant)
 #' Blue Mounds sites with soil and plant functional trait vars
-#' plant presence sites with soil and plant community axes
+#' plant presence sites with soil and plant community axes (no axes significant)
 
 fspe
 
