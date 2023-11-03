@@ -101,13 +101,16 @@ soil <- read_csv(paste0(getwd(), "/clean_data/soil.csv"), show_col_types = FALSE
 #' Fungal species matrices must have field names instead of field keys to align all datasets.
 #' Create subsets of fungal species matrices to align with plant abundance or presence sites
 #' Sites-species tables contain rarefied sequence abundances. This list includes
-#' composition summarized in fields. 
-#' CSV files were produced in [process_data.R](process_data.md)
+#' composition summarized in fields.
+#' 
+#' - Fermi switchgrass prairies are removed because they have no plant data associated. 
+#' - CSV files were produced in [process_data.R](process_data.md)
 fspe <- list(
     its = read_csv(paste0(getwd(), "/clean_data/spe_ITS_rfy.csv"), show_col_types = FALSE),
     amf = read_csv(paste0(getwd(), "/clean_data/spe_18S_rfy.csv"), show_col_types = FALSE)
 ) %>% map(function(x) x %>% 
               left_join(sites %>% select(starts_with("field"), region), by = join_by("field_key")) %>% 
+              filter(!(field_name %in% c("FLRSP1", "FLRSP2", "FLRSP3"))) %>% 
               select(field_name, field_type, region, everything(), -field_key))
 #' 
 #' ### Species metadata
@@ -267,11 +270,80 @@ pspe_pcoa_ab <- pcoa_fun(pspe$ab, rg = c("BM", "FG", "LP"))
 pspe_pcoa_pr <- pcoa_fun(pspe$pr, rg = c("BM", "FG", "LP", "FL"), method = "jaccard", binary = TRUE)
 
 
-pspe_pcoa_ab$site_vectors %>% rownames_to_column("field_name") %>% 
-    rename(pl1 = Axis.1, pl2 = Axis.2)
+s = fspe$its
+pspe_pcoa = "none"
+ft = c("restored")
+rg = c("BM")
 
 
 #' 
+dbrda_fun <- function(s, pspe_pcoa="none", ft, rg) {
+    fspe_bray <- vegdist(
+        data.frame(
+            s %>% 
+                filter(field_type %in% ft, region %in% rg) %>% 
+                select(-field_type, -region),
+            row.names = 1),
+        method = "bray")
+    if(is.data.frame(pspe_pcoa) == TRUE) {
+        pspe_ax <- pspe_pcoa %>% 
+            rownames_to_column("field_name") %>% 
+            rename(plant1 = Axis.1, plant2 = Axis.2)
+    }
+    ptr_norm <- decostand(
+        data.frame(
+            ptr %>% 
+                filter(field_type %in% ft, region %in% rg) %>% 
+                select(-field_type, -region),
+            row.names = 1),
+        "normalize") %>% 
+        rownames_to_column("field_name")
+    soil_cov_z <- decostand(
+        data.frame(
+            soil %>% 
+                filter(field_type %in% ft, region %in% rg) %>% 
+                select(-field_type, -region, -OM, -NO3, -P, -K),
+            row.names = 1),
+        "standardize")
+    soil_cov_sc <- data.frame(scores(rda(soil_cov_z), display = "sites")) %>% 
+        rename(soil1 = PC1, soil2 = PC2) %>% 
+        rownames_to_column("field_name")
+    soil_expl_z <- decostand(
+        data.frame(
+            soil %>% 
+                filter(field_type %in% ft, region %in% rg) %>% 
+                select(field_name, OM, NO3, P, K, -field_type, -region),
+            row.names = 1),
+        "standardize") %>% 
+        rownames_to_column("field_name")
+    # Create explanatory data frame and covariables matrix
+    env <- if(is.data.frame(pspe_pcoa) == FALSE) {
+        soil_cov_sc %>% 
+            left_join(ptr_norm, by = join_by(field_name)) %>% 
+            left_join(soil_expl_z, by = join_by(field_name)) %>% 
+            left_join(sites %>% select(field_name, yr_since), by = join_by(field_name)) %>% 
+            column_to_rownames("field_name") %>% 
+            drop_na()
+    } else {
+        soil_cov_sc %>% 
+            left_join(pspe_ax, by = join_by(field_name)) %>% 
+            left_join(soil_expl_z, by = join_by(field_name)) %>% 
+            left_join(sites %>% select(field_name, yr_since), by = join_by(field_name)) %>% 
+            column_to_rownames("field_name") %>% 
+            drop_na()
+    }
+    covars <- as.matrix(env[, 1:2])
+    expl <- env[, 3:ncol(env)]
+    # Forward select on explanatory data with covariables
+    mod_null <- dbrda(fspe_bray ~ 1 + Condition(covars), data = expl, sqrt.dist = TRUE)
+    mod_full <- dbrda(fspe_bray ~ . + Condition(covars), data = expl, sqrt.dist = TRUE)
+    mod_step <- ordistep(mod_null, scope = formula(mod_full), direction = "forward", permutations = 1999, trace = FALSE)
+    return(list(
+        select_mod = mod_step,
+        covars,
+        expl
+    ))
+}
 
 
 #' dbrda
@@ -281,67 +353,19 @@ pspe_pcoa_ab$site_vectors %>% rownames_to_column("field_name") %>%
 #' Blue Mounds sites with soil and plant functional trait vars
 #' plant presence sites with soil and plant community axes (no axes significant)
 
-fspe
+dbrda_fun(s = fspe$its, pspe_pcoa = "none", ft = c("restored"), rg = c("BM")) # none
+dbrda_fun(s = fspe$its, pspe_pcoa = "none", ft = c("restored"), rg = c("BM", "LP", "FG")) # forb, c4grass depending on model run
+dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG")) # none
+dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_pr$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG", "FL")) # plant2, K depending on run
 
 
-s <- fspe$amf
-pspe_pcoa <- pspe_pcoa_pr$site_vectors
-ft <- c("restored")
-rg <- c("BM", "LP", "FG", "FL") # need to get rid of switchgrass prairies
 
 
-dbrda_fun <- function(s, pspe_pcoa="none", ft, rg) {
-    fspe_bray <- vegdist(
-        data.frame(
-            fspe$its %>% 
-                filter(field_type %in% ft, region %in% rg) %>% 
-                select(-field_type, -region),
-            row.names = 1),
-        method = "bray")
-    pspe_ax <- pspe_pcoa %>% 
-        rownames_to_column("field_name") %>% 
-        rename(pl1 = Axis.1, pl2 = Axis.2)
-    ptr_norm <- decostand(
-        data.frame(
-            ptr %>% 
-                filter(field_type %in% ft, region %in% rg) %>% 
-                select(-field_type, -region),
-            row.names = 1),
-        "normalize") %>% 
-        rownames_to_column("field_name")
-    soil_z <- decostand(
-        data.frame(
-            soil %>% 
-                filter(field_type %in% ft, region %in% rg) %>% 
-                select(-field_type, -region),
-            row.names = 1),
-        "standardize") %>% 
-        rownames_to_column("field_name")
-    # Create explanatory data frame and covariables matrix
-    env <- if(is.data.frame(pspe_pcoa) == FALSE) {
-        soil_z %>% 
-            relocate(OM, NO3, P, K, .after = last_col()) %>% 
-            left_join(ptr_norm, by = join_by(field_name)) %>% 
-            left_join(sites %>% select(field_name, yr_since), by = join_by(field_name)) %>% 
-            column_to_rownames("field_name")
-    } else {
-        soil_z %>% 
-            relocate(OM, NO3, P, K, .after = last_col()) %>% 
-            left_join(pspe_ax, by = join_by(field_name)) %>% 
-            left_join(sites %>% select(field_name, yr_since), by = join_by(field_name)) %>% 
-            column_to_rownames("field_name")
-    }
-    covars <- as.matrix(env[, 1:10])
-    expl <- env[, 11:ncol(env)]
-    # Forward select on explanatory data with covariables
-    
-    mod_full <- dbrda(fspe_bray ~ . + Condition(covars), data = expl, sqrt.dist = TRUE)
-    mod_null <- dbrda(fspe_bray ~ 1 + Condition(covars), data = expl, sqrt.dist = TRUE)
-    mod_step <- ordistep(mod_null, scope = formula(mod_full), direction = "forward", permutations = 1999)
-    
-    
-    return(list(
-        plant_traits_sel = ptr_os,
-        soil_traits_sel = soil_os
-    ))
-}
+
+dbrda_fun(s = fspe$amf, pspe_pcoa = "none", ft = c("restored"), rg = c("BM")) # none
+dbrda_fun(s = fspe$amf, pspe_pcoa = "none", ft = c("restored"), rg = c("BM", "LP", "FG")) # forb
+dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG")) # none
+dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_pr$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG", "FL")) # none, K depending on run
+
+
+# Find the fields with high AMF and actinomycetes and check those.
