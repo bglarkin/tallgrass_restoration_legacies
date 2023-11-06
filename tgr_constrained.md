@@ -9,6 +9,7 @@ Last updated: 06 November, 2023
 - [Functions](#functions)
   - [PCoA axes](#pcoa-axes)
   - [Constrained analyses](#constrained-analyses)
+  - [Plot results](#plot-results)
 - [Data](#data)
   - [Site metadata and experimental
     design](#site-metadata-and-experimental-design)
@@ -22,7 +23,8 @@ Last updated: 06 November, 2023
     - [Fungal biomass](#fungal-biomass)
 - [Analysis and Results](#analysis-and-results)
   - [Plant community axes](#plant-community-axes)
-  - [Partial db-RDA](#partial-db-rda)
+  - [Microbial communities with explanatory and
+    covariables](#microbial-communities-with-explanatory-and-covariables)
     - [General fungal community (ITS sequence
       abundance)](#general-fungal-community-its-sequence-abundance)
     - [AMF community (18S sequence
@@ -101,8 +103,7 @@ pcoa_fun <- function(s, ft=c("restored"), rg, method="bray", binary=FALSE, corr=
     # Ordination plot
     scores <- p_vec[, 1:2]
     # Output data
-    output <- list(important_components           = p_ncomp,
-                   correction_note                = p$note,
+    output <- list(correction_note                = p$note,
                    values                         = p_vals[1:(ncomp+1), ],
                    site_vectors                   = scores)
     return(output)
@@ -189,9 +190,22 @@ dbrda_fun <- function(s, pspe_pcoa="none", ft, rg) {
                          direction = "forward", 
                          permutations = how(nperm = 1999), 
                          trace = FALSE)
-    mod_glax <- anova(mod_step, step = 1999)
-    mod_inax <- anova(mod_step, by = "axis", step = 1999)
-    mod_scor <- scores(mod_step, choices = c(1,2), display = c("bp", "sites"), tidy = FALSE)
+    mod_glax <- anova(mod_step, permutations = how(nperm = 1999))
+    mod_inax <- anova(mod_step, by = "axis", permutations = how(nperm = 1999))
+    # Produce plot data including borderline vars if possible
+    mod_scor <- if(is.data.frame(pspe_pcoa) == FALSE) {
+        scores(
+            dbrda(fspe_bray ~ yr_since + forb + C4_grass + Condition(covars), data = expl, sqrt.dist = TRUE),
+            choices = c(1,2),
+            display = c("bp", "sites"), tidy = FALSE
+        )
+    } else {
+        scores(
+            dbrda(fspe_bray ~ yr_since + K + plant1 + OM + Condition(covars), data = expl, sqrt.dist = TRUE),
+            choices = c(1,2),
+            display = c("bp", "sites"), tidy = FALSE
+        )
+    }
     return(list(
         plot_data = mod_scor,
         select_mod = mod_step,
@@ -199,6 +213,37 @@ dbrda_fun <- function(s, pspe_pcoa="none", ft, rg) {
         individual_axis_test = mod_inax
     ))
 } 
+```
+
+## Plot results
+
+``` r
+plot_dbrda <- function(site_sc, site_bp) {
+    site_df <- site_sc %>% 
+        data.frame() %>% 
+        rownames_to_column(var = "field_name") %>% 
+        left_join(sites, by = join_by(field_name))
+    bp_df <- site_bp %>% 
+        data.frame() %>% 
+        rownames_to_column(var = "envvar") %>% 
+        mutate(
+            origin = 0,
+            m = dbRDA2 / dbRDA1, 
+            d = sqrt(dbRDA1^2 + dbRDA2^2), 
+            dadd = sqrt((max(dbRDA1)-min(dbRDA2))^2 + (max(dbRDA2)-min(dbRDA2))^2)*0.1,
+            labx = ((d+dadd)*cos(atan(m)))*(dbRDA1/abs(dbRDA1)), 
+            laby = ((d+dadd)*sin(atan(m)))*(dbRDA1/abs(dbRDA1)))
+    ggplot(site_df, aes(x = dbRDA1, y = dbRDA2)) +
+        geom_text(aes(label = field_name)) +
+        geom_segment(data = bp_df, 
+                     aes(x = origin, xend = dbRDA1, y = origin, yend = dbRDA2), 
+                     arrow = arrow(length = unit(3, "mm")),
+                     color = "blue") +
+        geom_text(data = bp_df, 
+                  aes(x = labx, y = laby, label = envvar),
+                  color = "blue") +
+        theme_bw()
+}
 ```
 
 # Data
@@ -348,9 +393,6 @@ the abundance and presence/absence plant data.
 (pspe_pcoa_ab <- pcoa_fun(pspe$ab, rg = c("BM", "FG", "LP")))
 ```
 
-    ## $important_components
-    ## [1] 0
-    ## 
     ## $correction_note
     ## [1] "There were no negative eigenvalues. No correction was applied"
     ## 
@@ -377,9 +419,6 @@ the abundance and presence/absence plant data.
 (pspe_pcoa_pr <- pcoa_fun(pspe$pr, rg = c("BM", "FG", "LP", "FL"), method = "jaccard", binary = TRUE))
 ```
 
-    ## $important_components
-    ## [1] 0
-    ## 
     ## $correction_note
     ## [1] "There were no negative eigenvalues. No correction was applied"
     ## 
@@ -405,61 +444,18 @@ the abundance and presence/absence plant data.
     ## MHRP2  0.10057182 -0.374191665
     ## PHRP1  0.13151908  0.096723644
 
-## Partial db-RDA
+## Microbial communities with explanatory and covariables
+
+Partial db-RDA
 
 ### General fungal community (ITS sequence abundance)
 
 #### Blue Mounds with plant traits data
 
 ``` r
-dbrda_fun(s = fspe$its, pspe_pcoa = "none", ft = c("restored"), rg = c("BM"))
+dbrda_fun(s = fspe$its, pspe_pcoa = "none", ft = c("restored"), rg = c("BM"))[c(3,4,2)]
 ```
 
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-
-    ## $plot_data
-    ##             MDS1       MDS2
-    ## BBRP1  0.8637510  0.9359483
-    ## ERRP1 -0.4541304 -0.6575074
-    ## KORP1  1.3192552 -0.7155829
-    ## MBRP1 -0.1798011 -0.5283187
-    ## MHRP1 -0.4013747  0.3204723
-    ## MHRP2 -0.7303488 -0.4467761
-    ## PHRP1 -0.4173511  1.0917645
-    ## attr(,"const")
-    ## [1] 1.89572
-    ## 
-    ## $select_mod
-    ## Call: dbrda(formula = fspe_bray ~ 1 + Condition(covars), data = expl,
-    ## sqrt.dist = TRUE)
-    ## 
-    ##               Inertia Proportion Rank
-    ## Total          2.1525     1.0000     
-    ## Conditional    0.7428     0.3451    2
-    ## Unconstrained  1.4097     0.6549    4
-    ## Inertia is Bray distance 
-    ## 
-    ## Eigenvalues for unconstrained axes:
-    ##   MDS1   MDS2   MDS3   MDS4 
-    ## 0.4834 0.3679 0.3135 0.2449 
-    ## 
-    ## 
     ## $global_axis_test
     ## No constrained component
     ## 
@@ -474,36 +470,54 @@ dbrda_fun(s = fspe$its, pspe_pcoa = "none", ft = c("restored"), rg = c("BM"))
     ## Model: dbrda(formula = fspe_bray ~ 1 + Condition(covars), data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs  F Pr(>F)
     ## Model     0   0.0000  0       
-    ## Residual  6   1.4097
+    ## Residual  6   1.4097          
+    ## 
+    ## $select_mod
+    ## Call: dbrda(formula = fspe_bray ~ 1 + Condition(covars), data = expl,
+    ## sqrt.dist = TRUE)
+    ## 
+    ##               Inertia Proportion Rank
+    ## Total          2.1525     1.0000     
+    ## Conditional    0.7428     0.3451    2
+    ## Unconstrained  1.4097     0.6549    4
+    ## Inertia is Bray distance 
+    ## 
+    ## Eigenvalues for unconstrained axes:
+    ##   MDS1   MDS2   MDS3   MDS4 
+    ## 0.4834 0.3679 0.3135 0.2449
 
 No explanatory variables were selected
 
 #### Wisconsin sites with plant traits
 
 ``` r
-(dbrda_wi_tr_its <- dbrda_fun(s = fspe$its, pspe_pcoa = "none", ft = c("restored"), rg = c("BM", "LP", "FG")))
+(dbrda_wi_tr_its <- dbrda_fun(s = fspe$its, pspe_pcoa = "none", ft = c("restored"), rg = c("BM", "LP", "FG")))[c(3,4,2)]
 ```
 
-    ## $plot_data
-    ## $plot_data$sites
-    ##           dbRDA1        MDS1
-    ## BBRP1  0.9633584  0.58511169
-    ## ERRP1 -0.3473652 -0.66684550
-    ## FGRP1  0.3373293  0.99996489
-    ## KORP1  1.4243244 -1.08965399
-    ## LPRP1 -0.7977454 -0.08345122
-    ## LPRP2 -0.6230542  0.64296860
-    ## MBRP1  0.5237738 -0.02074886
-    ## MHRP1 -0.4908515 -0.22341513
-    ## MHRP2 -0.8188294 -1.04801544
-    ## PHRP1 -0.1709401  0.90408495
+    ## $global_axis_test
+    ## Permutation test for dbrda under reduced model
+    ## Permutation: free
+    ## Number of permutations: 1999
     ## 
-    ## $plot_data$biplot
-    ##             dbRDA1 MDS1
-    ## yr_since 0.9596281    0
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)  
+    ## Model     1  0.54709 1.7407   0.02 *
+    ## Residual  6  1.88570                
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## attr(,"const")
-    ## [1] 2.315327
+    ## $individual_axis_test
+    ## Permutation test for dbrda under reduced model
+    ## Forward tests for axes
+    ## Permutation: free
+    ## Number of permutations: 1999
+    ## 
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)  
+    ## dbRDA1    1  0.54709 1.7407  0.017 *
+    ## Residual  6  1.88570                
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $select_mod
     ## Call: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data =
@@ -522,65 +536,50 @@ No explanatory variables were selected
     ## 
     ## Eigenvalues for unconstrained axes:
     ##   MDS1   MDS2   MDS3   MDS4   MDS5   MDS6 
-    ## 0.3879 0.3720 0.3467 0.3007 0.2557 0.2227 
-    ## 
-    ## 
-    ## $global_axis_test
-    ## Permutation test for dbrda under reduced model
-    ## Permutation: free
-    ## Number of permutations: 999
-    ## 
-    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.54709 1.7407  0.011 *
-    ## Residual  6  1.88570                
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## $individual_axis_test
-    ## Permutation test for dbrda under reduced model
-    ## Forward tests for axes
-    ## Permutation: free
-    ## Number of permutations: 999
-    ## 
-    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)  
-    ## dbRDA1    1  0.54709 1.7407  0.016 *
-    ## Residual  6  1.88570                
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 0.3879 0.3720 0.3467 0.3007 0.2557 0.2227
 
-Global (p=0.011) and individual (p=0.015, dbRDA1) axis tests were
-significant. Years since restoration was selected, and it explains 17%
-of the variation. Forb and C4 grass are runners-up but appear highly
-correlated with years (not shown).
+Global and individual axis tests were significant. Years since
+restoration was selected, and it explains 17% of the variation. Forb and
+C4 grass are runners-up but appear highly correlated with years (not
+shown). Let’s view a plot and include forb and C4 grass for
+visualization purposes:
+
+``` r
+plot_dbrda(site_sc = dbrda_wi_tr_its$plot_data$sites, site_bp = dbrda_wi_tr_its$plot_data$biplot)
+```
+
+<img src="tgr_constrained_files/figure-gfm/plot_wi_tr_its-1.png" style="display: block; margin: auto;" />
 
 #### Wisconsin sites with plant community axes
 
 ``` r
-dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG"))
+dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG"))[c(3,4,2)]
 ```
 
-    ## $plot_data
-    ## $plot_data$sites
-    ##           dbRDA1        MDS1
-    ## BBRP1  0.9633584  0.58511169
-    ## ERRP1 -0.3473652 -0.66684550
-    ## FGRP1  0.3373293  0.99996489
-    ## KORP1  1.4243244 -1.08965399
-    ## LPRP1 -0.7977454 -0.08345122
-    ## LPRP2 -0.6230542  0.64296860
-    ## MBRP1  0.5237738 -0.02074886
-    ## MHRP1 -0.4908515 -0.22341513
-    ## MHRP2 -0.8188294 -1.04801544
-    ## PHRP1 -0.1709401  0.90408495
+    ## $global_axis_test
+    ## Permutation test for dbrda under reduced model
+    ## Permutation: free
+    ## Number of permutations: 1999
     ## 
-    ## $plot_data$biplot
-    ##             dbRDA1 MDS1
-    ## yr_since 0.9596281    0
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)  
+    ## Model     1  0.54709 1.7407 0.0145 *
+    ## Residual  6  1.88570                
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## attr(,"const")
-    ## [1] 2.315327
+    ## $individual_axis_test
+    ## Permutation test for dbrda under reduced model
+    ## Forward tests for axes
+    ## Permutation: free
+    ## Number of permutations: 1999
+    ## 
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)  
+    ## dbRDA1    1  0.54709 1.7407 0.0155 *
+    ## Residual  6  1.88570                
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $select_mod
     ## Call: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data =
@@ -599,18 +598,28 @@ dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"
     ## 
     ## Eigenvalues for unconstrained axes:
     ##   MDS1   MDS2   MDS3   MDS4   MDS5   MDS6 
-    ## 0.3879 0.3720 0.3467 0.3007 0.2557 0.2227 
-    ## 
-    ## 
+    ## 0.3879 0.3720 0.3467 0.3007 0.2557 0.2227
+
+Global and individual axis tests were significant. Years since
+restoration was selected, and it explains 17% of the variation. Since
+the plant community axes failed to contribute explanatory power, the
+result of the test is identical to the previous one.
+
+#### All regions with plant community axes
+
+``` r
+(dbrda_all_pr_its <- dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_pr$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG", "FL")))[c(3,4,2)]
+```
+
     ## $global_axis_test
     ## Permutation test for dbrda under reduced model
     ## Permutation: free
-    ## Number of permutations: 999
+    ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.54709 1.7407  0.014 *
-    ## Residual  6  1.88570                
+    ##          Df SumOfSqs      F Pr(>F)    
+    ## Model     1  0.70182 2.2329  0.001 ***
+    ## Residual  9  2.82875                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -618,46 +627,14 @@ dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"
     ## Permutation test for dbrda under reduced model
     ## Forward tests for axes
     ## Permutation: free
-    ## Number of permutations: 999
+    ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)  
-    ## dbRDA1    1  0.54709 1.7407   0.02 *
-    ## Residual  6  1.88570                
+    ##          Df SumOfSqs      F Pr(>F)    
+    ## dbRDA1    1  0.70182 2.2329  5e-04 ***
+    ## Residual  9  2.82875                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-No explanatory variables were selected
-
-#### All regions with plant community axes
-
-``` r
-(dbrda_all_pr_its <- dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_pr$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG", "FL")))
-```
-
-    ## $plot_data
-    ## $plot_data$sites
-    ##            dbRDA1        MDS1
-    ## BBRP1 -0.90433767 -1.16225693
-    ## ERRP1  0.03834023  0.64553569
-    ## FGRP1  0.56449426 -0.66862405
-    ## FLRP1 -0.77609382  0.65864286
-    ## FLRP4 -1.06121119  0.32510664
-    ## FLRP5 -0.95499005  0.92113266
-    ## KORP1 -0.57837100 -1.07532996
-    ## LPRP1  0.83914210  0.82998345
-    ## LPRP2  0.49994600  0.79797812
-    ## MBRP1 -0.09346318 -0.87662118
-    ## MHRP1  0.97266841 -0.55204185
-    ## MHRP2  1.04002208  0.23121170
-    ## PHRP1  0.41385382 -0.07471715
-    ## 
-    ## $plot_data$biplot
-    ##              dbRDA1 MDS1
-    ## yr_since -0.8473973    0
-    ## 
-    ## attr(,"const")
-    ## [1] 2.686417
     ## 
     ## $select_mod
     ## Call: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data =
@@ -676,93 +653,30 @@ No explanatory variables were selected
     ## 
     ## Eigenvalues for unconstrained axes:
     ##   MDS1   MDS2   MDS3   MDS4   MDS5   MDS6   MDS7   MDS8   MDS9 
-    ## 0.4454 0.3874 0.3615 0.3437 0.3056 0.2642 0.2530 0.2474 0.2205 
-    ## 
-    ## 
-    ## $global_axis_test
-    ## Permutation test for dbrda under reduced model
-    ## Permutation: free
-    ## Number of permutations: 999
-    ## 
-    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)    
-    ## Model     1  0.70182 2.2329  0.001 ***
-    ## Residual  9  2.82875                  
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## $individual_axis_test
-    ## Permutation test for dbrda under reduced model
-    ## Forward tests for axes
-    ## Permutation: free
-    ## Number of permutations: 999
-    ## 
-    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)    
-    ## dbRDA1    1  0.70182 2.2329  0.001 ***
-    ## Residual  9  2.82875                  
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 0.4454 0.3874 0.3615 0.3437 0.3056 0.2642 0.2530 0.2474 0.2205
 
-Global and individual axes are significant and strong. Potassium was
-selected and it explains 13% of the variation here. It seems that this
-single variable must be driven by Fermi.
+Global and individual axes are significant and strong. Years since
+restoration was selected and it explains 16% of the variation here.
+Potassium and plant axis 1 were runners up. It’s nice to see that the
+addition of a very different plant community didn’t make much of a
+difference, and that the conditional variation was 18%. I expected more
+with how different Fermi soils are. Let’s view a plot and add SOM, plant
+axis 1, and potassium for visualization purposes.
 
-K and plant 1 are runners up
+``` r
+plot_dbrda(site_sc = dbrda_all_pr_its$plot_data$sites, site_bp = dbrda_all_pr_its$plot_data$biplot)
+```
+
+<img src="tgr_constrained_files/figure-gfm/plot_all_pr_its-1.png" style="display: block; margin: auto;" />
 
 ### AMF community (18S sequence abundance)
 
 #### Blue Mounds with plant traits data
 
 ``` r
-dbrda_fun(s = fspe$amf, pspe_pcoa = "none", ft = c("restored"), rg = c("BM"))
+dbrda_fun(s = fspe$amf, pspe_pcoa = "none", ft = c("restored"), rg = c("BM"))[c(3,4,2)]
 ```
 
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-    ## Set of permutations < 'minperm'. Generating entire set.
-
-    ## $plot_data
-    ##              MDS1        MDS2
-    ## BBRP1  0.79572916  1.13330250
-    ## ERRP1 -0.43746604 -0.92029661
-    ## KORP1  1.25376849 -0.82390083
-    ## MBRP1 -0.09309994  0.02468352
-    ## MHRP1 -0.40909900  0.31828016
-    ## MHRP2 -0.54084503  0.48098769
-    ## PHRP1 -0.56898764 -0.21305643
-    ## attr(,"const")
-    ## [1] 1.785717
-    ## 
-    ## $select_mod
-    ## Call: dbrda(formula = fspe_bray ~ 1 + Condition(covars), data = expl,
-    ## sqrt.dist = TRUE)
-    ## 
-    ##               Inertia Proportion Rank
-    ## Total          1.6947     1.0000     
-    ## Conditional    0.5800     0.3422    2
-    ## Unconstrained  1.1147     0.6578    4
-    ## Inertia is Bray distance 
-    ## 
-    ## Eigenvalues for unconstrained axes:
-    ##   MDS1   MDS2   MDS3   MDS4 
-    ## 0.5249 0.2560 0.1919 0.1418 
-    ## 
-    ## 
     ## $global_axis_test
     ## No constrained component
     ## 
@@ -777,36 +691,55 @@ dbrda_fun(s = fspe$amf, pspe_pcoa = "none", ft = c("restored"), rg = c("BM"))
     ## Model: dbrda(formula = fspe_bray ~ 1 + Condition(covars), data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs  F Pr(>F)
     ## Model     0   0.0000  0       
-    ## Residual  6   1.1147
+    ## Residual  6   1.1147          
+    ## 
+    ## $select_mod
+    ## Call: dbrda(formula = fspe_bray ~ 1 + Condition(covars), data = expl,
+    ## sqrt.dist = TRUE)
+    ## 
+    ##               Inertia Proportion Rank
+    ## Total          1.6947     1.0000     
+    ## Conditional    0.5800     0.3422    2
+    ## Unconstrained  1.1147     0.6578    4
+    ## Inertia is Bray distance 
+    ## 
+    ## Eigenvalues for unconstrained axes:
+    ##   MDS1   MDS2   MDS3   MDS4 
+    ## 0.5249 0.2560 0.1919 0.1418
 
-No explanatory variables were selected
+No explanatory variables were selected. Blue Mounds has too few sites
+for the number of conditional and explanatory variables used, perhaps.
 
 #### Wisconsin sites with plant traits data
 
 ``` r
-(dbrda_wi_tr_amf <- dbrda_fun(s = fspe$amf, pspe_pcoa = "none", ft = c("restored"), rg = c("BM", "LP", "FG")))
+(dbrda_wi_tr_amf <- dbrda_fun(s = fspe$amf, pspe_pcoa = "none", ft = c("restored"), rg = c("BM", "LP", "FG")))[c(3,4,2)]
 ```
 
-    ## $plot_data
-    ## $plot_data$sites
-    ##           dbRDA1         MDS1
-    ## BBRP1  0.9388100  0.078391311
-    ## ERRP1 -0.3828472  0.004486696
-    ## FGRP1  0.2635759 -1.068508279
-    ## KORP1  1.4244892  1.207177390
-    ## LPRP1 -0.6945564  0.756455795
-    ## LPRP2 -0.5365634 -0.009033232
-    ## MBRP1  0.4768547 -1.206806487
-    ## MHRP1 -0.4841813  0.053082234
-    ## MHRP2 -0.6490266  0.301345912
-    ## PHRP1 -0.3565550 -0.116591340
+    ## $global_axis_test
+    ## Permutation test for dbrda under reduced model
+    ## Permutation: free
+    ## Number of permutations: 1999
     ## 
-    ## $plot_data$biplot
-    ##             dbRDA1 MDS1
-    ## yr_since 0.9596281    0
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## Model     1  0.57408 2.7216 0.0065 **
+    ## Residual  6  1.26562                 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## attr(,"const")
-    ## [1] 2.177398
+    ## $individual_axis_test
+    ## Permutation test for dbrda under reduced model
+    ## Forward tests for axes
+    ## Permutation: free
+    ## Number of permutations: 1999
+    ## 
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## dbRDA1    1  0.57408 2.7216  0.006 **
+    ## Residual  6  1.26562                 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $select_mod
     ## Call: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data =
@@ -825,66 +758,51 @@ No explanatory variables were selected
     ## 
     ## Eigenvalues for unconstrained axes:
     ##    MDS1    MDS2    MDS3    MDS4    MDS5    MDS6 
-    ## 0.30700 0.27775 0.21350 0.18386 0.15709 0.12642 
-    ## 
-    ## 
-    ## $global_axis_test
-    ## Permutation test for dbrda under reduced model
-    ## Permutation: free
-    ## Number of permutations: 999
-    ## 
-    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.57408 2.7216  0.006 **
-    ## Residual  6  1.26562                 
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## $individual_axis_test
-    ## Permutation test for dbrda under reduced model
-    ## Forward tests for axes
-    ## Permutation: free
-    ## Number of permutations: 999
-    ## 
-    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.57408 2.7216  0.004 **
-    ## Residual  6  1.26562                 
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 0.30700 0.27775 0.21350 0.18386 0.15709 0.12642
 
 Global and single constrained axes are significant in site rank at
-p\<0.05. Forb abundance was the selected explanatory variable,
-explanaing 22% of the variation in communities.
+p\<0.01. Years since restoration was the selected explanatory variable,
+explanaing 23% of the variation in communities. Forb and C4 grass were
+runners up and appear highly correlated with years since restoration.
+Let’s view a plot and include forb and C4 grass for visualization
+purposes:
 
-Forb and C4 grass are runners up
+``` r
+plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites, site_bp = dbrda_wi_tr_amf$plot_data$biplot)
+```
+
+<img src="tgr_constrained_files/figure-gfm/plot_wi_tr_amf-1.png" style="display: block; margin: auto;" />
 
 #### Wisconsin sites with plant community axes
 
 ``` r
-dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG"))
+dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG"))[c(3,4,2)]
 ```
 
-    ## $plot_data
-    ## $plot_data$sites
-    ##           dbRDA1         MDS1
-    ## BBRP1  0.9388100  0.078391311
-    ## ERRP1 -0.3828472  0.004486696
-    ## FGRP1  0.2635759 -1.068508279
-    ## KORP1  1.4244892  1.207177390
-    ## LPRP1 -0.6945564  0.756455795
-    ## LPRP2 -0.5365634 -0.009033232
-    ## MBRP1  0.4768547 -1.206806487
-    ## MHRP1 -0.4841813  0.053082234
-    ## MHRP2 -0.6490266  0.301345912
-    ## PHRP1 -0.3565550 -0.116591340
+    ## $global_axis_test
+    ## Permutation test for dbrda under reduced model
+    ## Permutation: free
+    ## Number of permutations: 1999
     ## 
-    ## $plot_data$biplot
-    ##             dbRDA1 MDS1
-    ## yr_since 0.9596281    0
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## Model     1  0.57408 2.7216  0.004 **
+    ## Residual  6  1.26562                 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## attr(,"const")
-    ## [1] 2.177398
+    ## $individual_axis_test
+    ## Permutation test for dbrda under reduced model
+    ## Forward tests for axes
+    ## Permutation: free
+    ## Number of permutations: 1999
+    ## 
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## dbRDA1    1  0.57408 2.7216  0.005 **
+    ## Residual  6  1.26562                 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $select_mod
     ## Call: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data =
@@ -903,18 +821,26 @@ dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"
     ## 
     ## Eigenvalues for unconstrained axes:
     ##    MDS1    MDS2    MDS3    MDS4    MDS5    MDS6 
-    ## 0.30700 0.27775 0.21350 0.18386 0.15709 0.12642 
-    ## 
-    ## 
+    ## 0.30700 0.27775 0.21350 0.18386 0.15709 0.12642
+
+Global and individual axis tests were significant, years since
+restoration was selected with the same strength as the previous test.
+
+#### All regions with plant community axes
+
+``` r
+(dbrda_all_pr_amf <- dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_pr$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG", "FL")))[c(3,4,2)]
+```
+
     ## $global_axis_test
     ## Permutation test for dbrda under reduced model
     ## Permutation: free
-    ## Number of permutations: 999
+    ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.57408 2.7216  0.008 **
-    ## Residual  6  1.26562                 
+    ## Model     1  0.69717 3.3004 0.0015 **
+    ## Residual  9  1.90112                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -922,46 +848,14 @@ dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"
     ## Permutation test for dbrda under reduced model
     ## Forward tests for axes
     ## Permutation: free
-    ## Number of permutations: 999
+    ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.57408 2.7216  0.008 **
-    ## Residual  6  1.26562                 
+    ## dbRDA1    1  0.69717 3.3004  0.002 **
+    ## Residual  9  1.90112                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Years
-
-#### All regions with plant community axes
-
-``` r
-dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_pr$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG", "FL"))
-```
-
-    ## $plot_data
-    ## $plot_data$sites
-    ##            dbRDA1       MDS1
-    ## BBRP1 -1.06109155 -0.6087466
-    ## ERRP1  0.15116456  0.1282159
-    ## FGRP1  0.56338000 -1.3091501
-    ## FLRP1 -0.79480853  0.1445111
-    ## FLRP4 -0.87615237  0.5951870
-    ## FLRP5 -0.63869002  0.7726303
-    ## KORP1 -0.91015581 -0.3479665
-    ## LPRP1  0.75683216  0.8846296
-    ## LPRP2  0.50351936  0.3365682
-    ## MBRP1 -0.08763233 -1.4024422
-    ## MHRP1  0.91452335  0.1878555
-    ## MHRP2  0.81937748  0.3639146
-    ## PHRP1  0.65973370  0.2547932
-    ## 
-    ## $plot_data$biplot
-    ##              dbRDA1 MDS1
-    ## yr_since -0.8473973    0
-    ## 
-    ## attr(,"const")
-    ## [1] 2.507866
     ## 
     ## $select_mod
     ## Call: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data =
@@ -980,69 +874,18 @@ dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_pr$site_vectors, ft = c("restored"
     ## 
     ## Eigenvalues for unconstrained axes:
     ##   MDS1   MDS2   MDS3   MDS4   MDS5   MDS6   MDS7   MDS8   MDS9 
-    ## 0.3631 0.2896 0.2725 0.2190 0.1762 0.1648 0.1573 0.1366 0.1221 
-    ## 
-    ## 
-    ## $global_axis_test
-    ## Permutation test for dbrda under reduced model
-    ## Permutation: free
-    ## Number of permutations: 999
-    ## 
-    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.69717 3.3004  0.002 **
-    ## Residual  9  1.90112                 
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## $individual_axis_test
-    ## Permutation test for dbrda under reduced model
-    ## Forward tests for axes
-    ## Permutation: free
-    ## Number of permutations: 999
-    ## 
-    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.69717 3.3004  0.003 **
-    ## Residual  9  1.90112                 
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 0.3631 0.2896 0.2725 0.2190 0.1762 0.1648 0.1573 0.1366 0.1221
 
-Global and single constrained axes are significant in site rank at
-p\<0.05. As before, Fermi brings potassium as a significant predictor of
-microbial communities.
+Global and single constrained axes are significant in site rank. Years
+since restoration explained 21% of the variation and potassium was a
+runner up. Let’s view a plot and add SOM, plant axis 1, and potassium
+for visualization purposes.
 
 ``` r
-# Find the fields with high AMF and actinomycetes and check those.
-
-
-site_sc <- dbrda_wi_tr_its$plot_data$sites
-site_bp <- dbrda_wi_tr_its$plot_data$biplot
-
-site_df <- site_sc %>% 
-    data.frame() %>% 
-    rownames_to_column(var = "field_name") %>% 
-    left_join(sites, by = join_by(field_name))
-bp_df <- site_bp %>% 
-    data.frame() %>% 
-    rownames_to_column(var = "envvar") %>% 
-    mutate(
-        origin = 0,
-        m = MDS1 / dbRDA1, 
-        d = sqrt(dbRDA1^2 + MDS1^2), 
-        dadd = sqrt((max(dbRDA1)-min(MDS1))^2 + (max(MDS1)-min(MDS1))^2)*0.1,
-        labx = ((d+dadd)*cos(atan(m)))*(dbRDA1/abs(dbRDA1)), 
-        laby = ((d+dadd)*sin(atan(m)))*(dbRDA1/abs(dbRDA1)))
-ggplot(site_df, aes(x = dbRDA1, y = MDS1)) +
-    geom_text(aes(label = field_name)) +
-    geom_segment(data = bp_df, 
-                 aes(x = origin, xend = dbRDA1, y = origin, yend = MDS1), 
-                 arrow = arrow(length = unit(3, "mm")),
-                 color = "blue") +
-    geom_text(data = bp_df, 
-              aes(x = labx, y = laby, label = envvar),
-              color = "blue") +
-    theme_bw()
+plot_dbrda(site_sc = dbrda_all_pr_amf$plot_data$sites, site_bp = dbrda_all_pr_amf$plot_data$biplot)
 ```
 
-![](tgr_constrained_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+<img src="tgr_constrained_files/figure-gfm/plot_all_pr_amf-1.png" style="display: block; margin: auto;" />
+
+Microbial communities align with years since restoration across regions
+and types (general fungi and amf).
