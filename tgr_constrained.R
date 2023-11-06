@@ -29,7 +29,7 @@
 #' complication in the analysis. See further notes below. 
 #' 
 #' # Packages and libraries
-packages_needed = c("tidyverse", "vegan", "conflicted", "knitr", "GGally", "ape", "ade4")
+packages_needed = c("tidyverse", "vegan", "conflicted", "knitr", "GGally", "ape", "ade4", "GGally")
 packages_installed = packages_needed %in% rownames(installed.packages())
 #+ packages,message=FALSE
 if (any(!packages_installed)) {
@@ -277,10 +277,16 @@ fspe_meta <- list(
     amf =  read_csv(paste0(getwd(), "/clean_data/speTaxa_18S_rfy.csv"), show_col_types = FALSE)
 )
 #' 
+#' ## Response data
 #' ### Fungal biomass
 fb <- read_csv(paste0(getwd(), "/clean_data/plfa.csv"), show_col_types = FALSE) %>% 
     left_join(sites %>% select(starts_with("field"), region), by = join_by("field_key", "field_name")) %>% 
-    select(field_name, field_type, region, everything(), -field_key)
+    select(field_name, field_type, region, everything(), -field_key, -starts_with("fa_"))
+#' 
+#' ### Water stable aggregates
+# Remove rows from old field sites (26 and 27)
+wsa <- read_csv(paste0(getwd(), "/clean_data/wsa.csv"), show_col_types = FALSE)[-c(26:27), ] %>% 
+    left_join(sites, by = "field_key")
 #' 
 #' # Analysis and Results
 #' A great number of symmetric and asymmetric comparative and constrained analyses have been attempted
@@ -377,3 +383,34 @@ dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"
 plot_dbrda(site_sc = dbrda_all_pr_amf$plot_data$sites, site_bp = dbrda_all_pr_amf$plot_data$biplot)
 #' 
 #' Microbial communities align with years since restoration across regions and types (general fungi and amf).
+#' 
+#' ## Response correlations
+#' Fungal communities varied with years since restoration, C4 grass, and forbs. How do these predictors affect
+#' microbial biomass and function?
+#+ func_vars_df
+func_vars <- 
+    sites %>% 
+    left_join(ptr %>% select(field_name, C4_grass, forb), by = join_by(field_name)) %>% 
+    left_join(fb %>% select(field_name, fungi, amf), by = join_by(field_name)) %>% 
+    left_join(wsa %>% select(field_name, wsa), by = join_by(field_name)) %>% 
+    rename(C4_grass_pct = C4_grass, forb_pct = forb, mass_fungi = fungi, mass_amf = amf) %>% 
+    select(-field_key)
+#' Plant traits data are only available in Wisconsin; try these first. 
+#+ pairs_wi,fig.align='center'
+ggpairs(
+    data = func_vars %>% filter(field_type == "restored", region != "FL"),
+    columns = 4:9
+) +
+    theme_bw()
+#' In all restored sites, response correlations are still possible without plant traits.
+#+ pairs_all,fig.align='center'
+ggpairs(
+    data = func_vars %>% filter(field_type == "restored") %>% 
+        select(-C4_grass_pct, -forb_pct),
+    columns = 4:7
+) +
+    theme_bw()
+#' In both cases, we see obvious relationships that would be difficult to handle in a statistically 
+#' robust way due to limited reps in regions.
+#' 
+#' Next, look for trends in guild and taxonomy data. 

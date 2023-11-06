@@ -20,7 +20,9 @@ Last updated: 06 November, 2023
   - [Microbial data](#microbial-data)
     - [Fungal communities](#fungal-communities)
     - [Species metadata](#species-metadata)
+  - [Response data](#response-data)
     - [Fungal biomass](#fungal-biomass)
+    - [Water stable aggregates](#water-stable-aggregates)
 - [Analysis and Results](#analysis-and-results)
   - [Plant community axes](#plant-community-axes)
   - [Microbial communities with explanatory and
@@ -29,6 +31,7 @@ Last updated: 06 November, 2023
       abundance)](#general-fungal-community-its-sequence-abundance)
     - [AMF community (18S sequence
       abundance)](#amf-community-18s-sequence-abundance)
+  - [Response correlations](#response-correlations)
 
 # Description
 
@@ -52,7 +55,7 @@ some complication in the analysis. See further notes below.
 # Packages and libraries
 
 ``` r
-packages_needed = c("tidyverse", "vegan", "conflicted", "knitr", "GGally", "ape", "ade4")
+packages_needed = c("tidyverse", "vegan", "conflicted", "knitr", "GGally", "ape", "ade4", "GGally")
 packages_installed = packages_needed %in% rownames(installed.packages())
 ```
 
@@ -352,12 +355,22 @@ fspe_meta <- list(
 )
 ```
 
+## Response data
+
 ### Fungal biomass
 
 ``` r
 fb <- read_csv(paste0(getwd(), "/clean_data/plfa.csv"), show_col_types = FALSE) %>% 
     left_join(sites %>% select(starts_with("field"), region), by = join_by("field_key", "field_name")) %>% 
-    select(field_name, field_type, region, everything(), -field_key)
+    select(field_name, field_type, region, everything(), -field_key, -starts_with("fa_"))
+```
+
+### Water stable aggregates
+
+``` r
+# Remove rows from old field sites (26 and 27)
+wsa <- read_csv(paste0(getwd(), "/clean_data/wsa.csv"), show_col_types = FALSE)[-c(26:27), ] %>% 
+    left_join(sites, by = "field_key")
 ```
 
 # Analysis and Results
@@ -501,7 +514,7 @@ No explanatory variables were selected
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.54709 1.7407   0.02 *
+    ## Model     1  0.54709 1.7407 0.0145 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -514,7 +527,7 @@ No explanatory variables were selected
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## dbRDA1    1  0.54709 1.7407  0.017 *
+    ## dbRDA1    1  0.54709 1.7407   0.02 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -563,7 +576,7 @@ dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.54709 1.7407 0.0145 *
+    ## Model     1  0.54709 1.7407 0.0195 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -576,7 +589,7 @@ dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## dbRDA1    1  0.54709 1.7407 0.0155 *
+    ## dbRDA1    1  0.54709 1.7407  0.014 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -618,7 +631,7 @@ result of the test is identical to the previous one.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)    
-    ## Model     1  0.70182 2.2329  0.001 ***
+    ## Model     1  0.70182 2.2329  5e-04 ***
     ## Residual  9  2.82875                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -723,7 +736,7 @@ for the number of conditional and explanatory variables used, perhaps.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.57408 2.7216 0.0065 **
+    ## Model     1  0.57408 2.7216  0.006 **
     ## Residual  6  1.26562                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -736,7 +749,7 @@ for the number of conditional and explanatory variables used, perhaps.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.57408 2.7216  0.006 **
+    ## dbRDA1    1  0.57408 2.7216 0.0055 **
     ## Residual  6  1.26562                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -786,7 +799,7 @@ dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.57408 2.7216  0.004 **
+    ## Model     1  0.57408 2.7216  0.005 **
     ## Residual  6  1.26562                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -799,7 +812,7 @@ dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.57408 2.7216  0.005 **
+    ## dbRDA1    1  0.57408 2.7216  0.004 **
     ## Residual  6  1.26562                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -852,7 +865,7 @@ restoration was selected with the same strength as the previous test.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.69717 3.3004  0.002 **
+    ## dbRDA1    1  0.69717 3.3004 0.0015 **
     ## Residual  9  1.90112                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -889,3 +902,49 @@ plot_dbrda(site_sc = dbrda_all_pr_amf$plot_data$sites, site_bp = dbrda_all_pr_am
 
 Microbial communities align with years since restoration across regions
 and types (general fungi and amf).
+
+## Response correlations
+
+Fungal communities varied with years since restoration, C4 grass, and
+forbs. How do these predictors affect microbial biomass and function?
+
+``` r
+func_vars <- 
+    sites %>% 
+    left_join(ptr %>% select(field_name, C4_grass, forb), by = join_by(field_name)) %>% 
+    left_join(fb %>% select(field_name, fungi, amf), by = join_by(field_name)) %>% 
+    left_join(wsa %>% select(field_name, wsa), by = join_by(field_name)) %>% 
+    rename(C4_grass_pct = C4_grass, forb_pct = forb, mass_fungi = fungi, mass_amf = amf) %>% 
+    select(-field_key)
+```
+
+Plant traits data are only available in Wisconsin; try these first.
+
+``` r
+ggpairs(
+    data = func_vars %>% filter(field_type == "restored", region != "FL"),
+    columns = 4:9
+) +
+    theme_bw()
+```
+
+<img src="tgr_constrained_files/figure-gfm/pairs_wi-1.png" style="display: block; margin: auto;" />
+
+In all restored sites, response correlations are still possible without
+plant traits.
+
+``` r
+ggpairs(
+    data = func_vars %>% filter(field_type == "restored") %>% 
+        select(-C4_grass_pct, -forb_pct),
+    columns = 4:7
+) +
+    theme_bw()
+```
+
+<img src="tgr_constrained_files/figure-gfm/pairs_all-1.png" style="display: block; margin: auto;" />
+
+In both cases, we see obvious relationships that would be difficult to
+handle in a statistically robust way due to limited reps in regions.
+
+Next, look for trends in guild and taxonomy data.
