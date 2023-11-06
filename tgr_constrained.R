@@ -119,19 +119,27 @@ dbrda_fun <- function(s, pspe_pcoa="none", ft, rg) {
             row.names = 1),
         "standardize") %>% 
         rownames_to_column("field_name")
+    yr_z <- decostand(
+        data.frame(
+            sites %>% 
+                filter(field_type %in% ft, region %in% rg) %>% 
+                select(field_name, yr_since),
+            row.names = 1),
+        "standardize") %>% 
+        rownames_to_column("field_name")
     # Create explanatory data frame and covariables matrix
     env <- if(is.data.frame(pspe_pcoa) == FALSE) {
         soil_cov_sc %>% 
             left_join(ptr_norm, by = join_by(field_name)) %>% 
             left_join(soil_expl_z, by = join_by(field_name)) %>% 
-            left_join(sites %>% select(field_name, yr_since), by = join_by(field_name)) %>% 
+            left_join(yr_z, by = join_by(field_name)) %>% 
             column_to_rownames("field_name") %>% 
             drop_na()
     } else {
         soil_cov_sc %>% 
             left_join(pspe_ax, by = join_by(field_name)) %>% 
             left_join(soil_expl_z, by = join_by(field_name)) %>% 
-            left_join(sites %>% select(field_name, yr_since), by = join_by(field_name)) %>% 
+            left_join(yr_z, by = join_by(field_name)) %>% 
             column_to_rownames("field_name") %>% 
             drop_na()
     }
@@ -165,9 +173,7 @@ sites <-
         field_type = factor(
             field_type,
             ordered = TRUE,
-            levels = c("corn", "restored", "remnant")),
-        yr_since = replace(yr_since, which(field_type == "remnant"), "+"),
-        yr_since = replace(yr_since, which(field_type == "corn"), "-")) %>%
+            levels = c("corn", "restored", "remnant"))) %>%
     select(-lat, -long, -yr_restore, -yr_rank) %>% 
     arrange(field_key)
 #' 
@@ -261,7 +267,7 @@ fb <- read_csv(paste0(getwd(), "/clean_data/plfa.csv"), show_col_types = FALSE) 
 #' 
 #' ## Partial db-RDA
 #' ### General fungal community (ITS sequence abundance)
-#' #### Blue Mounds restored sites only with plant traits data
+#' #### Blue Mounds with plant traits data
 #+ dbrda_bm_tr_its
 dbrda_fun(s = fspe$its, pspe_pcoa = "none", ft = c("restored"), rg = c("BM"))
 #' No explanatory variables were selected
@@ -269,41 +275,44 @@ dbrda_fun(s = fspe$its, pspe_pcoa = "none", ft = c("restored"), rg = c("BM"))
 #' #### Wisconsin sites with plant traits
 #+ dbrda_wi_tr_its
 (dbrda_wi_tr_its <- dbrda_fun(s = fspe$its, pspe_pcoa = "none", ft = c("restored"), rg = c("BM", "LP", "FG")))
-#' Global (p=0.031) and individual (p=0.025, dbRDA1) axis tests were significant. 
-#' Forb percent cover was selected, and it explains 16% of the variation. Sometimes C4 grass is selected,
-#' also with 16% explanatory power. Forb and C4 grass are somewhat inversely related in restored fields,
-#' so this makes a little sense. 
+#' Global (p=0.011) and individual (p=0.015, dbRDA1) axis tests were significant. 
+#' Years since restoration was selected, and it explains 17% of the variation. Forb and C4 grass are 
+#' runners-up but appear highly correlated with years (not shown). 
 #' 
-#' #### Wisoncsin sites with plant community axes
+#' #### Wisconsin sites with plant community axes
 #+ dbrda_wi_ab_its
 dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG"))
 #' No explanatory variables were selected
 #' 
 #' #### All regions with plant community axes
-#+ dbrda_all_ab_its
-dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_pr$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG", "FL"))
+#+ dbrda_all_pr_its
+(dbrda_all_pr_its <- dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_pr$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG", "FL")))
 #' Global and individual axes are significant and strong. Potassium was selected and it explains 13% of the variation here.
 #' It seems that this single variable must be driven by Fermi. 
 #' 
+#' K and plant 1 are runners up
+#' 
 #' ### AMF community (18S sequence abundance)
-#' #### Blue Mounds restored sites only with plant traits data
+#' #### Blue Mounds with plant traits data
 #+ dbrda_bm_tr_amf
 dbrda_fun(s = fspe$amf, pspe_pcoa = "none", ft = c("restored"), rg = c("BM"))
 #' No explanatory variables were selected
 #' 
-#' #### Wisoncsin sites with plant community axes
-#+ dbrda_wi_ab_amf
-dbrda_fun(s = fspe$amf, pspe_pcoa = "none", ft = c("restored"), rg = c("BM", "LP", "FG"))
+#' #### Wisconsin sites with plant traits data
+#+ dbrda_wi_tr_amf
+(dbrda_wi_tr_amf <- dbrda_fun(s = fspe$amf, pspe_pcoa = "none", ft = c("restored"), rg = c("BM", "LP", "FG")))
 #' Global and single constrained axes are significant in site rank at p<0.05. Forb abundance was the selected
 #' explanatory variable, explanaing 22% of the variation in communities. 
 #' 
-#' #### Wisoncsin sites with plant community axes
+#' Forb and C4 grass are runners up
+#' 
+#' #### Wisconsin sites with plant community axes
 #+ dbrda_wi_ab_amf
 dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG"))
-#' No explanatory variables were selected
+#' Years
 #' 
 #' #### All regions with plant community axes
-#+ dbrda_all_ab_amf
+#+ dbrda_all_pr_amf
 dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_pr$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG", "FL"))
 #' Global and single constrained axes are significant in site rank at p<0.05. As before, Fermi brings 
 #' potassium as a significant predictor of microbial communities. 
