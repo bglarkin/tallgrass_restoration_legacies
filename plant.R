@@ -132,8 +132,6 @@ sites_noc <- sites %>%
 #' ## Plant communities, subsample data
 #' Raw field data can be used to compare among replicates (fields). Long-form data must be wrangled into 
 #' matrices and then converted to distance objects. 
-#+ 
-
 plant_field_data <- read_csv(paste0(getwd(), "/plant_field_data/plant_cover.csv"), show_col_types = FALSE) %>% 
     select(-SITE, -TYPE, -FIELDNUM) %>% 
     rename(field_name = FIELDID, sample = PLOT, field_sample = PLOTID, code = PLANTCODE, cover_pct = PCTCVR, presence = PRESENCE) %>% 
@@ -141,32 +139,35 @@ plant_field_data <- read_csv(paste0(getwd(), "/plant_field_data/plant_cover.csv"
     left_join(sites %>% select(field_name, region, field_type, field_key), by = join_by(field_name)) %>% 
     arrange(field_key, sample, code) %>% 
     select(region, field_type, field_name, sample, field_sample, code, cover_pct, presence)
+#+ plant_abiotic_csv
 plant_abiotic <- plant_field_data %>% 
     filter(code %in% c("BARESOIL", "LITTER")) %>% 
     write_csv(paste0(getwd(), "/clean_data/plant_abiotic.csv"))
+#+ plant_abundance_samples_csv
 plant_abund_samples <- plant_field_data %>% 
     filter(!(code %in% c("BARESOIL", "LITTER")),
            region != "FL") %>% 
-    select(field_name, sample, code, cover_pct) %>% 
+    select(region, field_type, field_name, sample, code, cover_pct) %>% 
     arrange(code) %>% 
     pivot_wider(names_from = code, values_from = cover_pct, values_fill = 0) %>% 
-    arrange(field_name, sample)
-
-
+    arrange(field_name, sample) %>% 
+    write_csv(paste0(getwd(), "/clean_data/plant_abund_samples.csv"))
 #' 
-#' ## Plant communities, field summaries
+#' ## Plant communities data
 #' 
 #' - Metadata, taxonomy and traits
 #' - Abundance data, surveyed in 2016, sites limited to Wisconsin only
+#' - Abundance data at the level of field samples (to compare among fields)
 #' - Presence data, from Fermi in 2015, all other sites converted to presence data, does not 
 #' include Fermi switchgrass or corn fields.
 #+ plant_data_list
 plant <- list(
-    meta = read_csv(paste0(getwd(), "/clean_data/spe_plant_meta.csv"), show_col_types = FALSE) %>% 
+    meta    = read_csv(paste0(getwd(), "/clean_data/spe_plant_meta.csv"), show_col_types = FALSE) %>% 
         rename_with(tolower),
-    ab   = read_csv(paste0(getwd(), "/clean_data/spe_plant_abund.csv"), show_col_types = FALSE) %>% 
+    ab      = read_csv(paste0(getwd(), "/clean_data/spe_plant_abund.csv"), show_col_types = FALSE) %>% 
         rename(field_name = SITE),
-    pr   = read_csv(paste0(getwd(), "/clean_data/spe_plant_presence.csv"), show_col_types = FALSE) %>% 
+    ab_samp = read_csv(paste0(getwd(), "/clean_data/plant_abund_samples.csv"), show_col_types = FALSE),
+    pr      = read_csv(paste0(getwd(), "/clean_data/spe_plant_presence.csv"), show_col_types = FALSE) %>% 
         rename(field_name = SITE)
 )
 #' 
@@ -346,3 +347,162 @@ ggplot(pcoa_pr$site_vectors, aes(x = Axis.1, y = Axis.2)) +
 #' Look at the archive plant files on the desktop. Also maybe look at baresoil and litter...
 #' Baresoil may be a proxy for low productivity...does it increasse with field age?
 
+
+s = plant$ab_samp %>% filter(field_type == "restored", region != "FL")
+m = "bray"
+env = sites %>% filter(field_type == "restored", region != "FL")
+corr = "lingoes"
+df_name = "temp"
+nperm = 1999
+
+
+#+ pcoa_samps_function
+pcoa_samps_fun <- function(s, m, env, corr="none", df_name, nperm=1999) {
+    set.seed <- 438
+    # Create distance object, check for zero columns
+    s_df <- s %>% 
+        mutate(field_sample = paste(field_name, sample, sep = "_")) %>% 
+        select(field_sample, everything(), -field_name, -sample, -region, -field_type) %>% 
+        data.frame(row.names = 1)
+    s_nz <- s_df[, which(apply(s_df, 2, sum) > 0)]
+    d <- vegdist(s_nz, method = m)
+    # Multivariate analysis
+    p <- pcoa(d, correction = corr)
+    p_vals <- data.frame(p$values) %>% 
+        rownames_to_column(var = "Dim") %>% 
+        mutate(Dim = as.integer(Dim))
+    p_vec <- data.frame(p$vectors)
+    # Wrangle site data
+    env_w <- data.frame(field_sample = rownames(s_nz)) %>% 
+        separate_wider_delim(field_sample, delim = "_", names = c("field_name", "sample"), cols_remove = FALSE) %>% 
+        left_join(env, by = join_by(field_name)) %>% 
+        column_to_rownames(var = "field_sample")
+    # Permutation tests (PERMANOVA)
+    # Fields as replicate strata with subsamples
+    # Regions as blocks
+    h <- with(env_w, 
+              how(within = Within(type="free"), 
+                  blocks = region,
+                  nperm  = nperm))
+    p_permtest <- adonis2(
+        d ~ field_name,
+        data = env_w,
+        permutations = h)
+    # Diagnostic plots
+    if(corr == "none" | ncol(p_vals) == 6) {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
+    } else {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
+    }
+    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
+    # Ordination plot
+    scores <-
+        p_vec[, 1:ncomp] %>%
+        rownames_to_column(var = "field_sample") %>%
+        separate_wider_delim(field_sample, delim = "_", names = c("field_name", "sample"), cols_remove = TRUE) %>% 
+        left_join(env, by = join_by(field_name))
+    # Output data
+    output <- list(dataset                        = df_name,
+                   components_exceed_broken_stick = p_ncomp,
+                   correction_note                = p$note,
+                   values                         = p_vals[1:(ncomp+1), ], 
+                   eigenvalues                    = eig,
+                   site_vectors                   = scores,
+                   broken_stick_plot              = p_bstick,
+                   permanova                      = p_permtest)
+    return(output)
+}
+
+
+
+
+
+
+
+
+
+
+#+ pcoa_samps_bm_function
+pcoa_samps_bm_fun <- function(s, d, env=sites_resto_bm, corr="none", df_name, nperm=1999) {
+    set.seed <- 845
+    # Multivariate analysis
+    p <- pcoa(d, correction = corr)
+    p_vals <- data.frame(p$values) %>% 
+        rownames_to_column(var = "Dim") %>% 
+        mutate(Dim = as.integer(Dim))
+    p_vec <- data.frame(p$vectors)
+    # Wrangle site data
+    env_w <- env %>% 
+        left_join(s %>% select(field_key, sample), by = join_by(field_key)) %>% 
+        mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+        column_to_rownames(var = "field_sample")
+    # Permutation test (PERMANOVA)
+    p_permtest <- adonis2(d ~ field_key, data = env_w, permutations = nperm)
+    # Diagnostic plots
+    if(corr == "none" | ncol(p_vals) == 6) {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
+    } else {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
+    }
+    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
+    # Permutation test (ENVFIT)
+    # Fields as strata
+    h = with(env_w, 
+             how(within = Within(type="none"), 
+                 plots = Plots(strata=field_key, type="free"), 
+                 nperm = nperm))
+    fit <- envfit(p_vec ~ yr_since, env_w, permutations = h, choices = c(1:ncomp))
+    fit_sc <- scores(fit, c("vectors"))
+    # Ordination plotting data
+    scores <-
+        p_vec[, 1:ncomp] %>%
+        rownames_to_column(var = "field_sample") %>%
+        separate_wider_delim(field_sample, delim = "_", names = c("field_key", "sample_key"), cols_remove = TRUE) %>% 
+        mutate(field_key = as.integer(field_key)) %>%
+        left_join(env, by = join_by(field_key)) %>% 
+        select(-field_type)
+    # Output data
+    output <- list(dataset                        = df_name,
+                   components_exceed_broken_stick = p_ncomp,
+                   correction_note                = p$note,
+                   values                         = p_vals[1:(ncomp+1), ], 
+                   eigenvalues                    = eig,
+                   site_vectors                   = scores,
+                   broken_stick_plot              = p_bstick,
+                   permanova                      = p_permtest,
+                   vector_fit                     = fit,
+                   vector_fit_scores              = fit_sc)
+    return(output)
+}
