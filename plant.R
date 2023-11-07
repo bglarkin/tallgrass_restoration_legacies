@@ -112,6 +112,93 @@ pcoa_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
     return(output)
 }
 #' 
+#+ pcoa_samps_function
+pcoa_samps_fun <- function(s, m, bi=FALSE, env, corr="none", df_name, nperm=1999) {
+    set.seed <- 438
+    # Create distance object, check for zero columns
+    s_df <- s %>% 
+        mutate(field_sample = paste(field_name, sample, sep = "_")) %>% 
+        select(field_sample, everything(), -field_name, -sample, -region, -field_type) %>% 
+        data.frame(row.names = 1)
+    s_nz <- s_df[, which(apply(s_df, 2, sum) > 0)]
+    d <- vegdist(s_nz, method = m, binary = bi)
+    # Multivariate analysis
+    p <- pcoa(d, correction = corr)
+    p_vals <- data.frame(p$values) %>% 
+        rownames_to_column(var = "Dim") %>% 
+        mutate(Dim = as.integer(Dim))
+    p_vec <- data.frame(p$vectors)
+    # Wrangle site data
+    env_w <- data.frame(field_sample = rownames(s_nz)) %>% 
+        separate_wider_delim(field_sample, delim = "_", names = c("field_name", "sample"), cols_remove = FALSE) %>% 
+        left_join(env, by = join_by(field_name)) %>% 
+        column_to_rownames(var = "field_sample")
+    # Permutation tests (PERMANOVA)
+    # Fields as replicate strata with subsamples
+    # Regions as blocks
+    h <- with(env_w, 
+              how(within = Within(type="free"), 
+                  blocks = region,
+                  nperm  = nperm))
+    p_permtest <- adonis2(
+        d ~ field_name,
+        data = env_w,
+        permutations = h)
+    # Diagnostic plots
+    if(corr == "none" | ncol(p_vals) == 6) {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
+    } else {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
+    }
+    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
+    fit <- NULL
+    fit_sc <- NULL
+    if(m == "bray") {
+        # Permutation test (ENVFIT)
+        # Fields as strata
+        h = with(env_w, 
+                 how(within = Within(type="none"), 
+                     plots = Plots(strata=field_key, type="free"), 
+                     nperm = nperm))
+        fit <- envfit(p_vec ~ as.numeric(yr_since), env_w, permutations = h, choices = c(1:ncomp))
+        fit_sc <- scores(fit, c("vectors"))
+    }
+    # Ordination plot
+    scores <-
+        p_vec[, 1:ncomp] %>%
+        rownames_to_column(var = "field_sample") %>%
+        separate_wider_delim(field_sample, delim = "_", names = c("field_name", "sample"), cols_remove = TRUE) %>% 
+        left_join(env, by = join_by(field_name))
+    # Output data
+    output <- list(dataset           = df_name,
+                   important_comp    = p_ncomp,
+                   correction        = p$note,
+                   values            = p_vals[1:(ncomp+1), ], 
+                   eigenvalues       = eig,
+                   site_vectors      = scores,
+                   broken_stick_plot = p_bstick,
+                   permanova         = p_permtest,
+                   vector_fit        = fit,
+                   vector_fit_scores = fit_sc)
+    return(output)
+}
+#' 
 #' # Data
 #' ## Metadata from sites, as in previous
 #+ sites
@@ -341,168 +428,116 @@ ggplot(pcoa_pr$site_vectors, aes(x = Axis.1, y = Axis.2)) +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
 #' The regional signal is most obvious here. 
 #' 
-#' ### Restoration sites only
-#' I'll want to use subsample level data to check the clustering of sites with plant data. 
-#' This is critical to demonstrate that the plant communities don't differ...
-#' Look at the archive plant files on the desktop. Also maybe look at baresoil and litter...
-#' Baresoil may be a proxy for low productivity...does it increasse with field age?
+#' ### Restoration sites
+#' #### Wisconsin regions
+#' Plant communities in restoration fields are artificial. It's important to know how much
+#' they differ among fields and if differences are related to years since restoration. We will
+#' look at the Wisconsin regions first and permute within regions. 
+#+ pcoa_ab_samps_wi,message=FALSE,warnings=FALSE
+(pcoa_ab_samps_wi <- 
+    pcoa_samps_fun(s = plant$ab_samp %>% filter(field_type == "restored", region != "FL"),
+               m = "bray",
+               env = sites %>% filter(field_type == "restored", region != "FL"),
+               corr = "lingoes",
+               df_name = "Plant abundance data, subsamples, Wisconsin regions",
+               nperm = 1999))
+#' Let's view an ordination plot with hulls around subsamples.  
+#+ pcoa_ab_samps_wi_plotdata
+centroid_ab_samps_wi <- aggregate(cbind(Axis.1, Axis.2) ~ field_name, data = pcoa_ab_samps_wi$site_vectors, mean) %>% 
+    left_join(sites, by = join_by(field_name))
+hull_ab_samps_wi <- pcoa_ab_samps_wi$site_vectors %>% 
+    group_by(field_name) %>% 
+    slice(chull(Axis.1, Axis.2))
+#+ pcoa_ab_samps_wi_fig,fig.align='center',message=FALSE
+ggplot(pcoa_ab_samps_wi$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_point(aes(fill = region), shape = 21) +
+    geom_polygon(data = hull_ab_samps_wi, aes(group = field_name, fill = region), alpha = 0.3) +
+    geom_point(data = centroid_ab_samps_wi, aes(fill = region), shape = 21, size = 8) +
+    geom_text(data = centroid_ab_samps_wi, aes(label = yr_since)) +
+    geom_segment(aes(x = 0, 
+                     y = 0, 
+                     xend = pcoa_ab_samps_wi$vector_fit_scores[1] * 0.65, 
+                     yend = pcoa_ab_samps_wi$vector_fit_scores[2] * 0.65),
+                 color = "blue", 
+                 arrow = arrow(length = unit(3, "mm"))) +
+    labs(
+        x = paste0("Axis 1 (", pcoa_ab_samps_wi$eigenvalues[1], "%)"),
+        y = paste0("Axis 2 (", pcoa_ab_samps_wi$eigenvalues[2], "%)"),
+        title = paste0(
+            "PCoA Ordination (",
+            pcoa_ab_samps_wi$dataset,
+            ")"
+        ),
+        caption = "Text indicates years since restoration\nYears since restoration significant at p<0.05"
+    ) +
+    scale_fill_discrete_qualitative(name = "Region", palette = "Dynamic") +
+    theme_bw() +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
+#' 
+#' The permutation test reveals that subsamples cluster to fields based on plant communities, and 
+#' that years since restoration is significantly related community difference. This shows that 
+#' plant communities and time since restoration are potentially confounded as explanatory variables
+#' of soil microbial communities.  
+#' 
+#' #### Blue Mounds fields
+#+ pcoa_ab_samps_bm,message=FALSE,warnings=FALSE
+(pcoa_ab_samps_bm <- 
+    pcoa_samps_fun(s = plant$ab_samp %>% filter(field_type == "restored", region == "BM"),
+               m = "bray",
+               env = sites %>% filter(field_type == "restored", region == "BM"),
+               corr = "lingoes",
+               df_name = "Plant abundance data, subsamples, Blue Mounds",
+               nperm = 1999))
+#' Let's view an ordination plot with hulls around subsamples.  
+#+ pcoa_ab_samps_bm_plotdata
+centroid_ab_samps_bm <- aggregate(cbind(Axis.1, Axis.2) ~ field_name, data = pcoa_ab_samps_bm$site_vectors, mean) %>% 
+    left_join(sites, by = join_by(field_name))
+hull_ab_samps_bm <- pcoa_ab_samps_bm$site_vectors %>% 
+    group_by(field_name) %>% 
+    slice(chull(Axis.1, Axis.2))
+#+ pcoa_ab_samps_bm_fig,fig.align='center',message=FALSE
+ggplot(pcoa_ab_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_point(aes(fill = region), shape = 21) +
+    geom_polygon(data = hull_ab_samps_bm, aes(group = field_name, fill = region), alpha = 0.3) +
+    geom_point(data = centroid_ab_samps_bm, aes(fill = region), shape = 21, size = 8) +
+    geom_text(data = centroid_ab_samps_bm, aes(label = yr_since)) +
+    geom_segment(aes(x = 0, 
+                     y = 0, 
+                     xend = pcoa_ab_samps_bm$vector_fit_scores[1] * 0.65, 
+                     yend = pcoa_ab_samps_bm$vector_fit_scores[2] * 0.65),
+                 color = "blue", 
+                 arrow = arrow(length = unit(3, "mm"))) +
+    labs(
+        x = paste0("Axis 1 (", pcoa_ab_samps_bm$eigenvalues[1], "%)"),
+        y = paste0("Axis 2 (", pcoa_ab_samps_bm$eigenvalues[2], "%)"),
+        title = paste0(
+            "PCoA Ordination (",
+            pcoa_ab_samps_bm$dataset,
+            ")"
+        ),
+        caption = "Text indicates years since restoration\nYears since restoration significant at p<0.05"
+    ) +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "Dynamic") +
+    theme_bw() +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
+#' 
+#' The Blue Mounds area is our most defensible chronosequence. But even here, 
+#' the permutation test reveals that subsamples cluster to fields based on plant communities, and 
+#' that years since restoration is significantly related community difference. This shows that 
+#' plant communities and time since restoration are potentially confounded as explanatory variables
+#' of soil microbial communities.  
 
 
-s = plant$ab_samp %>% filter(field_type == "restored", region != "FL")
-m = "bray"
-env = sites %>% filter(field_type == "restored", region != "FL")
-corr = "lingoes"
-df_name = "temp"
-nperm = 1999
 
 
-#+ pcoa_samps_function
-pcoa_samps_fun <- function(s, m, env, corr="none", df_name, nperm=1999) {
-    set.seed <- 438
-    # Create distance object, check for zero columns
-    s_df <- s %>% 
-        mutate(field_sample = paste(field_name, sample, sep = "_")) %>% 
-        select(field_sample, everything(), -field_name, -sample, -region, -field_type) %>% 
-        data.frame(row.names = 1)
-    s_nz <- s_df[, which(apply(s_df, 2, sum) > 0)]
-    d <- vegdist(s_nz, method = m)
-    # Multivariate analysis
-    p <- pcoa(d, correction = corr)
-    p_vals <- data.frame(p$values) %>% 
-        rownames_to_column(var = "Dim") %>% 
-        mutate(Dim = as.integer(Dim))
-    p_vec <- data.frame(p$vectors)
-    # Wrangle site data
-    env_w <- data.frame(field_sample = rownames(s_nz)) %>% 
-        separate_wider_delim(field_sample, delim = "_", names = c("field_name", "sample"), cols_remove = FALSE) %>% 
-        left_join(env, by = join_by(field_name)) %>% 
-        column_to_rownames(var = "field_sample")
-    # Permutation tests (PERMANOVA)
-    # Fields as replicate strata with subsamples
-    # Regions as blocks
-    h <- with(env_w, 
-              how(within = Within(type="free"), 
-                  blocks = region,
-                  nperm  = nperm))
-    p_permtest <- adonis2(
-        d ~ field_name,
-        data = env_w,
-        permutations = h)
-    # Diagnostic plots
-    if(corr == "none" | ncol(p_vals) == 6) {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
-    } else {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
-    }
-    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
-    # Ordination plot
-    scores <-
-        p_vec[, 1:ncomp] %>%
-        rownames_to_column(var = "field_sample") %>%
-        separate_wider_delim(field_sample, delim = "_", names = c("field_name", "sample"), cols_remove = TRUE) %>% 
-        left_join(env, by = join_by(field_name))
-    # Output data
-    output <- list(dataset                        = df_name,
-                   components_exceed_broken_stick = p_ncomp,
-                   correction_note                = p$note,
-                   values                         = p_vals[1:(ncomp+1), ], 
-                   eigenvalues                    = eig,
-                   site_vectors                   = scores,
-                   broken_stick_plot              = p_bstick,
-                   permanova                      = p_permtest)
-    return(output)
-}
-
-
-
-
-
-
-
-
-
-
-#+ pcoa_samps_bm_function
-pcoa_samps_bm_fun <- function(s, d, env=sites_resto_bm, corr="none", df_name, nperm=1999) {
-    set.seed <- 845
-    # Multivariate analysis
-    p <- pcoa(d, correction = corr)
-    p_vals <- data.frame(p$values) %>% 
-        rownames_to_column(var = "Dim") %>% 
-        mutate(Dim = as.integer(Dim))
-    p_vec <- data.frame(p$vectors)
-    # Wrangle site data
-    env_w <- env %>% 
-        left_join(s %>% select(field_key, sample), by = join_by(field_key)) %>% 
-        mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
-        column_to_rownames(var = "field_sample")
-    # Permutation test (PERMANOVA)
-    p_permtest <- adonis2(d ~ field_key, data = env_w, permutations = nperm)
-    # Diagnostic plots
-    if(corr == "none" | ncol(p_vals) == 6) {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
-    } else {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
-    }
-    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
-    # Permutation test (ENVFIT)
-    # Fields as strata
-    h = with(env_w, 
-             how(within = Within(type="none"), 
-                 plots = Plots(strata=field_key, type="free"), 
-                 nperm = nperm))
-    fit <- envfit(p_vec ~ yr_since, env_w, permutations = h, choices = c(1:ncomp))
-    fit_sc <- scores(fit, c("vectors"))
-    # Ordination plotting data
-    scores <-
-        p_vec[, 1:ncomp] %>%
-        rownames_to_column(var = "field_sample") %>%
-        separate_wider_delim(field_sample, delim = "_", names = c("field_key", "sample_key"), cols_remove = TRUE) %>% 
-        mutate(field_key = as.integer(field_key)) %>%
-        left_join(env, by = join_by(field_key)) %>% 
-        select(-field_type)
-    # Output data
-    output <- list(dataset                        = df_name,
-                   components_exceed_broken_stick = p_ncomp,
-                   correction_note                = p$note,
-                   values                         = p_vals[1:(ncomp+1), ], 
-                   eigenvalues                    = eig,
-                   site_vectors                   = scores,
-                   broken_stick_plot              = p_bstick,
-                   permanova                      = p_permtest,
-                   vector_fit                     = fit,
-                   vector_fit_scores              = fit_sc)
-    return(output)
-}
+#' Next
+#' 
+#' - pairwise with years and plant traits to confirm forbs vs. C4 grass
+#' - check fungal pcoas in later scripts to make sure there aren't zero columns in abundance matrices
+#' - insert post hoc tests on permutations for adonis2 showing that field type is significantly different.
+#' Lots of ways to do this here: https://www.researchgate.net/post/Posthoc_test_for_permanova_adonis 
+#' Looks like corn is different from restored and remnant, but maybe restored and remnant are similar. That's 
+#' what we saw in microbial_diversity
+#' - finally, we need to get going on the guilds and taxa that vary with age in restored fields. Entire guilds
+#' first, then taxa. I think this is already somewhat done in the guilds report. Look for some that change 
+#' with restoration and then compare them to remnants. 
