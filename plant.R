@@ -112,24 +112,8 @@ pcoa_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
     return(output)
 }
 #' 
-#' 
 #' # Data
-#' Plant community data includes:
-#' 
-#' - Metadata, taxonomy and traits
-#' - Abundance data, surveyed in 2016, sites limited to Wisconsin only
-#' - Presence data, from Fermi in 2015, all other sites converted to presence data, does not 
-#' include Fermi switchgrass or corn fields.
-#+ plant_data_list
-plant <- list(
-    meta = read_csv(paste0(getwd(), "/clean_data/spe_plant_meta.csv"), show_col_types = FALSE) %>% 
-        rename_with(tolower),
-    ab   = read_csv(paste0(getwd(), "/clean_data/spe_plant_abund.csv"), show_col_types = FALSE) %>% 
-        rename(field_name = SITE),
-    pr   = read_csv(paste0(getwd(), "/clean_data/spe_plant_presence.csv"), show_col_types = FALSE) %>% 
-        rename(field_name = SITE)
-)
-#' Metadata from sites, as in previous
+#' ## Metadata from sites, as in previous
 #+ sites
 sites <-
     read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>%
@@ -145,6 +129,48 @@ sites <-
 #+ sites_no_cornfields
 sites_noc <- sites %>% 
     filter(field_type != "corn")
+#' ## Plant communities, subsample data
+#' Raw field data can be used to compare among replicates (fields). Long-form data must be wrangled into 
+#' matrices and then converted to distance objects. 
+#+ 
+
+plant_field_data <- read_csv(paste0(getwd(), "/plant_field_data/plant_cover.csv"), show_col_types = FALSE) %>% 
+    select(-SITE, -TYPE, -FIELDNUM) %>% 
+    rename(field_name = FIELDID, sample = PLOT, field_sample = PLOTID, code = PLANTCODE, cover_pct = PCTCVR, presence = PRESENCE) %>% 
+    filter(field_name %in% sites$field_name) %>% 
+    left_join(sites %>% select(field_name, region, field_type, field_key), by = join_by(field_name)) %>% 
+    arrange(field_key, sample, code) %>% 
+    select(region, field_type, field_name, sample, field_sample, code, cover_pct, presence)
+plant_abiotic <- plant_field_data %>% 
+    filter(code %in% c("BARESOIL", "LITTER")) %>% 
+    write_csv(paste0(getwd(), "/clean_data/plant_abiotic.csv"))
+plant_abund_samples <- plant_field_data %>% 
+    filter(!(code %in% c("BARESOIL", "LITTER")),
+           region != "FL") %>% 
+    select(field_name, sample, code, cover_pct) %>% 
+    arrange(code) %>% 
+    pivot_wider(names_from = code, values_from = cover_pct, values_fill = 0) %>% 
+    arrange(field_name, sample)
+
+
+#' 
+#' ## Plant communities, field summaries
+#' 
+#' - Metadata, taxonomy and traits
+#' - Abundance data, surveyed in 2016, sites limited to Wisconsin only
+#' - Presence data, from Fermi in 2015, all other sites converted to presence data, does not 
+#' include Fermi switchgrass or corn fields.
+#+ plant_data_list
+plant <- list(
+    meta = read_csv(paste0(getwd(), "/clean_data/spe_plant_meta.csv"), show_col_types = FALSE) %>% 
+        rename_with(tolower),
+    ab   = read_csv(paste0(getwd(), "/clean_data/spe_plant_abund.csv"), show_col_types = FALSE) %>% 
+        rename(field_name = SITE),
+    pr   = read_csv(paste0(getwd(), "/clean_data/spe_plant_presence.csv"), show_col_types = FALSE) %>% 
+        rename(field_name = SITE)
+)
+#' 
+#' ## Distance matrices
 #' Distance matrices are needed for ordinations of the plant data. Bray-Curtis distance is used 
 #' for abundance data, the Jaccard similarity is used for binary data.
 #+ distab_list
