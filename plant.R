@@ -281,7 +281,8 @@ ggplot(pcoa_ab$site_vectors, aes(x = Axis.1, y = Axis.2)) +
     ) +
     theme_bw() +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
-#" ### Sites with presence data
+#' 
+#' ### Sites with presence data
 #' An ordiation is run on plant presence data using `pcoa_fun()`. The dataset includes 20 sites. This 
 #' analysis isn't appropriate because the blocks are unbalanced (no cornfield data from Fermi), but it 
 #' still shows differences with plant data. 
@@ -312,4 +313,10 @@ ggplot(pcoa_pr$site_vectors, aes(x = Axis.1, y = Axis.2)) +
     theme_bw() +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
 #' The regional signal is most obvious here. 
+#' 
+#' ### Restoration sites only
+#' I'll want to use subsample level data to check the clustering of sites with plant data. 
+#' This is critical to demonstrate that the plant communities don't differ...
+#' Look at the archive plant files on the desktop. Also maybe look at baresoil and litter...
+#' Baresoil may be a proxy for low productivity...does it increasse with field age?
 
