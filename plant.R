@@ -293,6 +293,8 @@ p_ab_trait <-
     select(field_name, annual, biennial, perennial, native, nonnative, C3_grass, C4_grass, forb, legume, shrubTree)
 #' 
 #' ### Presence data (20 sites)
+#' These data are problematic because they are essentially counts of traits, and these counts
+#' aren't related to cover. 
 #+ p_pr_trait
 p_pr_trait <- 
     plant$pr %>% 
@@ -526,13 +528,36 @@ ggplot(pcoa_ab_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
 #' that years since restoration is significantly related community difference. This shows that 
 #' plant communities and time since restoration are potentially confounded as explanatory variables
 #' of soil microbial communities.  
-
-
-
+#' 
+#' ## Plant traits
+#' The inverse relationship of forbs and C4 grasses over time is a common feature of tallgrass 
+#' prairie restoration. In this case, some of that could be happening naturally, but we also know
+#' that the oldest field was planted heavily with bluestem. 
+#' 
+#' We saw above that plant community change correlated with years since restoration, and it's a 
+#' strong relationship with the shift from forbs to C4 grasses over time, for restored sites in Wisconsin:
+#+ trait_time_cor_fig_wi,fig.align='center'
+p_ab_trait %>% 
+    left_join(sites, by = join_by(field_name)) %>% 
+    filter(region != "FL", field_type == "restored") %>% 
+    mutate(yr_since = as.numeric(yr_since)) %>% 
+    select(yr_since, C4_grass, forb) %>% 
+    ggpairs(title = "Trait correlations with time in Wisconsin restored fields") +
+    theme_bw()
+#' 
+#' And it's even stronger in just the Blue Mounds:
+#+ trait_time_cor_fig_bm,fig.align='center'
+p_ab_trait %>% 
+    left_join(sites, by = join_by(field_name)) %>% 
+    filter(region == "BM", field_type == "restored") %>% 
+    mutate(yr_since = as.numeric(yr_since)) %>% 
+    select(yr_since, C4_grass, forb) %>% 
+    ggpairs(title = "Trait correlations with time in Blue Mounds restored fields") +
+    theme_bw()
 
 #' Next
 #' 
-#' - pairwise with years and plant traits to confirm forbs vs. C4 grass
+#' - pairwise with years and plant traits to confirm forbs vs. C4 grass. DONE
 #' - check fungal pcoas in later scripts to make sure there aren't zero columns in abundance matrices
 #' - insert post hoc tests on permutations for adonis2 showing that field type is significantly different.
 #' Lots of ways to do this here: https://www.researchgate.net/post/Posthoc_test_for_permanova_adonis 

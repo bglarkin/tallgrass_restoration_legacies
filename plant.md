@@ -2,7 +2,7 @@ Plant data: communities and traits
 ================
 Beau Larkin
 
-Last updated: 07 November, 2023
+Last updated: 08 November, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -26,6 +26,7 @@ Last updated: 07 November, 2023
   - [Plant Communities](#plant-communities)
     - [Sites with presence data](#sites-with-presence-data)
     - [Restoration sites](#restoration-sites)
+  - [Plant traits](#plant-traits)
 
 # Description
 
@@ -376,6 +377,9 @@ p_ab_trait <-
 
 ### Presence data (20 sites)
 
+These data are problematic because they are essentially counts of
+traits, and these counts aren’t related to cover.
+
 ``` r
 p_pr_trait <- 
     plant$pr %>% 
@@ -636,7 +640,7 @@ abundance data An ordiation is run on plant abundance data using
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
     ##            Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type  2   1.9713 0.36586 3.7501 0.0045 **
+    ## field_type  2   1.9713 0.36586 3.7501  0.005 **
     ## Residual   13   3.4169 0.63414                 
     ## Total      15   5.3882 1.00000                 
     ## ---
@@ -647,7 +651,7 @@ exceeds a broken stick model. The most substantial variation here will
 be on the first axis. Axis 2 explains 12.6% of the variation and was not
 very close to the broken stick value. Testing the design factor
 *field_type* (with *region* treated as a block using arguments to
-`how()` revealed a significant clustering $(R^2=0.37,~p=0.0045)$. Let’s
+`how()` revealed a significant clustering $(R^2=0.37,~p=0.005)$. Let’s
 view a plot of these results.
 
 ``` r
@@ -862,7 +866,7 @@ and permute within regions.
     ##                         Axis.1    Axis.2    Axis.3    Axis.4    Axis.5
     ## as.numeric(yr_since)  0.845160 -0.398380  0.116942  0.180121  0.144907
     ##                         Axis.6    Axis.7    Axis.8     r2 Pr(>r)  
-    ## as.numeric(yr_since) -0.011507  0.241990 -0.034590 0.7822  0.038 *
+    ## as.numeric(yr_since) -0.011507  0.241990 -0.034590 0.7822  0.035 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -1001,7 +1005,7 @@ soil microbial communities.
     ##                         Axis.1    Axis.2    Axis.3    Axis.4    Axis.5
     ## as.numeric(yr_since)  0.838630  0.272579  0.188770 -0.027578 -0.013142
     ##                         Axis.6    Axis.7     r2 Pr(>r)  
-    ## as.numeric(yr_since)  0.175546 -0.393730 0.8619  0.014 *
+    ## as.numeric(yr_since)  0.175546 -0.393730 0.8619 0.0165 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -1060,10 +1064,49 @@ here, the permutation test reveals that subsamples cluster to fields
 based on plant communities, and that years since restoration is
 significantly related community difference. This shows that plant
 communities and time since restoration are potentially confounded as
-explanatory variables of soil microbial communities.  
+explanatory variables of soil microbial communities.
+
+## Plant traits
+
+The inverse relationship of forbs and C4 grasses over time is a common
+feature of tallgrass prairie restoration. In this case, some of that
+could be happening naturally, but we also know that the oldest field was
+planted heavily with bluestem.
+
+We saw above that plant community change correlated with years since
+restoration, and it’s a strong relationship with the shift from forbs to
+C4 grasses over time, for restored sites in Wisconsin:
+
+``` r
+p_ab_trait %>% 
+    left_join(sites, by = join_by(field_name)) %>% 
+    filter(region != "FL", field_type == "restored") %>% 
+    mutate(yr_since = as.numeric(yr_since)) %>% 
+    select(yr_since, C4_grass, forb) %>% 
+    ggpairs(title = "Trait correlations with time in Wisconsin restored fields") +
+    theme_bw()
+```
+
+<img src="plant_files/figure-gfm/trait_time_cor_fig_wi-1.png" style="display: block; margin: auto;" />
+
+And it’s even stronger in just the Blue Mounds:
+
+``` r
+p_ab_trait %>% 
+    left_join(sites, by = join_by(field_name)) %>% 
+    filter(region == "BM", field_type == "restored") %>% 
+    mutate(yr_since = as.numeric(yr_since)) %>% 
+    select(yr_since, C4_grass, forb) %>% 
+    ggpairs(title = "Trait correlations with time in Blue Mounds restored fields") +
+    theme_bw()
+```
+
+<img src="plant_files/figure-gfm/trait_time_cor_fig_bm-1.png" style="display: block; margin: auto;" />
+
 Next
 
-- pairwise with years and plant traits to confirm forbs vs. C4 grass
+- pairwise with years and plant traits to confirm forbs vs. C4 grass.
+  DONE
 - check fungal pcoas in later scripts to make sure there aren’t zero
   columns in abundance matrices
 - insert post hoc tests on permutations for adonis2 showing that field
