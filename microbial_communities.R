@@ -27,7 +27,7 @@
 #' (not shown). 
 #' 
 #' # Packages and libraries
-packages_needed = c("tidyverse", "vegan", "colorspace", "ape", "knitr")
+packages_needed = c("tidyverse", "vegan", "colorspace", "ape", "knitr", "pairwiseAdonis")
 packages_installed = packages_needed %in% rownames(installed.packages())
 #+ packages,message=FALSE
 if (any(!packages_installed)) {
@@ -192,7 +192,7 @@ pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
         rownames_to_column(var = "Dim") %>% 
         mutate(Dim = as.integer(Dim))
     p_vec <- data.frame(p$vectors)
-    # Permutation tests (PERMANOVA)
+    # Permutation tests (PERMANOVA) and post-hoc
     p_permtest <-
         with(env,
              adonis2(
@@ -201,6 +201,8 @@ pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
                  permutations = nperm,
                  strata = region
              ))
+    # Pairwise post-hoc
+    p_pairwise <- pairwise.adonis2()
     # Diagnostic plots
     if(corr == "none" | ncol(p_vals) == 6) {
         p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
