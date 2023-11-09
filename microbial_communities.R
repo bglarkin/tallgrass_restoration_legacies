@@ -126,50 +126,44 @@ distab <- list(
             spe$its_samps %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample) %>% 
-                select(where(~ sum(.) > 0))
-        ), method = "bray"),
+                select(-field_key, -sample)
+        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
     its_resto_bm = vegdist(
         data.frame(
             spe$its %>% 
-                filter(field_key %in% sites_resto_bm$field_key) %>% 
-                select(where(~ sum(.) > 0)), 
+                filter(field_key %in% sites_resto_bm$field_key), 
             row.names = 1
-            ), method = "bray"),
+            ) %>% select(where(~ sum(.) > 0)), method = "bray"),
     its_resto_samps_bm = vegdist(
         data.frame(
             spe$its_samps %>% 
                 filter(field_key %in% sites_resto_bm$field_key) %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample) %>% 
-                select(where(~ sum(.) > 0))
-            ), method = "bray"),
+                select(-field_key, -sample)
+            ) %>% select(where(~ sum(.) > 0)), method = "bray"),
     amf_bray  = vegdist(data.frame(spe$amf, row.names = 1), method = "bray"),
     amf_samps = vegdist(
         data.frame(
             spe$amf_samps %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample) %>% 
-                select(where(~ sum(.) > 0))
-        ), method = "bray"),
+                select(-field_key, -sample)
+        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
     amf_resto_bm = vegdist(
         data.frame(
             spe$amf %>% 
-                filter(field_key %in% sites_resto_bm$field_key) %>% 
-                select(where(~ sum(.) > 0)), 
+                filter(field_key %in% sites_resto_bm$field_key), 
             row.names = 1
-        ), method = "bray"),
+        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
     amf_resto_samps_bm = vegdist(
         data.frame(
             spe$amf_samps %>% 
                 filter(field_key %in% sites_resto_bm$field_key) %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample) %>% 
-                select(where(~ sum(.) > 0))
-        ), method = "bray"),
+                select(-field_key, -sample)
+        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
     amf_uni   = sites %>%
         select(field_name, field_key) %>%
         left_join(
@@ -328,7 +322,7 @@ pcoa_samps_bm_fun <- function(s, d, env=sites_resto_bm, corr="none", df_name, np
     p_vec <- data.frame(p$vectors)
     # Wrangle site data
     env_w <- env %>% 
-        left_join(s %>% select(field_key, sample), by = join_by(field_key)) %>% 
+        left_join(s %>% select(field_key, sample), by = join_by(field_key), multiple = "all") %>% 
         mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
         column_to_rownames(var = "field_sample")
     # Permutation test (PERMANOVA)

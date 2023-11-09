@@ -179,50 +179,44 @@ distab <- list(
             spe$its_samps %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample) %>% 
-                select(where(~ sum(.) > 0))
-        ), method = "bray"),
+                select(-field_key, -sample)
+        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
     its_resto_bm = vegdist(
         data.frame(
             spe$its %>% 
-                filter(field_key %in% sites_resto_bm$field_key) %>% 
-                select(where(~ sum(.) > 0)), 
+                filter(field_key %in% sites_resto_bm$field_key), 
             row.names = 1
-            ), method = "bray"),
+            ) %>% select(where(~ sum(.) > 0)), method = "bray"),
     its_resto_samps_bm = vegdist(
         data.frame(
             spe$its_samps %>% 
                 filter(field_key %in% sites_resto_bm$field_key) %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample) %>% 
-                select(where(~ sum(.) > 0))
-            ), method = "bray"),
+                select(-field_key, -sample)
+            ) %>% select(where(~ sum(.) > 0)), method = "bray"),
     amf_bray  = vegdist(data.frame(spe$amf, row.names = 1), method = "bray"),
     amf_samps = vegdist(
         data.frame(
             spe$amf_samps %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample) %>% 
-                select(where(~ sum(.) > 0))
-        ), method = "bray"),
+                select(-field_key, -sample)
+        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
     amf_resto_bm = vegdist(
         data.frame(
             spe$amf %>% 
-                filter(field_key %in% sites_resto_bm$field_key) %>% 
-                select(where(~ sum(.) > 0)), 
+                filter(field_key %in% sites_resto_bm$field_key), 
             row.names = 1
-        ), method = "bray"),
+        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
     amf_resto_samps_bm = vegdist(
         data.frame(
             spe$amf_samps %>% 
                 filter(field_key %in% sites_resto_bm$field_key) %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample) %>% 
-                select(where(~ sum(.) > 0))
-        ), method = "bray"),
+                select(-field_key, -sample)
+        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
     amf_uni   = sites %>%
         select(field_name, field_key) %>%
         left_join(
@@ -388,7 +382,7 @@ pcoa_samps_bm_fun <- function(s, d, env=sites_resto_bm, corr="none", df_name, np
     p_vec <- data.frame(p$vectors)
     # Wrangle site data
     env_w <- env %>% 
-        left_join(s %>% select(field_key, sample), by = join_by(field_key)) %>% 
+        left_join(s %>% select(field_key, sample), by = join_by(field_key), multiple = "all") %>% 
         mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
         column_to_rownames(var = "field_sample")
     # Permutation test (PERMANOVA)
@@ -693,11 +687,6 @@ correction is needed for these ordinations.
                                         df_name="BM restored, ITS gene, 97% OTU"))
 ```
 
-    ## Warning in left_join(., s %>% select(field_key, sample), by = join_by(field_key)): Each row in `x` is expected to match at most 1 row in `y`.
-    ## ℹ Row 1 of `x` matches multiple rows.
-    ## ℹ If multiple matches are expected, set `multiple = "all"` to silence this
-    ##   warning.
-
     ## Set of permutations < 'minperm'. Generating entire set.
     ## Set of permutations < 'minperm'. Generating entire set.
 
@@ -748,7 +737,7 @@ correction is needed for these ordinations.
     ## 
     ## adonis2(formula = d ~ field_key, data = env_w, permutations = nperm)
     ##           Df SumOfSqs      R2     F Pr(>F)    
-    ## field_key  1   0.7897 0.04252 2.398  5e-04 ***
+    ## field_key  1   0.7897 0.04252 2.398  0.001 ***
     ## Residual  54  17.7833 0.95748                 
     ## Total     55  18.5730 1.00000                 
     ## ---
@@ -759,7 +748,7 @@ correction is needed for these ordinations.
     ## ***VECTORS
     ## 
     ##             Axis.1    Axis.2    r2 Pr(>r)  
-    ## yr_since -0.997420  0.071762 0.725  0.023 *
+    ## yr_since -0.997420  0.071762 0.725 0.0215 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -777,11 +766,10 @@ community data. Both axes are important based on the broken stick model.
 The relatively low percent variation explained is partly due to the high
 number of dimensions used when all samples from fields are included. The
 fidelity of samples to fields was significant based on a permutation
-test $(R^2=0.04,~p=5\times 10^{-4})$. In this case, the partial $R^2$
-shows the proportion of sum of squares from the total. It is a low
-number here because so much unexplained variation exists, resulting in a
-high sum of squares that is outside the assignment of subsamples to
-fields.
+test $(R^2=0.04,~p=0.001)$. In this case, the partial $R^2$ shows the
+proportion of sum of squares from the total. It is a low number here
+because so much unexplained variation exists, resulting in a high sum of
+squares that is outside the assignment of subsamples to fields.
 
 Years since restoration has a moderately strong correlation with
 communities and was significant with a permutation test where samples
@@ -902,10 +890,10 @@ correction was applied.
     ## Number of permutations: 1999
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
-    ##             Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type   2    5.790 0.08144 8.7335 0.0015 **
-    ## Residual   197   65.303 0.91856                 
-    ## Total      199   71.094 1.00000                 
+    ##             Df SumOfSqs      R2      F Pr(>F)    
+    ## field_type   2    5.790 0.08144 8.7335  5e-04 ***
+    ## Residual   197   65.303 0.91856                  
+    ## Total      199   71.094 1.00000                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -917,7 +905,7 @@ variation explained on axes 1 and 2 is partly due to the high number of
 dimensions used when all samples from fields are included. The fidelity
 of samples to fields was strong based on a permutation test when
 restricting permutations to fields (=plots in `how()`) within regions
-(=blocks in `how()`) $(R^2=0.08,~p=0.0015)$.
+(=blocks in `how()`) $(R^2=0.08,~p=5\times 10^{-4})$.
 
 Let’s view an ordination plot with hulls around subsamples.
 
@@ -1056,10 +1044,10 @@ No negative eigenvalues produced, no correction applied.
     ## Number of permutations: 1999
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, strata = region)
-    ##            Df SumOfSqs      R2      F Pr(>F)    
-    ## field_type  2   1.0956 0.24872 3.6417  0.001 ***
-    ## Residual   22   3.3094 0.75128                  
-    ## Total      24   4.4050 1.00000                  
+    ##            Df SumOfSqs      R2      F Pr(>F)   
+    ## field_type  2   1.0956 0.24872 3.6417  0.002 **
+    ## Residual   22   3.3094 0.75128                 
+    ## Total      24   4.4050 1.00000                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -1070,7 +1058,7 @@ substantial variation here is on the first axis (27.5%) with Axis 2
 explaining 17.8% of the variation in AMF abundances. Testing the design
 factor *field_type* (with *region* treated as a block using the `strata`
 argument of `adonis2`) revealed a significant clustering
-$(R^2=0.25,~p=0.001)$.
+$(R^2=0.25,~p=0.002)$.
 
 Let’s view a plot with abundances of community subgroups inset.
 
@@ -1285,7 +1273,7 @@ relationship $(R^2_{Adj}=0.56,~p<0.005)$
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, strata = region)
     ##            Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type  2 0.054762 0.22505 3.1945 0.0035 **
+    ## field_type  2 0.054762 0.22505 3.1945 0.0045 **
     ## Residual   22 0.188572 0.77495                 
     ## Total      24 0.243335 1.00000                 
     ## ---
@@ -1447,11 +1435,6 @@ negative eigenvalues.
                                         df_name="BM restored, 18S gene, 97% OTU, BC dist."))
 ```
 
-    ## Warning in left_join(., s %>% select(field_key, sample), by = join_by(field_key)): Each row in `x` is expected to match at most 1 row in `y`.
-    ## ℹ Row 1 of `x` matches multiple rows.
-    ## ℹ If multiple matches are expected, set `multiple = "all"` to silence this
-    ##   warning.
-
     ## Set of permutations < 'minperm'. Generating entire set.
     ## Set of permutations < 'minperm'. Generating entire set.
 
@@ -1516,7 +1499,7 @@ negative eigenvalues.
     ## ***VECTORS
     ## 
     ##            Axis.1   Axis.2   Axis.3   Axis.4   Axis.5     r2 Pr(>r)  
-    ## yr_since -0.84928  0.37660 -0.19661  0.19812  0.24287 0.7715  0.022 *
+    ## yr_since -0.84928  0.37660 -0.19661  0.19812  0.24287 0.7715  0.018 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -1660,10 +1643,10 @@ correction was applied.
     ## Number of permutations: 1999
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
-    ##             Df SumOfSqs      R2     F Pr(>F)   
-    ## field_type   2    5.367 0.10872 10.49 0.0015 **
-    ## Residual   172   44.004 0.89128                
-    ## Total      174   49.372 1.00000                
+    ##             Df SumOfSqs      R2     F Pr(>F)    
+    ## field_type   2    5.367 0.10872 10.49  0.001 ***
+    ## Residual   172   44.004 0.89128                 
+    ## Total      174   49.372 1.00000                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -1675,7 +1658,7 @@ variation explained on axes 1 and 2 is partly due to the high number of
 dimensions used when all samples from fields are included. The fidelity
 of samples to fields was strong based on a permutation test when
 restricting permutations to fields (=plots in `how()`) within regions
-(=blocks in `how()`) $(R^2=0.11,~p=0.0015)$.
+(=blocks in `how()`) $(R^2=0.11,~p=0.001)$.
 
 Let’s view an ordination plot with hulls around subsamples.
 
