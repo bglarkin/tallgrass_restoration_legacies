@@ -52,7 +52,8 @@ pcoa_fun <- function(s, ft=c("restored"), rg, method="bray", binary=FALSE, corr=
         data.frame(
             s %>% 
                 filter(field_type %in% ft, region %in% rg) %>% 
-                select(-field_type, -region),
+                select(-field_type, -region) %>% 
+                select(field_name, where(~ is.numeric(.) && sum(.) > 0)),
             row.names = 1),
         method = method,
         binary = binary)
@@ -70,9 +71,9 @@ pcoa_fun <- function(s, ft=c("restored"), rg, method="bray", binary=FALSE, corr=
     # Ordination plot
     scores <- p_vec[, 1:2]
     # Output data
-    output <- list(correction_note                = p$note,
-                   values                         = p_vals[1:(ncomp+1), ],
-                   site_vectors                   = scores)
+    output <- list(correction_note = p$note,
+                   values          = p_vals[1:(ncomp+1), ],
+                   site_vectors    = scores)
     return(output)
 }
 #' 
@@ -85,7 +86,8 @@ dbrda_fun <- function(s, pspe_pcoa="none", ft, rg) {
         data.frame(
             s %>% 
                 filter(field_type %in% ft, region %in% rg) %>% 
-                select(-field_type, -region),
+                select(-field_type, -region) %>% 
+                select(field_name, where(~ is.numeric(.) && sum(.) > 0)),
             row.names = 1),
         method = "bray")
     if(is.data.frame(pspe_pcoa) == TRUE) {
