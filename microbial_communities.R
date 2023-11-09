@@ -118,6 +118,57 @@ sites_resto_bm <-
 #' - amf_bray: rarefied data, summed from 7 samples from each field, bray-curtis distance
 #' - amf_uni: rarefied data, summed from 7 samples from each field, UNIFRAC distance
 #' 
+
+temp <- list(
+    its       = data.frame(spe$its, row.names = 1),
+    its_samps = data.frame(
+            spe$its_samps %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ),
+    its_resto_bm = data.frame(
+            spe$its %>% 
+                filter(field_key %in% sites_resto_bm$field_key) %>% 
+                select(all_of(names(.)), where(~ sum(., na.rm = TRUE) > 0)), 
+            row.names = 1
+        ),
+    its_resto_samps_bm = data.frame(
+            spe$its_samps %>% 
+                filter(field_key %in% sites_resto_bm$field_key) %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ),
+    amf_bray  = data.frame(spe$amf, row.names = 1),
+    amf_samps = data.frame(
+            spe$amf_samps %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ),
+    amf_resto_bm = data.frame(
+            spe$amf %>% 
+                filter(field_key %in% sites_resto_bm$field_key), 
+            row.names = 1
+        ),
+    amf_resto_samps_bm = data.frame(
+            spe$amf_samps %>% 
+                filter(field_key %in% sites_resto_bm$field_key) %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        )
+)
+
+map(temp, colSums)
+
+temp$amf_resto_samps_bm %>% colSums()
+
+temp$amf_resto_samps_bm %>% select(where(~ sum(.) > 0)) %>% colSums()
+
+select(temp$amf_resto_samps_bm, where(~ sum(.) == 0))
+
 #+ distab_list
 distab <- list(
     its       = vegdist(data.frame(spe$its, row.names = 1), method = "bray"),
@@ -127,15 +178,13 @@ distab <- list(
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        )
-    ),
+        ), method = "bray"),
     its_resto_bm = vegdist(
         data.frame(
             spe$its %>% 
                 filter(field_key %in% sites_resto_bm$field_key), 
             row.names = 1
-            ), 
-        method = "bray"),
+            ), method = "bray"),
     its_resto_samps_bm = vegdist(
         data.frame(
             spe$its_samps %>% 
@@ -143,8 +192,7 @@ distab <- list(
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-            ),
-        method = "bray"),
+            ), method = "bray"),
     amf_bray  = vegdist(data.frame(spe$amf, row.names = 1), method = "bray"),
     amf_samps = vegdist(
         data.frame(
@@ -152,15 +200,13 @@ distab <- list(
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        )
-    ),
+        ), method = "bray"),
     amf_resto_bm = vegdist(
         data.frame(
             spe$amf %>% 
                 filter(field_key %in% sites_resto_bm$field_key), 
             row.names = 1
-        ), 
-        method = "bray"),
+        ), method = "bray"),
     amf_resto_samps_bm = vegdist(
         data.frame(
             spe$amf_samps %>% 
@@ -168,15 +214,12 @@ distab <- list(
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ),
-        method = "bray"),
+        ), method = "bray"),
     amf_uni   = sites %>%
         select(field_name, field_key) %>%
-        left_join(read_delim(
-            paste0(getwd(), "/otu_tables/18S/18S_weighted_Unifrac.tsv"),
-            show_col_types = FALSE
-        ),
-        by = join_by(field_name)) %>%
+        left_join(
+            read_delim(paste0(getwd(), "/otu_tables/18S/18S_weighted_Unifrac.tsv"), show_col_types = FALSE),
+            by = join_by(field_name)) %>%
         select(field_key, everything(),-field_name) %>%
         data.frame(row.names = 1) %>%
         as.dist()
