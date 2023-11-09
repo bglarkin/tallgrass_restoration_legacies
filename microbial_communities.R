@@ -118,57 +118,6 @@ sites_resto_bm <-
 #' - amf_bray: rarefied data, summed from 7 samples from each field, bray-curtis distance
 #' - amf_uni: rarefied data, summed from 7 samples from each field, UNIFRAC distance
 #' 
-
-temp <- list(
-    its       = data.frame(spe$its, row.names = 1),
-    its_samps = data.frame(
-            spe$its_samps %>% 
-                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
-                column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample)
-        ),
-    its_resto_bm = data.frame(
-            spe$its %>% 
-                filter(field_key %in% sites_resto_bm$field_key) %>% 
-                select(all_of(names(.)), where(~ sum(., na.rm = TRUE) > 0)), 
-            row.names = 1
-        ),
-    its_resto_samps_bm = data.frame(
-            spe$its_samps %>% 
-                filter(field_key %in% sites_resto_bm$field_key) %>% 
-                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
-                column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample)
-        ),
-    amf_bray  = data.frame(spe$amf, row.names = 1),
-    amf_samps = data.frame(
-            spe$amf_samps %>% 
-                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
-                column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample)
-        ),
-    amf_resto_bm = data.frame(
-            spe$amf %>% 
-                filter(field_key %in% sites_resto_bm$field_key), 
-            row.names = 1
-        ),
-    amf_resto_samps_bm = data.frame(
-            spe$amf_samps %>% 
-                filter(field_key %in% sites_resto_bm$field_key) %>% 
-                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
-                column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample)
-        )
-)
-
-map(temp, colSums)
-
-temp$amf_resto_samps_bm %>% colSums()
-
-temp$amf_resto_samps_bm %>% select(where(~ sum(.) > 0)) %>% colSums()
-
-select(temp$amf_resto_samps_bm, where(~ sum(.) == 0))
-
 #+ distab_list
 distab <- list(
     its       = vegdist(data.frame(spe$its, row.names = 1), method = "bray"),
@@ -177,12 +126,14 @@ distab <- list(
             spe$its_samps %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample)
+                select(-field_key, -sample) %>% 
+                select(where(~ sum(.) > 0))
         ), method = "bray"),
     its_resto_bm = vegdist(
         data.frame(
             spe$its %>% 
-                filter(field_key %in% sites_resto_bm$field_key), 
+                filter(field_key %in% sites_resto_bm$field_key) %>% 
+                select(where(~ sum(.) > 0)), 
             row.names = 1
             ), method = "bray"),
     its_resto_samps_bm = vegdist(
@@ -191,7 +142,8 @@ distab <- list(
                 filter(field_key %in% sites_resto_bm$field_key) %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample)
+                select(-field_key, -sample) %>% 
+                select(where(~ sum(.) > 0))
             ), method = "bray"),
     amf_bray  = vegdist(data.frame(spe$amf, row.names = 1), method = "bray"),
     amf_samps = vegdist(
@@ -199,12 +151,14 @@ distab <- list(
             spe$amf_samps %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample)
+                select(-field_key, -sample) %>% 
+                select(where(~ sum(.) > 0))
         ), method = "bray"),
     amf_resto_bm = vegdist(
         data.frame(
             spe$amf %>% 
-                filter(field_key %in% sites_resto_bm$field_key), 
+                filter(field_key %in% sites_resto_bm$field_key) %>% 
+                select(where(~ sum(.) > 0)), 
             row.names = 1
         ), method = "bray"),
     amf_resto_samps_bm = vegdist(
@@ -213,7 +167,8 @@ distab <- list(
                 filter(field_key %in% sites_resto_bm$field_key) %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample)
+                select(-field_key, -sample) %>% 
+                select(where(~ sum(.) > 0))
         ), method = "bray"),
     amf_uni   = sites %>%
         select(field_name, field_key) %>%
@@ -305,7 +260,7 @@ pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
     p_vec <- data.frame(p$vectors)
     # Wrangle site data
     env_w <- env %>% 
-        left_join(s %>% select(field_key, sample), by = join_by(field_key)) %>% 
+        left_join(s %>% select(field_key, sample), by = join_by(field_key), multiple = "all") %>% 
         mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
         column_to_rownames(var = "field_sample")
     # Permutation tests (PERMANOVA)
@@ -952,3 +907,4 @@ ggplot(pcoa_amf_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
     scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
+

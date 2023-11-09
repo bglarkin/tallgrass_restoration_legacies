@@ -2,7 +2,7 @@ Microbial data: community differences
 ================
 Beau Larkin
 
-Last updated: 18 October, 2023
+Last updated: 09 November, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -179,57 +179,55 @@ distab <- list(
             spe$its_samps %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample)
-        )
-    ),
+                select(-field_key, -sample) %>% 
+                select(where(~ sum(.) > 0))
+        ), method = "bray"),
     its_resto_bm = vegdist(
         data.frame(
             spe$its %>% 
-                filter(field_key %in% sites_resto_bm$field_key), 
+                filter(field_key %in% sites_resto_bm$field_key) %>% 
+                select(where(~ sum(.) > 0)), 
             row.names = 1
-            ), 
-        method = "bray"),
+            ), method = "bray"),
     its_resto_samps_bm = vegdist(
         data.frame(
             spe$its_samps %>% 
                 filter(field_key %in% sites_resto_bm$field_key) %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample)
-            ),
-        method = "bray"),
+                select(-field_key, -sample) %>% 
+                select(where(~ sum(.) > 0))
+            ), method = "bray"),
     amf_bray  = vegdist(data.frame(spe$amf, row.names = 1), method = "bray"),
     amf_samps = vegdist(
         data.frame(
             spe$amf_samps %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample)
-        )
-    ),
+                select(-field_key, -sample) %>% 
+                select(where(~ sum(.) > 0))
+        ), method = "bray"),
     amf_resto_bm = vegdist(
         data.frame(
             spe$amf %>% 
-                filter(field_key %in% sites_resto_bm$field_key), 
+                filter(field_key %in% sites_resto_bm$field_key) %>% 
+                select(where(~ sum(.) > 0)), 
             row.names = 1
-        ), 
-        method = "bray"),
+        ), method = "bray"),
     amf_resto_samps_bm = vegdist(
         data.frame(
             spe$amf_samps %>% 
                 filter(field_key %in% sites_resto_bm$field_key) %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
-                select(-field_key, -sample)
-        ),
-        method = "bray"),
+                select(-field_key, -sample) %>% 
+                select(where(~ sum(.) > 0))
+        ), method = "bray"),
     amf_uni   = sites %>%
         select(field_name, field_key) %>%
-        left_join(read_delim(
-            paste0(getwd(), "/otu_tables/18S/18S_weighted_Unifrac.tsv"),
-            show_col_types = FALSE
-        ),
-        by = join_by(field_name)) %>%
+        left_join(
+            read_delim(paste0(getwd(), "/otu_tables/18S/18S_weighted_Unifrac.tsv"), show_col_types = FALSE),
+            by = join_by(field_name)) %>%
         select(field_key, everything(),-field_name) %>%
         data.frame(row.names = 1) %>%
         as.dist()
@@ -321,7 +319,7 @@ pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
     p_vec <- data.frame(p$vectors)
     # Wrangle site data
     env_w <- env %>% 
-        left_join(s %>% select(field_key, sample), by = join_by(field_key)) %>% 
+        left_join(s %>% select(field_key, sample), by = join_by(field_key), multiple = "all") %>% 
         mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
         column_to_rownames(var = "field_sample")
     # Permutation tests (PERMANOVA)
@@ -695,6 +693,11 @@ correction is needed for these ordinations.
                                         df_name="BM restored, ITS gene, 97% OTU"))
 ```
 
+    ## Warning in left_join(., s %>% select(field_key, sample), by = join_by(field_key)): Each row in `x` is expected to match at most 1 row in `y`.
+    ## ℹ Row 1 of `x` matches multiple rows.
+    ## ℹ If multiple matches are expected, set `multiple = "all"` to silence this
+    ##   warning.
+
     ## Set of permutations < 'minperm'. Generating entire set.
     ## Set of permutations < 'minperm'. Generating entire set.
 
@@ -730,7 +733,7 @@ correction is needed for these ordinations.
     ##  8         1 10         -0.244  -0.0288       16
     ##  9         2 1           0.243   0.213         3
     ## 10         2 2           0.0824  0.0799        3
-    ## # ℹ 46 more rows
+    ## # … with 46 more rows
     ## 
     ## $broken_stick_plot
 
@@ -756,7 +759,7 @@ correction is needed for these ordinations.
     ## ***VECTORS
     ## 
     ##             Axis.1    Axis.2    r2 Pr(>r)  
-    ## yr_since -0.997420  0.071762 0.725 0.0195 *
+    ## yr_since -0.997420  0.071762 0.725  0.023 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -869,21 +872,21 @@ correction was applied.
     ## 
     ## $site_vectors
     ## # A tibble: 200 × 16
-    ##    field_key sample_key  Axis.1   Axis.2  Axis.3  Axis.4   Axis.5   Axis.6
-    ##        <dbl> <chr>        <dbl>    <dbl>   <dbl>   <dbl>    <dbl>    <dbl>
-    ##  1         1 1          -0.188  -0.132    0.0428 -0.0633  0.0617  -0.118  
-    ##  2         1 2          -0.225   0.0733   0.0254 -0.0123  0.00909 -0.219  
-    ##  3         1 4          -0.189  -0.0468   0.0129  0.0245 -0.0253  -0.127  
-    ##  4         1 5          -0.174  -0.0200   0.120  -0.204  -0.0240   0.0269 
-    ##  5         1 6          -0.208   0.00138  0.118  -0.168   0.0173  -0.179  
-    ##  6         1 7          -0.0492 -0.0480  -0.0195 -0.106  -0.0339   0.0192 
-    ##  7         1 9          -0.118  -0.0857   0.0620 -0.0960  0.0594  -0.0372 
-    ##  8         1 10         -0.189   0.0138   0.0711 -0.0411 -0.0254  -0.0238 
-    ##  9         2 1           0.0564  0.00296 -0.325   0.0570 -0.0677  -0.00108
-    ## 10         2 2           0.0371  0.0536  -0.0926  0.0208 -0.130   -0.130  
-    ## # ℹ 190 more rows
-    ## # ℹ 8 more variables: Axis.7 <dbl>, Axis.8 <dbl>, Axis.9 <dbl>, Axis.10 <dbl>,
-    ## #   field_name <chr>, region <chr>, field_type <ord>, yr_since <chr>
+    ##    field_key sample…¹  Axis.1   Axis.2  Axis.3  Axis.4   Axis.5   Axis.6  Axis.7
+    ##        <dbl> <chr>      <dbl>    <dbl>   <dbl>   <dbl>    <dbl>    <dbl>   <dbl>
+    ##  1         1 1        -0.188  -0.132   -0.0428 -0.0633  0.0617  -0.118    0.155 
+    ##  2         1 2        -0.225   0.0733  -0.0254 -0.0123  0.00909 -0.219    0.0206
+    ##  3         1 4        -0.189  -0.0468  -0.0129  0.0245 -0.0253  -0.127    0.0554
+    ##  4         1 5        -0.174  -0.0200  -0.120  -0.204  -0.0240   0.0269   0.113 
+    ##  5         1 6        -0.208   0.00138 -0.118  -0.168   0.0173  -0.179    0.275 
+    ##  6         1 7        -0.0492 -0.0480   0.0195 -0.106  -0.0339   0.0192   0.126 
+    ##  7         1 9        -0.118  -0.0857  -0.0620 -0.0960  0.0594  -0.0372   0.132 
+    ##  8         1 10       -0.189   0.0138  -0.0711 -0.0411 -0.0254  -0.0238   0.0945
+    ##  9         2 1         0.0564  0.00296  0.325   0.0570 -0.0677  -0.00108 -0.0421
+    ## 10         2 2         0.0371  0.0536   0.0926  0.0208 -0.130   -0.130    0.0337
+    ## # … with 190 more rows, 7 more variables: Axis.8 <dbl>, Axis.9 <dbl>,
+    ## #   Axis.10 <dbl>, field_name <chr>, region <chr>, field_type <ord>,
+    ## #   yr_since <chr>, and abbreviated variable name ¹​sample_key
     ## 
     ## $broken_stick_plot
 
@@ -899,10 +902,10 @@ correction was applied.
     ## Number of permutations: 1999
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
-    ##             Df SumOfSqs      R2      F Pr(>F)    
-    ## field_type   2    5.790 0.08144 8.7335  5e-04 ***
-    ## Residual   197   65.303 0.91856                  
-    ## Total      199   71.094 1.00000                  
+    ##             Df SumOfSqs      R2      F Pr(>F)   
+    ## field_type   2    5.790 0.08144 8.7335 0.0015 **
+    ## Residual   197   65.303 0.91856                 
+    ## Total      199   71.094 1.00000                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -914,7 +917,7 @@ variation explained on axes 1 and 2 is partly due to the high number of
 dimensions used when all samples from fields are included. The fidelity
 of samples to fields was strong based on a permutation test when
 restricting permutations to fields (=plots in `how()`) within regions
-(=blocks in `how()`) $(R^2=0.08,~p=5\times 10^{-4})$.
+(=blocks in `how()`) $(R^2=0.08,~p=0.0015)$.
 
 Let’s view an ordination plot with hulls around subsamples.
 
@@ -1053,10 +1056,10 @@ No negative eigenvalues produced, no correction applied.
     ## Number of permutations: 1999
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, strata = region)
-    ##            Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type  2   1.0956 0.24872 3.6417 0.0015 **
-    ## Residual   22   3.3094 0.75128                 
-    ## Total      24   4.4050 1.00000                 
+    ##            Df SumOfSqs      R2      F Pr(>F)    
+    ## field_type  2   1.0956 0.24872 3.6417  0.001 ***
+    ## Residual   22   3.3094 0.75128                  
+    ## Total      24   4.4050 1.00000                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -1067,7 +1070,7 @@ substantial variation here is on the first axis (27.5%) with Axis 2
 explaining 17.8% of the variation in AMF abundances. Testing the design
 factor *field_type* (with *region* treated as a block using the `strata`
 argument of `adonis2`) revealed a significant clustering
-$(R^2=0.25,~p=0.002)$.
+$(R^2=0.25,~p=0.001)$.
 
 Let’s view a plot with abundances of community subgroups inset.
 
@@ -1444,6 +1447,11 @@ negative eigenvalues.
                                         df_name="BM restored, 18S gene, 97% OTU, BC dist."))
 ```
 
+    ## Warning in left_join(., s %>% select(field_key, sample), by = join_by(field_key)): Each row in `x` is expected to match at most 1 row in `y`.
+    ## ℹ Row 1 of `x` matches multiple rows.
+    ## ℹ If multiple matches are expected, set `multiple = "all"` to silence this
+    ##   warning.
+
     ## Set of permutations < 'minperm'. Generating entire set.
     ## Set of permutations < 'minperm'. Generating entire set.
 
@@ -1472,17 +1480,17 @@ negative eigenvalues.
     ## # A tibble: 49 × 8
     ##    field_key sample_key  Axis.1  Axis.2  Axis.3  Axis.4  Axis.5 yr_since
     ##        <dbl> <chr>        <dbl>   <dbl>   <dbl>   <dbl>   <dbl>    <dbl>
-    ##  1         1 1          -0.117  -0.0647 -0.151   0.0587 -0.0934       16
-    ##  2         1 2          -0.155  -0.296  -0.126   0.161  -0.118        16
-    ##  3         1 4          -0.471   0.188  -0.115   0.146   0.0755       16
-    ##  4         1 5          -0.0621 -0.352  -0.287   0.0839  0.167        16
-    ##  5         1 7          -0.263  -0.353  -0.0834  0.143  -0.0648       16
-    ##  6         1 8          -0.366   0.0809 -0.0579 -0.165  -0.123        16
-    ##  7         1 10         -0.386  -0.182  -0.0630  0.131  -0.0348       16
-    ##  8         2 1           0.0588 -0.284   0.350  -0.0973  0.0737        3
-    ##  9         2 3           0.170  -0.122   0.0879 -0.148  -0.0368        3
-    ## 10         2 5           0.0297 -0.419   0.200   0.0979  0.0852        3
-    ## # ℹ 39 more rows
+    ##  1         1 1          -0.117  -0.0647 -0.151  -0.0587 -0.0934       16
+    ##  2         1 2          -0.155  -0.296  -0.126  -0.161  -0.118        16
+    ##  3         1 4          -0.471   0.188  -0.115  -0.146   0.0755       16
+    ##  4         1 5          -0.0621 -0.352  -0.287  -0.0839  0.167        16
+    ##  5         1 7          -0.263  -0.353  -0.0834 -0.143  -0.0648       16
+    ##  6         1 8          -0.366   0.0809 -0.0579  0.165  -0.123        16
+    ##  7         1 10         -0.386  -0.182  -0.0630 -0.131  -0.0348       16
+    ##  8         2 1           0.0588 -0.284   0.350   0.0973  0.0737        3
+    ##  9         2 3           0.170  -0.122   0.0879  0.148  -0.0368        3
+    ## 10         2 5           0.0297 -0.419   0.200  -0.0979  0.0852        3
+    ## # … with 39 more rows
     ## 
     ## $broken_stick_plot
 
@@ -1508,7 +1516,7 @@ negative eigenvalues.
     ## ***VECTORS
     ## 
     ##            Axis.1   Axis.2   Axis.3   Axis.4   Axis.5     r2 Pr(>r)  
-    ## yr_since -0.84928  0.37660 -0.19661 -0.19812  0.24287 0.7715 0.0205 *
+    ## yr_since -0.84928  0.37660 -0.19661  0.19812  0.24287 0.7715  0.022 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -1518,8 +1526,8 @@ negative eigenvalues.
     ## 
     ## 
     ## $vector_fit_scores
-    ##              Axis.1   Axis.2     Axis.3     Axis.4    Axis.5
-    ## yr_since -0.7459905 0.330793 -0.1727015 -0.1740235 0.2133327
+    ##              Axis.1   Axis.2     Axis.3    Axis.4    Axis.5
+    ## yr_since -0.7459905 0.330793 -0.1727015 0.1740235 0.2133327
 
 Axis 1 explains 16.1% and axis 2 explains 12.2% of the variation in the
 community data. Both axes are important based on the broken stick model
@@ -1622,21 +1630,21 @@ correction was applied.
     ## 
     ## $site_vectors
     ## # A tibble: 175 × 16
-    ##    field_key sample_key   Axis.1  Axis.2  Axis.3    Axis.4  Axis.5    Axis.6
-    ##        <dbl> <chr>         <dbl>   <dbl>   <dbl>     <dbl>   <dbl>     <dbl>
-    ##  1         1 1          -0.0838  -0.0456  0.0139 -0.0788   -0.187  -0.0384  
-    ##  2         1 2          -0.0947  -0.323  -0.0487  0.0226   -0.110  -0.152   
-    ##  3         1 4          -0.367   -0.0777  0.279  -0.140    -0.124   0.0617  
-    ##  4         1 5           0.0909  -0.303  -0.158  -0.232    -0.0826 -0.0915  
-    ##  5         1 7          -0.168   -0.363  -0.0498  0.0128   -0.106   0.000557
-    ##  6         1 8          -0.358   -0.0291  0.120  -0.112    -0.0257  0.0340  
-    ##  7         1 10         -0.325   -0.261   0.0323  0.000590 -0.192   0.0127  
-    ##  8         2 1          -0.0353  -0.131  -0.329   0.137     0.241   0.196   
-    ##  9         2 3          -0.00617  0.0745 -0.260   0.174    -0.0233  0.0334  
-    ## 10         2 5          -0.0345  -0.316  -0.343   0.166     0.0102  0.0979  
-    ## # ℹ 165 more rows
-    ## # ℹ 8 more variables: Axis.7 <dbl>, Axis.8 <dbl>, Axis.9 <dbl>, Axis.10 <dbl>,
-    ## #   field_name <chr>, region <chr>, field_type <ord>, yr_since <chr>
+    ##    field_key sampl…¹   Axis.1  Axis.2  Axis.3   Axis.4  Axis.5   Axis.6   Axis.7
+    ##        <dbl> <chr>      <dbl>   <dbl>   <dbl>    <dbl>   <dbl>    <dbl>    <dbl>
+    ##  1         1 1       -0.0838  -0.0456  0.0139 -7.88e-2 -0.187  -3.84e-2  0.144  
+    ##  2         1 2       -0.0947  -0.323  -0.0487  2.26e-2 -0.110  -1.52e-1  0.0372 
+    ##  3         1 4       -0.367   -0.0777  0.279  -1.40e-1 -0.124   6.17e-2 -0.0350 
+    ##  4         1 5        0.0909  -0.303  -0.158  -2.32e-1 -0.0826 -9.15e-2 -0.0888 
+    ##  5         1 7       -0.168   -0.363  -0.0498  1.28e-2 -0.106   5.57e-4  0.0372 
+    ##  6         1 8       -0.358   -0.0291  0.120  -1.12e-1 -0.0257  3.40e-2 -0.0297 
+    ##  7         1 10      -0.325   -0.261   0.0323  5.90e-4 -0.192   1.27e-2  0.0129 
+    ##  8         2 1       -0.0353  -0.131  -0.329   1.37e-1  0.241   1.96e-1  0.00109
+    ##  9         2 3       -0.00617  0.0745 -0.260   1.74e-1 -0.0233  3.34e-2  0.0783 
+    ## 10         2 5       -0.0345  -0.316  -0.343   1.66e-1  0.0102  9.79e-2 -0.0186 
+    ## # … with 165 more rows, 7 more variables: Axis.8 <dbl>, Axis.9 <dbl>,
+    ## #   Axis.10 <dbl>, field_name <chr>, region <chr>, field_type <ord>,
+    ## #   yr_since <chr>, and abbreviated variable name ¹​sample_key
     ## 
     ## $broken_stick_plot
 
@@ -1653,7 +1661,7 @@ correction was applied.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
     ##             Df SumOfSqs      R2     F Pr(>F)   
-    ## field_type   2    5.367 0.10872 10.49 0.0025 **
+    ## field_type   2    5.367 0.10872 10.49 0.0015 **
     ## Residual   172   44.004 0.89128                
     ## Total      174   49.372 1.00000                
     ## ---
@@ -1667,7 +1675,7 @@ variation explained on axes 1 and 2 is partly due to the high number of
 dimensions used when all samples from fields are included. The fidelity
 of samples to fields was strong based on a permutation test when
 restricting permutations to fields (=plots in `how()`) within regions
-(=blocks in `how()`) $(R^2=0.11,~p=0.0025)$.
+(=blocks in `how()`) $(R^2=0.11,~p=0.0015)$.
 
 Let’s view an ordination plot with hulls around subsamples.
 
