@@ -2,7 +2,7 @@ Plant data: communities and traits
 ================
 Beau Larkin
 
-Last updated: 08 November, 2023
+Last updated: 09 November, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -407,7 +407,11 @@ corn fields because they exert too strong a difference on everything
 else.
 
 ``` r
-p_ab_trait_ch <- decostand(data.frame(p_ab_trait %>% filter(field_name %in% sites_noc$field_name), row.names = 1), "normalize")
+p_ab_trait_ch <- decostand(
+    data.frame(
+        p_ab_trait %>% 
+            filter(field_name %in% sites_noc$field_name), 
+        row.names = 1), "normalize")
 p_ab_trait_pca <- rda(p_ab_trait_ch)
 p_ab_trait_pca %>% summary(., display = NULL)
 ```
@@ -640,7 +644,7 @@ abundance data An ordiation is run on plant abundance data using
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
     ##            Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type  2   1.9713 0.36586 3.7501  0.005 **
+    ## field_type  2   1.9713 0.36586 3.7501 0.0055 **
     ## Residual   13   3.4169 0.63414                 
     ## Total      15   5.3882 1.00000                 
     ## ---
@@ -651,7 +655,7 @@ exceeds a broken stick model. The most substantial variation here will
 be on the first axis. Axis 2 explains 12.6% of the variation and was not
 very close to the broken stick value. Testing the design factor
 *field_type* (with *region* treated as a block using arguments to
-`how()` revealed a significant clustering $(R^2=0.37,~p=0.005)$. Let’s
+`how()` revealed a significant clustering $(R^2=0.37,~p=0.0055)$. Let’s
 view a plot of these results.
 
 ``` r
@@ -866,7 +870,7 @@ and permute within regions.
     ##                         Axis.1    Axis.2    Axis.3    Axis.4    Axis.5
     ## as.numeric(yr_since)  0.845160 -0.398380  0.116942  0.180121  0.144907
     ##                         Axis.6    Axis.7    Axis.8     r2 Pr(>r)  
-    ## as.numeric(yr_since) -0.011507  0.241990 -0.034590 0.7822  0.035 *
+    ## as.numeric(yr_since) -0.011507  0.241990 -0.034590 0.7822 0.0315 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -1005,7 +1009,7 @@ soil microbial communities.
     ##                         Axis.1    Axis.2    Axis.3    Axis.4    Axis.5
     ## as.numeric(yr_since)  0.838630  0.272579  0.188770 -0.027578 -0.013142
     ##                         Axis.6    Axis.7     r2 Pr(>r)  
-    ## as.numeric(yr_since)  0.175546 -0.393730 0.8619 0.0165 *
+    ## as.numeric(yr_since)  0.175546 -0.393730 0.8619  0.012 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -1108,7 +1112,7 @@ Next
 - pairwise with years and plant traits to confirm forbs vs. C4 grass.
   DONE
 - check fungal pcoas in later scripts to make sure there aren’t zero
-  columns in abundance matrices
+  columns in abundance matrices DONE
 - insert post hoc tests on permutations for adonis2 showing that field
   type is significantly different. Lots of ways to do this here:
   <https://www.researchgate.net/post/Posthoc_test_for_permanova_adonis>

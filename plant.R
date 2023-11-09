@@ -316,7 +316,11 @@ p_pr_trait <-
 #' Run a PCA on chord-transformed traits data from sites with abundance data, perform 
 #' typical basic diagnostics. This should be done without corn fields because they exert 
 #' too strong a difference on everything else. 
-p_ab_trait_ch <- decostand(data.frame(p_ab_trait %>% filter(field_name %in% sites_noc$field_name), row.names = 1), "normalize")
+p_ab_trait_ch <- decostand(
+    data.frame(
+        p_ab_trait %>% 
+            filter(field_name %in% sites_noc$field_name), 
+        row.names = 1), "normalize")
 p_ab_trait_pca <- rda(p_ab_trait_ch)
 p_ab_trait_pca %>% summary(., display = NULL)
 #+ p_ab_trait_pca_scree,fig.align='center'
@@ -558,7 +562,7 @@ p_ab_trait %>%
 #' Next
 #' 
 #' - pairwise with years and plant traits to confirm forbs vs. C4 grass. DONE
-#' - check fungal pcoas in later scripts to make sure there aren't zero columns in abundance matrices
+#' - check fungal pcoas in later scripts to make sure there aren't zero columns in abundance matrices DONE
 #' - insert post hoc tests on permutations for adonis2 showing that field type is significantly different.
 #' Lots of ways to do this here: https://www.researchgate.net/post/Posthoc_test_for_permanova_adonis 
 #' Looks like corn is different from restored and remnant, but maybe restored and remnant are similar. That's 
