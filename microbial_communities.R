@@ -184,7 +184,7 @@ distab <- list(
 #' **yr_since** is continuous with this dataset and is tested with `envfit()`.
 #' 
 #+ pcoa_function
-pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
+pcoa_fun <- function(d, env=data.frame(sites), corr="none", df_name, nperm=1999) {
     set.seed <- 397
     # Multivariate analysis
     p <- pcoa(d, correction = corr)
@@ -202,7 +202,11 @@ pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
                  strata = region
              ))
     # Pairwise post-hoc
-    p_pairwise <- pairwise.adonis2()
+    p_pairwise <- 
+        pairwise.adonis2(d ~ field_type,
+                         data = env, 
+                         strata = "region",
+                         nperm = nperm)
     # Diagnostic plots
     if(corr == "none" | ncol(p_vals) == 6) {
         p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
@@ -241,7 +245,8 @@ pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
                    eigenvalues                    = eig,
                    site_vectors                   = scores,
                    broken_stick_plot              = p_bstick,
-                   permanova                      = p_permtest)
+                   permanova                      = p_permtest,
+                   pairwise_permanova             = p_pairwise)
     return(output)
 }
 #' 
