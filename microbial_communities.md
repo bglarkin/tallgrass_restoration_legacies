@@ -2,16 +2,16 @@ Microbial data: community differences
 ================
 Beau Larkin
 
-Last updated: 09 November, 2023
+Last updated: 14 November, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
+  - [Functions](#functions)
 - [Data](#data)
   - [Sites-species tables](#sites-species-tables)
   - [Species metadata](#species-metadata)
   - [Site metadata](#site-metadata)
   - [Distance tables](#distance-tables)
-  - [Functions](#functions)
 - [Results](#results)
   - [ITS gene, OTU clustering](#its-gene-otu-clustering)
     - [PCoA with abundances summed in
@@ -52,7 +52,7 @@ same (not shown).
 # Packages and libraries
 
 ``` r
-packages_needed = c("tidyverse", "vegan", "colorspace", "ape", "knitr")
+packages_needed = c("tidyverse", "vegan", "colorspace", "ape", "knitr", "pairwiseAdonis")
 packages_installed = packages_needed %in% rownames(installed.packages())
 ```
 
@@ -65,6 +65,295 @@ if (any(!packages_installed)) {
 ``` r
 for (i in 1:length(packages_needed)) {
     library(packages_needed[i], character.only = T)
+}
+```
+
+## Functions
+
+Functions handle the Principal Components Analysis (PCoA) diagnostics,
+with outputs and figures saved to a list for later use.
+
+- `pcoa_fun()` is used with data where samples have been summed in
+  fields.
+- `pcoa_samps_fun()` is used with rarefied subsample data from all
+  fields.
+- `pcoa_samps_bm_fun()` is used for the subsample data from Blue Mounds
+  restored fields. The variable **yr_since** is continuous with this
+  dataset and is tested with `envfit()`.
+
+``` r
+pcoa_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
+    set.seed <- 397
+    # Multivariate analysis
+    p <- pcoa(d, correction = corr)
+    p_vals <- data.frame(p$values) %>% 
+        rownames_to_column(var = "Dim") %>% 
+        mutate(Dim = as.integer(Dim))
+    p_vec <- data.frame(p$vectors)
+    # Wrangle site data
+    env <- data.frame(env)
+    # Global permutation test (PERMANOVA)
+    gl_permtest <-
+        with(env,
+             adonis2(
+                 d ~ field_type,
+                 data = env,
+                 permutations = nperm,
+                 add = if (corr == "none") FALSE else "lingoes",
+                 strata = region
+             ))
+    # Pairwise post-hoc test
+    group_var <- as.character(env$field_type)
+    groups <- as.data.frame(t(combn(unique(group_var), m = 2)))
+    contrasts <- data.frame(
+        group1 = groups$V1,
+        group2 = groups$V2,
+        R2 = NA,
+        F_value = NA,
+        df1 = NA,
+        df2 = NA,
+        p_value = NA
+    )
+    for (i in seq(nrow(contrasts))) {
+        group_subset <-
+            group_var == contrasts$group1[i] |
+            group_var == contrasts$group2[i]
+        contrast_matrix <- data.frame(s[group_subset, ], row.names = 1)
+        fit <- with(env[group_subset, ],
+                    adonis2(
+                        contrast_matrix ~ group_var[group_subset],
+                        permutations = nperm,
+                        add = if (corr == "none") FALSE else "lingoes",
+                        strata = region
+                    ))
+        
+        contrasts$R2[i] <- round(fit$R2[1], digits = 3)
+        contrasts$F_value[i] <- round(fit[["F"]][1], digits = 3)
+        contrasts$df1[i] <- fit$Df[1]
+        contrasts$df2[i] <- fit$Df[2]
+        contrasts$p_value[i] <- fit$`Pr(>F)`[1]
+    }
+    contrasts$p_value_adj <- p.adjust(contrasts$p_value, method = "fdr")
+    # Diagnostic plots
+    if(corr == "none" | ncol(p_vals) == 6) {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
+    } else {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
+    }
+    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
+    # Ordination plot
+    scores <-
+        p_vec[, 1:ncomp] %>%
+        rownames_to_column(var = "field_key") %>%
+        mutate(field_key = as.integer(field_key)) %>%
+        left_join(sites, by = "field_key") %>% 
+        select(-field_name)
+    # Output data
+    output <- list(dataset                        = df_name,
+                   components_exceed_broken_stick = p_ncomp,
+                   correction_note                = p$note,
+                   values                         = p_vals[1:(ncomp+1), ], 
+                   eigenvalues                    = eig,
+                   site_vectors                   = scores,
+                   broken_stick_plot              = p_bstick,
+                   permanova                      = gl_permtest,
+                   pairwise_contrasts             = kable(contrasts, format = "pandoc"))
+    return(output)
+}
+```
+
+``` r
+pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
+    set.seed <- 438
+    # Multivariate analysis
+    p <- pcoa(d, correction = corr)
+    p_vals <- data.frame(p$values) %>% 
+        rownames_to_column(var = "Dim") %>% 
+        mutate(Dim = as.integer(Dim))
+    p_vec <- data.frame(p$vectors)
+    # Wrangle site data
+    env_w <- env %>% 
+        left_join(s %>% select(field_key, sample), by = join_by(field_key), multiple = "all") %>% 
+        mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+        column_to_rownames(var = "field_sample") %>% 
+        as.data.frame()
+    # Permutation tests (PERMANOVA)
+    # Fields as replicate strata with subsamples
+    # Regions as blocks
+    # Global test
+    gl_perm_design <- with(env_w, 
+              how(within = Within(type="none"), 
+                  plots  = Plots(strata=field_key, type="free"),
+                  blocks = region,
+                  nperm  = nperm))
+    gl_permtest <- adonis2(
+        d ~ field_type,
+        data = env_w,
+        permutations = gl_perm_design)
+    # Pairwise post-hoc test
+    group_var <- as.character(env_w$field_type)
+    groups <- as.data.frame(t(combn(unique(group_var), m = 2)))
+    contrasts <- data.frame(
+        group1 = groups$V1,
+        group2 = groups$V2,
+        R2 = NA,
+        F_value = NA,
+        df1 = NA,
+        df2 = NA,
+        p_value = NA
+    )
+    for (i in seq(nrow(contrasts))) {
+        group_subset <-
+            group_var == contrasts$group1[i] |
+            group_var == contrasts$group2[i]
+        contrast_matrix <- s[group_subset, ]
+        pw_perm_design <- with(env_w[group_subset,],
+                               how(
+                                   within = Within(type = "none"),
+                                   plots  = Plots(strata = field_key, type = "free"),
+                                   blocks = region,
+                                   nperm  = nperm
+                               ))
+        fit <- adonis2(
+            contrast_matrix ~ group_var[group_subset],
+            add = if (corr == "none") FALSE else "lingoes",
+            permutations = pw_perm_design
+        )
+        
+        contrasts$R2[i] <- round(fit$R2[1], digits = 3)
+        contrasts$F_value[i] <- round(fit[["F"]][1], digits = 3)
+        contrasts$df1[i] <- fit$Df[1]
+        contrasts$df2[i] <- fit$Df[2]
+        contrasts$p_value[i] <- fit$`Pr(>F)`[1]
+    }
+    contrasts$p_value_adj <- p.adjust(contrasts$p_value, method = "fdr")
+    # Diagnostic plots
+    if(corr == "none" | ncol(p_vals) == 6) {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
+    } else {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
+    }
+    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
+    # Ordination plot
+    scores <-
+        p_vec[, 1:ncomp] %>%
+        rownames_to_column(var = "field_sample") %>%
+        separate_wider_delim(field_sample, delim = "_", names = c("field_key", "sample_key"), cols_remove = TRUE) %>% 
+        mutate(field_key = as.integer(field_key)) %>%
+        left_join(env, by = join_by(field_key))
+    # Output data
+    output <- list(dataset                        = df_name,
+                   components_exceed_broken_stick = p_ncomp,
+                   correction_note                = p$note,
+                   values                         = p_vals[1:(ncomp+1), ], 
+                   eigenvalues                    = eig,
+                   site_vectors                   = scores,
+                   broken_stick_plot              = p_bstick,
+                   permanova                      = gl_permtest,
+                   pairwise_contrasts             = kable(contrasts, format = "pandoc"))
+    return(output)
+}
+```
+
+``` r
+pcoa_samps_bm_fun <- function(s, d, env=sites_resto_bm, corr="none", df_name, nperm=1999) {
+    set.seed <- 845
+    # Multivariate analysis
+    p <- pcoa(d, correction = corr)
+    p_vals <- data.frame(p$values) %>% 
+        rownames_to_column(var = "Dim") %>% 
+        mutate(Dim = as.integer(Dim))
+    p_vec <- data.frame(p$vectors)
+    # Wrangle site data
+    env_w <- env %>% 
+        left_join(s %>% select(field_key, sample), by = join_by(field_key), multiple = "all") %>% 
+        mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+        column_to_rownames(var = "field_sample")
+    # Permutation test (PERMANOVA)
+    p_permtest <- adonis2(d ~ field_key, data = env_w, permutations = nperm)
+    # Diagnostic plots
+    if(corr == "none" | ncol(p_vals) == 6) {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
+    } else {
+        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
+            geom_col(fill = "gray70", color = "gray30") + 
+            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
+            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
+            labs(x = "Dimension", 
+                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
+            theme_bw()
+        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
+        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
+    }
+    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
+    # Permutation test (ENVFIT)
+    # Fields as strata
+    h = with(env_w, 
+             how(within = Within(type="none"), 
+                 plots = Plots(strata=field_key, type="free"), 
+                 nperm = nperm))
+    fit <- envfit(p_vec ~ yr_since, env_w, permutations = h, choices = c(1:ncomp))
+    fit_sc <- scores(fit, c("vectors"))
+    # Ordination plotting data
+    scores <-
+        p_vec[, 1:ncomp] %>%
+        rownames_to_column(var = "field_sample") %>%
+        separate_wider_delim(field_sample, delim = "_", names = c("field_key", "sample_key"), cols_remove = TRUE) %>% 
+        mutate(field_key = as.integer(field_key)) %>%
+        left_join(env, by = join_by(field_key)) %>% 
+        select(-field_type)
+    # Output data
+    output <- list(dataset                        = df_name,
+                   components_exceed_broken_stick = p_ncomp,
+                   correction_note                = p$note,
+                   values                         = p_vals[1:(ncomp+1), ], 
+                   eigenvalues                    = eig,
+                   site_vectors                   = scores,
+                   broken_stick_plot              = p_bstick,
+                   permanova                      = p_permtest,
+                   vector_fit                     = fit,
+                   vector_fit_scores              = fit_sc)
+    return(output)
 }
 ```
 
@@ -186,7 +475,7 @@ distab <- list(
             spe$its %>% 
                 filter(field_key %in% sites_resto_bm$field_key), 
             row.names = 1
-            ) %>% select(where(~ sum(.) > 0)), method = "bray"),
+        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
     its_resto_samps_bm = vegdist(
         data.frame(
             spe$its_samps %>% 
@@ -194,7 +483,7 @@ distab <- list(
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-            ) %>% select(where(~ sum(.) > 0)), method = "bray"),
+        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
     amf_bray  = vegdist(data.frame(spe$amf, row.names = 1), method = "bray"),
     amf_samps = vegdist(
         data.frame(
@@ -228,219 +517,6 @@ distab <- list(
 ) 
 ```
 
-## Functions
-
-Functions handle the Principal Components Analysis (PCoA) diagnostics,
-with outputs and figures saved to a list for later use.
-
-- `pcoa_fun()` is used with data where samples have been summed in
-  fields.
-- `pcoa_samps_fun()` is used with rarefied subsample data from all
-  fields.
-- `pcoa_samps_bm_fun()` is used for the subsample data from Blue Mounds
-  restored fields. The variable **yr_since** is continuous with this
-  dataset and is tested with `envfit()`.
-
-``` r
-pcoa_fun <- function(d, env=sites, corr="none", df_name, nperm=1999) {
-    set.seed <- 397
-    # Multivariate analysis
-    p <- pcoa(d, correction = corr)
-    p_vals <- data.frame(p$values) %>% 
-        rownames_to_column(var = "Dim") %>% 
-        mutate(Dim = as.integer(Dim))
-    p_vec <- data.frame(p$vectors)
-    # Permutation tests (PERMANOVA)
-    p_permtest <-
-        with(env,
-             adonis2(
-                 d ~ field_type,
-                 data = env,
-                 permutations = nperm,
-                 strata = region
-             ))
-    # Diagnostic plots
-    if(corr == "none" | ncol(p_vals) == 6) {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
-    } else {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
-    }
-    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
-    # Ordination plot
-    scores <-
-        p_vec[, 1:ncomp] %>%
-        rownames_to_column(var = "field_key") %>%
-        mutate(field_key = as.integer(field_key)) %>%
-        left_join(sites, by = "field_key") %>% 
-        select(-field_name)
-    # Output data
-    output <- list(dataset                        = df_name,
-                   components_exceed_broken_stick = p_ncomp,
-                   correction_note                = p$note,
-                   values                         = p_vals[1:(ncomp+1), ], 
-                   eigenvalues                    = eig,
-                   site_vectors                   = scores,
-                   broken_stick_plot              = p_bstick,
-                   permanova                      = p_permtest)
-    return(output)
-}
-```
-
-``` r
-pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
-    set.seed <- 438
-    # Multivariate analysis
-    p <- pcoa(d, correction = corr)
-    p_vals <- data.frame(p$values) %>% 
-        rownames_to_column(var = "Dim") %>% 
-        mutate(Dim = as.integer(Dim))
-    p_vec <- data.frame(p$vectors)
-    # Wrangle site data
-    env_w <- env %>% 
-        left_join(s %>% select(field_key, sample), by = join_by(field_key), multiple = "all") %>% 
-        mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
-        column_to_rownames(var = "field_sample")
-    # Permutation tests (PERMANOVA)
-    # Fields as replicate strata with subsamples
-    # Regions as blocks
-    h <- with(env_w, 
-              how(within = Within(type="none"), 
-                  plots  = Plots(strata=field_key, type="free"),
-                  blocks = region,
-                  nperm  = nperm))
-    p_permtest <- adonis2(
-        d ~ field_type,
-        data = env_w,
-        permutations = h)
-    # Diagnostic plots
-    if(corr == "none" | ncol(p_vals) == 6) {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
-    } else {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
-    }
-    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
-    # Ordination plot
-    scores <-
-        p_vec[, 1:ncomp] %>%
-        rownames_to_column(var = "field_sample") %>%
-        separate_wider_delim(field_sample, delim = "_", names = c("field_key", "sample_key"), cols_remove = TRUE) %>% 
-        mutate(field_key = as.integer(field_key)) %>%
-        left_join(env, by = join_by(field_key))
-    # Output data
-    output <- list(dataset                        = df_name,
-                   components_exceed_broken_stick = p_ncomp,
-                   correction_note                = p$note,
-                   values                         = p_vals[1:(ncomp+1), ], 
-                   eigenvalues                    = eig,
-                   site_vectors                   = scores,
-                   broken_stick_plot              = p_bstick,
-                   permanova                      = p_permtest)
-    return(output)
-}
-```
-
-``` r
-pcoa_samps_bm_fun <- function(s, d, env=sites_resto_bm, corr="none", df_name, nperm=1999) {
-    set.seed <- 845
-    # Multivariate analysis
-    p <- pcoa(d, correction = corr)
-    p_vals <- data.frame(p$values) %>% 
-        rownames_to_column(var = "Dim") %>% 
-        mutate(Dim = as.integer(Dim))
-    p_vec <- data.frame(p$vectors)
-    # Wrangle site data
-    env_w <- env %>% 
-        left_join(s %>% select(field_key, sample), by = join_by(field_key), multiple = "all") %>% 
-        mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
-        column_to_rownames(var = "field_sample")
-    # Permutation test (PERMANOVA)
-    p_permtest <- adonis2(d ~ field_key, data = env_w, permutations = nperm)
-    # Diagnostic plots
-    if(corr == "none" | ncol(p_vals) == 6) {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
-    } else {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
-    }
-    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
-    # Permutation test (ENVFIT)
-    # Fields as strata
-    h = with(env_w, 
-             how(within = Within(type="none"), 
-                 plots = Plots(strata=field_key, type="free"), 
-                 nperm = nperm))
-    fit <- envfit(p_vec ~ yr_since, env_w, permutations = h, choices = c(1:ncomp))
-    fit_sc <- scores(fit, c("vectors"))
-    # Ordination plotting data
-    scores <-
-        p_vec[, 1:ncomp] %>%
-        rownames_to_column(var = "field_sample") %>%
-        separate_wider_delim(field_sample, delim = "_", names = c("field_key", "sample_key"), cols_remove = TRUE) %>% 
-        mutate(field_key = as.integer(field_key)) %>%
-        left_join(env, by = join_by(field_key)) %>% 
-        select(-field_type)
-    # Output data
-    output <- list(dataset                        = df_name,
-                   components_exceed_broken_stick = p_ncomp,
-                   correction_note                = p$note,
-                   values                         = p_vals[1:(ncomp+1), ], 
-                   eigenvalues                    = eig,
-                   site_vectors                   = scores,
-                   broken_stick_plot              = p_bstick,
-                   permanova                      = p_permtest,
-                   vector_fit                     = fit,
-                   vector_fit_scores              = fit_sc)
-    return(output)
-}
-```
-
 # Results
 
 #### Ordinations
@@ -456,8 +532,12 @@ In trial runs, no negative eigenvalues were observed (not shown). No
 correction is needed for these ordinations.
 
 ``` r
-(pcoa_its <- pcoa_fun(distab$its, df_name = "ITS gene, 97% OTU"))
+(pcoa_its <- pcoa_fun(spe$its, distab$its, df_name = "ITS gene, 97% OTU"))
 ```
+
+    ## 'nperm' >= set of all permutations: complete enumeration.
+
+    ## Set of permutations < 'minperm'. Generating entire set.
 
     ## $dataset
     ## [1] "ITS gene, 97% OTU"
@@ -517,13 +597,22 @@ correction is needed for these ordinations.
     ## Permutation: free
     ## Number of permutations: 1999
     ## 
-    ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, strata = region)
+    ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, add = if (corr == "none") FALSE else "lingoes", strata = region)
     ##            Df SumOfSqs      R2     F Pr(>F)    
     ## field_type  2   1.2186 0.17751 2.374  5e-04 ***
     ## Residual   22   5.6464 0.82249                 
     ## Total      24   6.8650 1.00000                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $pairwise_contrasts
+    ## 
+    ## 
+    ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
+    ## ---------  --------  ------  --------  ----  ----  ----------  ------------
+    ## restored   corn       0.156     3.524     1    19   0.0015000        0.0045
+    ## restored   remnant    0.055     1.052     1    18   0.1410000        0.1410
+    ## corn       remnant    0.289     2.850     1     7   0.0416667        0.0625
 
 Axis 1 explains 18.7% of the variation and is the only eigenvalue that
 exceeds a broken stick model. The most substantial variation here will
@@ -748,7 +837,7 @@ correction is needed for these ordinations.
     ## ***VECTORS
     ## 
     ##             Axis.1    Axis.2    r2 Pr(>r)  
-    ## yr_since -0.997420  0.071762 0.725 0.0215 *
+    ## yr_since -0.997420  0.071762 0.725  0.019 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -832,6 +921,10 @@ correction was applied.
                                   df_name = "ITS gene, 97% OTU"))
 ```
 
+    ## 'nperm' >= set of all permutations: complete enumeration.
+
+    ## Set of permutations < 'minperm'. Generating entire set.
+
     ## $dataset
     ## [1] "ITS gene, 97% OTU"
     ## 
@@ -889,13 +982,22 @@ correction was applied.
     ## Permutation: none
     ## Number of permutations: 1999
     ## 
-    ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
     ##             Df SumOfSqs      R2      F Pr(>F)    
     ## field_type   2    5.790 0.08144 8.7335  5e-04 ***
     ## Residual   197   65.303 0.91856                  
     ## Total      199   71.094 1.00000                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $pairwise_contrasts
+    ## 
+    ## 
+    ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
+    ## ---------  --------  ------  --------  ----  ----  ----------  ------------
+    ## restored   corn       0.066    11.791     1   166   0.0015000        0.0045
+    ## restored   remnant    0.018     2.835     1   158   0.1990000        0.1990
+    ## corn       remnant    0.135    10.946     1    70   0.1428571        0.1990
 
 Axis 1 explains 8.2% and axis 2 explains 5% of the variation in the
 community data. Both axes are important based on the broken stick model,
@@ -948,8 +1050,12 @@ ggplot(pcoa_its_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
 No negative eigenvalues produced, no correction applied.
 
 ``` r
-(pcoa_amf_bray <- pcoa_fun(distab$amf_bray, df_name = "18S gene, 97% OTU, Bray-Curtis distance"))
+(pcoa_amf_bray <- pcoa_fun(s = spe$amf, d = distab$amf_bray, df_name = "18S gene, 97% OTU, Bray-Curtis distance"))
 ```
+
+    ## 'nperm' >= set of all permutations: complete enumeration.
+
+    ## Set of permutations < 'minperm'. Generating entire set.
 
     ## $dataset
     ## [1] "18S gene, 97% OTU, Bray-Curtis distance"
@@ -1043,13 +1149,22 @@ No negative eigenvalues produced, no correction applied.
     ## Permutation: free
     ## Number of permutations: 1999
     ## 
-    ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, strata = region)
+    ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, add = if (corr == "none") FALSE else "lingoes", strata = region)
     ##            Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type  2   1.0956 0.24872 3.6417  0.002 **
+    ## field_type  2   1.0956 0.24872 3.6417 0.0015 **
     ## Residual   22   3.3094 0.75128                 
     ## Total      24   4.4050 1.00000                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $pairwise_contrasts
+    ## 
+    ## 
+    ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
+    ## ---------  --------  ------  --------  ----  ----  ----------  ------------
+    ## restored   corn       0.254     6.474     1    19   0.0010000        0.0030
+    ## restored   remnant    0.023     0.422     1    18   0.9685000        0.9685
+    ## corn       remnant    0.382     4.324     1     7   0.0416667        0.0625
 
 Four axes are significant by a broken stick model, between them
 explaining 68.7% of the variation in AMF among fields. It may be
@@ -1204,8 +1319,12 @@ relationship $(R^2_{Adj}=0.56,~p<0.005)$
 ### PCoA with abundances summed in fields, UNIFRAC distance
 
 ``` r
-(pcoa_amf_uni <- pcoa_fun(distab$amf_uni, df_name = "18S gene, 97% OTU, UNIFRAC distance", corr = "lingoes"))
+(pcoa_amf_uni <- pcoa_fun(s = spe$amf, d = distab$amf_uni, df_name = "18S gene, 97% OTU, UNIFRAC distance", corr = "lingoes"))
 ```
+
+    ## 'nperm' >= set of all permutations: complete enumeration.
+
+    ## Set of permutations < 'minperm'. Generating entire set.
 
     ## $dataset
     ## [1] "18S gene, 97% OTU, UNIFRAC distance"
@@ -1271,13 +1390,22 @@ relationship $(R^2_{Adj}=0.56,~p<0.005)$
     ## Permutation: free
     ## Number of permutations: 1999
     ## 
-    ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, strata = region)
-    ##            Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type  2 0.054762 0.22505 3.1945 0.0045 **
-    ## Residual   22 0.188572 0.77495                 
-    ## Total      24 0.243335 1.00000                 
+    ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, add = if (corr == "none") FALSE else "lingoes", strata = region)
+    ##            Df SumOfSqs     R2      F Pr(>F)   
+    ## field_type  2  0.06937 0.1657 2.1847 0.0025 **
+    ## Residual   22  0.34929 0.8343                 
+    ## Total      24  0.41866 1.0000                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $pairwise_contrasts
+    ## 
+    ## 
+    ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
+    ## ---------  --------  ------  --------  ----  ----  ----------  ------------
+    ## restored   corn       0.240     5.989     1    19   0.0010000        0.0030
+    ## restored   remnant    0.025     0.467     1    18   0.9700000        0.9700
+    ## corn       remnant    0.382     4.324     1     7   0.0416667        0.0625
 
 Three axes are significant by a broken stick model, between them
 explaining 48.8% of the variation in AMF among fields. The most
@@ -1285,7 +1413,7 @@ substantial variation here is on the first axis (23%) with Axis 2
 explaining 15% of the variation in AMF abundances. Testing the design
 factor *field_type* (with *region* treated as a block using the `strata`
 argument of `adonis2`) revealed a significant clustering
-$(R^2=0.23,~p=0.004)$.
+$(R^2=0.17,~p=0.002)$.
 
 Let’s view a plot with abundances of community subgroups inset.
 
@@ -1499,7 +1627,7 @@ negative eigenvalues.
     ## ***VECTORS
     ## 
     ##            Axis.1   Axis.2   Axis.3   Axis.4   Axis.5     r2 Pr(>r)  
-    ## yr_since -0.84928  0.37660 -0.19661  0.19812  0.24287 0.7715  0.018 *
+    ## yr_since -0.84928  0.37660 -0.19661  0.19812  0.24287 0.7715   0.02 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -1585,6 +1713,10 @@ correction was applied.
                                   df_name = "18S gene, 97% OTU"))
 ```
 
+    ## 'nperm' >= set of all permutations: complete enumeration.
+
+    ## Set of permutations < 'minperm'. Generating entire set.
+
     ## $dataset
     ## [1] "18S gene, 97% OTU"
     ## 
@@ -1642,13 +1774,22 @@ correction was applied.
     ## Permutation: none
     ## Number of permutations: 1999
     ## 
-    ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
-    ##             Df SumOfSqs      R2     F Pr(>F)    
-    ## field_type   2    5.367 0.10872 10.49  0.001 ***
-    ## Residual   172   44.004 0.89128                 
-    ## Total      174   49.372 1.00000                 
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
+    ##             Df SumOfSqs      R2     F Pr(>F)   
+    ## field_type   2    5.367 0.10872 10.49  0.003 **
+    ## Residual   172   44.004 0.89128                
+    ## Total      174   49.372 1.00000                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $pairwise_contrasts
+    ## 
+    ## 
+    ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
+    ## ---------  --------  ------  --------  ----  ----  ----------  ------------
+    ## restored   corn       0.056     8.657     1   145   0.0015000     0.0045000
+    ## restored   remnant    0.008     1.052     1   138   0.9990000     0.9990000
+    ## corn       remnant    0.111     7.636     1    61   0.1020408     0.1530612
 
 Axis 1 explains 7.1% and axis 2 explains 5% of the variation in the
 community data. Both axes are important based on the broken stick model,
@@ -1658,7 +1799,7 @@ variation explained on axes 1 and 2 is partly due to the high number of
 dimensions used when all samples from fields are included. The fidelity
 of samples to fields was strong based on a permutation test when
 restricting permutations to fields (=plots in `how()`) within regions
-(=blocks in `how()`) $(R^2=0.11,~p=0.001)$.
+(=blocks in `how()`) $(R^2=0.11,~p=0.003)$.
 
 Let’s view an ordination plot with hulls around subsamples.
 
