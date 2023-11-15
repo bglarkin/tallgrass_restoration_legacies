@@ -558,15 +558,3 @@ p_ab_trait %>%
     select(yr_since, C4_grass, forb) %>% 
     ggpairs(title = "Trait correlations with time in Blue Mounds restored fields") +
     theme_bw()
-
-#' Next
-#' 
-#' - pairwise with years and plant traits to confirm forbs vs. C4 grass. DONE
-#' - check fungal pcoas in later scripts to make sure there aren't zero columns in abundance matrices DONE
-#' - insert post hoc tests on permutations for adonis2 showing that field type is significantly different.
-#' Lots of ways to do this here: https://www.researchgate.net/post/Posthoc_test_for_permanova_adonis 
-#' Looks like corn is different from restored and remnant, but maybe restored and remnant are similar. That's 
-#' what we saw in microbial_diversity
-#' - finally, we need to get going on the guilds and taxa that vary with age in restored fields. Entire guilds
-#' first, then taxa. I think this is already somewhat done in the guilds report. Look for some that change 
-#' with restoration and then compare them to remnants. 

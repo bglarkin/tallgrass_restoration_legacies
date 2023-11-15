@@ -2,7 +2,7 @@ Plant data: communities and traits
 ================
 Beau Larkin
 
-Last updated: 09 November, 2023
+Last updated: 14 November, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -644,7 +644,7 @@ abundance data An ordiation is run on plant abundance data using
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
     ##            Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type  2   1.9713 0.36586 3.7501 0.0055 **
+    ## field_type  2   1.9713 0.36586 3.7501  0.004 **
     ## Residual   13   3.4169 0.63414                 
     ## Total      15   5.3882 1.00000                 
     ## ---
@@ -655,7 +655,7 @@ exceeds a broken stick model. The most substantial variation here will
 be on the first axis. Axis 2 explains 12.6% of the variation and was not
 very close to the broken stick value. Testing the design factor
 *field_type* (with *region* treated as a block using arguments to
-`how()` revealed a significant clustering $(R^2=0.37,~p=0.0055)$. Let’s
+`how()` revealed a significant clustering $(R^2=0.37,~p=0.004)$. Let’s
 view a plot of these results.
 
 ``` r
@@ -747,7 +747,7 @@ differences with plant data.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
     ##            Df SumOfSqs    R2      F Pr(>F)    
-    ## field_type  2   1.6722 0.233 2.5822  5e-04 ***
+    ## field_type  2   1.6722 0.233 2.5822  0.001 ***
     ## Residual   17   5.5044 0.767                  
     ## Total      19   7.1766 1.000                  
     ## ---
@@ -757,7 +757,7 @@ Axis 1 explains 19.9% of the variation and axis 2 explains 12.6% of the
 variation. These two eigenvalues exceed the broken stick value. stick
 value. Testing the design factor *field_type* (with *region* treated as
 a block using arguments to `how()` revealed a significant clustering
-$(R^2=0.23,~p=5\times 10^{-4})$. Let’s view a plot of these results.
+$(R^2=0.23,~p=0.001)$. Let’s view a plot of these results.
 
 ``` r
 ggplot(pcoa_pr$site_vectors, aes(x = Axis.1, y = Axis.2)) +
@@ -870,7 +870,7 @@ and permute within regions.
     ##                         Axis.1    Axis.2    Axis.3    Axis.4    Axis.5
     ## as.numeric(yr_since)  0.845160 -0.398380  0.116942  0.180121  0.144907
     ##                         Axis.6    Axis.7    Axis.8     r2 Pr(>r)  
-    ## as.numeric(yr_since) -0.011507  0.241990 -0.034590 0.7822 0.0315 *
+    ## as.numeric(yr_since) -0.011507  0.241990 -0.034590 0.7822 0.0335 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -1009,7 +1009,7 @@ soil microbial communities.
     ##                         Axis.1    Axis.2    Axis.3    Axis.4    Axis.5
     ## as.numeric(yr_since)  0.838630  0.272579  0.188770 -0.027578 -0.013142
     ##                         Axis.6    Axis.7     r2 Pr(>r)  
-    ## as.numeric(yr_since)  0.175546 -0.393730 0.8619  0.012 *
+    ## as.numeric(yr_since)  0.175546 -0.393730 0.8619  0.013 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -1106,20 +1106,3 @@ p_ab_trait %>%
 ```
 
 <img src="plant_files/figure-gfm/trait_time_cor_fig_bm-1.png" style="display: block; margin: auto;" />
-
-Next
-
-- pairwise with years and plant traits to confirm forbs vs. C4 grass.
-  DONE
-- check fungal pcoas in later scripts to make sure there aren’t zero
-  columns in abundance matrices DONE
-- insert post hoc tests on permutations for adonis2 showing that field
-  type is significantly different. Lots of ways to do this here:
-  <https://www.researchgate.net/post/Posthoc_test_for_permanova_adonis>
-  Looks like corn is different from restored and remnant, but maybe
-  restored and remnant are similar. That’s what we saw in
-  microbial_diversity
-- finally, we need to get going on the guilds and taxa that vary with
-  age in restored fields. Entire guilds first, then taxa. I think this
-  is already somewhat done in the guilds report. Look for some that
-  change with restoration and then compare them to remnants.
