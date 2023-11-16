@@ -41,7 +41,7 @@ and clustering into 97% similar OTUs.
 The report [microbial_diversity.md](microbial_diversity.md) presents basic statistics and visualizations of species richness, Shannon's diversity/evenness, and Simpson's diversity/evenness in the microbial species data across field types. 
 
 ## Microbial Taxonomy and Guilds
-OTUs are annotated with taxonomic information, and ITS OTUs additionally are annotated with [Fungal traits](https://link.springer.com/article/10.1007/s13225-020-00466-2) "primary lifestyles" (aka guilds). 
+OTUs are annotated with taxonomic information, and ITS OTUs additionally are annotated with [fungal traits](https://link.springer.com/article/10.1007/s13225-020-00466-2) "primary lifestyles" (aka guilds). 
 In [this report](microbial_guild_taxonomy.md), sequence abundances
 in taxonomic groups or fungal guilds are compared across field types and with time
 since restoration. Indicator species analysis is also performed to identify particular species matches 
@@ -67,6 +67,6 @@ This [report](tgr_constrained.md) attempts to find strong explanations for micro
 due to region might confound such an analysis, site variables like soil abiotic properties and precipitation were first condensed into two ordination axes 
 using PCA and used as covariables in the constrained analysis. The constrained analysis was done with dbRDA and tested the explanatory 
 power of years since restoration, plant community axes or plant traits, and soil properties that we don't believe are due to 
-regional differences and rather come from an agricultural legacy: SOM, NO~3~, P, and K.  
+regional differences and rather come from an agricultural legacy: SOM, NO<sub>3</sub>, P, and K.  
 
 ## Summary
