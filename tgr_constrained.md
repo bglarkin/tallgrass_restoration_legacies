@@ -2,7 +2,7 @@ Constrained and summary analysis
 ================
 Beau Larkin
 
-Last updated: 09 November, 2023
+Last updated: 16 November, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -70,6 +70,8 @@ for (i in 1:length(packages_needed)) {
     library(packages_needed[i], character.only = T)
 }
 ```
+
+    ## Warning: package 'stringr' was built under R version 4.2.3
 
 ``` r
 conflict_prefer("filter", "dplyr")
@@ -468,7 +470,12 @@ Partial db-RDA
 #### Blue Mounds with plant traits data
 
 ``` r
-dbrda_fun(s = fspe$its, pspe_pcoa = "none", ft = c("restored"), rg = c("BM"))[c(3,4,2)]
+dbrda_fun(
+    s = fspe$its,
+    pspe_pcoa = "none",
+    ft = c("restored"),
+    rg = c("BM")
+)[c(3, 4, 2)]
 ```
 
     ## $global_axis_test
@@ -501,12 +508,20 @@ dbrda_fun(s = fspe$its, pspe_pcoa = "none", ft = c("restored"), rg = c("BM"))[c(
     ##   MDS1   MDS2   MDS3   MDS4 
     ## 0.4834 0.3679 0.3135 0.2449
 
-No explanatory variables were selected
+No explanatory variables were selected, and the set of permutations was
+less than the 1999 selected, suggesting that this is a pretty small
+dataset.
 
 #### Wisconsin sites with plant traits
 
 ``` r
-(dbrda_wi_tr_its <- dbrda_fun(s = fspe$its, pspe_pcoa = "none", ft = c("restored"), rg = c("BM", "LP", "FG")))[c(3,4,2)]
+(dbrda_wi_tr_its <-
+        dbrda_fun(
+            s = fspe$its,
+            pspe_pcoa = "none",
+            ft = c("restored"),
+            rg = c("BM", "LP", "FG")
+        ))[c(3, 4, 2)]
 ```
 
     ## $global_axis_test
@@ -516,7 +531,7 @@ No explanatory variables were selected
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.54709 1.7407  0.013 *
+    ## Model     1  0.54709 1.7407 0.0145 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -529,7 +544,7 @@ No explanatory variables were selected
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## dbRDA1    1  0.54709 1.7407 0.0215 *
+    ## dbRDA1    1  0.54709 1.7407  0.015 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -553,14 +568,15 @@ No explanatory variables were selected
     ##   MDS1   MDS2   MDS3   MDS4   MDS5   MDS6 
     ## 0.3879 0.3720 0.3467 0.3007 0.2557 0.2227
 
-Global and individual axis tests were significant. Years since
+Global and individual axis test for axis 1 were significant. Years since
 restoration was selected, and it explains 17% of the variation. Forb and
 C4 grass are runners-up but appear highly correlated with years (not
 shown). Let’s view a plot and include forb and C4 grass for
 visualization purposes:
 
 ``` r
-plot_dbrda(site_sc = dbrda_wi_tr_its$plot_data$sites, site_bp = dbrda_wi_tr_its$plot_data$biplot)
+plot_dbrda(site_sc = dbrda_wi_tr_its$plot_data$sites,
+           site_bp = dbrda_wi_tr_its$plot_data$biplot)
 ```
 
 <img src="tgr_constrained_files/figure-gfm/plot_wi_tr_its-1.png" style="display: block; margin: auto;" />
@@ -568,7 +584,15 @@ plot_dbrda(site_sc = dbrda_wi_tr_its$plot_data$sites, site_bp = dbrda_wi_tr_its$
 #### Wisconsin sites with plant community axes
 
 ``` r
-dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG"))[c(3,4,2)]
+(
+    dbrda_wi_ab_its <-
+        dbrda_fun(
+            s = fspe$its,
+            pspe_pcoa = pspe_pcoa_ab$site_vectors,
+            ft = c("restored"),
+            rg = c("BM", "LP", "FG")
+        )
+)[c(3, 4, 2)]
 ```
 
     ## $global_axis_test
@@ -578,7 +602,7 @@ dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.54709 1.7407 0.0135 *
+    ## Model     1  0.54709 1.7407 0.0185 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -591,7 +615,7 @@ dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## dbRDA1    1  0.54709 1.7407  0.012 *
+    ## dbRDA1    1  0.54709 1.7407 0.0145 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -615,7 +639,7 @@ dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"
     ##   MDS1   MDS2   MDS3   MDS4   MDS5   MDS6 
     ## 0.3879 0.3720 0.3467 0.3007 0.2557 0.2227
 
-Global and individual axis tests were significant. Years since
+Global and individual axis test for axis 1 were significant. Years since
 restoration was selected, and it explains 17% of the variation. Since
 the plant community axes failed to contribute explanatory power, the
 result of the test is identical to the previous one.
@@ -623,7 +647,15 @@ result of the test is identical to the previous one.
 #### All regions with plant community axes
 
 ``` r
-(dbrda_all_pr_its <- dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_pr$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG", "FL")))[c(3,4,2)]
+(
+    dbrda_all_pr_its <-
+        dbrda_fun(
+            s = fspe$its,
+            pspe_pcoa = pspe_pcoa_pr$site_vectors,
+            ft = c("restored"),
+            rg = c("BM", "LP", "FG", "FL")
+        )
+)[c(3, 4, 2)]
 ```
 
     ## $global_axis_test
@@ -646,7 +678,7 @@ result of the test is identical to the previous one.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.70182 2.2329 0.0015 **
+    ## dbRDA1    1  0.70182 2.2329 0.0025 **
     ## Residual  9  2.82875                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -670,16 +702,17 @@ result of the test is identical to the previous one.
     ##   MDS1   MDS2   MDS3   MDS4   MDS5   MDS6   MDS7   MDS8   MDS9 
     ## 0.4454 0.3874 0.3615 0.3437 0.3056 0.2642 0.2530 0.2474 0.2205
 
-Global and individual axes are significant and strong. Years since
-restoration was selected and it explains 16% of the variation here.
-Potassium and plant axis 1 were runners up. It’s nice to see that the
-addition of a very different plant community didn’t make much of a
-difference, and that the conditional variation was 18%. I expected more
-with how different Fermi soils are. Let’s view a plot and add SOM, plant
-axis 1, and potassium for visualization purposes.
+Global and individual axis test for axis 1 were significant and strong.
+Years since restoration was selected and it explains 16% of the
+variation here. Potassium and plant axis 1 were runners up. It’s nice to
+see that the addition of a very different plant community didn’t make
+much of a difference, and that the conditional variation was 18%. I
+expected more with how different Fermi soils are. Let’s view a plot and
+add SOM, plant axis 1, and potassium for visualization purposes.
 
 ``` r
-plot_dbrda(site_sc = dbrda_all_pr_its$plot_data$sites, site_bp = dbrda_all_pr_its$plot_data$biplot)
+plot_dbrda(site_sc = dbrda_all_pr_its$plot_data$sites,
+           site_bp = dbrda_all_pr_its$plot_data$biplot)
 ```
 
 <img src="tgr_constrained_files/figure-gfm/plot_all_pr_its-1.png" style="display: block; margin: auto;" />
@@ -689,7 +722,12 @@ plot_dbrda(site_sc = dbrda_all_pr_its$plot_data$sites, site_bp = dbrda_all_pr_it
 #### Blue Mounds with plant traits data
 
 ``` r
-dbrda_fun(s = fspe$amf, pspe_pcoa = "none", ft = c("restored"), rg = c("BM"))[c(3,4,2)]
+dbrda_fun(
+    s = fspe$amf,
+    pspe_pcoa = "none",
+    ft = c("restored"),
+    rg = c("BM")
+)[c(3, 4, 2)]
 ```
 
     ## $global_axis_test
@@ -728,7 +766,13 @@ for the number of conditional and explanatory variables used, perhaps.
 #### Wisconsin sites with plant traits data
 
 ``` r
-(dbrda_wi_tr_amf <- dbrda_fun(s = fspe$amf, pspe_pcoa = "none", ft = c("restored"), rg = c("BM", "LP", "FG")))[c(3,4,2)]
+(dbrda_wi_tr_amf <-
+        dbrda_fun(
+            s = fspe$amf,
+            pspe_pcoa = "none",
+            ft = c("restored"),
+            rg = c("BM", "LP", "FG")
+        ))[c(3, 4, 2)]
 ```
 
     ## $global_axis_test
@@ -738,7 +782,7 @@ for the number of conditional and explanatory variables used, perhaps.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.57408 2.7216  0.006 **
+    ## Model     1  0.57408 2.7216 0.0035 **
     ## Residual  6  1.26562                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -751,7 +795,7 @@ for the number of conditional and explanatory variables used, perhaps.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.57408 2.7216 0.0065 **
+    ## dbRDA1    1  0.57408 2.7216  0.007 **
     ## Residual  6  1.26562                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -775,15 +819,16 @@ for the number of conditional and explanatory variables used, perhaps.
     ##    MDS1    MDS2    MDS3    MDS4    MDS5    MDS6 
     ## 0.30700 0.27775 0.21350 0.18386 0.15709 0.12642
 
-Global and single constrained axes are significant in site rank at
-p\<0.01. Years since restoration was the selected explanatory variable,
-explanaing 23% of the variation in communities. Forb and C4 grass were
-runners up and appear highly correlated with years since restoration.
-Let’s view a plot and include forb and C4 grass for visualization
-purposes:
+Global and individual axis test for axis 1 were significant in site rank
+at p\<0.01. Years since restoration was the selected explanatory
+variable, explanaing 23% of the variation in communities. Forb and C4
+grass were runners up and appear highly correlated with years since
+restoration. Let’s view a plot and include forb and C4 grass for
+visualization purposes:
 
 ``` r
-plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites, site_bp = dbrda_wi_tr_amf$plot_data$biplot)
+plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites,
+           site_bp = dbrda_wi_tr_amf$plot_data$biplot)
 ```
 
 <img src="tgr_constrained_files/figure-gfm/plot_wi_tr_amf-1.png" style="display: block; margin: auto;" />
@@ -791,7 +836,15 @@ plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites, site_bp = dbrda_wi_tr_amf$
 #### Wisconsin sites with plant community axes
 
 ``` r
-dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG"))[c(3,4,2)]
+(
+    dbrda_wi_ab_amf <-
+        dbrda_fun(
+            s = fspe$amf,
+            pspe_pcoa = pspe_pcoa_ab$site_vectors,
+            ft = c("restored"),
+            rg = c("BM", "LP", "FG")
+        )
+)[c(3, 4, 2)]
 ```
 
     ## $global_axis_test
@@ -801,7 +854,7 @@ dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.57408 2.7216  0.004 **
+    ## Model     1  0.57408 2.7216 0.0055 **
     ## Residual  6  1.26562                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -814,7 +867,7 @@ dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.57408 2.7216  0.008 **
+    ## dbRDA1    1  0.57408 2.7216 0.0045 **
     ## Residual  6  1.26562                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -838,13 +891,21 @@ dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"
     ##    MDS1    MDS2    MDS3    MDS4    MDS5    MDS6 
     ## 0.30700 0.27775 0.21350 0.18386 0.15709 0.12642
 
-Global and individual axis tests were significant, years since
+Global and individual axis test for axis 1 were significant. Years since
 restoration was selected with the same strength as the previous test.
 
 #### All regions with plant community axes
 
 ``` r
-(dbrda_all_pr_amf <- dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_pr$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG", "FL")))[c(3,4,2)]
+(
+    dbrda_all_pr_amf <-
+        dbrda_fun(
+            s = fspe$amf,
+            pspe_pcoa = pspe_pcoa_pr$site_vectors,
+            ft = c("restored"),
+            rg = c("BM", "LP", "FG", "FL")
+        )
+)[c(3, 4, 2)]
 ```
 
     ## $global_axis_test
@@ -853,9 +914,9 @@ restoration was selected with the same strength as the previous test.
     ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.69717 3.3004  0.002 **
-    ## Residual  9  1.90112                 
+    ##          Df SumOfSqs      F Pr(>F)    
+    ## Model     1  0.69717 3.3004  0.001 ***
+    ## Residual  9  1.90112                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -867,7 +928,7 @@ restoration was selected with the same strength as the previous test.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.69717 3.3004  0.004 **
+    ## dbRDA1    1  0.69717 3.3004  0.002 **
     ## Residual  9  1.90112                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -891,13 +952,14 @@ restoration was selected with the same strength as the previous test.
     ##   MDS1   MDS2   MDS3   MDS4   MDS5   MDS6   MDS7   MDS8   MDS9 
     ## 0.3631 0.2896 0.2725 0.2190 0.1762 0.1648 0.1573 0.1366 0.1221
 
-Global and single constrained axes are significant in site rank. Years
-since restoration explained 21% of the variation and potassium was a
-runner up. Let’s view a plot and add SOM, plant axis 1, and potassium
-for visualization purposes.
+Global and individual axis test for axis 1 were significant in site
+rank. Years since restoration explained 21% of the variation and
+potassium was a runner up. Let’s view a plot and add SOM, plant axis 1,
+and potassium for visualization purposes.
 
 ``` r
-plot_dbrda(site_sc = dbrda_all_pr_amf$plot_data$sites, site_bp = dbrda_all_pr_amf$plot_data$biplot)
+plot_dbrda(site_sc = dbrda_all_pr_amf$plot_data$sites,
+           site_bp = dbrda_all_pr_amf$plot_data$biplot)
 ```
 
 <img src="tgr_constrained_files/figure-gfm/plot_all_pr_amf-1.png" style="display: block; margin: auto;" />
@@ -911,12 +973,17 @@ Fungal communities varied with years since restoration, C4 grass, and
 forbs. How do these predictors affect microbial biomass and function?
 
 ``` r
-func_vars <- 
-    sites %>% 
-    left_join(ptr %>% select(field_name, C4_grass, forb), by = join_by(field_name)) %>% 
-    left_join(fb %>% select(field_name, fungi, amf), by = join_by(field_name)) %>% 
-    left_join(wsa %>% select(field_name, wsa), by = join_by(field_name)) %>% 
-    rename(C4_grass_pct = C4_grass, forb_pct = forb, mass_fungi = fungi, mass_amf = amf) %>% 
+func_vars <-
+    sites %>%
+    left_join(ptr %>% select(field_name, C4_grass, forb), by = join_by(field_name)) %>%
+    left_join(fb %>% select(field_name, fungi, amf), by = join_by(field_name)) %>%
+    left_join(wsa %>% select(field_name, wsa), by = join_by(field_name)) %>%
+    rename(
+        C4_grass_pct = C4_grass,
+        forb_pct = forb,
+        mass_fungi = fungi,
+        mass_amf = amf
+    ) %>%
     select(-field_key)
 ```
 
@@ -946,7 +1013,50 @@ ggpairs(
 
 <img src="tgr_constrained_files/figure-gfm/pairs_all-1.png" style="display: block; margin: auto;" />
 
-In both cases, we see obvious relationships that would be difficult to
-handle in a statistically robust way due to limited reps in regions.
+Intercorrelations among responses are obvious and not very useful. Years
+since restoration correlates positively with fungal biomass, and with
+sites from Fermi included, this relationship is fairly strong. Fermi
+sites, with abundant SOM, are probably influencing this result more than
+years are, though.
 
-Next, look for trends in guild and taxonomy data.
+\*\* What if we correlate the constrained axes with responses?\*\* This
+might help a little by reordering sites based on time since restoration
+*and* community differences, reducing the leverage of sites from Fermi.
+Let’s arrange the first axes from each dbRDA and join them with response
+data.
+
+``` r
+axis_corr <- 
+    list(
+        wi_tr_its = dbrda_wi_tr_its$plot_data$sites,
+        wi_ab_its = dbrda_wi_ab_its$plot_data$sites,
+        all_pr_its = dbrda_all_pr_its$plot_data$sites,
+        wi_tr_amf = dbrda_wi_tr_amf$plot_data$sites,
+        wi_ab_amf = dbrda_wi_ab_amf$plot_data$sites,
+        all_pr_amf = dbrda_all_pr_amf$plot_data$sites
+    ) %>% 
+    map( ~ .x %>%
+             data.frame() %>% 
+             rownames_to_column(var = "field_name") %>% 
+             left_join(sites %>% select(field_name, yr_since), by = join_by(field_name)) %>% 
+             left_join(fb %>% select(field_name, fungi, amf), by = join_by(field_name)) %>% 
+             left_join(wsa %>% select(field_name, wsa), by = join_by(field_name)) %>% 
+             rename(mass_fungi = fungi, mass_amf = amf) %>% 
+             select(-dbRDA2)
+    )
+```
+
+``` r
+axis_corr_plot <-
+    axis_corr %>%
+    map( ~ .x %>%
+            ggpairs(columns = 2:6) +
+            theme_bw())
+```
+
+Pairs panels were investigated (not shown), and only fungal biomass
+stood out, as before. Results of simple linear models might help
+interpret the importance of fungal biomass. Unfortunately, the only
+tests of this that showed significance were those that included Fermi,
+which returns us to the confounded design and inability statistically to
+handle this problem due to lack of reps.

@@ -321,81 +321,145 @@ wsa <- read_csv(paste0(getwd(), "/clean_data/wsa.csv"), show_col_types = FALSE)[
 #' ### General fungal community (ITS sequence abundance)
 #' #### Blue Mounds with plant traits data
 #+ dbrda_bm_tr_its,message=FALSE,warnings=FALSE
-dbrda_fun(s = fspe$its, pspe_pcoa = "none", ft = c("restored"), rg = c("BM"))[c(3,4,2)]
-#' No explanatory variables were selected
-#' 
+dbrda_fun(
+    s = fspe$its,
+    pspe_pcoa = "none",
+    ft = c("restored"),
+    rg = c("BM")
+)[c(3, 4, 2)]
+#' No explanatory variables were selected, and the set of permutations was less than the 1999 selected, suggesting
+#' that this is a pretty small dataset.
+#'
 #' #### Wisconsin sites with plant traits
 #+ dbrda_wi_tr_its
-(dbrda_wi_tr_its <- dbrda_fun(s = fspe$its, pspe_pcoa = "none", ft = c("restored"), rg = c("BM", "LP", "FG")))[c(3,4,2)]
-#' Global and individual axis tests were significant. 
-#' Years since restoration was selected, and it explains 17% of the variation. Forb and C4 grass are 
+(dbrda_wi_tr_its <-
+        dbrda_fun(
+            s = fspe$its,
+            pspe_pcoa = "none",
+            ft = c("restored"),
+            rg = c("BM", "LP", "FG")
+        ))[c(3, 4, 2)]
+#' Global and individual axis test for axis 1 were significant.
+#' Years since restoration was selected, and it explains 17% of the variation. Forb and C4 grass are
 #' runners-up but appear highly correlated with years (not shown). Let's view a plot and include
 #' forb and C4 grass for visualization purposes:
 #+ plot_wi_tr_its,fig.align='center'
-plot_dbrda(site_sc = dbrda_wi_tr_its$plot_data$sites, site_bp = dbrda_wi_tr_its$plot_data$biplot)
-#' 
+plot_dbrda(site_sc = dbrda_wi_tr_its$plot_data$sites,
+           site_bp = dbrda_wi_tr_its$plot_data$biplot)
+#'
 #' #### Wisconsin sites with plant community axes
 #+ dbrda_wi_ab_its
-dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG"))[c(3,4,2)]
-#' Global and individual axis tests were significant.
+(
+    dbrda_wi_ab_its <-
+        dbrda_fun(
+            s = fspe$its,
+            pspe_pcoa = pspe_pcoa_ab$site_vectors,
+            ft = c("restored"),
+            rg = c("BM", "LP", "FG")
+        )
+)[c(3, 4, 2)]
+#' Global and individual axis test for axis 1 were significant.
 #' Years since restoration was selected, and it explains 17% of the variation. Since the plant community axes
-#' failed to contribute explanatory power, the result of the test is identical to the previous one. 
-#' 
+#' failed to contribute explanatory power, the result of the test is identical to the previous one.
+#'
 #' #### All regions with plant community axes
 #+ dbrda_all_pr_its
-(dbrda_all_pr_its <- dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_pr$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG", "FL")))[c(3,4,2)]
-#' Global and individual axes are significant and strong. Years since restoration was selected
+(
+    dbrda_all_pr_its <-
+        dbrda_fun(
+            s = fspe$its,
+            pspe_pcoa = pspe_pcoa_pr$site_vectors,
+            ft = c("restored"),
+            rg = c("BM", "LP", "FG", "FL")
+        )
+)[c(3, 4, 2)]
+#' Global and individual axis test for axis 1 were significant and strong. Years since restoration was selected
 #' and it explains 16% of the variation here. Potassium and plant axis 1 were runners up. It's nice to see that
-#' the addition of a very different plant community didn't make much of a difference, and that the conditional 
+#' the addition of a very different plant community didn't make much of a difference, and that the conditional
 #' variation was 18%. I expected more with how different Fermi soils are. Let's view a plot and add
 #' SOM, plant axis 1, and potassium for visualization purposes.
 #+ plot_all_pr_its,fig.align='center'
-plot_dbrda(site_sc = dbrda_all_pr_its$plot_data$sites, site_bp = dbrda_all_pr_its$plot_data$biplot)
-#' 
+plot_dbrda(site_sc = dbrda_all_pr_its$plot_data$sites,
+           site_bp = dbrda_all_pr_its$plot_data$biplot)
+#'
 #' ### AMF community (18S sequence abundance)
 #' #### Blue Mounds with plant traits data
 #+ dbrda_bm_tr_amf,message=FALSE,warnings=FALSE
-dbrda_fun(s = fspe$amf, pspe_pcoa = "none", ft = c("restored"), rg = c("BM"))[c(3,4,2)]
+dbrda_fun(
+    s = fspe$amf,
+    pspe_pcoa = "none",
+    ft = c("restored"),
+    rg = c("BM")
+)[c(3, 4, 2)]
 #' No explanatory variables were selected. Blue Mounds has too few sites for the number of conditional and
 #' explanatory variables used, perhaps.
-#' 
+#'
 #' #### Wisconsin sites with plant traits data
 #+ dbrda_wi_tr_amf
-(dbrda_wi_tr_amf <- dbrda_fun(s = fspe$amf, pspe_pcoa = "none", ft = c("restored"), rg = c("BM", "LP", "FG")))[c(3,4,2)]
-#' Global and single constrained axes are significant in site rank at p<0.01. Years since restoration was the selected
-#' explanatory variable, explanaing 23% of the variation in communities. Forb and C4 grass were runners up and 
+(dbrda_wi_tr_amf <-
+        dbrda_fun(
+            s = fspe$amf,
+            pspe_pcoa = "none",
+            ft = c("restored"),
+            rg = c("BM", "LP", "FG")
+        ))[c(3, 4, 2)]
+#' Global and individual axis test for axis 1 were significant in site rank at p<0.01. Years since restoration was the selected
+#' explanatory variable, explanaing 23% of the variation in communities. Forb and C4 grass were runners up and
 #' appear highly correlated with years since restoration. Let's view a plot and include
 #' forb and C4 grass for visualization purposes:
 #+ plot_wi_tr_amf,fig.align='center'
-plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites, site_bp = dbrda_wi_tr_amf$plot_data$biplot)
-#' 
+plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites,
+           site_bp = dbrda_wi_tr_amf$plot_data$biplot)
+#'
 #' #### Wisconsin sites with plant community axes
 #+ dbrda_wi_ab_amf
-dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_ab$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG"))[c(3,4,2)]
-#' Global and individual axis tests were significant, years since restoration was selected with the same 
-#' strength as the previous test. 
-#' 
+(
+    dbrda_wi_ab_amf <-
+        dbrda_fun(
+            s = fspe$amf,
+            pspe_pcoa = pspe_pcoa_ab$site_vectors,
+            ft = c("restored"),
+            rg = c("BM", "LP", "FG")
+        )
+)[c(3, 4, 2)]
+#' Global and individual axis test for axis 1 were significant. Years since restoration was selected with the same
+#' strength as the previous test.
+#'
 #' #### All regions with plant community axes
 #+ dbrda_all_pr_amf
-(dbrda_all_pr_amf <- dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_pr$site_vectors, ft = c("restored"), rg = c("BM", "LP", "FG", "FL")))[c(3,4,2)]
-#' Global and single constrained axes are significant in site rank. Years since restoration explained 21% 
+(
+    dbrda_all_pr_amf <-
+        dbrda_fun(
+            s = fspe$amf,
+            pspe_pcoa = pspe_pcoa_pr$site_vectors,
+            ft = c("restored"),
+            rg = c("BM", "LP", "FG", "FL")
+        )
+)[c(3, 4, 2)]
+#' Global and individual axis test for axis 1 were significant in site rank. Years since restoration explained 21%
 #' of the variation and potassium was a runner up. Let's view a plot and add
 #' SOM, plant axis 1, and potassium for visualization purposes.
 #+ plot_all_pr_amf,fig.align='center'
-plot_dbrda(site_sc = dbrda_all_pr_amf$plot_data$sites, site_bp = dbrda_all_pr_amf$plot_data$biplot)
-#' 
+plot_dbrda(site_sc = dbrda_all_pr_amf$plot_data$sites,
+           site_bp = dbrda_all_pr_amf$plot_data$biplot)
+#'
 #' Microbial communities align with years since restoration across regions and types (general fungi and amf).
-#' 
+#'
 #' ## Response correlations
 #' Fungal communities varied with years since restoration, C4 grass, and forbs. How do these predictors affect
 #' microbial biomass and function?
 #+ func_vars_df
-func_vars <- 
-    sites %>% 
-    left_join(ptr %>% select(field_name, C4_grass, forb), by = join_by(field_name)) %>% 
-    left_join(fb %>% select(field_name, fungi, amf), by = join_by(field_name)) %>% 
-    left_join(wsa %>% select(field_name, wsa), by = join_by(field_name)) %>% 
-    rename(C4_grass_pct = C4_grass, forb_pct = forb, mass_fungi = fungi, mass_amf = amf) %>% 
+func_vars <-
+    sites %>%
+    left_join(ptr %>% select(field_name, C4_grass, forb), by = join_by(field_name)) %>%
+    left_join(fb %>% select(field_name, fungi, amf), by = join_by(field_name)) %>%
+    left_join(wsa %>% select(field_name, wsa), by = join_by(field_name)) %>%
+    rename(
+        C4_grass_pct = C4_grass,
+        forb_pct = forb,
+        mass_fungi = fungi,
+        mass_amf = amf
+    ) %>%
     select(-field_key)
 #' Plant traits data are only available in Wisconsin; try these first. 
 #+ pairs_wi,fig.align='center'
@@ -412,7 +476,61 @@ ggpairs(
     columns = 4:7
 ) +
     theme_bw()
-#' In both cases, we see obvious relationships that would be difficult to handle in a statistically 
-#' robust way due to limited reps in regions.
+#' Intercorrelations among responses are obvious and not very useful. Years since restoration correlates 
+#' positively with fungal biomass, and with sites from Fermi included, this relationship is fairly strong.
+#' Fermi sites, with abundant SOM, are probably influencing this result more than years are, though. 
 #' 
-#' Next, look for trends in guild and taxonomy data. 
+#' ** What if we correlate the constrained axes with responses?** This might help a little by 
+#' reordering sites based on time since restoration *and* community differences, reducing the leverage of
+#' sites from Fermi. Let's arrange the first axes from each dbRDA and join them with response data. 
+#+ axis_correlations
+axis_corr <- 
+    list(
+        wi_tr_its = dbrda_wi_tr_its$plot_data$sites,
+        wi_ab_its = dbrda_wi_ab_its$plot_data$sites,
+        all_pr_its = dbrda_all_pr_its$plot_data$sites,
+        wi_tr_amf = dbrda_wi_tr_amf$plot_data$sites,
+        wi_ab_amf = dbrda_wi_ab_amf$plot_data$sites,
+        all_pr_amf = dbrda_all_pr_amf$plot_data$sites
+    ) %>% 
+    map( ~ .x %>%
+             data.frame() %>% 
+             rownames_to_column(var = "field_name") %>% 
+             left_join(sites %>% select(field_name, yr_since), by = join_by(field_name)) %>% 
+             left_join(fb %>% select(field_name, fungi, amf), by = join_by(field_name)) %>% 
+             left_join(wsa %>% select(field_name, wsa), by = join_by(field_name)) %>% 
+             rename(mass_fungi = fungi, mass_amf = amf) %>% 
+             select(-dbRDA2)
+    )
+#+ axis_correlation_plots_list
+axis_corr_plot <-
+    axis_corr %>%
+    map( ~ .x %>%
+            ggpairs(columns = 2:6) +
+            theme_bw())
+#' 
+#' Pairs panels were investigated (not shown), and only fungal biomass stood out, as before. Results of 
+#' simple linear models might help interpret the importance of fungal biomass. Unfortunately, the only 
+#' tests of this that showed significance were those that included Fermi, which returns us to the confounded
+#' design and inability statistically to handle this problem due to lack of reps. 
+#' 
+#' This isn't a satisfying analysis. The most defensible chronosequence, the sites from Blue Mounds, 
+#' failed to significantly relate to any constraints, and no functional responses showed any meaningful 
+#' relationship here. 
+#' 
+#' 
+#' 
+#' 
+
+
+
+
+
+
+
+
+
+
+
+
+
