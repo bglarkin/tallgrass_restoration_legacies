@@ -63,5 +63,10 @@ This [report](plant.md) produces basic visualization and diagnostic views of the
 are output, one for sites with abundance data (16 sites), and one for sites with presence data only (20 sites). 
 
 ## Constrained Analyses
+This [report](tgr_constrained.md) attempts to find strong explanations for microbial community differences. Because the site differences 
+due to region might confound such an analysis, site variables like soil abiotic properties and precipitation were first condensed into two ordination axes 
+using PCA and used as covariables in the constrained analysis. The constrained analysis was done with dbRDA and tested the explanatory 
+power of years since restoration, plant community axes or plant traits, and soil properties that we don't believe are due to 
+regional differences and rather come from an agricultural legacy: SOM, NO~3~, P, and K.  
 
 ## Summary
