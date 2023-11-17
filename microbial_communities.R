@@ -27,12 +27,10 @@
 #' (not shown). 
 #' 
 #' Pairwise contrasts in multivariate analysis were accomplished with a custom function adapted from
-#' [O'Leary et al. 2021](https://link.springer.com/article/10.1007/s12237-021-00917-2), and also
-#' by using function `pairwise.adonis2()` from package `pairwiseAdonis` 
-#' [Martinez Arbizu 2017](https://github.com/pmartinezarbizu/pairwiseAdonis/blob/master/README.md)
+#' [O'Leary et al. 2021](https://link.springer.com/article/10.1007/s12237-021-00917-2).
 #' 
 #' # Packages and libraries
-packages_needed = c("tidyverse", "vegan", "colorspace", "ape", "knitr", "pairwiseAdonis")
+packages_needed = c("tidyverse", "vegan", "colorspace", "ape", "knitr")
 packages_installed = packages_needed %in% rownames(installed.packages())
 #+ packages,message=FALSE
 if (any(!packages_installed)) {
