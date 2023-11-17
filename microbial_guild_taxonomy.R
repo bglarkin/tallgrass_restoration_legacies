@@ -811,6 +811,7 @@ its_inspan %>%
     group_by(field_type) %>% 
     slice_max(order_by = stat, n = 10) %>% 
     arrange(field_type, -stat) %>% 
+    write_csv(., paste0(getwd(), "/microbial_guild_taxonomy_files/its_inspan.csv")) %>% 
     kable(format = "pandoc", caption = "Indicator species of ITS OTUs (top 10 per field type)")
 #' 
 #' ### Soil saprotrophs
@@ -880,6 +881,7 @@ ssap_inspan %>%
         levels = c("corn", "restored", "remnant")
     )) %>%
     arrange(field_type, -stat) %>% 
+    write_csv(., paste0(getwd(), "/microbial_guild_taxonomy_files/ssap_inspan.csv")) %>% 
     kable(format = "pandoc", caption = "Indicator species of soil saprotrophs")
 #' A later task will be to comb these tables for species with good stories...
 #' 
@@ -951,6 +953,7 @@ ppat_inspan %>%
         levels = c("corn", "restored", "remnant")
     )) %>%
     arrange(field_type, -stat) %>% 
+    write_csv(., paste0(getwd(), "/microbial_guild_taxonomy_files/ppat_inspan.csv")) %>% 
     kable(format = "pandoc", caption = "Indicator species of plant pathogens")
 #' 
 #' ### Wood saprotrophs
