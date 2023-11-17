@@ -2,7 +2,7 @@ Constrained and summary analysis
 ================
 Beau Larkin
 
-Last updated: 16 November, 2023
+Last updated: 17 November, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -70,8 +70,6 @@ for (i in 1:length(packages_needed)) {
     library(packages_needed[i], character.only = T)
 }
 ```
-
-    ## Warning: package 'stringr' was built under R version 4.2.3
 
 ``` r
 conflict_prefer("filter", "dplyr")
@@ -531,7 +529,7 @@ dataset.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.54709 1.7407 0.0135 *
+    ## Model     1  0.54709 1.7407  0.016 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -544,7 +542,7 @@ dataset.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## dbRDA1    1  0.54709 1.7407 0.0135 *
+    ## dbRDA1    1  0.54709 1.7407 0.0215 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -602,7 +600,7 @@ plot_dbrda(site_sc = dbrda_wi_tr_its$plot_data$sites,
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.54709 1.7407  0.017 *
+    ## Model     1  0.54709 1.7407 0.0145 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -615,7 +613,7 @@ plot_dbrda(site_sc = dbrda_wi_tr_its$plot_data$sites,
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## dbRDA1    1  0.54709 1.7407  0.014 *
+    ## dbRDA1    1  0.54709 1.7407  0.016 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -664,9 +662,9 @@ result of the test is identical to the previous one.
     ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.70182 2.2329 0.0025 **
-    ## Residual  9  2.82875                 
+    ##          Df SumOfSqs      F Pr(>F)    
+    ## Model     1  0.70182 2.2329  0.001 ***
+    ## Residual  9  2.82875                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -677,9 +675,9 @@ result of the test is identical to the previous one.
     ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.70182 2.2329 0.0015 **
-    ## Residual  9  2.82875                 
+    ##          Df SumOfSqs      F Pr(>F)    
+    ## dbRDA1    1  0.70182 2.2329  0.001 ***
+    ## Residual  9  2.82875                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -782,7 +780,7 @@ for the number of conditional and explanatory variables used, perhaps.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.57408 2.7216  0.004 **
+    ## Model     1  0.57408 2.7216  0.008 **
     ## Residual  6  1.26562                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -795,7 +793,7 @@ for the number of conditional and explanatory variables used, perhaps.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.57408 2.7216 0.0075 **
+    ## dbRDA1    1  0.57408 2.7216 0.0045 **
     ## Residual  6  1.26562                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -854,7 +852,7 @@ plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites,
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.57408 2.7216  0.005 **
+    ## Model     1  0.57408 2.7216  0.004 **
     ## Residual  6  1.26562                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -867,7 +865,7 @@ plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites,
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.57408 2.7216  0.008 **
+    ## dbRDA1    1  0.57408 2.7216 0.0065 **
     ## Residual  6  1.26562                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -915,7 +913,7 @@ restoration was selected with the same strength as the previous test.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.69717 3.3004 0.0025 **
+    ## Model     1  0.69717 3.3004  0.002 **
     ## Residual  9  1.90112                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1

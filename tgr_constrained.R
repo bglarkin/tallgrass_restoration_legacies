@@ -517,12 +517,6 @@ axis_corr_plot <-
 #' This isn't a satisfying analysis. The most defensible chronosequence, the sites from Blue Mounds, 
 #' failed to significantly relate to any constraints, and no functional responses showed any meaningful 
 #' relationship here. 
-#' 
-#' 
-#' 
-#' 
-
-
 
 
 
