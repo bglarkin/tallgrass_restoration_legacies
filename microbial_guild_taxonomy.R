@@ -75,7 +75,8 @@ spe <- list(
 )
 #' ## Species metadata
 #' Load taxonomy for all and guilds (called *primary lifestyle* in Fungal Traits)
-#' for ITS OTUs.
+#' for ITS OTUs. Replace NA values with "unidentified" to show complete numbers of 
+#' unidentified groups.
 meta <- list(
     its = read_csv(
         paste0(getwd(), "/clean_data/spe_ITS_metadata.csv"),
@@ -85,7 +86,8 @@ meta <- list(
         paste0(getwd(), "/clean_data/spe_18S_metadata.csv"),
         show_col_types = FALSE
     )
-)
+) %>% 
+   map(. %>% mutate(across(everything(), ~ replace_na(., "unidentified"))))
 #' ## Site metadata and design
 sites   <-
     read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>%
@@ -187,13 +189,13 @@ its_taxaGuild <- function(data, other_threshold=2) {
         ggplot(., aes(x = field_type, y = seq_comp)) +
         geom_col(aes(fill = order), color = "black") +
         labs(x = "", y = "Proportion of sequence abundance",
-             title = "Composition of fungi by order") +
+             title = "Composition of fungi by order", caption = "Unidentified OTUs ommitted") +
         scale_fill_discrete_sequential(name = "Order", palette = "Plasma") +
         theme_classic()
     # Plot the composition of primary lifestyles
     plot_guilds <- 
         data %>% 
-        filter(primary_lifestyle != is.na(primary_lifestyle)) %>% 
+        filter(primary_lifestyle != is.na(primary_lifestyle), primary_lifestyle != "unidentified") %>% 
         group_by(field_type, primary_lifestyle, field_key) %>% 
         summarize(seq_sum = sum(seq_abund), .groups = "drop_last") %>% 
         summarize(seq_avg = mean(seq_sum), .groups = "drop_last") %>% 
@@ -204,7 +206,7 @@ its_taxaGuild <- function(data, other_threshold=2) {
         ggplot(., aes(x = field_type, y = seq_comp)) +
         geom_col(aes(fill = primary_lifestyle), color = "black") +
         labs(x = "", y = "Proportion of sequence abundance",
-             title = "Composition of fungi by primary lifestyle") +
+             title = "Composition of fungi by primary lifestyle", caption = "Unidentified OTUs ommitted") +
         scale_fill_discrete_sequential(name = "Primary lifestyle", palette = "Inferno") +
         theme_classic()
     
@@ -733,6 +735,18 @@ inspan <- function(data, np, meta) {
 # Number of OTUs in raw and rarefied datasets
 Map(function(x) ncol(x)-1, spe[1:2])
 #' 
+#' ### Unassigned taxa
+#' Only 21.8 percent of the ITS sequences were assigned to species. In terms of the analysis done here, 
+#' its possibly more alarming that only 36 percent were assigned to primary lifestyles or guilds. 
+#' This suggests that when we see guilds concentrating in certain habitats, it's possible that
+#' the difference doesn't exist. This is particularly possible because we have one habitat, cornfields, 
+#' which has probably been studied more than the others. 
+#+ unassigned_table
+meta$its %>% 
+    select(-otu_num, -otu_ID) %>% 
+    map(\(x) round(length(which(x == "unidentified")) / length(x) * 100, 1)) %>% 
+    bind_rows() %>% 
+    kable(format = "pandoc", caption = "Percent unidentified OTUs in each taxonomic group or guild")
 #' ### Composition in field types
 #' Function outputs are verbose, but details may be necessary later so they are displayed here.
 #+ its_tax_trophic_otu,message=FALSE,fig.height=7,fig.align='center'
@@ -740,7 +754,7 @@ its_taxaGuild(spe_meta$its_rfy)
 #' 
 #' The top guilds are:
 #' 
-#' 1. NA
+#' 1. Unidentified (not shown on column charts)
 #' 1. plant pathogens
 #' 1. soil saprotrophs
 #' 1. wood saprotrophs
@@ -1280,7 +1294,5 @@ ggplot(rrfd_compare %>% filter(hill_index %in% c("N0", "N1", "N2")), aes(x = pre
          caption = "N0 = richness, N1 = Shannon's Diversity, N2 = Simpson's Diversity\nlsap = litter saprotrophs, ppat = plant pathogens, ssap = soil saprotrophs, wsap = wood saprotrophs") +
     scale_fill_discrete_qualitative(palette = "Harmonic") +
     theme_bw()
-
-# Dont do amf
-# x axis sequence abundance, y axis richness
+#' Repeating this with AMF is unnecessary...
 
