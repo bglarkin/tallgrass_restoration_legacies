@@ -627,7 +627,8 @@ gudicom <- function(div, rrfd, grp_var, gene="its", other_threshold=2) {
             ggplot(comp_ft, aes(x = field_type, y = seq_comp)) +
             geom_col(aes(fill = order), color = "black") +
             labs(x = "", y = "Proportion of sequence abundance",
-                 title = paste("Composition of", grp_var)) +
+                 title = paste("Composition of", grp_var),
+                 caption = "Unidentified OTUs ommitted") +
             scale_fill_discrete_sequential(name = "Order", palette = "Plasma") +
             theme_classic()
         
@@ -652,7 +653,8 @@ gudicom <- function(div, rrfd, grp_var, gene="its", other_threshold=2) {
             ggplot(comp_yr, aes(x = yr_fct, y = seq_comp)) +
             geom_col(aes(fill = order), color = "black") +
             labs(x = "Years since restoration", y = "Proportion of sequence abundance",
-                 title = paste("Composition of", grp_var, "in the Blue Mounds area")) +
+                 title = paste("Composition of", grp_var, "in the Blue Mounds area"),
+                               caption = "Unidentified OTUs ommitted") +
             scale_fill_discrete_sequential(name = "Order", palette = "Plasma") +
             theme_classic()
         
