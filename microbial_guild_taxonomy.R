@@ -190,7 +190,7 @@ its_taxaGuild <- function(data, other_threshold=2) {
         geom_col(aes(fill = order), color = "black") +
         labs(x = "", y = "Proportion of sequence abundance",
              title = "Composition of fungi by order", caption = "Unidentified OTUs ommitted") +
-        scale_fill_discrete_sequential(name = "Order", palette = "Plasma") +
+        scale_fill_discrete_sequential(name = "Order", palette = "Batlow") +
         theme_classic()
     # Plot the composition of primary lifestyles
     plot_guilds <- 
@@ -207,7 +207,7 @@ its_taxaGuild <- function(data, other_threshold=2) {
         geom_col(aes(fill = primary_lifestyle), color = "black") +
         labs(x = "", y = "Proportion of sequence abundance",
              title = "Composition of fungi by primary lifestyle", caption = "Unidentified OTUs ommitted") +
-        scale_fill_discrete_sequential(name = "Primary lifestyle", palette = "Inferno") +
+        scale_fill_discrete_sequential(name = "Primary lifestyle", palette = "Batlow") +
         theme_classic()
     
     print(list(table,
@@ -629,7 +629,7 @@ gudicom <- function(div, rrfd, grp_var, gene="its", other_threshold=2) {
             labs(x = "", y = "Proportion of sequence abundance",
                  title = paste("Composition of", grp_var),
                  caption = "Unidentified OTUs ommitted") +
-            scale_fill_discrete_sequential(name = "Order", palette = "Plasma") +
+            scale_fill_discrete_sequential(name = "Order", palette = "Batlow") +
             theme_classic()
         
         yr_fct <- 
@@ -655,7 +655,7 @@ gudicom <- function(div, rrfd, grp_var, gene="its", other_threshold=2) {
             labs(x = "Years since restoration", y = "Proportion of sequence abundance",
                  title = paste("Composition of", grp_var, "in the Blue Mounds area"),
                                caption = "Unidentified OTUs ommitted") +
-            scale_fill_discrete_sequential(name = "Order", palette = "Plasma") +
+            scale_fill_discrete_sequential(name = "Order", palette = "Batlow") +
             theme_classic()
         
         print(list(
