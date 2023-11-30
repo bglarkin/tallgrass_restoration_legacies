@@ -265,9 +265,9 @@ div$its_rfy %>%
 test_age(div$its_rfy, 
          caption = "Correlation between Hill's numbers and field age in the Blue Mounds region: ITS, 97% OTU")
 #' 
-#' Hill's $N_{1}$ decreases with age since restoration in the Blue Mounds area, but the 
-#' decline isn't significant ($R$=-0.85, p<0.05). It's driven primarily by an old restored 
-#' field, I'm guessing Karla Ott's grass plantation.  
+#' Hill's $N_{1}$ decreases with age since restoration in the Blue Mounds area ($R$=-0.84, p<0.05). 
+#' It's driven primarily by Karla Ott's older restoration which differs in plant community. 
+#' Removing this field, the correlation is no longer significant, and it not even close.   
 #' This is odd and points to a confounding effect driven by difference in restoration strategy over time.
 #' Karla Ott's field is heavily dominated by a C4 grass and has relatively poor plant species diversity.
 #' It's possible that other site differences (soils, etc.) also confound this relationship. It's possible
