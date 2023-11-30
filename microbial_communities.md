@@ -2,7 +2,7 @@ Microbial data: community differences
 ================
 Beau Larkin
 
-Last updated: 17 November, 2023
+Last updated: 30 November, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -614,8 +614,8 @@ correction is needed for these ordinations.
     ## 
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
-    ## restored   corn       0.156     3.524     1    19   0.0010000        0.0030
-    ## restored   remnant    0.055     1.052     1    18   0.1335000        0.1335
+    ## restored   corn       0.156     3.524     1    19   0.0005000        0.0015
+    ## restored   remnant    0.055     1.052     1    18   0.1315000        0.1315
     ## corn       remnant    0.289     2.850     1     7   0.0416667        0.0625
 
 Axis 1 explains 18.7% of the variation and is the only eigenvalue that
@@ -841,7 +841,7 @@ correction is needed for these ordinations.
     ## ***VECTORS
     ## 
     ##             Axis.1    Axis.2    r2 Pr(>r)  
-    ## yr_since -0.997420  0.071762 0.725 0.0225 *
+    ## yr_since -0.997420  0.071762 0.725  0.027 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -868,7 +868,7 @@ fields.
 Years since restoration has a moderately strong correlation with
 communities and was significant with a permutation test where samples
 were constrained within fields to account for lack of independence \#’
-$(R^2=0.72,~p=0.02)$.
+$(R^2=0.72,~p=0.03)$.
 
 Let’s view an ordination plot with hulls around subsamples and a fitted
 vector for field age overlaid.
@@ -989,7 +989,7 @@ correction was applied.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
     ##             Df SumOfSqs      R2      F Pr(>F)    
-    ## field_type   2    5.790 0.08144 8.7335  5e-04 ***
+    ## field_type   2    5.790 0.08144 8.7335  0.001 ***
     ## Residual   197   65.303 0.91856                  
     ## Total      199   71.094 1.00000                  
     ## ---
@@ -1000,9 +1000,9 @@ correction was applied.
     ## 
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
-    ## restored   corn       0.066    11.791     1   166   0.0005000        0.0015
-    ## restored   remnant    0.018     2.835     1   158   0.2080000        0.2080
-    ## corn       remnant    0.135    10.946     1    70   0.1428571        0.2080
+    ## restored   corn       0.066    11.791     1   166   0.0040000         0.012
+    ## restored   remnant    0.018     2.835     1   158   0.2040000         0.204
+    ## corn       remnant    0.135    10.946     1    70   0.1428571         0.204
 
 Axis 1 explains 8.2% and axis 2 explains 5% of the variation in the
 community data. Both axes are important based on the broken stick model,
@@ -1012,7 +1012,7 @@ variation explained on axes 1 and 2 is partly due to the high number of
 dimensions used when all samples from fields are included. The fidelity
 of samples to fields was strong based on a permutation test when
 restricting permutations to fields (=plots in `how()`) within regions
-(=blocks in `how()`) $(R^2=0.08,~p=5\times 10^{-4})$.
+(=blocks in `how()`) $(R^2=0.08,~p=0.001)$.
 
 Let’s view an ordination plot with hulls around subsamples.
 
@@ -1155,10 +1155,10 @@ No negative eigenvalues produced, no correction applied.
     ## Number of permutations: 1999
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, add = if (corr == "none") FALSE else "lingoes", strata = region)
-    ##            Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type  2   1.0956 0.24872 3.6417  0.002 **
-    ## Residual   22   3.3094 0.75128                 
-    ## Total      24   4.4050 1.00000                 
+    ##            Df SumOfSqs      R2      F Pr(>F)    
+    ## field_type  2   1.0956 0.24872 3.6417  0.001 ***
+    ## Residual   22   3.3094 0.75128                  
+    ## Total      24   4.4050 1.00000                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -1167,8 +1167,8 @@ No negative eigenvalues produced, no correction applied.
     ## 
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
-    ## restored   corn       0.254     6.474     1    19   0.0010000        0.0030
-    ## restored   remnant    0.023     0.422     1    18   0.9685000        0.9685
+    ## restored   corn       0.254     6.474     1    19   0.0020000        0.0060
+    ## restored   remnant    0.023     0.422     1    18   0.9690000        0.9690
     ## corn       remnant    0.382     4.324     1     7   0.0416667        0.0625
 
 Four axes are significant by a broken stick model, between them
@@ -1178,7 +1178,7 @@ substantial variation here is on the first axis (27.5%) with Axis 2
 explaining 17.8% of the variation in AMF abundances. Testing the design
 factor *field_type* (with *region* treated as a block using the `strata`
 argument of `adonis2`) revealed a significant clustering
-$(R^2=0.25,~p=0.002)$.
+$(R^2=0.25,~p=0.001)$.
 
 Let’s view a plot with abundances of community subgroups inset.
 
@@ -1397,7 +1397,7 @@ relationship $(R^2_{Adj}=0.56,~p<0.005)$
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, add = if (corr == "none") FALSE else "lingoes", strata = region)
     ##            Df SumOfSqs     R2      F Pr(>F)   
-    ## field_type  2  0.06937 0.1657 2.1847  0.004 **
+    ## field_type  2  0.06937 0.1657 2.1847 0.0045 **
     ## Residual   22  0.34929 0.8343                 
     ## Total      24  0.41866 1.0000                 
     ## ---
@@ -1409,7 +1409,7 @@ relationship $(R^2_{Adj}=0.56,~p<0.005)$
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
     ## restored   corn       0.240     5.989     1    19   0.0005000        0.0015
-    ## restored   remnant    0.025     0.467     1    18   0.9700000        0.9700
+    ## restored   remnant    0.025     0.467     1    18   0.9665000        0.9665
     ## corn       remnant    0.382     4.324     1     7   0.0416667        0.0625
 
 Three axes are significant by a broken stick model, between them
@@ -1632,7 +1632,7 @@ negative eigenvalues.
     ## ***VECTORS
     ## 
     ##            Axis.1   Axis.2   Axis.3   Axis.4   Axis.5     r2 Pr(>r)  
-    ## yr_since -0.84928  0.37660 -0.19661  0.19812  0.24287 0.7715 0.0175 *
+    ## yr_since -0.84928  0.37660 -0.19661  0.19812  0.24287 0.7715 0.0165 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -1781,7 +1781,7 @@ correction was applied.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
     ##             Df SumOfSqs      R2     F Pr(>F)   
-    ## field_type   2    5.367 0.10872 10.49 0.0045 **
+    ## field_type   2    5.367 0.10872 10.49 0.0025 **
     ## Residual   172   44.004 0.89128                
     ## Total      174   49.372 1.00000                
     ## ---
@@ -1792,8 +1792,8 @@ correction was applied.
     ## 
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
-    ## restored   corn       0.056     8.657     1   145   0.0020000     0.0060000
-    ## restored   remnant    0.008     1.052     1   138   0.9980000     0.9980000
+    ## restored   corn       0.056     8.657     1   145   0.0015000     0.0045000
+    ## restored   remnant    0.008     1.052     1   138   0.9970000     0.9970000
     ## corn       remnant    0.111     7.636     1    61   0.1020408     0.1530612
 
 Axis 1 explains 7.1% and axis 2 explains 5% of the variation in the
@@ -1804,7 +1804,7 @@ variation explained on axes 1 and 2 is partly due to the high number of
 dimensions used when all samples from fields are included. The fidelity
 of samples to fields was strong based on a permutation test when
 restricting permutations to fields (=plots in `how()`) within regions
-(=blocks in `how()`) $(R^2=0.11,~p=0.0045)$.
+(=blocks in `how()`) $(R^2=0.11,~p=0.0025)$.
 
 Let’s view an ordination plot with hulls around subsamples.
 
