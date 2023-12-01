@@ -2,7 +2,7 @@ Plant data: communities and traits
 ================
 Beau Larkin
 
-Last updated: 14 November, 2023
+Last updated: 01 December, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -308,10 +308,10 @@ plant <- list(
     meta    = read_csv(paste0(getwd(), "/clean_data/spe_plant_meta.csv"), show_col_types = FALSE) %>% 
         rename_with(tolower),
     ab      = read_csv(paste0(getwd(), "/clean_data/spe_plant_abund.csv"), show_col_types = FALSE) %>% 
-        rename(field_name = SITE),
+        rename(field_name = SITE) %>% select(-BARESOIL, -LITTER),
     ab_samp = read_csv(paste0(getwd(), "/clean_data/plant_abund_samples.csv"), show_col_types = FALSE),
     pr      = read_csv(paste0(getwd(), "/clean_data/spe_plant_presence.csv"), show_col_types = FALSE) %>% 
-        rename(field_name = SITE)
+        rename(field_name = SITE) %>% select(-BARESOIL, -LITTER)
 )
 ```
 
@@ -599,35 +599,35 @@ abundance data An ordiation is run on plant abundance data using
     ## [1] 1
     ## 
     ## $correction_note
-    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.000809415888073719 , except diagonal elements"
+    ## [1] "There were no negative eigenvalues. No correction was applied"
     ## 
     ## $values
-    ##   Dim Eigenvalues  Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig Cum_br_stick
-    ## 1   1   1.6884108 1.6892202    0.3128013    0.2322545    0.3128013    0.2322545
-    ## 2   2   0.6812888 0.6820982    0.1263075    0.1608259    0.4391088    0.3930803
-    ## 3   3   0.5707939 0.5716033    0.1058466    0.1251116    0.5449554    0.5181919
+    ##   Dim Eigenvalues Relative_eig Broken_stick Cumul_eig Cumul_br_stick
+    ## 1   1   1.7320423    0.3113302    0.2212153 0.3113302      0.2212153
+    ## 2   2   0.7325178    0.1316682    0.1545486 0.4429985      0.3757639
+    ## 3   3   0.5966216    0.1072412    0.1212153 0.5502397      0.4969791
     ## 
     ## $eigenvalues
-    ## [1] 31.3 12.6
+    ## [1] 31.1 13.2
     ## 
     ## $site_vectors
-    ##    field_name      Axis.1      Axis.2 field_key region field_type yr_since
-    ## 1       BBRP1  0.24056775 -0.16522640         1     BM   restored       16
-    ## 2       ERRP1  0.08413967  0.41643560         2     BM   restored        3
-    ## 3        FGC1 -0.66433300 -0.03290989         3     FG       corn        -
-    ## 4      FGREM1  0.04431444 -0.01450857         4     FG    remnant        +
-    ## 5       FGRP1  0.12276250 -0.15986548         5     FG   restored       15
-    ## 6       KORP1  0.15461767 -0.26031738        15     BM   restored       28
-    ## 7        LPC1 -0.66168712 -0.03298898        16     LP       corn        -
-    ## 8      LPREM1  0.15732628  0.05593888        17     LP    remnant        +
-    ## 9       LPRP1  0.20256709  0.11248606        18     LP   restored        4
-    ## 10      LPRP2  0.22751545 -0.02626885        19     LP   restored        4
-    ## 11     MBREM1  0.17430970 -0.33069721        20     BM    remnant        +
-    ## 12      MBRP1  0.18213508 -0.20141260        21     BM   restored       18
-    ## 13      MHRP1  0.18090418  0.03336249        22     BM   restored        7
-    ## 14      MHRP2  0.04005768  0.39612929        23     BM   restored        2
-    ## 15       PHC1 -0.67283397 -0.03367491        24     BM       corn        -
-    ## 16      PHRP1  0.18763660  0.24351797        25     BM   restored       11
+    ##    field_name      Axis.1       Axis.2 field_key region field_type yr_since
+    ## 1       BBRP1  0.23650957 -0.180933687         1     BM   restored       16
+    ## 2       ERRP1  0.06719015  0.404444681         2     BM   restored        3
+    ## 3        FGC1 -0.67526027 -0.032855670         3     FG       corn        -
+    ## 4      FGREM1  0.09688139 -0.015610006         4     FG    remnant        +
+    ## 5       FGRP1  0.16814620 -0.182802203         5     FG   restored       15
+    ## 6       KORP1  0.15310611 -0.278694035        15     BM   restored       28
+    ## 7        LPC1 -0.67686895 -0.033309016        16     LP       corn        -
+    ## 8      LPREM1  0.15287122  0.076202238        17     LP    remnant        +
+    ## 9       LPRP1  0.18222097  0.203400078        18     LP   restored        4
+    ## 10      LPRP2  0.21480720  0.026832174        19     LP   restored        4
+    ## 11     MBREM1  0.15888147 -0.348688085        20     BM    remnant        +
+    ## 12      MBRP1  0.17054532 -0.223163361        21     BM   restored       18
+    ## 13      MHRP1  0.19084072  0.006210016        22     BM   restored        7
+    ## 14      MHRP2  0.04448505  0.391640592        23     BM   restored        2
+    ## 15       PHC1 -0.68013789 -0.033685776        24     BM       corn        -
+    ## 16      PHRP1  0.19578172  0.221012060        25     BM   restored       11
     ## 
     ## $broken_stick_plot
 
@@ -644,18 +644,18 @@ abundance data An ordiation is run on plant abundance data using
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
     ##            Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type  2   1.9713 0.36586 3.7501  0.004 **
-    ## Residual   13   3.4169 0.63414                 
-    ## Total      15   5.3882 1.00000                 
+    ## field_type  2   2.0343 0.36566 3.7469  0.005 **
+    ## Residual   13   3.5290 0.63434                 
+    ## Total      15   5.5634 1.00000                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Axis 1 explains 31.3% of the variation and is the only eigenvalue that
+Axis 1 explains 31.1% of the variation and is the only eigenvalue that
 exceeds a broken stick model. The most substantial variation here will
-be on the first axis. Axis 2 explains 12.6% of the variation and was not
+be on the first axis. Axis 2 explains 13.2% of the variation and was not
 very close to the broken stick value. Testing the design factor
 *field_type* (with *region* treated as a block using arguments to
-`how()` revealed a significant clustering $(R^2=0.37,~p=0.004)$. Let’s
+`how()` revealed a significant clustering $(R^2=0.37,~p=0.005)$. Let’s
 view a plot of these results.
 
 ``` r
@@ -695,42 +695,42 @@ differences with plant data.
     ## [1] "plant presence data, 20 sites"
     ## 
     ## $components_exceed_broken_stick
-    ## [1] 2
+    ## [1] 0
     ## 
     ## $correction_note
     ## [1] "There were no negative eigenvalues. No correction was applied"
     ## 
     ## $values
     ##   Dim Eigenvalues Relative_eig Broken_stick Cumul_eig Cumul_br_stick
-    ## 1   1   1.4264339   0.19876306    0.1867231 0.1987631      0.1867231
-    ## 2   2   1.2066484   0.16813758    0.1340916 0.3669006      0.3208147
-    ## 3   3   0.6135197   0.08548946    0.1077758 0.4523901      0.4285905
+    ## 1   1   1.4033118   0.18951647    0.1941727 0.1895165      0.1941727
+    ## 2   2   1.2187101   0.16458611    0.1386171 0.3541026      0.3327898
+    ## 3   3   0.6319999   0.08535122    0.1108393 0.4394538      0.4436291
     ## 
     ## $eigenvalues
-    ## [1] 19.9 16.8
+    ## [1] 19.0 16.5
     ## 
     ## $site_vectors
-    ##    field_name       Axis.1      Axis.2 field_key region field_type yr_since
-    ## 1       BBRP1  0.007406404  0.24131308         1     BM   restored       16
-    ## 2       ERRP1  0.067469134  0.21951909         2     BM   restored        3
-    ## 3        FGC1  0.512236442 -0.22516150         3     FG       corn        -
-    ## 4      FGREM1 -0.057759438 -0.02094116         4     FG    remnant        +
-    ## 5       FGRP1 -0.035178611  0.12877987         5     FG   restored       15
-    ## 6      FLREM1 -0.346670841 -0.38303529         8     FL    remnant        +
-    ## 7       FLRP1 -0.367062459 -0.37699824         9     FL   restored       40
-    ## 8       FLRP4 -0.366696539 -0.38481716        10     FL   restored       36
-    ## 9       FLRP5 -0.321881936 -0.25314288        11     FL   restored       35
-    ## 10      KORP1  0.054932725  0.16097174        15     BM   restored       28
-    ## 11       LPC1  0.582345898 -0.29432253        16     LP       corn        -
-    ## 12     LPREM1 -0.022447100  0.25575985        17     LP    remnant        +
-    ## 13      LPRP1 -0.024723803  0.26041246        18     LP   restored        4
-    ## 14      LPRP2 -0.099697392  0.22860489        19     LP   restored        4
-    ## 15     MBREM1 -0.028171733  0.07734331        20     BM    remnant        +
-    ## 16      MBRP1 -0.072344127  0.13855455        21     BM   restored       18
-    ## 17      MHRP1  0.021730449  0.21161280        22     BM   restored        7
-    ## 18      MHRP2  0.002954358  0.12383740        23     BM   restored        2
-    ## 19       PHC1  0.547087359 -0.32089787        24     BM       corn        -
-    ## 20      PHRP1 -0.053528790  0.21260759        25     BM   restored       11
+    ##    field_name      Axis.1      Axis.2 field_key region field_type yr_since
+    ## 1       BBRP1  0.09914813  0.23070445         1     BM   restored       16
+    ## 2       ERRP1  0.02543020  0.23019146         2     BM   restored        3
+    ## 3        FGC1 -0.49280623 -0.04507213         3     FG       corn        -
+    ## 4      FGREM1  0.05743020 -0.05493783         4     FG    remnant        +
+    ## 5       FGRP1  0.08530486  0.10097376         5     FG   restored       15
+    ## 6      FLREM1  0.17868215 -0.47102241         8     FL    remnant        +
+    ## 7       FLRP1  0.19947396 -0.47248148         9     FL   restored       40
+    ## 8       FLRP4  0.19663457 -0.47940645        10     FL   restored       36
+    ## 9       FLRP5  0.19660213 -0.33674973        11     FL   restored       35
+    ## 10      KORP1  0.01745581  0.17785876        15     BM   restored       28
+    ## 11       LPC1 -0.67153048 -0.10514976        16     LP       corn        -
+    ## 12     LPREM1  0.08993967  0.23963995        17     LP    remnant        +
+    ## 13      LPRP1  0.12573673  0.23752522        18     LP   restored        4
+    ## 14      LPRP2  0.15502939  0.18536991        19     LP   restored        4
+    ## 15     MBREM1  0.05354148  0.05377379        20     BM    remnant        +
+    ## 16      MBRP1  0.11704021  0.09828439        21     BM   restored       18
+    ## 17      MHRP1  0.05301141  0.20426174        22     BM   restored        7
+    ## 18      MHRP2  0.04992560  0.10980649        23     BM   restored        2
+    ## 19       PHC1 -0.67153048 -0.10514976        24     BM       corn        -
+    ## 20      PHRP1  0.13548068  0.20157962        25     BM   restored       11
     ## 
     ## $broken_stick_plot
 
@@ -746,14 +746,14 @@ differences with plant data.
     ## Number of permutations: 1999
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
-    ##            Df SumOfSqs    R2      F Pr(>F)    
-    ## field_type  2   1.6722 0.233 2.5822  0.001 ***
-    ## Residual   17   5.5044 0.767                  
-    ## Total      19   7.1766 1.000                  
+    ##            Df SumOfSqs      R2      F Pr(>F)    
+    ## field_type  2   1.6996 0.22953 2.5322  0.001 ***
+    ## Residual   17   5.7051 0.77047                  
+    ## Total      19   7.4047 1.00000                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Axis 1 explains 19.9% of the variation and axis 2 explains 12.6% of the
+Axis 1 explains 19% of the variation and axis 2 explains 13.2% of the
 variation. These two eigenvalues exceed the broken stick value. stick
 value. Testing the design factor *field_type* (with *region* treated as
 a block using arguments to `how()` revealed a significant clustering
@@ -840,8 +840,9 @@ and permute within regions.
     ##  8 BBRP1      8       0.155 -0.112   -0.0401  -0.235  -0.268   -0.00982  0.0622
     ##  9 BBRP1      9       0.347 -0.00687  0.256   -0.0694 -0.148    0.0362  -0.0699
     ## 10 BBRP1      10      0.120  0.0196   0.391   -0.236  -0.0491   0.00926  0.0880
-    ## # … with 90 more rows, and 5 more variables: Axis.8 <dbl>, field_key <dbl>,
-    ## #   region <chr>, field_type <ord>, yr_since <chr>
+    ## # ℹ 90 more rows
+    ## # ℹ 5 more variables: Axis.8 <dbl>, field_key <dbl>, region <chr>,
+    ## #   field_type <ord>, yr_since <chr>
     ## 
     ## $broken_stick_plot
 
@@ -870,7 +871,7 @@ and permute within regions.
     ##                         Axis.1    Axis.2    Axis.3    Axis.4    Axis.5
     ## as.numeric(yr_since)  0.845160 -0.398380  0.116942  0.180121  0.144907
     ##                         Axis.6    Axis.7    Axis.8     r2 Pr(>r)  
-    ## as.numeric(yr_since) -0.011507  0.241990 -0.034590 0.7822 0.0335 *
+    ## as.numeric(yr_since) -0.011507  0.241990 -0.034590 0.7822 0.0285 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -969,18 +970,19 @@ soil microbial communities.
     ## # A tibble: 70 × 13
     ##    field_name sample Axis.1  Axis.2  Axis.3  Axis.4   Axis.5   Axis.6  Axis.7
     ##    <chr>      <chr>   <dbl>   <dbl>   <dbl>   <dbl>    <dbl>    <dbl>   <dbl>
-    ##  1 BBRP1      1      0.162  -0.0452 -0.180  -0.224   0.0301  -0.179    0.103 
-    ##  2 BBRP1      2      0.174  -0.0953 -0.0103 -0.178  -0.149    0.0856   0.160 
-    ##  3 BBRP1      3      0.207   0.161  -0.238  -0.104  -0.0732  -0.271   -0.0335
-    ##  4 BBRP1      4      0.256   0.0949 -0.0659 -0.182  -0.0782   0.0928   0.148 
-    ##  5 BBRP1      5      0.322   0.0807  0.0479 -0.0146  0.00858  0.201    0.0896
-    ##  6 BBRP1      6      0.173  -0.177  -0.144  -0.198   0.217   -0.161    0.108 
-    ##  7 BBRP1      7      0.359   0.189  -0.0936 -0.166  -0.0902  -0.0611   0.141 
-    ##  8 BBRP1      8      0.132  -0.128  -0.0605 -0.286  -0.216    0.0216   0.0675
-    ##  9 BBRP1      9      0.318   0.206  -0.177  -0.157  -0.0801  -0.107    0.168 
-    ## 10 BBRP1      10     0.0910  0.234  -0.428  -0.108  -0.0464  -0.00441  0.163 
-    ## # … with 60 more rows, and 4 more variables: field_key <dbl>, region <chr>,
-    ## #   field_type <ord>, yr_since <chr>
+    ##  1 BBRP1      1      0.162  -0.0452  0.180  -0.224   0.0301  -0.179    0.103 
+    ##  2 BBRP1      2      0.174  -0.0953  0.0103 -0.178  -0.149    0.0856   0.160 
+    ##  3 BBRP1      3      0.207   0.161   0.238  -0.104  -0.0732  -0.271   -0.0335
+    ##  4 BBRP1      4      0.256   0.0949  0.0659 -0.182  -0.0782   0.0928   0.148 
+    ##  5 BBRP1      5      0.322   0.0807 -0.0479 -0.0146  0.00858  0.201    0.0896
+    ##  6 BBRP1      6      0.173  -0.177   0.144  -0.198   0.217   -0.161    0.108 
+    ##  7 BBRP1      7      0.359   0.189   0.0936 -0.166  -0.0902  -0.0611   0.141 
+    ##  8 BBRP1      8      0.132  -0.128   0.0605 -0.286  -0.216    0.0216   0.0675
+    ##  9 BBRP1      9      0.318   0.206   0.177  -0.157  -0.0801  -0.107    0.168 
+    ## 10 BBRP1      10     0.0910  0.234   0.428  -0.108  -0.0464  -0.00441  0.163 
+    ## # ℹ 60 more rows
+    ## # ℹ 4 more variables: field_key <dbl>, region <chr>, field_type <ord>,
+    ## #   yr_since <chr>
     ## 
     ## $broken_stick_plot
 
@@ -1007,9 +1009,9 @@ soil microbial communities.
     ## ***VECTORS
     ## 
     ##                         Axis.1    Axis.2    Axis.3    Axis.4    Axis.5
-    ## as.numeric(yr_since)  0.838630  0.272579  0.188770 -0.027578 -0.013142
+    ## as.numeric(yr_since)  0.838630  0.272579 -0.188770 -0.027578 -0.013142
     ##                         Axis.6    Axis.7     r2 Pr(>r)  
-    ## as.numeric(yr_since)  0.175546 -0.393730 0.8619  0.013 *
+    ## as.numeric(yr_since)  0.175546 -0.393730 0.8619 0.0125 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -1019,8 +1021,8 @@ soil microbial communities.
     ## 
     ## 
     ## $vector_fit_scores
-    ##                         Axis.1    Axis.2    Axis.3     Axis.4     Axis.5
-    ## as.numeric(yr_since) 0.7785519 0.2530535 0.1752481 -0.0256027 -0.0122005
+    ##                         Axis.1    Axis.2     Axis.3     Axis.4     Axis.5
+    ## as.numeric(yr_since) 0.7785519 0.2530535 -0.1752481 -0.0256027 -0.0122005
     ##                        Axis.6     Axis.7
     ## as.numeric(yr_since) 0.162971 -0.3655278
 

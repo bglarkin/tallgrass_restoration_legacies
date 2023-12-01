@@ -252,10 +252,10 @@ plant <- list(
     meta    = read_csv(paste0(getwd(), "/clean_data/spe_plant_meta.csv"), show_col_types = FALSE) %>% 
         rename_with(tolower),
     ab      = read_csv(paste0(getwd(), "/clean_data/spe_plant_abund.csv"), show_col_types = FALSE) %>% 
-        rename(field_name = SITE),
+        rename(field_name = SITE) %>% select(-BARESOIL, -LITTER),
     ab_samp = read_csv(paste0(getwd(), "/clean_data/plant_abund_samples.csv"), show_col_types = FALSE),
     pr      = read_csv(paste0(getwd(), "/clean_data/spe_plant_presence.csv"), show_col_types = FALSE) %>% 
-        rename(field_name = SITE)
+        rename(field_name = SITE) %>% select(-BARESOIL, -LITTER)
 )
 #' 
 #' ## Distance matrices

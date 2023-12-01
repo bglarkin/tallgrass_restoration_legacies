@@ -444,6 +444,35 @@ plot_dbrda(site_sc = dbrda_all_pr_amf$plot_data$sites,
            site_bp = dbrda_all_pr_amf$plot_data$biplot)
 #'
 #' Microbial communities align with years since restoration across regions and types (general fungi and amf).
+#' 
+#' ## Effects of soil and plants
+#' We know that restored plant communities differ among fields, and that those differences change 
+#' in a systematic way over time. Within our chronosequence sites at Blue Mounds, what is the relative 
+#' effect of soil and plant data on soil microbes?
+#' 
+#' Variation partitioning will be used. Since forward selection failed to find a parsimonious number
+#' of important explanatory variables, we'll just use the entire plant and soil datasets here to look for 
+#' the relative contribution of these weak effects. 
+#' 
+
+
+
+vpdat_its <- list(
+    Y = fspe$its,
+    X1 = pspe$ab,
+    X2 = soil
+) %>% 
+    map(. %>% filter(region == "BM", field_type == "restored") %>% 
+            select(-field_type, -region) %>% 
+            data.frame(., row.names = 1))
+vpdat_its_zcols <- vpdat_its %>% map(\(df) which(apply(df, 2, sum) == 0))
+
+
+(vp_its <- varpart(vpdat_its$Y %>% select(-vpdat_its_zcols$Y), vpdat_its$X1 %>% select(-vpdat_its_zcols$X1) %>% colnames(), vpdat_its$X2))
+plot(vp_its, digits = 2)
+
+vpdat_its$Y[,1:10]
+
 #'
 #' ## Response correlations
 #' Fungal communities varied with years since restoration, C4 grass, and forbs. How do these predictors affect
