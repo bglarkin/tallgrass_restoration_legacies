@@ -48,7 +48,9 @@ for (i in 1:length(packages_needed)) {
     conflict_prefer("select", "dplyr")
     conflict_prefer("extract", "raster")
 }
-#'
+#+ map_settings
+source(paste0(getwd(), "/map_settings.R"))
+#' 
 #' # Data and ETL
 #' ## Sites
 sites <-
@@ -88,19 +90,19 @@ kable(table(sites$region, sites$field_type),
 #'
 #' ## Regional map
 #' Citation *Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under ODbL.*
-#+ site_map,message=FALSE
-map <- ggmap(get_stamenmap(
+#+ map_object,message=FALSE
+map <- ggmap(get_stadiamap(
     bbox = c(
         left = -90.3,
         bottom = 41.5,
         right = -87.4,
         top = 43.4
     ),
-    zoom = 7,
-    maptype = c("toner-lite"),
+    zoom = 9,
+    maptype = c("stamen_terrain"),
     color = c("color")
 ))
-#+ map_metadata,fig.align='center'
+#+ site_map,message=FALSE,fig.height=7,fig.width=7,fig.align='center'
 map +
     geom_label(
         data = sites %>% group_by(region) %>% summarize(
@@ -110,7 +112,8 @@ map +
         ),
         aes(x = long_cen, y = lat_cen, label = region),
         color = "red",
-        size = 6
+        fill = "gray80",
+        size = 8
     ) +
     theme_void()
 #'

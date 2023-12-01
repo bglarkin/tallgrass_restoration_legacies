@@ -2,7 +2,7 @@ Site locations, metadata, and climate
 ================
 Beau Larkin
 
-Last updated: 06 October, 2023
+Last updated: 01 December, 2023
 
 - [Description](#description)
 - [Package and library installation](#package-and-library-installation)
@@ -66,6 +66,10 @@ for (i in 1:length(packages_needed)) {
     conflict_prefer("select", "dplyr")
     conflict_prefer("extract", "raster")
 }
+```
+
+``` r
+source(paste0(getwd(), "/map_settings.R"))
 ```
 
 # Data and ETL
@@ -156,15 +160,15 @@ Citation *Map tiles by Stamen Design, under CC BY 3.0. Data by
 OpenStreetMap, under ODbL.*
 
 ``` r
-map <- ggmap(get_stamenmap(
+map <- ggmap(get_stadiamap(
     bbox = c(
         left = -90.3,
         bottom = 41.5,
         right = -87.4,
         top = 43.4
     ),
-    zoom = 7,
-    maptype = c("toner-lite"),
+    zoom = 9,
+    maptype = c("stamen_terrain"),
     color = c("color")
 ))
 ```
@@ -179,12 +183,13 @@ map +
         ),
         aes(x = long_cen, y = lat_cen, label = region),
         color = "red",
-        size = 6
+        fill = "gray80",
+        size = 8
     ) +
     theme_void()
 ```
 
-<img src="site_locations_files/figure-gfm/map_metadata-1.png" style="display: block; margin: auto;" />
+<img src="site_locations_files/figure-gfm/site_map-1.png" style="display: block; margin: auto;" />
 
 The map labels show centroids for each region: BM = Blue Mounds, FG =
 Faville Grove, FL = Fermilab, LP = Lake Petite. Map tiles by Stamen
