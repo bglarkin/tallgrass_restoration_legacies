@@ -279,6 +279,8 @@ metadata are joined to allow custom filtering of sites later.
 ``` r
 ptr <- read_csv(paste0(getwd(), "/clean_data/plant_trait_abund.csv"), show_col_types = FALSE) %>% 
     left_join(sites %>% select(starts_with("field"), region), by = join_by("field_name")) %>% 
+    left_join(read_csv(paste0(getwd(), "/clean_data/spe_plant_abund.csv"), show_col_types = FALSE) %>% 
+                  rename(field_name = SITE) %>% select(field_name, BARESOIL, LITTER), by = join_by(field_name)) %>% 
     select(field_name, field_type, region, everything(), -field_key)
 ```
 
@@ -530,7 +532,7 @@ dataset.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.54709 1.7407 0.0155 *
+    ## Model     1  0.54709 1.7407 0.0165 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -543,7 +545,7 @@ dataset.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## dbRDA1    1  0.54709 1.7407 0.0165 *
+    ## dbRDA1    1  0.54709 1.7407  0.015 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -601,7 +603,7 @@ plot_dbrda(site_sc = dbrda_wi_tr_its$plot_data$sites,
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.54709 1.7407 0.0155 *
+    ## Model     1  0.54709 1.7407 0.0145 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -614,7 +616,7 @@ plot_dbrda(site_sc = dbrda_wi_tr_its$plot_data$sites,
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## dbRDA1    1  0.54709 1.7407  0.013 *
+    ## dbRDA1    1  0.54709 1.7407  0.016 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -663,9 +665,9 @@ result of the test is identical to the previous one.
     ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.70182 2.2329  0.002 **
-    ## Residual  9  2.82875                 
+    ##          Df SumOfSqs      F Pr(>F)    
+    ## Model     1  0.70182 2.2329  0.001 ***
+    ## Residual  9  2.82875                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -676,9 +678,9 @@ result of the test is identical to the previous one.
     ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.70182 2.2329  0.002 **
-    ## Residual  9  2.82875                 
+    ##          Df SumOfSqs      F Pr(>F)    
+    ## dbRDA1    1  0.70182 2.2329  0.001 ***
+    ## Residual  9  2.82875                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -730,34 +732,48 @@ dbrda_fun(
 ```
 
     ## $global_axis_test
-    ## No constrained component
+    ## Permutation test for dbrda under reduced model
+    ## Permutation: free
+    ## Number of permutations: 5039
     ## 
-    ## Model: dbrda(formula = fspe_bray ~ 1 + Condition(covars), data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs  F Pr(>F)
-    ## Model     0   0.0000  0       
-    ## Residual  6   1.1147          
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)  
+    ## Model     1  0.50958 2.5263 0.0535 .
+    ## Residual  3  0.60514                
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $individual_axis_test
-    ## No constrained component
+    ## Permutation test for dbrda under reduced model
+    ## Forward tests for axes
+    ## Permutation: free
+    ## Number of permutations: 5039
     ## 
-    ## Model: dbrda(formula = fspe_bray ~ 1 + Condition(covars), data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs  F Pr(>F)
-    ## Model     0   0.0000  0       
-    ## Residual  6   1.1147          
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)  
+    ## dbRDA1    1  0.50958 2.5263 0.0535 .
+    ## Residual  3  0.60514                
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $select_mod
-    ## Call: dbrda(formula = fspe_bray ~ 1 + Condition(covars), data = expl,
-    ## sqrt.dist = TRUE)
+    ## Call: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data =
+    ## expl, sqrt.dist = TRUE)
     ## 
     ##               Inertia Proportion Rank
     ## Total          1.6947     1.0000     
     ## Conditional    0.5800     0.3422    2
-    ## Unconstrained  1.1147     0.6578    4
+    ## Constrained    0.5096     0.3007    1
+    ## Unconstrained  0.6051     0.3571    3
     ## Inertia is Bray distance 
     ## 
+    ## Eigenvalues for constrained axes:
+    ## dbRDA1 
+    ## 0.5096 
+    ## 
     ## Eigenvalues for unconstrained axes:
-    ##   MDS1   MDS2   MDS3   MDS4 
-    ## 0.5249 0.2560 0.1919 0.1418
+    ##    MDS1    MDS2    MDS3 
+    ## 0.26545 0.19556 0.14413
 
 No explanatory variables were selected. Blue Mounds has too few sites
 for the number of conditional and explanatory variables used, perhaps.
@@ -779,10 +795,10 @@ for the number of conditional and explanatory variables used, perhaps.
     ## Permutation: free
     ## Number of permutations: 1999
     ## 
-    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + forb, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs     F Pr(>F)   
-    ## Model     1  0.54155 2.503 0.0075 **
-    ## Residual  6  1.29816                
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## Model     1  0.57408 2.7216 0.0035 **
+    ## Residual  6  1.26562                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -792,35 +808,35 @@ for the number of conditional and explanatory variables used, perhaps.
     ## Permutation: free
     ## Number of permutations: 1999
     ## 
-    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + forb, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs     F Pr(>F)   
-    ## dbRDA1    1  0.54155 2.503  0.009 **
-    ## Residual  6  1.29816                
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## dbRDA1    1  0.57408 2.7216 0.0075 **
+    ## Residual  6  1.26562                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $select_mod
-    ## Call: dbrda(formula = fspe_bray ~ Condition(covars) + forb, data =
+    ## Call: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data =
     ## expl, sqrt.dist = TRUE)
     ## 
     ##               Inertia Proportion Rank
     ## Total          2.4975     1.0000     
     ## Conditional    0.6578     0.2634    2
-    ## Constrained    0.5415     0.2168    1
-    ## Unconstrained  1.2982     0.5198    6
+    ## Constrained    0.5741     0.2299    1
+    ## Unconstrained  1.2656     0.5068    6
     ## Inertia is Bray distance 
     ## 
     ## Eigenvalues for constrained axes:
     ## dbRDA1 
-    ## 0.5415 
+    ## 0.5741 
     ## 
     ## Eigenvalues for unconstrained axes:
     ##    MDS1    MDS2    MDS3    MDS4    MDS5    MDS6 
-    ## 0.31501 0.30505 0.21457 0.17639 0.16072 0.12640
+    ## 0.30700 0.27775 0.21350 0.18386 0.15709 0.12642
 
 Global and individual axis test for axis 1 were significant in site rank
 at p\<0.01. Years since restoration was the selected explanatory
-variable, explanaing 23% of the variation in communities. Forb and C4
+variable, explaining 23% of the variation in communities. Forb and C4
 grass were runners up and appear highly correlated with years since
 restoration. Let’s view a plot and include forb and C4 grass for
 visualization purposes:
@@ -853,7 +869,7 @@ plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites,
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.57408 2.7216 0.0045 **
+    ## Model     1  0.57408 2.7216 0.0075 **
     ## Residual  6  1.26562                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -866,7 +882,7 @@ plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites,
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.57408 2.7216  0.004 **
+    ## dbRDA1    1  0.57408 2.7216 0.0075 **
     ## Residual  6  1.26562                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -914,7 +930,7 @@ restoration was selected with the same strength as the previous test.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.69717 3.3004 0.0015 **
+    ## Model     1  0.69717 3.3004 0.0035 **
     ## Residual  9  1.90112                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -927,7 +943,7 @@ restoration was selected with the same strength as the previous test.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)    
-    ## dbRDA1    1  0.69717 3.3004  0.001 ***
+    ## dbRDA1    1  0.69717 3.3004  5e-04 ***
     ## Residual  9  1.90112                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -1031,9 +1047,9 @@ plot(vp_its, digits = 2, bg = c("tan", "palegreen"))
 
 <img src="tgr_constrained_files/figure-gfm/varpart_its_plot-1.png" style="display: block; margin: auto;" />
 
-With soil axes accounted for, plant axes explain 14% of the ITS fungal
+With soil axes accounted for, plant axes explain 9% of the ITS fungal
 community variation in Blue Mounds. The unique explanation made by soil
-variables is about half as much. Neither is a powerful explanation.
+variables is about one-third as much. Neither is a powerful explanation.
 
 ## Response correlations
 

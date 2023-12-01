@@ -228,6 +228,8 @@ sites <-
 #' later.
 ptr <- read_csv(paste0(getwd(), "/clean_data/plant_trait_abund.csv"), show_col_types = FALSE) %>% 
     left_join(sites %>% select(starts_with("field"), region), by = join_by("field_name")) %>% 
+    left_join(read_csv(paste0(getwd(), "/clean_data/spe_plant_abund.csv"), show_col_types = FALSE) %>% 
+                  rename(field_name = SITE) %>% select(field_name, BARESOIL, LITTER), by = join_by(field_name)) %>% 
     select(field_name, field_type, region, everything(), -field_key)
 #' Plant releve data was available from four Fermi sites, but survey data aren't correctable 
 #' between Fermi and other sites. Also, translating counts of species to counts of traits isn't appropriate.
@@ -404,7 +406,7 @@ dbrda_fun(
             rg = c("BM", "LP", "FG")
         ))[c(3, 4, 2)]
 #' Global and individual axis test for axis 1 were significant in site rank at p<0.01. Years since restoration was the selected
-#' explanatory variable, explanaing 23% of the variation in communities. Forb and C4 grass were runners up and
+#' explanatory variable, explaining 23% of the variation in communities. Forb and C4 grass were runners up and
 #' appear highly correlated with years since restoration. Let's view a plot and include
 #' forb and C4 grass for visualization purposes:
 #+ plot_wi_tr_amf,fig.align='center'
@@ -469,8 +471,8 @@ vpdat_its_zcols <- vpdat_its %>% map(\(df) which(apply(df, 2, sum) == 0))
 (vp_its <- varpart(vpdat_its$Y %>% select(-vpdat_its_zcols$Y), vpdat_its$X1, vpdat_its$X2))
 #+ varpart_its_plot,fig.align='center'
 plot(vp_its, digits = 2, bg = c("tan", "palegreen"))
-#' With soil axes accounted for, plant axes explain 14% of the ITS fungal community variation in Blue Mounds. 
-#' The unique explanation made by soil variables is about half as much. Neither is a powerful explanation. 
+#' With soil axes accounted for, plant axes explain 9% of the ITS fungal community variation in Blue Mounds. 
+#' The unique explanation made by soil variables is about one-third as much. Neither is a powerful explanation. 
 #'
 #' ## Response correlations
 #' Fungal communities varied with years since restoration, C4 grass, and forbs. How do these predictors affect
