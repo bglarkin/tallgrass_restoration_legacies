@@ -242,7 +242,7 @@ pspe <- list(
 ) %>% map(function(x) x %>% 
               rename(field_name = SITE) %>% 
               left_join(sites %>% select(starts_with("field"), region), by = join_by("field_name")) %>% 
-              select(field_name, field_type, region, everything(), -field_key))
+              select(field_name, field_type, region, everything(), -field_key, -BARESOIL, -LITTER))
 #' 
 #' ## Environmental data
 #' Use precipitation as proxy for soil moisture
@@ -454,25 +454,23 @@ plot_dbrda(site_sc = dbrda_all_pr_amf$plot_data$sites,
 #' of important explanatory variables, we'll just use the entire plant and soil datasets here to look for 
 #' the relative contribution of these weak effects. 
 #' 
-
-
-
+#' With so many explanatory axes, the analysis failed with raw data, so explanatory data 
+#' will first be transformed into PCoA axes. 
+soil_pcoa <- pcoa_fun(soil, rg = c("BM"), corr = "lingoes")
 vpdat_its <- list(
-    Y = fspe$its,
-    X1 = pspe$ab,
-    X2 = soil
-) %>% 
-    map(. %>% filter(region == "BM", field_type == "restored") %>% 
-            select(-field_type, -region) %>% 
-            data.frame(., row.names = 1))
+    Y = fspe$its %>% filter(region == "BM", field_type == "restored") %>% 
+        select(-field_type, -region) %>% 
+        data.frame(., row.names = 1),
+    X1 = pspe_pcoa_ab$site_vectors[-c(3,5,6), ],
+    X2 = soil_pcoa$site_vectors
+)
 vpdat_its_zcols <- vpdat_its %>% map(\(df) which(apply(df, 2, sum) == 0))
-
-
-(vp_its <- varpart(vpdat_its$Y %>% select(-vpdat_its_zcols$Y), vpdat_its$X1 %>% select(-vpdat_its_zcols$X1) %>% colnames(), vpdat_its$X2))
-plot(vp_its, digits = 2)
-
-vpdat_its$Y[,1:10]
-
+#+ varpart_its
+(vp_its <- varpart(vpdat_its$Y %>% select(-vpdat_its_zcols$Y), vpdat_its$X1, vpdat_its$X2))
+#+ varpart_its_plot,fig.align='center'
+plot(vp_its, digits = 2, bg = c("tan", "palegreen"))
+#' With soil axes accounted for, plant axes explain 14% of the ITS fungal community variation in Blue Mounds. 
+#' The unique explanation made by soil variables is about half as much. Neither is a powerful explanation. 
 #'
 #' ## Response correlations
 #' Fungal communities varied with years since restoration, C4 grass, and forbs. How do these predictors affect

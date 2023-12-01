@@ -2,7 +2,7 @@ Constrained and summary analysis
 ================
 Beau Larkin
 
-Last updated: 17 November, 2023
+Last updated: 01 December, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -31,6 +31,7 @@ Last updated: 17 November, 2023
       abundance)](#general-fungal-community-its-sequence-abundance)
     - [AMF community (18S sequence
       abundance)](#amf-community-18s-sequence-abundance)
+  - [Effects of soil and plants](#effects-of-soil-and-plants)
   - [Response correlations](#response-correlations)
 
 # Description
@@ -298,7 +299,7 @@ pspe <- list(
 ) %>% map(function(x) x %>% 
               rename(field_name = SITE) %>% 
               left_join(sites %>% select(starts_with("field"), region), by = join_by("field_name")) %>% 
-              select(field_name, field_type, region, everything(), -field_key))
+              select(field_name, field_type, region, everything(), -field_key, -BARESOIL, -LITTER))
 ```
 
 ## Environmental data
@@ -413,22 +414,22 @@ the abundance and presence/absence plant data.
     ## 
     ## $values
     ##   Dim Eigenvalues Relative_eig Broken_stick Cumul_eig Cumul_br_stick
-    ## 1   1   0.6185814    0.2317320    0.3143298 0.2317320      0.3143298
-    ## 2   2   0.5066828    0.1898127    0.2032187 0.4215447      0.5175485
-    ## 3   3   0.4485128    0.1680212    0.1476631 0.5895659      0.6652116
+    ## 1   1   0.6592570    0.2365141    0.3143298 0.2365141      0.3143298
+    ## 2   2   0.5440994    0.1952003    0.2032187 0.4317144      0.5175485
+    ## 3   3   0.4680283    0.1679092    0.1476631 0.5996236      0.6652116
     ## 
     ## $site_vectors
     ##            Axis.1      Axis.2
-    ## BBRP1  0.18696712 -0.05719659
-    ## ERRP1 -0.42120632  0.07701724
-    ## FGRP1  0.22768657 -0.23830561
-    ## KORP1  0.25705084 -0.02418826
-    ## LPRP1  0.07534780  0.39879804
-    ## LPRP2  0.17161860  0.26606275
-    ## MBRP1  0.15075088 -0.18310740
-    ## MHRP1 -0.02686684 -0.27809252
-    ## MHRP2 -0.44609709 -0.20258732
-    ## PHRP1 -0.17525156  0.24159967
+    ## BBRP1  0.20290126 -0.09287398
+    ## ERRP1 -0.43044076 -0.07760580
+    ## FGRP1  0.28666433 -0.07970389
+    ## KORP1  0.26355718 -0.14999596
+    ## LPRP1 -0.02010419  0.47968897
+    ## LPRP2  0.12484815  0.38958210
+    ## MBRP1  0.17920064 -0.21338125
+    ## MHRP1  0.01611089 -0.20409549
+    ## MHRP2 -0.45084157 -0.14870043
+    ## PHRP1 -0.17189593  0.09708574
 
 ``` r
 (pspe_pcoa_pr <- pcoa_fun(pspe$pr, rg = c("BM", "FG", "LP", "FL"), method = "jaccard", binary = TRUE))
@@ -439,25 +440,25 @@ the abundance and presence/absence plant data.
     ## 
     ## $values
     ##   Dim Eigenvalues Relative_eig Broken_stick Cumul_eig Cumul_br_stick
-    ## 1   1   0.9879052    0.2421821    0.2586009 0.2421821      0.2586009
-    ## 2   2   0.5728272    0.1404269    0.1752676 0.3826090      0.4338684
-    ## 3   3   0.4443108    0.1089215    0.1336009 0.4915305      0.5674693
+    ## 1   1   0.9562197    0.2299358    0.2586009 0.2299358      0.2586009
+    ## 2   2   0.5920732    0.1423719    0.1752676 0.3723077      0.4338684
+    ## 3   3   0.4634133    0.1114339    0.1336009 0.4837416      0.5674693
     ## 
     ## $site_vectors
     ##            Axis.1       Axis.2
-    ## BBRP1  0.21067579  0.087434428
-    ## ERRP1  0.22272287 -0.260905872
-    ## FGRP1  0.09141325  0.044743613
-    ## FLRP1 -0.52791888 -0.028042798
-    ## FLRP4 -0.52644384 -0.007428271
-    ## FLRP5 -0.42831294  0.043201635
-    ## KORP1  0.16233582  0.339613190
-    ## LPRP1  0.19555559  0.224978538
-    ## LPRP2  0.10602315  0.266489743
-    ## MBRP1  0.06484968 -0.137320443
-    ## MHRP1  0.19700860 -0.295295743
-    ## MHRP2  0.10057182 -0.374191665
-    ## PHRP1  0.13151908  0.096723644
+    ## BBRP1  0.20641293  0.094262023
+    ## ERRP1  0.21439889 -0.274249184
+    ## FGRP1  0.08005329  0.046027339
+    ## FLRP1 -0.52071381 -0.016041532
+    ## FLRP4 -0.51926721  0.004443971
+    ## FLRP5 -0.41527736  0.051578203
+    ## KORP1  0.16890218  0.327780631
+    ## LPRP1  0.19555015  0.233535348
+    ## LPRP2  0.11823091  0.253683185
+    ## MBRP1  0.05335394 -0.139092020
+    ## MHRP1  0.18966781 -0.305187933
+    ## MHRP2  0.08054080 -0.389175199
+    ## PHRP1  0.14814748  0.112435167
 
 ## Microbial communities with explanatory and covariables
 
@@ -529,7 +530,7 @@ dataset.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.54709 1.7407  0.016 *
+    ## Model     1  0.54709 1.7407 0.0155 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -542,7 +543,7 @@ dataset.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## dbRDA1    1  0.54709 1.7407 0.0215 *
+    ## dbRDA1    1  0.54709 1.7407 0.0165 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -600,7 +601,7 @@ plot_dbrda(site_sc = dbrda_wi_tr_its$plot_data$sites,
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.54709 1.7407 0.0145 *
+    ## Model     1  0.54709 1.7407 0.0155 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -613,7 +614,7 @@ plot_dbrda(site_sc = dbrda_wi_tr_its$plot_data$sites,
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## dbRDA1    1  0.54709 1.7407  0.016 *
+    ## dbRDA1    1  0.54709 1.7407  0.013 *
     ## Residual  6  1.88570                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -662,9 +663,9 @@ result of the test is identical to the previous one.
     ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)    
-    ## Model     1  0.70182 2.2329  0.001 ***
-    ## Residual  9  2.82875                  
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## Model     1  0.70182 2.2329  0.002 **
+    ## Residual  9  2.82875                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -675,9 +676,9 @@ result of the test is identical to the previous one.
     ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)    
-    ## dbRDA1    1  0.70182 2.2329  0.001 ***
-    ## Residual  9  2.82875                  
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## dbRDA1    1  0.70182 2.2329  0.002 **
+    ## Residual  9  2.82875                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -778,10 +779,10 @@ for the number of conditional and explanatory variables used, perhaps.
     ## Permutation: free
     ## Number of permutations: 1999
     ## 
-    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.57408 2.7216  0.008 **
-    ## Residual  6  1.26562                 
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + forb, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs     F Pr(>F)   
+    ## Model     1  0.54155 2.503 0.0075 **
+    ## Residual  6  1.29816                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -791,31 +792,31 @@ for the number of conditional and explanatory variables used, perhaps.
     ## Permutation: free
     ## Number of permutations: 1999
     ## 
-    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.57408 2.7216 0.0045 **
-    ## Residual  6  1.26562                 
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + forb, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs     F Pr(>F)   
+    ## dbRDA1    1  0.54155 2.503  0.009 **
+    ## Residual  6  1.29816                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $select_mod
-    ## Call: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data =
+    ## Call: dbrda(formula = fspe_bray ~ Condition(covars) + forb, data =
     ## expl, sqrt.dist = TRUE)
     ## 
     ##               Inertia Proportion Rank
     ## Total          2.4975     1.0000     
     ## Conditional    0.6578     0.2634    2
-    ## Constrained    0.5741     0.2299    1
-    ## Unconstrained  1.2656     0.5068    6
+    ## Constrained    0.5415     0.2168    1
+    ## Unconstrained  1.2982     0.5198    6
     ## Inertia is Bray distance 
     ## 
     ## Eigenvalues for constrained axes:
     ## dbRDA1 
-    ## 0.5741 
+    ## 0.5415 
     ## 
     ## Eigenvalues for unconstrained axes:
     ##    MDS1    MDS2    MDS3    MDS4    MDS5    MDS6 
-    ## 0.30700 0.27775 0.21350 0.18386 0.15709 0.12642
+    ## 0.31501 0.30505 0.21457 0.17639 0.16072 0.12640
 
 Global and individual axis test for axis 1 were significant in site rank
 at p\<0.01. Years since restoration was the selected explanatory
@@ -852,7 +853,7 @@ plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites,
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.57408 2.7216  0.004 **
+    ## Model     1  0.57408 2.7216 0.0045 **
     ## Residual  6  1.26562                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -865,7 +866,7 @@ plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites,
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.57408 2.7216 0.0065 **
+    ## dbRDA1    1  0.57408 2.7216  0.004 **
     ## Residual  6  1.26562                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -913,7 +914,7 @@ restoration was selected with the same strength as the previous test.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.69717 3.3004  0.002 **
+    ## Model     1  0.69717 3.3004 0.0015 **
     ## Residual  9  1.90112                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -925,9 +926,9 @@ restoration was selected with the same strength as the previous test.
     ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.69717 3.3004 0.0025 **
-    ## Residual  9  1.90112                 
+    ##          Df SumOfSqs      F Pr(>F)    
+    ## dbRDA1    1  0.69717 3.3004  0.001 ***
+    ## Residual  9  1.90112                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -964,6 +965,75 @@ plot_dbrda(site_sc = dbrda_all_pr_amf$plot_data$sites,
 
 Microbial communities align with years since restoration across regions
 and types (general fungi and amf).
+
+## Effects of soil and plants
+
+We know that restored plant communities differ among fields, and that
+those differences change in a systematic way over time. Within our
+chronosequence sites at Blue Mounds, what is the relative effect of soil
+and plant data on soil microbes?
+
+Variation partitioning will be used. Since forward selection failed to
+find a parsimonious number of important explanatory variables, we’ll
+just use the entire plant and soil datasets here to look for the
+relative contribution of these weak effects.
+
+With so many explanatory axes, the analysis failed with raw data, so
+explanatory data will first be transformed into PCoA axes.
+
+``` r
+soil_pcoa <- pcoa_fun(soil, rg = c("BM"), corr = "lingoes")
+vpdat_its <- list(
+    Y = fspe$its %>% filter(region == "BM", field_type == "restored") %>% 
+        select(-field_type, -region) %>% 
+        data.frame(., row.names = 1),
+    X1 = pspe_pcoa_ab$site_vectors[-c(3,5,6), ],
+    X2 = soil_pcoa$site_vectors
+)
+vpdat_its_zcols <- vpdat_its %>% map(\(df) which(apply(df, 2, sum) == 0))
+```
+
+``` r
+(vp_its <- varpart(vpdat_its$Y %>% select(-vpdat_its_zcols$Y), vpdat_its$X1, vpdat_its$X2))
+```
+
+    ## 
+    ## Partition of variance in RDA 
+    ## 
+    ## Call: varpart(Y = vpdat_its$Y %>% select(-vpdat_its_zcols$Y), X =
+    ## vpdat_its$X1, vpdat_its$X2)
+    ## 
+    ## Explanatory tables:
+    ## X1:  vpdat_its$X1
+    ## X2:  vpdat_its$X2 
+    ## 
+    ## No. of explanatory tables: 2 
+    ## Total variation (SS): 264966495 
+    ##             Variance: 44161082 
+    ## No. of observations: 7 
+    ## 
+    ## Partition table:
+    ##                      Df R.squared Adj.R.squared Testable
+    ## [a+c] = X1            2   0.38680       0.08020     TRUE
+    ## [b+c] = X2            2   0.34582       0.01873     TRUE
+    ## [a+b+c] = X1+X2       4   0.70243       0.10728     TRUE
+    ## Individual fractions                                    
+    ## [a] = X1|X2           2                 0.08855     TRUE
+    ## [b] = X2|X1           2                 0.02708     TRUE
+    ## [c]                   0                -0.00835    FALSE
+    ## [d] = Residuals                         0.89272    FALSE
+    ## ---
+    ## Use function 'rda' to test significance of fractions of interest
+
+``` r
+plot(vp_its, digits = 2, bg = c("tan", "palegreen"))
+```
+
+<img src="tgr_constrained_files/figure-gfm/varpart_its_plot-1.png" style="display: block; margin: auto;" />
+
+With soil axes accounted for, plant axes explain 14% of the ITS fungal
+community variation in Blue Mounds. The unique explanation made by soil
+variables is about half as much. Neither is a powerful explanation.
 
 ## Response correlations
 
