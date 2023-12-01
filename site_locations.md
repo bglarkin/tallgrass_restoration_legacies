@@ -69,7 +69,7 @@ for (i in 1:length(packages_needed)) {
 ```
 
 ``` r
-source(paste0(getwd(), "/map_settings.R"))
+source(paste0(getwd(), "/supporting_files/map_settings.R"))
 ```
 
 # Data and ETL
