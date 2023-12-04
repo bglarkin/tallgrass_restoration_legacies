@@ -254,7 +254,7 @@ amf_rc %>%
 #' Rarefying at 1250 would compromise six samples, including two from MBRP1. Let's look back at the 
 #' minimum number of samples available in `process_data.R` to see how low we have to go. 
 #' - BBRP1 already had 9, we'd have to drop two more
-#' - MBRP1 already had 9, we'h have to drop two more
+#' - MBRP1 already had 9, we'd have to drop two more
 #' - MBREM1 had 10
 #' - FLRSP1 had 10
 #' 
