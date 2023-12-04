@@ -10,7 +10,6 @@
 #'      toc: true
 #'      toc_depth: 2
 #' ---
-#' 
 #' # Packages and Libraries
 packages_needed = c("tidyverse",
                     "png",
@@ -30,6 +29,7 @@ conflict_prefer("filter", "dplyr")
 conflict_prefer("select", "dplyr")
 #' 
 #' # Description
+#' 
 #' 
 #+ plot
 plot(1:10, 1:10)

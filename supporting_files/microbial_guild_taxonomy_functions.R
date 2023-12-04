@@ -12,7 +12,7 @@
 #' ---
 #'
 #' # Description
-#' The functions used in the guild/taxonomy [report](tallgrass_restoration_legacies/microbial_guild_taxonomy.md) are written out here
+#' The functions used in the guild/taxonomy [report](microbial_guild_taxonomy.md) are written out here
 #' to save space in the main report.
 #' 
 #' ### Function: ITS taxonomy
