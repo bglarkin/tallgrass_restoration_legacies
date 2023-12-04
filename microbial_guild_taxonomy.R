@@ -54,7 +54,7 @@ conflict_prefer("select", "dplyr")
 #'
 #' # Functions 
 #' Functions streamline data processing, model fitting, and results output. Functions for this 
-#' script are found in a [supplemental script](microbial_guild_taxonomy_functions.R) and are loaded 
+#' script are found in a [supplemental script](supporting_files/microbial_guild_taxonomy_functions.R) and are loaded 
 #' here for convenience. 
 #+ mgt_functions
 source("supporting_files/microbial_guild_taxonomy_functions.R")
