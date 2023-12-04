@@ -221,6 +221,7 @@ pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
     return(output)
 }
 #' 
+#' ## PCoA function with subsamples, Blue Mounds only
 #+ pcoa_samps_bm_function
 pcoa_samps_bm_fun <- function(s, d, env=sites_resto_bm, corr="none", df_name, nperm=1999) {
     set.seed <- 845

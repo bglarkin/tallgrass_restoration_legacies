@@ -50,283 +50,35 @@ for (i in 1:length(packages_needed)) {
 #' - `pcoa_samps_bm_fun()` is used for the subsample data from Blue Mounds restored fields. The variable 
 #' **yr_since** is continuous with this dataset and is tested with `envfit()`.
 #' 
-#+ pcoa_function
-pcoa_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
-    set.seed <- 397
-    # Multivariate analysis
-    p <- pcoa(d, correction = corr)
-    p_vals <- data.frame(p$values) %>% 
-        rownames_to_column(var = "Dim") %>% 
-        mutate(Dim = as.integer(Dim))
-    p_vec <- data.frame(p$vectors)
-    # Wrangle site data
-    env <- data.frame(env)
-    # Global permutation test (PERMANOVA)
-    gl_permtest <-
-        with(env,
-             adonis2(
-                 d ~ field_type,
-                 data = env,
-                 permutations = nperm,
-                 add = if (corr == "none") FALSE else "lingoes",
-                 strata = region
-             ))
-    # Pairwise post-hoc test
-    group_var <- as.character(env$field_type)
-    groups <- as.data.frame(t(combn(unique(group_var), m = 2)))
-    contrasts <- data.frame(
-        group1 = groups$V1,
-        group2 = groups$V2,
-        R2 = NA,
-        F_value = NA,
-        df1 = NA,
-        df2 = NA,
-        p_value = NA
-    )
-    for (i in seq(nrow(contrasts))) {
-        group_subset <-
-            group_var == contrasts$group1[i] |
-            group_var == contrasts$group2[i]
-        contrast_matrix <- data.frame(s[group_subset, ], row.names = 1)
-        fit <- with(env[group_subset, ],
-                    adonis2(
-                        contrast_matrix ~ group_var[group_subset],
-                        permutations = nperm,
-                        add = if (corr == "none") FALSE else "lingoes",
-                        strata = region
-                    ))
-        
-        contrasts$R2[i] <- round(fit$R2[1], digits = 3)
-        contrasts$F_value[i] <- round(fit[["F"]][1], digits = 3)
-        contrasts$df1[i] <- fit$Df[1]
-        contrasts$df2[i] <- fit$Df[2]
-        contrasts$p_value[i] <- fit$`Pr(>F)`[1]
-    }
-    contrasts$p_value_adj <- p.adjust(contrasts$p_value, method = "fdr")
-    # Diagnostic plots
-    if(corr == "none" | ncol(p_vals) == 6) {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
-    } else {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
-    }
-    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
-    # Ordination plot
-    scores <-
-        p_vec[, 1:ncomp] %>%
-        rownames_to_column(var = "field_key") %>%
-        mutate(field_key = as.integer(field_key)) %>%
-        left_join(sites, by = "field_key") %>% 
-        select(-field_name)
-    # Output data
-    output <- list(dataset                        = df_name,
-                   components_exceed_broken_stick = p_ncomp,
-                   correction_note                = p$note,
-                   values                         = p_vals[1:(ncomp+1), ], 
-                   eigenvalues                    = eig,
-                   site_vectors                   = scores,
-                   broken_stick_plot              = p_bstick,
-                   permanova                      = gl_permtest,
-                   pairwise_contrasts             = kable(contrasts, format = "pandoc"))
-    return(output)
-}
-#' 
-#+ pcoa_samps_function
-pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
-    set.seed <- 438
-    # Multivariate analysis
-    p <- pcoa(d, correction = corr)
-    p_vals <- data.frame(p$values) %>% 
-        rownames_to_column(var = "Dim") %>% 
-        mutate(Dim = as.integer(Dim))
-    p_vec <- data.frame(p$vectors)
-    # Wrangle site data
-    env_w <- env %>% 
-        left_join(s %>% select(field_key, sample), by = join_by(field_key), multiple = "all") %>% 
-        mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
-        column_to_rownames(var = "field_sample") %>% 
-        as.data.frame()
-    # Permutation tests (PERMANOVA)
-    # Fields as replicate strata with subsamples
-    # Regions as blocks
-    # Global test
-    gl_perm_design <- with(env_w, 
-              how(within = Within(type="none"), 
-                  plots  = Plots(strata=field_key, type="free"),
-                  blocks = region,
-                  nperm  = nperm))
-    gl_permtest <- adonis2(
-        d ~ field_type,
-        data = env_w,
-        permutations = gl_perm_design)
-    # Pairwise post-hoc test
-    group_var <- as.character(env_w$field_type)
-    groups <- as.data.frame(t(combn(unique(group_var), m = 2)))
-    contrasts <- data.frame(
-        group1 = groups$V1,
-        group2 = groups$V2,
-        R2 = NA,
-        F_value = NA,
-        df1 = NA,
-        df2 = NA,
-        p_value = NA
-    )
-    for (i in seq(nrow(contrasts))) {
-        group_subset <-
-            group_var == contrasts$group1[i] |
-            group_var == contrasts$group2[i]
-        contrast_matrix <- s[group_subset, ]
-        pw_perm_design <- with(env_w[group_subset,],
-                               how(
-                                   within = Within(type = "none"),
-                                   plots  = Plots(strata = field_key, type = "free"),
-                                   blocks = region,
-                                   nperm  = nperm
-                               ))
-        fit <- adonis2(
-            contrast_matrix ~ group_var[group_subset],
-            add = if (corr == "none") FALSE else "lingoes",
-            permutations = pw_perm_design
-        )
-        
-        contrasts$R2[i] <- round(fit$R2[1], digits = 3)
-        contrasts$F_value[i] <- round(fit[["F"]][1], digits = 3)
-        contrasts$df1[i] <- fit$Df[1]
-        contrasts$df2[i] <- fit$Df[2]
-        contrasts$p_value[i] <- fit$`Pr(>F)`[1]
-    }
-    contrasts$p_value_adj <- p.adjust(contrasts$p_value, method = "fdr")
-    # Diagnostic plots
-    if(corr == "none" | ncol(p_vals) == 6) {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
-    } else {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
-    }
-    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
-    # Ordination plot
-    scores <-
-        p_vec[, 1:ncomp] %>%
-        rownames_to_column(var = "field_sample") %>%
-        separate_wider_delim(field_sample, delim = "_", names = c("field_key", "sample_key"), cols_remove = TRUE) %>% 
-        mutate(field_key = as.integer(field_key)) %>%
-        left_join(env, by = join_by(field_key))
-    # Output data
-    output <- list(dataset                        = df_name,
-                   components_exceed_broken_stick = p_ncomp,
-                   correction_note                = p$note,
-                   values                         = p_vals[1:(ncomp+1), ], 
-                   eigenvalues                    = eig,
-                   site_vectors                   = scores,
-                   broken_stick_plot              = p_bstick,
-                   permanova                      = gl_permtest,
-                   pairwise_contrasts             = kable(contrasts, format = "pandoc"))
-    return(output)
-}
-#' 
-#+ pcoa_samps_bm_function
-pcoa_samps_bm_fun <- function(s, d, env=sites_resto_bm, corr="none", df_name, nperm=1999) {
-    set.seed <- 845
-    # Multivariate analysis
-    p <- pcoa(d, correction = corr)
-    p_vals <- data.frame(p$values) %>% 
-        rownames_to_column(var = "Dim") %>% 
-        mutate(Dim = as.integer(Dim))
-    p_vec <- data.frame(p$vectors)
-    # Wrangle site data
-    env_w <- env %>% 
-        left_join(s %>% select(field_key, sample), by = join_by(field_key), multiple = "all") %>% 
-        mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
-        column_to_rownames(var = "field_sample")
-    # Permutation test (PERMANOVA)
-    p_permtest <- adonis2(d ~ field_key, data = env_w, permutations = nperm)
-    # Diagnostic plots
-    if(corr == "none" | ncol(p_vals) == 6) {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
-    } else {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
-    }
-    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
-    # Permutation test (ENVFIT)
-    # Fields as strata
-    h = with(env_w, 
-             how(within = Within(type="none"), 
-                 plots = Plots(strata=field_key, type="free"), 
-                 nperm = nperm))
-    fit <- envfit(p_vec ~ yr_since, env_w, permutations = h, choices = c(1:ncomp))
-    fit_sc <- scores(fit, c("vectors"))
-    # Ordination plotting data
-    scores <-
-        p_vec[, 1:ncomp] %>%
-        rownames_to_column(var = "field_sample") %>%
-        separate_wider_delim(field_sample, delim = "_", names = c("field_key", "sample_key"), cols_remove = TRUE) %>% 
-        mutate(field_key = as.integer(field_key)) %>%
-        left_join(env, by = join_by(field_key)) %>% 
-        select(-field_type)
-    # Output data
-    output <- list(dataset                        = df_name,
-                   components_exceed_broken_stick = p_ncomp,
-                   correction_note                = p$note,
-                   values                         = p_vals[1:(ncomp+1), ], 
-                   eigenvalues                    = eig,
-                   site_vectors                   = scores,
-                   broken_stick_plot              = p_bstick,
-                   permanova                      = p_permtest,
-                   vector_fit                     = fit,
-                   vector_fit_scores              = fit_sc)
-    return(output)
-}
+#' **Functions are stored** in a separate [script](supporting_files/microbial_communities_functions.md) to reduce clutter here and allow for easier editing. 
+source("supporting_files/microbial_communities_functions.R")
 #' 
 #' # Data
+#' ## Site metadata
+#' Needed for figure interpretation and permanova designs. The subset of restored fields in Blue Mounds 
+#' only will also be used and is parsed here.
+sites <-
+    read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>%
+    mutate(
+        field_type = factor(
+            field_type,
+            ordered = TRUE,
+            levels = c("corn", "restored", "remnant")),
+        yr_since = replace(yr_since, which(field_type == "remnant"), NA),
+        yr_since = replace(yr_since, which(field_type == "corn"), NA)) %>%
+    select(-lat, -long, -yr_restore, -yr_rank) %>% 
+    arrange(field_key)
+sites_resto_bm <- 
+    sites %>% 
+    filter(field_type == "restored",
+           region == "BM") %>% 
+    select(-field_name, -region) %>% 
+    mutate(yr_since = as.numeric(yr_since))   
+#' 
 #' ## Sites-species tables
 #' Sites-species tables with rarefied sequence abundances. This list includes
-#' composition summarized by fields or unsummarized (all samples). 
+#' composition summarized by fields or unsummarized (all samples). It also includes subsets by region. 
+#' All subsets have zero sum columns removed.  
 #' CSV files were produced in [process_data.R](process_data.md)
 spe <- list(
     its = read_csv(
@@ -337,6 +89,34 @@ spe <- list(
         paste0(getwd(), "/clean_data/spe_ITS_rfy_samples.csv"),
         show_col_types = FALSE
     ),
+    its_samps_bm = read_csv(
+        paste0(getwd(), "/clean_data/spe_ITS_rfy_samples.csv"),
+        show_col_types = FALSE
+    ) %>% 
+        left_join(sites %>% select(field_key, region), by = join_by(field_key)) %>% 
+        filter(region == "BM") %>% 
+        select(-region),
+    its_samps_fg = read_csv(
+        paste0(getwd(), "/clean_data/spe_ITS_rfy_samples.csv"),
+        show_col_types = FALSE
+    ) %>% 
+        left_join(sites %>% select(field_key, region), by = join_by(field_key)) %>% 
+        filter(region == "FG") %>% 
+        select(-region),
+    its_samps_fl = read_csv(
+        paste0(getwd(), "/clean_data/spe_ITS_rfy_samples.csv"),
+        show_col_types = FALSE
+    ) %>% 
+        left_join(sites %>% select(field_key, region), by = join_by(field_key)) %>% 
+        filter(region == "FL") %>% 
+        select(-region),
+    its_samps_lp = read_csv(
+        paste0(getwd(), "/clean_data/spe_ITS_rfy_samples.csv"),
+        show_col_types = FALSE
+    ) %>% 
+        left_join(sites %>% select(field_key, region), by = join_by(field_key)) %>% 
+        filter(region == "LP") %>% 
+        select(-region),
     amf = read_csv(
         paste0(getwd(), "/clean_data/spe_18S_rfy.csv"),
         show_col_types = FALSE
@@ -344,8 +124,37 @@ spe <- list(
     amf_samps = read_csv(
         paste0(getwd(), "/clean_data/spe_18S_rfy_samples.csv"),
         show_col_types = FALSE
-    )
-)
+    ),
+    amf_samps_bm = read_csv(
+        paste0(getwd(), "/clean_data/spe_18S_rfy_samples.csv"),
+        show_col_types = FALSE
+    ) %>% 
+        left_join(sites %>% select(field_key, region), by = join_by(field_key)) %>% 
+        filter(region == "BM") %>% 
+        select(-region),
+    amf_samps_fg = read_csv(
+        paste0(getwd(), "/clean_data/spe_18S_rfy_samples.csv"),
+        show_col_types = FALSE
+    ) %>% 
+        left_join(sites %>% select(field_key, region), by = join_by(field_key)) %>% 
+        filter(region == "FG") %>% 
+        select(-region),
+    amf_samps_fl = read_csv(
+        paste0(getwd(), "/clean_data/spe_18S_rfy_samples.csv"),
+        show_col_types = FALSE
+    ) %>% 
+        left_join(sites %>% select(field_key, region), by = join_by(field_key)) %>% 
+        filter(region == "FL") %>% 
+        select(-region),
+    amf_samps_lp = read_csv(
+        paste0(getwd(), "/clean_data/spe_18S_rfy_samples.csv"),
+        show_col_types = FALSE
+    ) %>% 
+        left_join(sites %>% select(field_key, region), by = join_by(field_key)) %>% 
+        filter(region == "LP") %>% 
+        select(-region)
+) %>% 
+    map(. %>% select(where( ~ sum(.) != 0)))
 #' ## Species metadata
 #' Needed to make inset figures showing most important categories of species. The OTUs
 #' and sequence abundances in these files matches the rarefied data in `spe$` above.
@@ -362,27 +171,6 @@ spe_meta <- list(
             show_col_types = FALSE
         )
 )
-#' 
-#' ## Site metadata
-#' Needed for figure interpretation and permanova designs. The subset of restored fields in Blue Mounds 
-#' only will also be used and is parsed here.
-sites <-
-    read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>%
-    mutate(
-        field_type = factor(
-            field_type,
-            ordered = TRUE,
-            levels = c("corn", "restored", "remnant")),
-        yr_since = replace(yr_since, which(field_type == "remnant"), "+"),
-        yr_since = replace(yr_since, which(field_type == "corn"), "-")) %>%
-    select(-lat, -long, -yr_restore, -yr_rank) %>% 
-    arrange(field_key)
-sites_resto_bm <- 
-    sites %>% 
-    filter(field_type == "restored",
-           region == "BM") %>% 
-    select(-field_name, -region) %>% 
-    mutate(yr_since = as.numeric(yr_since))   
 #' 
 #' ## Distance tables
 #' Creating distance objects from the samples-species tables is done with the typical 
@@ -427,6 +215,38 @@ distab <- list(
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
         ) %>% select(where(~ sum(.) > 0)), method = "bray"),
+    its_samps_bm = vegdist(
+        data.frame(
+            spe$its_samps_bm %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ) # zero sum columns were already removed in the spe list
+    ),
+    its_samps_fg = vegdist(
+        data.frame(
+            spe$its_samps_fg %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ) # zero sum columns were already removed in the spe list
+    ),
+    its_samps_fl = vegdist(
+        data.frame(
+            spe$its_samps_fl %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ) # zero sum columns were already removed in the spe list
+    ),
+    its_samps_lp = vegdist(
+        data.frame(
+            spe$its_samps_lp %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ) # zero sum columns were already removed in the spe list
+    ),
     amf_bray  = vegdist(data.frame(spe$amf, row.names = 1), method = "bray"),
     amf_samps = vegdist(
         data.frame(
@@ -449,6 +269,38 @@ distab <- list(
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
         ) %>% select(where(~ sum(.) > 0)), method = "bray"),
+    amf_samps_bm = vegdist(
+        data.frame(
+            spe$amf_samps_bm %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ) # zero sum columns were already removed in the spe list
+    ),
+    amf_samps_fg = vegdist(
+        data.frame(
+            spe$amf_samps_fg %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ) # zero sum columns were already removed in the spe list
+    ),
+    amf_samps_fl = vegdist(
+        data.frame(
+            spe$amf_samps_fl %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ) # zero sum columns were already removed in the spe list
+    ),
+    amf_samps_lp = vegdist(
+        data.frame(
+            spe$amf_samps_lp %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ) # zero sum columns were already removed in the spe list
+    ),
     amf_uni   = sites %>%
         select(field_name, field_key) %>%
         left_join(
@@ -493,14 +345,14 @@ pcoa_its$ord <-
             pcoa_its$dataset,
             ")"
         ),
-        caption = "Text indicates years since restoration, with corn (-) and remnants (+) never restored."
+        caption = "Text in icons for restored fields indicates years since restoration."
     ) +
     lims(y = c(-0.35,0.44)) +
     theme_bw() +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
 pcoa_its$inset <-
     spe_meta$its %>%
-    filter(primary_lifestyle %in% c("soil_saprotroph", "wood_saprotroph", "plant_pathogen")) %>%
+    filter(primary_lifestyle %in% c("soil_saprotroph", "plant_pathogen", "wood_saprotroph")) %>%
     mutate(field_type = factor(
         field_type,
         ordered = TRUE,
@@ -508,8 +360,8 @@ pcoa_its$inset <-
     )) %>%
     group_by(primary_lifestyle, field_type) %>%
     summarize(avg_seq_abund = mean(seq_abund), .groups = "drop") %>%
-    ggplot(aes(x = primary_lifestyle, y = avg_seq_abund)) +
-    geom_col(aes(fill = field_type)) +
+    ggplot(aes(x = primary_lifestyle, y = avg_seq_abund, fill = field_type)) +
+    geom_col(position = "dodge") +
     labs(x = "",
          y = "Seq. abund. (avg)") +
     scale_fill_discrete_qualitative(palette = "Harmonic") +
@@ -590,7 +442,8 @@ its_resto_scores %>%
 #' 
 #' Axis 1 explains `r pcoa_its_samps_bm$eigenvalues[1]`% and axis 2 
 #' explains `r pcoa_its_samps_bm$eigenvalues[2]`% of the variation in the community data. Both axes are important
-#' based on the broken stick model. The relatively low percent variation explained is partly due to the 
+#' based on the broken stick model. Indeed, the first four axes are borderline important. 
+#' The relatively low percent variation explained is partly due to the 
 #' high number of dimensions used when all samples from fields are included. 
 #' The fidelity of samples to fields was significant based on a permutation test
 #' $(R^2=`r round(pcoa_its_samps_bm$permanova$R2[1], 2)`,~p=`r pcoa_its_samps_bm$permanova$Pr[1]`)$. 
@@ -678,6 +531,91 @@ ggplot(pcoa_its_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
             ")"
         ),
         caption = "Text indicates years since restoration."
+    ) +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
+    theme_bw() +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
+#' 
+#' ### PCoA in Blue Mounds, all subsamples
+#' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
+#' should be ignored here because there is no replication. 
+#+ pcoa_its_samps_bm,warnings=FALSE,message=FALSE
+pcoa_its_samps_bm <- pcoa_samps_fun(
+    s = spe$its_samps_bm,
+    d = distab$its_samps_bm,
+    env = sites %>% filter(region == "BM"),
+    corr = "none",
+    df_name = "Blue Mounds, ITS gene, 97% OTU"
+)
+#' Field type remains significant.
+#' 
+#' ### PCoA in Faville Grove, all subsamples
+#' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
+#' should be ignored here because there is no replication. 
+#+ pcoa_its_samps_fg,warnings=FALSE,message=FALSE
+pcoa_its_samps_fg <- pcoa_samps_fun(
+    s = spe$its_samps_fg,
+    d = distab$its_samps_fg,
+    env = sites %>% filter(region == "FG"),
+    corr = "none",
+    df_name = "Faville Grove, ITS gene, 97% OTU"
+)
+#' Field type is not significant here. 
+#' 
+#' ### PCoA in Fermilab, all subsamples
+#' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
+#' should be ignored here because there is no replication. 
+#+ pcoa_its_samps_fl,warnings=FALSE,message=FALSE
+pcoa_its_samps_fl <- pcoa_samps_fun(
+    s = spe$its_samps_fl,
+    d = distab$its_samps_fl,
+    env = sites %>% filter(region == "FL"),
+    corr = "lingoes",
+    df_name = "Fermilab, ITS gene, 97% OTU"
+)
+#' Field type is again significant by permutation test. 
+#' 
+#' ### PCoA in Lake Petite Prairie, all subsamples
+#' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
+#' should be ignored here because there is no replication. 
+#+ pcoa_its_samps_lp,warnings=FALSE,message=FALSE
+pcoa_its_samps_lp <- pcoa_samps_fun(
+    s = spe$its_samps_lp,
+    d = distab$its_samps_lp,
+    env = sites %>% filter(region == "LP"),
+    corr = "none",
+    df_name = "Lake Petite Prairie, ITS gene, 97% OTU"
+)
+#' Let's view an ordination plot with hulls around subsamples for each indidual region.  
+#' 
+#' ### PCoA ordination, all regions, all subsamples.
+#+ its_samps_regions_plotdata
+pcoa_its_site_vectors <- bind_rows(
+    list(
+        `Blue Mounds`   = pcoa_its_samps_bm$site_vectors,
+        `Faville Grove` = pcoa_its_samps_fg$site_vectors,
+        `Fermilab`      = pcoa_its_samps_fl$site_vectors,
+        `Lake Petite`   = pcoa_its_samps_lp$site_vectors
+    ),
+    .id = "place"
+)
+centroid_regions_its <- aggregate(cbind(Axis.1, Axis.2) ~ place + field_key, data = pcoa_its_site_vectors, mean) %>% 
+    left_join(sites %>% select(field_key, yr_since, field_type, region), by = join_by(field_key))
+hull_regions_its <- pcoa_its_site_vectors %>% 
+    group_by(place, field_key) %>% 
+    slice(chull(Axis.1, Axis.2))
+#+ its_samps_regions_fig,fig.align='center',message=FALSE
+ggplot(pcoa_its_site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    facet_wrap(vars(place), scales = "free") +
+    geom_point(aes(fill = field_type), shape = 21) +
+    geom_polygon(data = hull_regions_its, aes(group = field_key, fill = field_type), alpha = 0.3) +
+    geom_point(data = centroid_regions_its, aes(fill = field_type, shape = region), size = 6) +
+    geom_text(data = centroid_regions_its, aes(label = yr_since), size = 2.5) +
+    labs(
+        x = paste0("Axis 1"),
+        y = paste0("Axis 2"),
+        caption = "ITS gene. Text indicates years since restoration."
     ) +
     scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
     scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
@@ -980,4 +918,90 @@ ggplot(pcoa_amf_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
     scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
-
+#' 
+#' ### PCoA in Blue Mounds, all subsamples
+#' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
+#' should be ignored here because there is no replication. 
+#+ pcoa_amf_samps_bm,warnings=FALSE,message=FALSE
+pcoa_amf_samps_bm <- pcoa_samps_fun(
+    s = spe$amf_samps_bm,
+    d = distab$amf_samps_bm,
+    env = sites %>% filter(region == "BM"),
+    corr = "lingoes",
+    df_name = "Blue Mounds, 18S gene, 97% OTU"
+)
+#' Field type trends significant. Four axes significant. 
+#' 
+#' ### PCoA in Faville Grove, all subsamples
+#' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
+#' should be ignored here because there is no replication. 
+#+ pcoa_amf_samps_fg,warnings=FALSE,message=FALSE
+pcoa_amf_samps_fg <- pcoa_samps_fun(
+    s = spe$amf_samps_fg,
+    d = distab$amf_samps_fg,
+    env = sites %>% filter(region == "FG"),
+    corr = "lingoes",
+    df_name = "Faville Grove, 18S gene, 97% OTU"
+)
+#' Field type is not significant here. Three significant axes. 
+#' 
+#' ### PCoA in Fermilab, all subsamples
+#' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
+#' should be ignored here because there is no replication. 
+#+ pcoa_amf_samps_fl,warnings=FALSE,message=FALSE
+pcoa_amf_samps_fl <- pcoa_samps_fun(
+    s = spe$amf_samps_fl,
+    d = distab$amf_samps_fl,
+    env = sites %>% filter(region == "FL"),
+    corr = "lingoes",
+    df_name = "Fermilab, 18S gene, 97% OTU"
+)
+#' Field type is again significant by permutation test. Six axes are significant. 
+#' 
+#' ### PCoA in Lake Petite Prairie, all subsamples
+#' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
+#' should be ignored here because there is no replication. 
+#+ pcoa_amf_samps_lp,warnings=FALSE,message=FALSE
+pcoa_amf_samps_lp <- pcoa_samps_fun(
+    s = spe$amf_samps_lp,
+    d = distab$amf_samps_lp,
+    env = sites %>% filter(region == "LP"),
+    corr = "lingoes",
+    df_name = "Lake Petite Prairie, 18S gene, 97% OTU"
+)
+#' Field type not significant with three important axes. 
+#' 
+#' Let's view an ordination plot with hulls around subsamples for each indidual region.  
+#' 
+#' ### PCoA ordination, all regions, all subsamples.
+#+ its_samps_regions_plotdata
+pcoa_amf_site_vectors <- bind_rows(
+    list(
+        `Blue Mounds`   = pcoa_amf_samps_bm$site_vectors,
+        `Faville Grove` = pcoa_amf_samps_fg$site_vectors,
+        `Fermilab`      = pcoa_amf_samps_fl$site_vectors,
+        `Lake Petite`   = pcoa_amf_samps_lp$site_vectors
+    ),
+    .id = "place"
+)
+centroid_regions_amf <- aggregate(cbind(Axis.1, Axis.2) ~ place + field_key, data = pcoa_amf_site_vectors, mean) %>% 
+    left_join(sites %>% select(field_key, yr_since, field_type, region), by = join_by(field_key))
+hull_regions_amf <- pcoa_amf_site_vectors %>% 
+    group_by(place, field_key) %>% 
+    slice(chull(Axis.1, Axis.2))
+#+ its_samps_regions_fig,fig.align='center',message=FALSE
+ggplot(pcoa_amf_site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    facet_wrap(vars(place), scales = "free") +
+    geom_point(aes(fill = field_type), shape = 21) +
+    geom_polygon(data = hull_regions_amf, aes(group = field_key, fill = field_type), alpha = 0.3) +
+    geom_point(data = centroid_regions_amf, aes(fill = field_type, shape = region), size = 6) +
+    geom_text(data = centroid_regions_amf, aes(label = yr_since), size = 2.5) +
+    labs(
+        x = paste0("Axis 1"),
+        y = paste0("Axis 2"),
+        caption = "18S gene (AMF). Text indicates years since restoration."
+    ) +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
+    theme_bw() +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
