@@ -542,7 +542,7 @@ ggplot(pcoa_its_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
 #' #### PCoA in Blue Mounds, all subsamples
 #' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
 #' should be ignored here because there is no replication. 
-#+ pcoa_its_samps_bm,warnings=FALSE,message=FALSE
+#+ pcoa_its_samps_bm,warning=FALSE,message=FALSE
 (pcoa_its_samps_bm <- pcoa_samps_fun(
     s = spe$its_samps_bm,
     d = distab$its_samps_bm,
@@ -555,7 +555,7 @@ ggplot(pcoa_its_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
 #' ### PCoA in Faville Grove, all subsamples
 #' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
 #' should be ignored here because there is no replication. 
-#+ pcoa_its_samps_fg,warnings=FALSE,message=FALSE
+#+ pcoa_its_samps_fg,warning=FALSE,message=FALSE
 (pcoa_its_samps_fg <- pcoa_samps_fun(
     s = spe$its_samps_fg,
     d = distab$its_samps_fg,
@@ -568,7 +568,7 @@ ggplot(pcoa_its_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
 #' ### PCoA in Fermilab, all subsamples
 #' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
 #' should be ignored here because there is no replication. 
-#+ pcoa_its_samps_fl,warnings=FALSE,message=FALSE
+#+ pcoa_its_samps_fl,warning=FALSE,message=FALSE
 (pcoa_its_samps_fl <- pcoa_samps_fun(
     s = spe$its_samps_fl,
     d = distab$its_samps_fl,
@@ -581,7 +581,7 @@ ggplot(pcoa_its_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
 #' ### PCoA in Lake Petite Prairie, all subsamples
 #' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
 #' should be ignored here because there is no replication. 
-#+ pcoa_its_samps_lp,warnings=FALSE,message=FALSE
+#+ pcoa_its_samps_lp,warning=FALSE,message=FALSE
 (pcoa_its_samps_lp <- pcoa_samps_fun(
     s = spe$its_samps_lp,
     d = distab$its_samps_lp,
@@ -621,7 +621,7 @@ centroid_regions_its <- aggregate(cbind(Axis.1, Axis.2) ~ place + field_key, dat
 hull_regions_its <- pcoa_its_site_vectors %>% 
     group_by(place, field_key) %>% 
     slice(chull(Axis.1, Axis.2))
-#+ its_samps_regions_fig,fig.align='center',message=FALSE,warnings=FALSE
+#+ its_samps_regions_fig,fig.align='center',message=FALSE,warning=FALSE
 ggplot(pcoa_its_site_vectors, aes(x = Axis.1, y = Axis.2)) +
     facet_wrap(vars(place), scales = "free") +
     geom_point(aes(fill = field_type), shape = 21) +
@@ -941,7 +941,7 @@ ggplot(pcoa_amf_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
 #' ### PCoA in Blue Mounds, all subsamples
 #' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
 #' should be ignored here because there is no replication. 
-#+ pcoa_amf_samps_bm,warnings=FALSE,message=FALSE
+#+ pcoa_amf_samps_bm,warning=FALSE,message=FALSE
 (pcoa_amf_samps_bm <- pcoa_samps_fun(
     s = spe$amf_samps_bm,
     d = distab$amf_samps_bm,
@@ -954,7 +954,7 @@ ggplot(pcoa_amf_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
 #' ### PCoA in Faville Grove, all subsamples
 #' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
 #' should be ignored here because there is no replication. 
-#+ pcoa_amf_samps_fg,warnings=FALSE,message=FALSE
+#+ pcoa_amf_samps_fg,warning=FALSE,message=FALSE
 (pcoa_amf_samps_fg <- pcoa_samps_fun(
     s = spe$amf_samps_fg,
     d = distab$amf_samps_fg,
@@ -967,7 +967,7 @@ ggplot(pcoa_amf_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
 #' ### PCoA in Fermilab, all subsamples
 #' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
 #' should be ignored here because there is no replication. 
-#+ pcoa_amf_samps_fl,warnings=FALSE,message=FALSE
+#+ pcoa_amf_samps_fl,warning=FALSE,message=FALSE
 (pcoa_amf_samps_fl <- pcoa_samps_fun(
     s = spe$amf_samps_fl,
     d = distab$amf_samps_fl,
@@ -980,7 +980,7 @@ ggplot(pcoa_amf_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
 #' ### PCoA in Lake Petite Prairie, all subsamples
 #' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
 #' should be ignored here because there is no replication. 
-#+ pcoa_amf_samps_lp,warnings=FALSE,message=FALSE
+#+ pcoa_amf_samps_lp,warning=FALSE,message=FALSE
 (pcoa_amf_samps_lp <- pcoa_samps_fun(
     s = spe$amf_samps_lp,
     d = distab$amf_samps_lp,
@@ -1022,7 +1022,7 @@ centroid_regions_amf <- aggregate(cbind(Axis.1, Axis.2) ~ place + field_key, dat
 hull_regions_amf <- pcoa_amf_site_vectors %>% 
     group_by(place, field_key) %>% 
     slice(chull(Axis.1, Axis.2))
-#+ amf_samps_regions_fig,fig.align='center',message=FALSE,warnings=FALSE
+#+ amf_samps_regions_fig,fig.align='center',message=FALSE,warning=FALSE
 ggplot(pcoa_amf_site_vectors, aes(x = Axis.1, y = Axis.2)) +
     facet_wrap(vars(place), scales = "free") +
     geom_point(aes(fill = field_type), shape = 21) +

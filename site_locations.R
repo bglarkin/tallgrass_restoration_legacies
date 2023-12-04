@@ -31,7 +31,8 @@ packages_needed = c(
     "prism",
     "conflicted",
     "ggbeeswarm",
-    "knitr"
+    "knitr",
+    "ggrepel"
 )
 packages_installed = packages_needed %in% rownames(installed.packages())
 #+ packages,message=FALSE
@@ -86,10 +87,10 @@ sites <-
 #' How many sites are in each field type?
 kable(table(sites$region, sites$field_type),
       format = "pandoc",
-      caption = "Field types by region: BM = Blue Mounds, FG = Faville Grove, FL = Fermilab, LP = Lake Petite")
+      caption = "Count of fields by type and region:\nBM = Blue Mounds, FG = Faville Grove,\nFL = Fermilab, LP = Lake Petite")
 #'
 #' ## Regional map
-#' Citation *Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under ODbL.*
+#' https://docs.stadiamaps.com/themes/
 #+ map_object,message=FALSE
 map <- ggmap(get_stadiamap(
     bbox = c(
@@ -111,14 +112,41 @@ map +
             .groups = "drop"
         ),
         aes(x = long_cen, y = lat_cen, label = region),
-        color = "red",
-        fill = "gray80",
+        fill = "gray90",
         size = 8
     ) +
     theme_void()
 #'
 #' The map labels show centroids for each region: BM = Blue Mounds, FG = Faville Grove, FL = Fermilab, LP = Lake Petite.
-#' Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under ODbL.
+#' https://docs.stadiamaps.com/themes/.
+#' 
+#' ## Blue Mounds map
+sites %>% 
+    filter(region == "BM") %>% 
+    select(lat, long) %>% 
+    map(. %>% range(.))
+#+ map_object_bm,message=FALSE
+map_bm <- ggmap(get_stadiamap(
+    bbox = c(
+        left = -89.98,
+        bottom = 42.76,
+        right = -89.50,
+        top = 43.12
+    ),
+    zoom = 12,
+    maptype = c("stamen_terrain"),
+    color = c("color")
+))
+#+ site_map_bm,message=FALSE,fig.width=7,fig.height=7,fig.align='center',warning=FALSE
+map_bm +
+    geom_label_repel(data = sites %>% filter(region == "BM"),
+        aes(x = long, y = lat, label = field_name),
+        fill = "gray90",
+        size = 7
+    ) +
+    geom_point(data = sites %>% filter(region == "BM"),
+               aes(x = long, y = lat), fill = "red", size = 3, shape = 21) +
+    theme_void()
 #' 
 #' ## Regional areas
 #' The area of convex hulls around field in each region is shown in the table below:

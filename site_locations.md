@@ -2,7 +2,7 @@ Site locations, metadata, and climate
 ================
 Beau Larkin
 
-Last updated: 01 December, 2023
+Last updated: 04 December, 2023
 
 - [Description](#description)
 - [Package and library installation](#package-and-library-installation)
@@ -13,6 +13,7 @@ Last updated: 01 December, 2023
 - [Results](#results)
   - [Site types](#site-types)
   - [Regional map](#regional-map)
+  - [Blue Mounds map](#blue-mounds-map)
   - [Regional areas](#regional-areas)
   - [Precipitation normals](#precipitation-normals)
 
@@ -43,7 +44,8 @@ packages_needed = c(
     "prism",
     "conflicted",
     "ggbeeswarm",
-    "knitr"
+    "knitr",
+    "ggrepel"
 )
 packages_installed = packages_needed %in% rownames(installed.packages())
 ```
@@ -141,7 +143,7 @@ How many sites are in each field type?
 ``` r
 kable(table(sites$region, sites$field_type),
       format = "pandoc",
-      caption = "Field types by region: BM = Blue Mounds, FG = Faville Grove, FL = Fermilab, LP = Lake Petite")
+      caption = "Count of fields by type and region:\nBM = Blue Mounds, FG = Faville Grove,\nFL = Fermilab, LP = Lake Petite")
 ```
 
 |     | corn | remnant | restored |
@@ -151,13 +153,12 @@ kable(table(sites$region, sites$field_type),
 | FL  |    2 |       1 |        6 |
 | LP  |    1 |       1 |        2 |
 
-Field types by region: BM = Blue Mounds, FG = Faville Grove, FL =
-Fermilab, LP = Lake Petite
+Count of fields by type and region: BM = Blue Mounds, FG = Faville
+Grove, FL = Fermilab, LP = Lake Petite
 
 ## Regional map
 
-Citation *Map tiles by Stamen Design, under CC BY 3.0. Data by
-OpenStreetMap, under ODbL.*
+<https://docs.stadiamaps.com/themes/>
 
 ``` r
 map <- ggmap(get_stadiamap(
@@ -182,8 +183,7 @@ map +
             .groups = "drop"
         ),
         aes(x = long_cen, y = lat_cen, label = region),
-        color = "red",
-        fill = "gray80",
+        fill = "gray90",
         size = 8
     ) +
     theme_void()
@@ -192,8 +192,51 @@ map +
 <img src="site_locations_files/figure-gfm/site_map-1.png" style="display: block; margin: auto;" />
 
 The map labels show centroids for each region: BM = Blue Mounds, FG =
-Faville Grove, FL = Fermilab, LP = Lake Petite. Map tiles by Stamen
-Design, under CC BY 3.0. Data by OpenStreetMap, under ODbL.
+Faville Grove, FL = Fermilab, LP = Lake Petite.
+<https://docs.stadiamaps.com/themes/>.
+
+## Blue Mounds map
+
+``` r
+sites %>% 
+    filter(region == "BM") %>% 
+    select(lat, long) %>% 
+    map(. %>% range(.))
+```
+
+    ## $lat
+    ## [1] 42.78585 43.09989
+    ## 
+    ## $long
+    ## [1] -89.93019 -89.57121
+
+``` r
+map_bm <- ggmap(get_stadiamap(
+    bbox = c(
+        left = -89.98,
+        bottom = 42.76,
+        right = -89.50,
+        top = 43.12
+    ),
+    zoom = 12,
+    maptype = c("stamen_terrain"),
+    color = c("color")
+))
+```
+
+``` r
+map_bm +
+    geom_label_repel(data = sites %>% filter(region == "BM"),
+        aes(x = long, y = lat, label = field_name),
+        fill = "gray90",
+        size = 7
+    ) +
+    geom_point(data = sites %>% filter(region == "BM"),
+               aes(x = long, y = lat), fill = "red", size = 3, shape = 21) +
+    theme_void()
+```
+
+<img src="site_locations_files/figure-gfm/site_map_bm-1.png" style="display: block; margin: auto;" />
 
 ## Regional areas
 

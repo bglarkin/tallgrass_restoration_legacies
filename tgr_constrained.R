@@ -322,7 +322,7 @@ wsa <- read_csv(paste0(getwd(), "/clean_data/wsa.csv"), show_col_types = FALSE)[
 #' 
 #' ### General fungal community (ITS sequence abundance)
 #' #### Blue Mounds with plant traits data
-#+ dbrda_bm_tr_its,message=FALSE,warnings=FALSE
+#+ dbrda_bm_tr_its,message=FALSE,warning=FALSE
 dbrda_fun(
     s = fspe$its,
     pspe_pcoa = "none",
@@ -386,7 +386,7 @@ plot_dbrda(site_sc = dbrda_all_pr_its$plot_data$sites,
 #'
 #' ### AMF community (18S sequence abundance)
 #' #### Blue Mounds with plant traits data
-#+ dbrda_bm_tr_amf,message=FALSE,warnings=FALSE
+#+ dbrda_bm_tr_amf,message=FALSE,warning=FALSE
 dbrda_fun(
     s = fspe$amf,
     pspe_pcoa = "none",

@@ -491,7 +491,7 @@ correction is needed for these ordinations.
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
     ## restored   corn       0.156     3.524     1    19   0.0005000        0.0015
-    ## restored   remnant    0.055     1.052     1    18   0.1310000        0.1310
+    ## restored   remnant    0.055     1.052     1    18   0.1360000        0.1360
     ## corn       remnant    0.289     2.850     1     7   0.0416667        0.0625
 
 Axis 1 explains 18.7% of the variation and is the only eigenvalue that
@@ -719,7 +719,7 @@ correction is needed for these ordinations.
     ## ***VECTORS
     ## 
     ##             Axis.1    Axis.2    r2 Pr(>r)  
-    ## yr_since -0.997420  0.071762 0.725  0.021 *
+    ## yr_since -0.997420  0.071762 0.725 0.0195 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -878,9 +878,9 @@ correction was applied.
     ## 
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
-    ## restored   corn       0.066    11.791     1   166   0.0010000        0.0030
-    ## restored   remnant    0.018     2.835     1   158   0.1975000        0.1975
-    ## corn       remnant    0.135    10.946     1    70   0.1428571        0.1975
+    ## restored   corn       0.066    11.791     1   166   0.0015000        0.0045
+    ## restored   remnant    0.018     2.835     1   158   0.2085000        0.2085
+    ## corn       remnant    0.135    10.946     1    70   0.1428571        0.2085
 
 Axis 1 explains 8.2% and axis 2 explains 5% of the variation in the
 community data. Both axes are important based on the broken stick model,
@@ -997,7 +997,7 @@ replication.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
     ##            Df SumOfSqs      R2      F Pr(>F)  
-    ## field_type  2   3.0623 0.11984 4.6975 0.0315 *
+    ## field_type  2   3.0623 0.11984 4.6975   0.03 *
     ## Residual   69  22.4900 0.88016                
     ## Total      71  25.5523 1.00000                
     ## ---
@@ -1008,9 +1008,9 @@ replication.
     ## 
     ## group1     group2        R2   F_value   df1   df2   p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  --------  ------------
-    ## restored   remnant    0.068     4.522     1    62     0.119        0.1785
-    ## restored   corn       0.069     4.602     1    62     0.118        0.1785
-    ## remnant    corn       0.301     6.016     1    14     1.000        1.0000
+    ## restored   remnant    0.068     4.522     1    62    0.1395       0.20925
+    ## restored   corn       0.069     4.602     1    62    0.1240       0.20925
+    ## remnant    corn       0.301     6.016     1    14    1.0000       1.00000
 
 Field type remains significant.
 
@@ -1159,7 +1159,7 @@ replication.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
     ##            Df SumOfSqs      R2      F Pr(>F)  
-    ## field_type  2   4.1654 0.17625 7.3814 0.0195 *
+    ## field_type  2   4.1654 0.17625 7.3814 0.0185 *
     ## Residual   69  19.4688 0.82375                
     ## Total      71  23.6343 1.00000                
     ## ---
@@ -1170,9 +1170,9 @@ replication.
     ## 
     ## group1    group2         R2   F_value   df1   df2     p_value   p_value_adj
     ## --------  ---------  ------  --------  ----  ----  ----------  ------------
-    ## corn      remnant     0.244     7.092     1    22   0.3333333         0.500
-    ## corn      restored    0.158    11.665     1    62   0.0400000         0.120
-    ## remnant   restored    0.046     2.613     1    54   0.5950000         0.595
+    ## corn      remnant     0.244     7.092     1    22   0.3333333        0.5000
+    ## corn      restored    0.158    11.665     1    62   0.0405000        0.1215
+    ## remnant   restored    0.046     2.613     1    54   0.5690000        0.5690
 
 Field type is again significant by permutation test.
 
@@ -1310,8 +1310,6 @@ ggplot(pcoa_its_site_vectors, aes(x = Axis.1, y = Axis.2)) +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
 ```
 
-    ## Warning: Removed 9 rows containing missing values (`geom_text()`).
-
 <img src="microbial_communities_files/figure-gfm/its_samps_regions_fig-1.png" style="display: block; margin: auto;" />
 
 The eigenvalues are shown below:
@@ -1446,8 +1444,8 @@ No negative eigenvalues produced, no correction applied.
     ## 
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
-    ## restored   corn       0.254     6.474     1    19   0.0010000        0.0030
-    ## restored   remnant    0.023     0.422     1    18   0.9740000        0.9740
+    ## restored   corn       0.254     6.474     1    19   0.0005000        0.0015
+    ## restored   remnant    0.023     0.422     1    18   0.9715000        0.9715
     ## corn       remnant    0.382     4.324     1     7   0.0416667        0.0625
 
 Four axes are significant by a broken stick model, between them
@@ -1678,7 +1676,7 @@ relationship $(R^2_{Adj}=0.56,~p<0.005)$
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, add = if (corr == "none") FALSE else "lingoes", strata = region)
     ##            Df SumOfSqs     R2      F Pr(>F)   
-    ## field_type  2  0.06937 0.1657 2.1847 0.0035 **
+    ## field_type  2  0.06937 0.1657 2.1847 0.0025 **
     ## Residual   22  0.34929 0.8343                 
     ## Total      24  0.41866 1.0000                 
     ## ---
@@ -1689,8 +1687,8 @@ relationship $(R^2_{Adj}=0.56,~p<0.005)$
     ## 
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
-    ## restored   corn       0.240     5.989     1    19   0.0010000        0.0030
-    ## restored   remnant    0.025     0.467     1    18   0.9695000        0.9695
+    ## restored   corn       0.240     5.989     1    19   0.0015000        0.0045
+    ## restored   remnant    0.025     0.467     1    18   0.9745000        0.9745
     ## corn       remnant    0.382     4.324     1     7   0.0416667        0.0625
 
 Three axes are significant by a broken stick model, between them
@@ -1699,7 +1697,7 @@ substantial variation here is on the first axis (23%) with Axis 2
 explaining 15% of the variation in AMF abundances. Testing the design
 factor *field_type* (with *region* treated as a block using the `strata`
 argument of `adonis2`) revealed a significant clustering
-$(R^2=0.17,~p=0.004)$.
+$(R^2=0.17,~p=0.002)$.
 
 Let’s view a plot with abundances of community subgroups inset.
 
@@ -1915,7 +1913,7 @@ negative eigenvalues.
     ## ***VECTORS
     ## 
     ##            Axis.1   Axis.2   Axis.3   Axis.4   Axis.5     r2 Pr(>r)  
-    ## yr_since -0.84928  0.37660 -0.19661  0.19812  0.24287 0.7715  0.021 *
+    ## yr_since -0.84928  0.37660 -0.19661  0.19812  0.24287 0.7715 0.0175 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -2063,10 +2061,10 @@ correction was applied.
     ## Number of permutations: 1999
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
-    ##             Df SumOfSqs      R2     F Pr(>F)    
-    ## field_type   2    5.367 0.10872 10.49  0.001 ***
-    ## Residual   172   44.004 0.89128                 
-    ## Total      174   49.372 1.00000                 
+    ##             Df SumOfSqs      R2     F Pr(>F)   
+    ## field_type   2    5.367 0.10872 10.49 0.0025 **
+    ## Residual   172   44.004 0.89128                
+    ## Total      174   49.372 1.00000                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -2075,8 +2073,8 @@ correction was applied.
     ## 
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
-    ## restored   corn       0.056     8.657     1   145   0.0020000     0.0060000
-    ## restored   remnant    0.008     1.052     1   138   0.9940000     0.9940000
+    ## restored   corn       0.056     8.657     1   145   0.0015000     0.0045000
+    ## restored   remnant    0.008     1.052     1   138   0.9970000     0.9970000
     ## corn       remnant    0.111     7.636     1    61   0.1020408     0.1530612
 
 Axis 1 explains 7.1% and axis 2 explains 5% of the variation in the
@@ -2087,7 +2085,7 @@ variation explained on axes 1 and 2 is partly due to the high number of
 dimensions used when all samples from fields are included. The fidelity
 of samples to fields was strong based on a permutation test when
 restricting permutations to fields (=plots in `how()`) within regions
-(=blocks in `how()`) $(R^2=0.11,~p=0.001)$.
+(=blocks in `how()`) $(R^2=0.11,~p=0.0025)$.
 
 Let’s view an ordination plot with hulls around subsamples.
 
@@ -2193,7 +2191,7 @@ replication.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
     ##            Df SumOfSqs      R2      F Pr(>F)  
-    ## field_type  2   2.8261 0.17037 6.1608 0.0885 .
+    ## field_type  2   2.8261 0.17037 6.1608 0.0925 .
     ## Residual   60  13.7616 0.82963                
     ## Total      62  16.5876 1.00000                
     ## ---
@@ -2204,8 +2202,8 @@ replication.
     ## 
     ## group1     group2        R2   F_value   df1   df2   p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  --------  ------------
-    ## restored   remnant    0.053     3.017     1    54    0.3715       0.55725
-    ## restored   corn       0.085     5.001     1    54    0.1345       0.40350
+    ## restored   remnant    0.053     3.017     1    54    0.3695       0.55425
+    ## restored   corn       0.085     5.001     1    54    0.1255       0.37650
     ## remnant    corn       0.466    10.454     1    12    1.0000       1.00000
 
 Field type trends significant. Four axes significant.
@@ -2363,7 +2361,7 @@ replication.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
     ##            Df SumOfSqs      R2     F Pr(>F)  
-    ## field_type  2   2.8077 0.16208 5.803 0.0455 *
+    ## field_type  2   2.8077 0.16208 5.803  0.047 *
     ## Residual   60  14.5152 0.83792               
     ## Total      62  17.3229 1.00000               
     ## ---
@@ -2375,8 +2373,8 @@ replication.
     ## group1    group2         R2   F_value   df1   df2     p_value   p_value_adj
     ## --------  ---------  ------  --------  ----  ----  ----------  ------------
     ## corn      remnant     0.191     4.495     1    19   0.3333333        0.5000
-    ## corn      restored    0.101     6.039     1    54   0.0385000        0.1155
-    ## remnant   restored    0.034     1.640     1    47   0.7250000        0.7250
+    ## corn      restored    0.101     6.039     1    54   0.0420000        0.1260
+    ## remnant   restored    0.034     1.640     1    47   0.7355000        0.7355
 
 Field type is again significant by permutation test. Six axes are
 significant.
@@ -2516,8 +2514,6 @@ ggplot(pcoa_amf_site_vectors, aes(x = Axis.1, y = Axis.2)) +
     theme_bw() +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
 ```
-
-    ## Warning: Removed 9 rows containing missing values (`geom_text()`).
 
 <img src="microbial_communities_files/figure-gfm/amf_samps_regions_fig-1.png" style="display: block; margin: auto;" />
 
