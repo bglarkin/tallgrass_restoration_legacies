@@ -190,6 +190,8 @@ spe_meta <- list(
 #' - its_resto_samps_bm: rarefied data from 8 samples in each field, not summed, filtered to include Blue Mounds region only
 #' - amf_bray: rarefied data, summed from 7 samples from each field, bray-curtis distance
 #' - amf_uni: rarefied data, summed from 7 samples from each field, UNIFRAC distance
+#' - _gene_samps_region_: objects are distances matrices taken from rarefied data, subsetted to region, with zero sum 
+#' columns removed. Samples in each field depend on the gene-based dataset, see above. 
 #' 
 #+ distab_list
 distab <- list(
@@ -434,19 +436,19 @@ its_resto_scores %>%
 #' ### PCoA with Blue Mounds restored fields, all subsamples
 #' In trial runs, no negative eigenvalues were observed (not shown). No 
 #' correction is needed for these ordinations.
-#+ pcoa_its_samps_bm,fig.align='center'
-(pcoa_its_samps_bm <- pcoa_samps_bm_fun(spe$its_samps, 
+#+ pcoa_its_resto_samps_bm,fig.align='center'
+(pcoa_its_resto_samps_bm <- pcoa_samps_bm_fun(spe$its_samps, 
                                         distab$its_resto_samps_bm, 
                                         sites_resto_bm, 
                                         df_name="BM restored, ITS gene, 97% OTU"))
 #' 
-#' Axis 1 explains `r pcoa_its_samps_bm$eigenvalues[1]`% and axis 2 
-#' explains `r pcoa_its_samps_bm$eigenvalues[2]`% of the variation in the community data. Both axes are important
+#' Axis 1 explains `r pcoa_its_resto_samps_bm$eigenvalues[1]`% and axis 2 
+#' explains `r pcoa_its_resto_samps_bm$eigenvalues[2]`% of the variation in the community data. Both axes are important
 #' based on the broken stick model. Indeed, the first four axes are borderline important. 
 #' The relatively low percent variation explained is partly due to the 
 #' high number of dimensions used when all samples from fields are included. 
 #' The fidelity of samples to fields was significant based on a permutation test
-#' $(R^2=`r round(pcoa_its_samps_bm$permanova$R2[1], 2)`,~p=`r pcoa_its_samps_bm$permanova$Pr[1]`)$. 
+#' $(R^2=`r round(pcoa_its_resto_samps_bm$permanova$R2[1], 2)`,~p=`r pcoa_its_resto_samps_bm$permanova$Pr[1]`)$. 
 #' In this case, the partial $R^2$ shows the proportion of sum of squares from the total. It is a low number
 #' here because so much unexplained variation exists, resulting in a high sum of squares that is outside 
 #' the assignment of subsamples to fields.
@@ -454,33 +456,33 @@ its_resto_scores %>%
 #' Years since restoration has a moderately strong correlation with communities and was significant 
 #' with a permutation test where samples were constrained within
 #' fields to account for lack of independence #' 
-#' $(R^2=`r round(pcoa_its_samps_bm$vector_fit$vectors$r, 2)`,~p=`r round(pcoa_its_samps_bm$vector_fit$vectors$pvals, 2)`)$.
+#' $(R^2=`r round(pcoa_its_resto_samps_bm$vector_fit$vectors$r, 2)`,~p=`r round(pcoa_its_resto_samps_bm$vector_fit$vectors$pvals, 2)`)$.
 #' 
 #' Let's view an ordination plot with hulls around subsamples and a fitted vector for field age overlaid.  
 #+ its_samps_bm_plotdata
-centroid_its_bm <- aggregate(cbind(Axis.1, Axis.2) ~ field_key, data = pcoa_its_samps_bm$site_vectors, mean) %>% 
+centroid_its_bm <- aggregate(cbind(Axis.1, Axis.2) ~ field_key, data = pcoa_its_resto_samps_bm$site_vectors, mean) %>% 
     left_join(sites %>% select(field_key, yr_since), by = join_by(field_key))
-hull_its_bm <- pcoa_its_samps_bm$site_vectors %>% 
+hull_its_bm <- pcoa_its_resto_samps_bm$site_vectors %>% 
     group_by(field_key) %>% 
     slice(chull(Axis.1, Axis.2))
 #+ its_samps_bm_fig,fig.align='center',message=FALSE
-ggplot(pcoa_its_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+ggplot(pcoa_its_resto_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
     geom_point(fill = "#5CBD92", shape = 21) +
     geom_polygon(data = hull_its_bm, aes(group = as.character(field_key)), fill = "#5CBD92", alpha = 0.3) +
     geom_point(data = centroid_its_bm, fill = "#5CBD92", size = 8, shape = 21) +
     geom_text(data = centroid_its_bm, aes(label = yr_since)) +
     geom_segment(aes(x = 0, 
                      y = 0, 
-                     xend = pcoa_its_samps_bm$vector_fit_scores[1] * 0.4, 
-                     yend = pcoa_its_samps_bm$vector_fit_scores[2] * 0.4),
+                     xend = pcoa_its_resto_samps_bm$vector_fit_scores[1] * 0.4, 
+                     yend = pcoa_its_resto_samps_bm$vector_fit_scores[2] * 0.4),
                  color = "blue", 
                  arrow = arrow(length = unit(3, "mm"))) +
     labs(
-        x = paste0("Axis 1 (", pcoa_its_samps_bm$eigenvalues[1], "%)"),
-        y = paste0("Axis 2 (", pcoa_its_samps_bm$eigenvalues[2], "%)"),
+        x = paste0("Axis 1 (", pcoa_its_resto_samps_bm$eigenvalues[1], "%)"),
+        y = paste0("Axis 2 (", pcoa_its_resto_samps_bm$eigenvalues[2], "%)"),
         title = paste0(
             "PCoA Ordination (",
-            pcoa_its_samps_bm$dataset,
+            pcoa_its_resto_samps_bm$dataset,
             ")"
         ),
         caption = "Text indicates years since restoration.\nYears since restoration significant at p<0.05."
@@ -537,56 +539,56 @@ ggplot(pcoa_its_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
     theme_bw() +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
 #' 
-#' ### PCoA in Blue Mounds, all subsamples
+#' #### PCoA in Blue Mounds, all subsamples
 #' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
 #' should be ignored here because there is no replication. 
 #+ pcoa_its_samps_bm,warnings=FALSE,message=FALSE
-pcoa_its_samps_bm <- pcoa_samps_fun(
+(pcoa_its_samps_bm <- pcoa_samps_fun(
     s = spe$its_samps_bm,
     d = distab$its_samps_bm,
     env = sites %>% filter(region == "BM"),
     corr = "none",
     df_name = "Blue Mounds, ITS gene, 97% OTU"
-)
+))
 #' Field type remains significant.
 #' 
 #' ### PCoA in Faville Grove, all subsamples
 #' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
 #' should be ignored here because there is no replication. 
 #+ pcoa_its_samps_fg,warnings=FALSE,message=FALSE
-pcoa_its_samps_fg <- pcoa_samps_fun(
+(pcoa_its_samps_fg <- pcoa_samps_fun(
     s = spe$its_samps_fg,
     d = distab$its_samps_fg,
     env = sites %>% filter(region == "FG"),
     corr = "none",
     df_name = "Faville Grove, ITS gene, 97% OTU"
-)
+))
 #' Field type is not significant here. 
 #' 
 #' ### PCoA in Fermilab, all subsamples
 #' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
 #' should be ignored here because there is no replication. 
 #+ pcoa_its_samps_fl,warnings=FALSE,message=FALSE
-pcoa_its_samps_fl <- pcoa_samps_fun(
+(pcoa_its_samps_fl <- pcoa_samps_fun(
     s = spe$its_samps_fl,
     d = distab$its_samps_fl,
     env = sites %>% filter(region == "FL"),
     corr = "lingoes",
     df_name = "Fermilab, ITS gene, 97% OTU"
-)
+))
 #' Field type is again significant by permutation test. 
 #' 
 #' ### PCoA in Lake Petite Prairie, all subsamples
 #' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
 #' should be ignored here because there is no replication. 
 #+ pcoa_its_samps_lp,warnings=FALSE,message=FALSE
-pcoa_its_samps_lp <- pcoa_samps_fun(
+(pcoa_its_samps_lp <- pcoa_samps_fun(
     s = spe$its_samps_lp,
     d = distab$its_samps_lp,
     env = sites %>% filter(region == "LP"),
     corr = "none",
     df_name = "Lake Petite Prairie, ITS gene, 97% OTU"
-)
+))
 #' Let's view an ordination plot with hulls around subsamples for each indidual region.  
 #' 
 #' ### PCoA ordination, all regions, all subsamples.
@@ -600,12 +602,26 @@ pcoa_its_site_vectors <- bind_rows(
     ),
     .id = "place"
 )
+pcoa_its_eigenvalues <- bind_rows(
+    list(
+        `Blue Mounds`   = pcoa_its_samps_bm$eigenvalues,
+        `Faville Grove` = pcoa_its_samps_fg$eigenvalues,
+        `Fermilab`      = pcoa_its_samps_fl$eigenvalues,
+        `Lake Petite`   = pcoa_its_samps_lp$eigenvalues
+    ),
+    .id = "place"
+) %>% 
+    mutate(axis = c(1,2)) %>% 
+    pivot_longer(cols = 1:4, names_to = "place", values_to = "eigenvalue") %>% 
+    select(place, axis, eigenvalue) %>% 
+    arrange(place, axis) %>% 
+    pivot_wider(names_from = axis, names_prefix = "axis_", values_from = eigenvalue)
 centroid_regions_its <- aggregate(cbind(Axis.1, Axis.2) ~ place + field_key, data = pcoa_its_site_vectors, mean) %>% 
     left_join(sites %>% select(field_key, yr_since, field_type, region), by = join_by(field_key))
 hull_regions_its <- pcoa_its_site_vectors %>% 
     group_by(place, field_key) %>% 
     slice(chull(Axis.1, Axis.2))
-#+ its_samps_regions_fig,fig.align='center',message=FALSE
+#+ its_samps_regions_fig,fig.align='center',message=FALSE,warnings=FALSE
 ggplot(pcoa_its_site_vectors, aes(x = Axis.1, y = Axis.2)) +
     facet_wrap(vars(place), scales = "free") +
     geom_point(aes(fill = field_type), shape = 21) +
@@ -621,6 +637,9 @@ ggplot(pcoa_its_site_vectors, aes(x = Axis.1, y = Axis.2)) +
     scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
+#' The eigenvalues are shown below:
+#+ its_samps_regions_eigenvalues
+kable(pcoa_its_eigenvalues, format = "pandoc") 
 #' 
 #' ## 18S gene, OTU clustering
 #' ### PCoA with abundances summed in fields, Bray-Curtis distance
@@ -815,20 +834,20 @@ amf_uni_resto_scores %>%
 #' 
 #' ### PCoA with Blue Mounds restored fields, all subsamples
 #' **Bray-Curtis distance used**. A Lingoes correction was applied to the negative eigenvalues. 
-#+ pcoa_amf_samps_bm,fig.align='center'
-(pcoa_amf_samps_bm <- pcoa_samps_bm_fun(spe$amf_samps, 
+#+ pcoa_amf_resto_samps_bm,fig.align='center'
+(pcoa_amf_resto_samps_bm <- pcoa_samps_bm_fun(spe$amf_samps, 
                                         distab$amf_resto_samps_bm, 
                                         sites_resto_bm, 
                                         corr="lingoes",
                                         df_name="BM restored, 18S gene, 97% OTU, BC dist."))
 #' 
-#' Axis 1 explains `r pcoa_amf_samps_bm$eigenvalues[1]`% and axis 2 
-#' explains `r pcoa_amf_samps_bm$eigenvalues[2]`% of the variation in the community data. Both axes are important
-#' based on the broken stick model (`r pcoa_amf_samps_bm$components_exceed_broken_stick` relative corrected eigenvalues
+#' Axis 1 explains `r pcoa_amf_resto_samps_bm$eigenvalues[1]`% and axis 2 
+#' explains `r pcoa_amf_resto_samps_bm$eigenvalues[2]`% of the variation in the community data. Both axes are important
+#' based on the broken stick model (`r pcoa_amf_resto_samps_bm$components_exceed_broken_stick` relative corrected eigenvalues
 #' exceed the broken stick model). The relatively low percent variation explained is partly due to the 
 #' high number of dimensions used when all samples from fields are included. 
 #' The fidelity of samples to fields was significant based on a permutation test
-#' $(R^2=`r round(pcoa_amf_samps_bm$permanova$R2[1], 2)`,~p=`r pcoa_amf_samps_bm$permanova$Pr[1]`)$. 
+#' $(R^2=`r round(pcoa_amf_resto_samps_bm$permanova$R2[1], 2)`,~p=`r pcoa_amf_resto_samps_bm$permanova$Pr[1]`)$. 
 #' In this case, the partial $R^2$ shows the proportion of sum of squares from the total. It is a low number
 #' here because so much unexplained variation exists, resulting in a high sum of squares that is outside 
 #' the assignment of subsamples to fields.
@@ -836,33 +855,33 @@ amf_uni_resto_scores %>%
 #' Years since restoration has a moderately strong correlation with communities and was significant 
 #' with a permutation test where samples were constrained within
 #' fields to account for lack of independence 
-#' $(R^2=`r round(pcoa_amf_samps_bm$vector_fit$vectors$r, 2)`,~p=`r round(pcoa_amf_samps_bm$vector_fit$vectors$pvals, 2)`)$.
+#' $(R^2=`r round(pcoa_amf_resto_samps_bm$vector_fit$vectors$r, 2)`,~p=`r round(pcoa_amf_resto_samps_bm$vector_fit$vectors$pvals, 2)`)$.
 #' 
 #' Let's view an ordination plot with hulls around subsamples and a fitted vector for field age overlaid.
 #+ amf_samps_bm_plotdata
-centroid_amf_bm <- aggregate(cbind(Axis.1, Axis.2) ~ field_key, data = pcoa_amf_samps_bm$site_vectors, mean) %>% 
+centroid_amf_bm <- aggregate(cbind(Axis.1, Axis.2) ~ field_key, data = pcoa_amf_resto_samps_bm$site_vectors, mean) %>% 
     left_join(sites %>% select(field_key, yr_since), by = join_by(field_key))
-hull_amf_bm <- pcoa_amf_samps_bm$site_vectors %>% 
+hull_amf_bm <- pcoa_amf_resto_samps_bm$site_vectors %>% 
     group_by(field_key) %>% 
     slice(chull(Axis.1, Axis.2))
 #+ amf_samps_bm_fig,fig.align='center',message=FALSE
-ggplot(pcoa_amf_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+ggplot(pcoa_amf_resto_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
     geom_point(fill = "#5CBD92", shape = 21) +
     geom_polygon(data = hull_amf_bm, aes(group = as.character(field_key)), fill = "#5CBD92", alpha = 0.3) +
     geom_point(data = centroid_amf_bm, fill = "#5CBD92", size = 8, shape = 21) +
     geom_text(data = centroid_amf_bm, aes(label = yr_since)) +
     geom_segment(aes(x = 0, 
                      y = 0, 
-                     xend = pcoa_amf_samps_bm$vector_fit_scores[1] * 0.6, 
-                     yend = pcoa_amf_samps_bm$vector_fit_scores[2] * 0.6),
+                     xend = pcoa_amf_resto_samps_bm$vector_fit_scores[1] * 0.6, 
+                     yend = pcoa_amf_resto_samps_bm$vector_fit_scores[2] * 0.6),
                  color = "blue", 
                  arrow = arrow(length = unit(3, "mm"))) +
     labs(
-        x = paste0("Axis 1 (", pcoa_amf_samps_bm$eigenvalues[1], "%)"),
-        y = paste0("Axis 2 (", pcoa_amf_samps_bm$eigenvalues[2], "%)"),
+        x = paste0("Axis 1 (", pcoa_amf_resto_samps_bm$eigenvalues[1], "%)"),
+        y = paste0("Axis 2 (", pcoa_amf_resto_samps_bm$eigenvalues[2], "%)"),
         title = paste0(
             "PCoA Ordination (",
-            pcoa_amf_samps_bm$dataset,
+            pcoa_amf_resto_samps_bm$dataset,
             ")"
         ),
         caption = "Text indicates years since restoration.\nYears since restoration significant at p<0.05."
@@ -923,58 +942,58 @@ ggplot(pcoa_amf_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
 #' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
 #' should be ignored here because there is no replication. 
 #+ pcoa_amf_samps_bm,warnings=FALSE,message=FALSE
-pcoa_amf_samps_bm <- pcoa_samps_fun(
+(pcoa_amf_samps_bm <- pcoa_samps_fun(
     s = spe$amf_samps_bm,
     d = distab$amf_samps_bm,
     env = sites %>% filter(region == "BM"),
     corr = "lingoes",
     df_name = "Blue Mounds, 18S gene, 97% OTU"
-)
+))
 #' Field type trends significant. Four axes significant. 
 #' 
 #' ### PCoA in Faville Grove, all subsamples
 #' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
 #' should be ignored here because there is no replication. 
 #+ pcoa_amf_samps_fg,warnings=FALSE,message=FALSE
-pcoa_amf_samps_fg <- pcoa_samps_fun(
+(pcoa_amf_samps_fg <- pcoa_samps_fun(
     s = spe$amf_samps_fg,
     d = distab$amf_samps_fg,
     env = sites %>% filter(region == "FG"),
     corr = "lingoes",
     df_name = "Faville Grove, 18S gene, 97% OTU"
-)
+))
 #' Field type is not significant here. Three significant axes. 
 #' 
 #' ### PCoA in Fermilab, all subsamples
 #' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
 #' should be ignored here because there is no replication. 
 #+ pcoa_amf_samps_fl,warnings=FALSE,message=FALSE
-pcoa_amf_samps_fl <- pcoa_samps_fun(
+(pcoa_amf_samps_fl <- pcoa_samps_fun(
     s = spe$amf_samps_fl,
     d = distab$amf_samps_fl,
     env = sites %>% filter(region == "FL"),
     corr = "lingoes",
     df_name = "Fermilab, 18S gene, 97% OTU"
-)
+))
 #' Field type is again significant by permutation test. Six axes are significant. 
 #' 
 #' ### PCoA in Lake Petite Prairie, all subsamples
 #' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
 #' should be ignored here because there is no replication. 
 #+ pcoa_amf_samps_lp,warnings=FALSE,message=FALSE
-pcoa_amf_samps_lp <- pcoa_samps_fun(
+(pcoa_amf_samps_lp <- pcoa_samps_fun(
     s = spe$amf_samps_lp,
     d = distab$amf_samps_lp,
     env = sites %>% filter(region == "LP"),
     corr = "lingoes",
     df_name = "Lake Petite Prairie, 18S gene, 97% OTU"
-)
+))
 #' Field type not significant with three important axes. 
 #' 
 #' Let's view an ordination plot with hulls around subsamples for each indidual region.  
 #' 
 #' ### PCoA ordination, all regions, all subsamples.
-#+ its_samps_regions_plotdata
+#+ amf_samps_regions_plotdata
 pcoa_amf_site_vectors <- bind_rows(
     list(
         `Blue Mounds`   = pcoa_amf_samps_bm$site_vectors,
@@ -984,12 +1003,26 @@ pcoa_amf_site_vectors <- bind_rows(
     ),
     .id = "place"
 )
+pcoa_amf_eigenvalues <- bind_rows(
+    list(
+        `Blue Mounds`   = pcoa_amf_samps_bm$eigenvalues,
+        `Faville Grove` = pcoa_amf_samps_fg$eigenvalues,
+        `Fermilab`      = pcoa_amf_samps_fl$eigenvalues,
+        `Lake Petite`   = pcoa_amf_samps_lp$eigenvalues
+    ),
+    .id = "place"
+) %>% 
+    mutate(axis = c(1,2)) %>% 
+    pivot_longer(cols = 1:4, names_to = "place", values_to = "eigenvalue") %>% 
+    select(place, axis, eigenvalue) %>% 
+    arrange(place, axis) %>% 
+    pivot_wider(names_from = axis, names_prefix = "axis_", values_from = eigenvalue)
 centroid_regions_amf <- aggregate(cbind(Axis.1, Axis.2) ~ place + field_key, data = pcoa_amf_site_vectors, mean) %>% 
     left_join(sites %>% select(field_key, yr_since, field_type, region), by = join_by(field_key))
 hull_regions_amf <- pcoa_amf_site_vectors %>% 
     group_by(place, field_key) %>% 
     slice(chull(Axis.1, Axis.2))
-#+ its_samps_regions_fig,fig.align='center',message=FALSE
+#+ amf_samps_regions_fig,fig.align='center',message=FALSE,warnings=FALSE
 ggplot(pcoa_amf_site_vectors, aes(x = Axis.1, y = Axis.2)) +
     facet_wrap(vars(place), scales = "free") +
     geom_point(aes(fill = field_type), shape = 21) +
@@ -1005,3 +1038,6 @@ ggplot(pcoa_amf_site_vectors, aes(x = Axis.1, y = Axis.2)) +
     scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
+#' The eigenvalues are shown below: 
+#+ amf_samps_regions_eigenvalues
+kable(pcoa_amf_eigenvalues, format = "pandoc")

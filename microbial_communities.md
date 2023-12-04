@@ -2,15 +2,15 @@ Microbial data: community differences
 ================
 Beau Larkin
 
-Last updated: 30 November, 2023
+Last updated: 04 December, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
   - [Functions](#functions)
 - [Data](#data)
+  - [Site metadata](#site-metadata)
   - [Sites-species tables](#sites-species-tables)
   - [Species metadata](#species-metadata)
-  - [Site metadata](#site-metadata)
   - [Distance tables](#distance-tables)
 - [Results](#results)
   - [ITS gene, OTU clustering](#its-gene-otu-clustering)
@@ -20,6 +20,14 @@ Last updated: 30 November, 2023
       subsamples](#pcoa-with-blue-mounds-restored-fields-all-subsamples)
     - [PCoA with all fields and regions, all
       subsamples](#pcoa-with-all-fields-and-regions-all-subsamples)
+    - [PCoA in Faville Grove, all
+      subsamples](#pcoa-in-faville-grove-all-subsamples)
+    - [PCoA in Fermilab, all
+      subsamples](#pcoa-in-fermilab-all-subsamples)
+    - [PCoA in Lake Petite Prairie, all
+      subsamples](#pcoa-in-lake-petite-prairie-all-subsamples)
+    - [PCoA ordination, all regions, all
+      subsamples.](#pcoa-ordination-all-regions-all-subsamples)
   - [18S gene, OTU clustering](#18s-gene-otu-clustering)
     - [PCoA with abundances summed in fields, Bray-Curtis
       distance](#pcoa-with-abundances-summed-in-fields-bray-curtis-distance)
@@ -29,6 +37,16 @@ Last updated: 30 November, 2023
       subsamples](#pcoa-with-blue-mounds-restored-fields-all-subsamples-1)
     - [PCoA with all fields and regions, all
       subsamples](#pcoa-with-all-fields-and-regions-all-subsamples-1)
+    - [PCoA in Blue Mounds, all
+      subsamples](#pcoa-in-blue-mounds-all-subsamples-1)
+    - [PCoA in Faville Grove, all
+      subsamples](#pcoa-in-faville-grove-all-subsamples-1)
+    - [PCoA in Fermilab, all
+      subsamples](#pcoa-in-fermilab-all-subsamples-1)
+    - [PCoA in Lake Petite Prairie, all
+      subsamples](#pcoa-in-lake-petite-prairie-all-subsamples-1)
+    - [PCoA ordination, all regions, all
+      subsamples.](#pcoa-ordination-all-regions-all-subsamples-1)
 
 # Description
 
@@ -85,288 +103,48 @@ with outputs and figures saved to a list for later use.
   restored fields. The variable **yr_since** is continuous with this
   dataset and is tested with `envfit()`.
 
-``` r
-pcoa_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
-    set.seed <- 397
-    # Multivariate analysis
-    p <- pcoa(d, correction = corr)
-    p_vals <- data.frame(p$values) %>% 
-        rownames_to_column(var = "Dim") %>% 
-        mutate(Dim = as.integer(Dim))
-    p_vec <- data.frame(p$vectors)
-    # Wrangle site data
-    env <- data.frame(env)
-    # Global permutation test (PERMANOVA)
-    gl_permtest <-
-        with(env,
-             adonis2(
-                 d ~ field_type,
-                 data = env,
-                 permutations = nperm,
-                 add = if (corr == "none") FALSE else "lingoes",
-                 strata = region
-             ))
-    # Pairwise post-hoc test
-    group_var <- as.character(env$field_type)
-    groups <- as.data.frame(t(combn(unique(group_var), m = 2)))
-    contrasts <- data.frame(
-        group1 = groups$V1,
-        group2 = groups$V2,
-        R2 = NA,
-        F_value = NA,
-        df1 = NA,
-        df2 = NA,
-        p_value = NA
-    )
-    for (i in seq(nrow(contrasts))) {
-        group_subset <-
-            group_var == contrasts$group1[i] |
-            group_var == contrasts$group2[i]
-        contrast_matrix <- data.frame(s[group_subset, ], row.names = 1)
-        fit <- with(env[group_subset, ],
-                    adonis2(
-                        contrast_matrix ~ group_var[group_subset],
-                        permutations = nperm,
-                        add = if (corr == "none") FALSE else "lingoes",
-                        strata = region
-                    ))
-        
-        contrasts$R2[i] <- round(fit$R2[1], digits = 3)
-        contrasts$F_value[i] <- round(fit[["F"]][1], digits = 3)
-        contrasts$df1[i] <- fit$Df[1]
-        contrasts$df2[i] <- fit$Df[2]
-        contrasts$p_value[i] <- fit$`Pr(>F)`[1]
-    }
-    contrasts$p_value_adj <- p.adjust(contrasts$p_value, method = "fdr")
-    # Diagnostic plots
-    if(corr == "none" | ncol(p_vals) == 6) {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
-    } else {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
-    }
-    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
-    # Ordination plot
-    scores <-
-        p_vec[, 1:ncomp] %>%
-        rownames_to_column(var = "field_key") %>%
-        mutate(field_key = as.integer(field_key)) %>%
-        left_join(sites, by = "field_key") %>% 
-        select(-field_name)
-    # Output data
-    output <- list(dataset                        = df_name,
-                   components_exceed_broken_stick = p_ncomp,
-                   correction_note                = p$note,
-                   values                         = p_vals[1:(ncomp+1), ], 
-                   eigenvalues                    = eig,
-                   site_vectors                   = scores,
-                   broken_stick_plot              = p_bstick,
-                   permanova                      = gl_permtest,
-                   pairwise_contrasts             = kable(contrasts, format = "pandoc"))
-    return(output)
-}
-```
+**Functions are stored** in a separate
+[script](supporting_files/microbial_communities_functions.md) to reduce
+clutter here and allow for easier editing.
 
 ``` r
-pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
-    set.seed <- 438
-    # Multivariate analysis
-    p <- pcoa(d, correction = corr)
-    p_vals <- data.frame(p$values) %>% 
-        rownames_to_column(var = "Dim") %>% 
-        mutate(Dim = as.integer(Dim))
-    p_vec <- data.frame(p$vectors)
-    # Wrangle site data
-    env_w <- env %>% 
-        left_join(s %>% select(field_key, sample), by = join_by(field_key), multiple = "all") %>% 
-        mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
-        column_to_rownames(var = "field_sample") %>% 
-        as.data.frame()
-    # Permutation tests (PERMANOVA)
-    # Fields as replicate strata with subsamples
-    # Regions as blocks
-    # Global test
-    gl_perm_design <- with(env_w, 
-              how(within = Within(type="none"), 
-                  plots  = Plots(strata=field_key, type="free"),
-                  blocks = region,
-                  nperm  = nperm))
-    gl_permtest <- adonis2(
-        d ~ field_type,
-        data = env_w,
-        permutations = gl_perm_design)
-    # Pairwise post-hoc test
-    group_var <- as.character(env_w$field_type)
-    groups <- as.data.frame(t(combn(unique(group_var), m = 2)))
-    contrasts <- data.frame(
-        group1 = groups$V1,
-        group2 = groups$V2,
-        R2 = NA,
-        F_value = NA,
-        df1 = NA,
-        df2 = NA,
-        p_value = NA
-    )
-    for (i in seq(nrow(contrasts))) {
-        group_subset <-
-            group_var == contrasts$group1[i] |
-            group_var == contrasts$group2[i]
-        contrast_matrix <- s[group_subset, ]
-        pw_perm_design <- with(env_w[group_subset,],
-                               how(
-                                   within = Within(type = "none"),
-                                   plots  = Plots(strata = field_key, type = "free"),
-                                   blocks = region,
-                                   nperm  = nperm
-                               ))
-        fit <- adonis2(
-            contrast_matrix ~ group_var[group_subset],
-            add = if (corr == "none") FALSE else "lingoes",
-            permutations = pw_perm_design
-        )
-        
-        contrasts$R2[i] <- round(fit$R2[1], digits = 3)
-        contrasts$F_value[i] <- round(fit[["F"]][1], digits = 3)
-        contrasts$df1[i] <- fit$Df[1]
-        contrasts$df2[i] <- fit$Df[2]
-        contrasts$p_value[i] <- fit$`Pr(>F)`[1]
-    }
-    contrasts$p_value_adj <- p.adjust(contrasts$p_value, method = "fdr")
-    # Diagnostic plots
-    if(corr == "none" | ncol(p_vals) == 6) {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
-    } else {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
-    }
-    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
-    # Ordination plot
-    scores <-
-        p_vec[, 1:ncomp] %>%
-        rownames_to_column(var = "field_sample") %>%
-        separate_wider_delim(field_sample, delim = "_", names = c("field_key", "sample_key"), cols_remove = TRUE) %>% 
-        mutate(field_key = as.integer(field_key)) %>%
-        left_join(env, by = join_by(field_key))
-    # Output data
-    output <- list(dataset                        = df_name,
-                   components_exceed_broken_stick = p_ncomp,
-                   correction_note                = p$note,
-                   values                         = p_vals[1:(ncomp+1), ], 
-                   eigenvalues                    = eig,
-                   site_vectors                   = scores,
-                   broken_stick_plot              = p_bstick,
-                   permanova                      = gl_permtest,
-                   pairwise_contrasts             = kable(contrasts, format = "pandoc"))
-    return(output)
-}
-```
-
-``` r
-pcoa_samps_bm_fun <- function(s, d, env=sites_resto_bm, corr="none", df_name, nperm=1999) {
-    set.seed <- 845
-    # Multivariate analysis
-    p <- pcoa(d, correction = corr)
-    p_vals <- data.frame(p$values) %>% 
-        rownames_to_column(var = "Dim") %>% 
-        mutate(Dim = as.integer(Dim))
-    p_vec <- data.frame(p$vectors)
-    # Wrangle site data
-    env_w <- env %>% 
-        left_join(s %>% select(field_key, sample), by = join_by(field_key), multiple = "all") %>% 
-        mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
-        column_to_rownames(var = "field_sample")
-    # Permutation test (PERMANOVA)
-    p_permtest <- adonis2(d ~ field_key, data = env_w, permutations = nperm)
-    # Diagnostic plots
-    if(corr == "none" | ncol(p_vals) == 6) {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Relative_eig[1:2] * 100, 1)
-    } else {
-        p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Rel_corr_eig)) + 
-            geom_col(fill = "gray70", color = "gray30") + 
-            geom_line(aes(x = Dim, y = Broken_stick), color = "red") +
-            geom_point(aes(x = Dim, y = Broken_stick), color = "red") +
-            labs(x = "Dimension", 
-                 title = paste0("PCoA Eigenvalues and Broken Stick Model (", df_name, ")")) +
-            theme_bw()
-        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
-        eig <- round(p_vals$Rel_corr_eig[1:2] * 100, 1)
-    }
-    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
-    # Permutation test (ENVFIT)
-    # Fields as strata
-    h = with(env_w, 
-             how(within = Within(type="none"), 
-                 plots = Plots(strata=field_key, type="free"), 
-                 nperm = nperm))
-    fit <- envfit(p_vec ~ yr_since, env_w, permutations = h, choices = c(1:ncomp))
-    fit_sc <- scores(fit, c("vectors"))
-    # Ordination plotting data
-    scores <-
-        p_vec[, 1:ncomp] %>%
-        rownames_to_column(var = "field_sample") %>%
-        separate_wider_delim(field_sample, delim = "_", names = c("field_key", "sample_key"), cols_remove = TRUE) %>% 
-        mutate(field_key = as.integer(field_key)) %>%
-        left_join(env, by = join_by(field_key)) %>% 
-        select(-field_type)
-    # Output data
-    output <- list(dataset                        = df_name,
-                   components_exceed_broken_stick = p_ncomp,
-                   correction_note                = p$note,
-                   values                         = p_vals[1:(ncomp+1), ], 
-                   eigenvalues                    = eig,
-                   site_vectors                   = scores,
-                   broken_stick_plot              = p_bstick,
-                   permanova                      = p_permtest,
-                   vector_fit                     = fit,
-                   vector_fit_scores              = fit_sc)
-    return(output)
-}
+source("supporting_files/microbial_communities_functions.R")
 ```
 
 # Data
+
+## Site metadata
+
+Needed for figure interpretation and permanova designs. The subset of
+restored fields in Blue Mounds only will also be used and is parsed
+here.
+
+``` r
+sites <-
+    read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>%
+    mutate(
+        field_type = factor(
+            field_type,
+            ordered = TRUE,
+            levels = c("corn", "restored", "remnant")),
+        yr_since = replace(yr_since, which(field_type == "remnant"), NA),
+        yr_since = replace(yr_since, which(field_type == "corn"), NA)) %>%
+    select(-lat, -long, -yr_restore, -yr_rank) %>% 
+    arrange(field_key)
+sites_resto_bm <- 
+    sites %>% 
+    filter(field_type == "restored",
+           region == "BM") %>% 
+    select(-field_name, -region) %>% 
+    mutate(yr_since = as.numeric(yr_since))   
+```
 
 ## Sites-species tables
 
 Sites-species tables with rarefied sequence abundances. This list
 includes composition summarized by fields or unsummarized (all samples).
+It also includes subsets by region. All subsets have zero sum columns
+removed.  
 CSV files were produced in [process_data.R](process_data.md)
 
 ``` r
@@ -379,6 +157,34 @@ spe <- list(
         paste0(getwd(), "/clean_data/spe_ITS_rfy_samples.csv"),
         show_col_types = FALSE
     ),
+    its_samps_bm = read_csv(
+        paste0(getwd(), "/clean_data/spe_ITS_rfy_samples.csv"),
+        show_col_types = FALSE
+    ) %>% 
+        left_join(sites %>% select(field_key, region), by = join_by(field_key)) %>% 
+        filter(region == "BM") %>% 
+        select(-region),
+    its_samps_fg = read_csv(
+        paste0(getwd(), "/clean_data/spe_ITS_rfy_samples.csv"),
+        show_col_types = FALSE
+    ) %>% 
+        left_join(sites %>% select(field_key, region), by = join_by(field_key)) %>% 
+        filter(region == "FG") %>% 
+        select(-region),
+    its_samps_fl = read_csv(
+        paste0(getwd(), "/clean_data/spe_ITS_rfy_samples.csv"),
+        show_col_types = FALSE
+    ) %>% 
+        left_join(sites %>% select(field_key, region), by = join_by(field_key)) %>% 
+        filter(region == "FL") %>% 
+        select(-region),
+    its_samps_lp = read_csv(
+        paste0(getwd(), "/clean_data/spe_ITS_rfy_samples.csv"),
+        show_col_types = FALSE
+    ) %>% 
+        left_join(sites %>% select(field_key, region), by = join_by(field_key)) %>% 
+        filter(region == "LP") %>% 
+        select(-region),
     amf = read_csv(
         paste0(getwd(), "/clean_data/spe_18S_rfy.csv"),
         show_col_types = FALSE
@@ -386,8 +192,37 @@ spe <- list(
     amf_samps = read_csv(
         paste0(getwd(), "/clean_data/spe_18S_rfy_samples.csv"),
         show_col_types = FALSE
-    )
-)
+    ),
+    amf_samps_bm = read_csv(
+        paste0(getwd(), "/clean_data/spe_18S_rfy_samples.csv"),
+        show_col_types = FALSE
+    ) %>% 
+        left_join(sites %>% select(field_key, region), by = join_by(field_key)) %>% 
+        filter(region == "BM") %>% 
+        select(-region),
+    amf_samps_fg = read_csv(
+        paste0(getwd(), "/clean_data/spe_18S_rfy_samples.csv"),
+        show_col_types = FALSE
+    ) %>% 
+        left_join(sites %>% select(field_key, region), by = join_by(field_key)) %>% 
+        filter(region == "FG") %>% 
+        select(-region),
+    amf_samps_fl = read_csv(
+        paste0(getwd(), "/clean_data/spe_18S_rfy_samples.csv"),
+        show_col_types = FALSE
+    ) %>% 
+        left_join(sites %>% select(field_key, region), by = join_by(field_key)) %>% 
+        filter(region == "FL") %>% 
+        select(-region),
+    amf_samps_lp = read_csv(
+        paste0(getwd(), "/clean_data/spe_18S_rfy_samples.csv"),
+        show_col_types = FALSE
+    ) %>% 
+        left_join(sites %>% select(field_key, region), by = join_by(field_key)) %>% 
+        filter(region == "LP") %>% 
+        select(-region)
+) %>% 
+    map(. %>% select(where( ~ sum(.) != 0)))
 ```
 
 ## Species metadata
@@ -410,32 +245,6 @@ spe_meta <- list(
             show_col_types = FALSE
         )
 )
-```
-
-## Site metadata
-
-Needed for figure interpretation and permanova designs. The subset of
-restored fields in Blue Mounds only will also be used and is parsed
-here.
-
-``` r
-sites <-
-    read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>%
-    mutate(
-        field_type = factor(
-            field_type,
-            ordered = TRUE,
-            levels = c("corn", "restored", "remnant")),
-        yr_since = replace(yr_since, which(field_type == "remnant"), "+"),
-        yr_since = replace(yr_since, which(field_type == "corn"), "-")) %>%
-    select(-lat, -long, -yr_restore, -yr_rank) %>% 
-    arrange(field_key)
-sites_resto_bm <- 
-    sites %>% 
-    filter(field_type == "restored",
-           region == "BM") %>% 
-    select(-field_name, -region) %>% 
-    mutate(yr_since = as.numeric(yr_since))   
 ```
 
 ## Distance tables
@@ -463,6 +272,9 @@ UNIFRAC distance for 18S.
   bray-curtis distance
 - amf_uni: rarefied data, summed from 7 samples from each field, UNIFRAC
   distance
+- *gene_samps_region*: objects are distances matrices taken from
+  rarefied data, subsetted to region, with zero sum columns removed.
+  Samples in each field depend on the gene-based dataset, see above.
 
 ``` r
 distab <- list(
@@ -488,6 +300,38 @@ distab <- list(
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
         ) %>% select(where(~ sum(.) > 0)), method = "bray"),
+    its_samps_bm = vegdist(
+        data.frame(
+            spe$its_samps_bm %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ) # zero sum columns were already removed in the spe list
+    ),
+    its_samps_fg = vegdist(
+        data.frame(
+            spe$its_samps_fg %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ) # zero sum columns were already removed in the spe list
+    ),
+    its_samps_fl = vegdist(
+        data.frame(
+            spe$its_samps_fl %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ) # zero sum columns were already removed in the spe list
+    ),
+    its_samps_lp = vegdist(
+        data.frame(
+            spe$its_samps_lp %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ) # zero sum columns were already removed in the spe list
+    ),
     amf_bray  = vegdist(data.frame(spe$amf, row.names = 1), method = "bray"),
     amf_samps = vegdist(
         data.frame(
@@ -510,6 +354,38 @@ distab <- list(
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
         ) %>% select(where(~ sum(.) > 0)), method = "bray"),
+    amf_samps_bm = vegdist(
+        data.frame(
+            spe$amf_samps_bm %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ) # zero sum columns were already removed in the spe list
+    ),
+    amf_samps_fg = vegdist(
+        data.frame(
+            spe$amf_samps_fg %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ) # zero sum columns were already removed in the spe list
+    ),
+    amf_samps_fl = vegdist(
+        data.frame(
+            spe$amf_samps_fl %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ) # zero sum columns were already removed in the spe list
+    ),
+    amf_samps_lp = vegdist(
+        data.frame(
+            spe$amf_samps_lp %>% 
+                mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
+                column_to_rownames(var = "field_sample") %>% 
+                select(-field_key, -sample)
+        ) # zero sum columns were already removed in the spe list
+    ),
     amf_uni   = sites %>%
         select(field_name, field_key) %>%
         left_join(
@@ -565,12 +441,12 @@ correction is needed for these ordinations.
     ##    field_key      Axis.1       Axis.2 region field_type yr_since
     ## 1          1  0.22563943 -0.054587755     BM   restored       16
     ## 2          2 -0.10488280  0.008348045     BM   restored        3
-    ## 3          3 -0.33189964  0.027759105     FG       corn        -
-    ## 4          4  0.10116759 -0.301579753     FG    remnant        +
+    ## 3          3 -0.33189964  0.027759105     FG       corn       NA
+    ## 4          4  0.10116759 -0.301579753     FG    remnant       NA
     ## 5          5 -0.05887873 -0.286392697     FG   restored       15
-    ## 6          6 -0.29321444  0.128642366     FL       corn        -
-    ## 7          7 -0.32685992  0.026366798     FL       corn        -
-    ## 8          8  0.09326448 -0.222702264     FL    remnant        +
+    ## 6          6 -0.29321444  0.128642366     FL       corn       NA
+    ## 7          7 -0.32685992  0.026366798     FL       corn       NA
+    ## 8          8  0.09326448 -0.222702264     FL    remnant       NA
     ## 9          9  0.24766572 -0.193975913     FL   restored       40
     ## 10        10  0.32257590 -0.080874958     FL   restored       36
     ## 11        11  0.21951411 -0.169257727     FL   restored       35
@@ -578,15 +454,15 @@ correction is needed for these ordinations.
     ## 13        13  0.18556203  0.116429173     FL   restored       10
     ## 14        14  0.19690381  0.252273095     FL   restored       10
     ## 15        15  0.24524736 -0.052426579     BM   restored       28
-    ## 16        16 -0.37666184  0.120921164     LP       corn        -
-    ## 17        17  0.07502047  0.182578474     LP    remnant        +
+    ## 16        16 -0.37666184  0.120921164     LP       corn       NA
+    ## 17        17  0.07502047  0.182578474     LP    remnant       NA
     ## 18        18 -0.24341577  0.066044296     LP   restored        4
     ## 19        19 -0.14509188  0.090630826     LP   restored        4
-    ## 20        20  0.24511122  0.310100751     BM    remnant        +
+    ## 20        20  0.24511122  0.310100751     BM    remnant       NA
     ## 21        21  0.19223715  0.278603735     BM   restored       18
     ## 22        22 -0.11096005 -0.214825294     BM   restored        7
     ## 23        23 -0.22200138 -0.087725414     BM   restored        2
-    ## 24        24 -0.33928037  0.031682044     BM       corn        -
+    ## 24        24 -0.33928037  0.031682044     BM       corn       NA
     ## 25        25 -0.01463895 -0.213954799     BM   restored       11
     ## 
     ## $broken_stick_plot
@@ -615,7 +491,7 @@ correction is needed for these ordinations.
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
     ## restored   corn       0.156     3.524     1    19   0.0005000        0.0015
-    ## restored   remnant    0.055     1.052     1    18   0.1315000        0.1315
+    ## restored   remnant    0.055     1.052     1    18   0.1310000        0.1310
     ## corn       remnant    0.289     2.850     1     7   0.0416667        0.0625
 
 Axis 1 explains 18.7% of the variation and is the only eigenvalue that
@@ -643,14 +519,14 @@ pcoa_its$ord <-
             pcoa_its$dataset,
             ")"
         ),
-        caption = "Text indicates years since restoration, with corn (-) and remnants (+) never restored."
+        caption = "Text in icons for restored fields indicates years since restoration."
     ) +
     lims(y = c(-0.35,0.44)) +
     theme_bw() +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
 pcoa_its$inset <-
     spe_meta$its %>%
-    filter(primary_lifestyle %in% c("soil_saprotroph", "wood_saprotroph", "plant_pathogen")) %>%
+    filter(primary_lifestyle %in% c("soil_saprotroph", "plant_pathogen", "wood_saprotroph")) %>%
     mutate(field_type = factor(
         field_type,
         ordered = TRUE,
@@ -658,8 +534,8 @@ pcoa_its$inset <-
     )) %>%
     group_by(primary_lifestyle, field_type) %>%
     summarize(avg_seq_abund = mean(seq_abund), .groups = "drop") %>%
-    ggplot(aes(x = primary_lifestyle, y = avg_seq_abund)) +
-    geom_col(aes(fill = field_type)) +
+    ggplot(aes(x = primary_lifestyle, y = avg_seq_abund, fill = field_type)) +
+    geom_col(position = "dodge") +
     labs(x = "",
          y = "Seq. abund. (avg)") +
     scale_fill_discrete_qualitative(palette = "Harmonic") +
@@ -681,6 +557,8 @@ pcoa_its$ord +
         ymax = 0.46
     )
 ```
+
+    ## Warning: Removed 9 rows containing missing values (`geom_text()`).
 
 <img src="microbial_communities_files/figure-gfm/its_guilds_fig-1.png" style="display: block; margin: auto;" />
 
@@ -774,7 +652,7 @@ In trial runs, no negative eigenvalues were observed (not shown). No
 correction is needed for these ordinations.
 
 ``` r
-(pcoa_its_samps_bm <- pcoa_samps_bm_fun(spe$its_samps, 
+(pcoa_its_resto_samps_bm <- pcoa_samps_bm_fun(spe$its_samps, 
                                         distab$its_resto_samps_bm, 
                                         sites_resto_bm, 
                                         df_name="BM restored, ITS gene, 97% OTU"))
@@ -819,7 +697,7 @@ correction is needed for these ordinations.
     ## 
     ## $broken_stick_plot
 
-<img src="microbial_communities_files/figure-gfm/pcoa_its_samps_bm-1.png" style="display: block; margin: auto;" />
+<img src="microbial_communities_files/figure-gfm/pcoa_its_resto_samps_bm-1.png" style="display: block; margin: auto;" />
 
     ## 
     ## $permanova
@@ -841,7 +719,7 @@ correction is needed for these ordinations.
     ## ***VECTORS
     ## 
     ##             Axis.1    Axis.2    r2 Pr(>r)  
-    ## yr_since -0.997420  0.071762 0.725  0.027 *
+    ## yr_since -0.997420  0.071762 0.725  0.021 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -856,49 +734,49 @@ correction is needed for these ordinations.
 
 Axis 1 explains 11.5% and axis 2 explains 7.7% of the variation in the
 community data. Both axes are important based on the broken stick model.
-The relatively low percent variation explained is partly due to the high
-number of dimensions used when all samples from fields are included. The
-fidelity of samples to fields was significant based on a permutation
-test $(R^2=0.04,~p=5\times 10^{-4})$. In this case, the partial $R^2$
-shows the proportion of sum of squares from the total. It is a low
-number here because so much unexplained variation exists, resulting in a
-high sum of squares that is outside the assignment of subsamples to
-fields.
+Indeed, the first four axes are borderline important. The relatively low
+percent variation explained is partly due to the high number of
+dimensions used when all samples from fields are included. The fidelity
+of samples to fields was significant based on a permutation test
+$(R^2=0.04,~p=5\times 10^{-4})$. In this case, the partial $R^2$ shows
+the proportion of sum of squares from the total. It is a low number here
+because so much unexplained variation exists, resulting in a high sum of
+squares that is outside the assignment of subsamples to fields.
 
 Years since restoration has a moderately strong correlation with
 communities and was significant with a permutation test where samples
 were constrained within fields to account for lack of independence \#’
-$(R^2=0.72,~p=0.03)$.
+$(R^2=0.72,~p=0.02)$.
 
 Let’s view an ordination plot with hulls around subsamples and a fitted
 vector for field age overlaid.
 
 ``` r
-centroid_its_bm <- aggregate(cbind(Axis.1, Axis.2) ~ field_key, data = pcoa_its_samps_bm$site_vectors, mean) %>% 
+centroid_its_bm <- aggregate(cbind(Axis.1, Axis.2) ~ field_key, data = pcoa_its_resto_samps_bm$site_vectors, mean) %>% 
     left_join(sites %>% select(field_key, yr_since), by = join_by(field_key))
-hull_its_bm <- pcoa_its_samps_bm$site_vectors %>% 
+hull_its_bm <- pcoa_its_resto_samps_bm$site_vectors %>% 
     group_by(field_key) %>% 
     slice(chull(Axis.1, Axis.2))
 ```
 
 ``` r
-ggplot(pcoa_its_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+ggplot(pcoa_its_resto_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
     geom_point(fill = "#5CBD92", shape = 21) +
     geom_polygon(data = hull_its_bm, aes(group = as.character(field_key)), fill = "#5CBD92", alpha = 0.3) +
     geom_point(data = centroid_its_bm, fill = "#5CBD92", size = 8, shape = 21) +
     geom_text(data = centroid_its_bm, aes(label = yr_since)) +
     geom_segment(aes(x = 0, 
                      y = 0, 
-                     xend = pcoa_its_samps_bm$vector_fit_scores[1] * 0.4, 
-                     yend = pcoa_its_samps_bm$vector_fit_scores[2] * 0.4),
+                     xend = pcoa_its_resto_samps_bm$vector_fit_scores[1] * 0.4, 
+                     yend = pcoa_its_resto_samps_bm$vector_fit_scores[2] * 0.4),
                  color = "blue", 
                  arrow = arrow(length = unit(3, "mm"))) +
     labs(
-        x = paste0("Axis 1 (", pcoa_its_samps_bm$eigenvalues[1], "%)"),
-        y = paste0("Axis 2 (", pcoa_its_samps_bm$eigenvalues[2], "%)"),
+        x = paste0("Axis 1 (", pcoa_its_resto_samps_bm$eigenvalues[1], "%)"),
+        y = paste0("Axis 2 (", pcoa_its_resto_samps_bm$eigenvalues[2], "%)"),
         title = paste0(
             "PCoA Ordination (",
-            pcoa_its_samps_bm$dataset,
+            pcoa_its_resto_samps_bm$dataset,
             ")"
         ),
         caption = "Text indicates years since restoration.\nYears since restoration significant at p<0.05."
@@ -972,7 +850,7 @@ correction was applied.
     ## 10         2 2          -0.0371  0.0536   0.0926  0.0208 -0.130   -0.130  
     ## # ℹ 190 more rows
     ## # ℹ 8 more variables: Axis.7 <dbl>, Axis.8 <dbl>, Axis.9 <dbl>, Axis.10 <dbl>,
-    ## #   field_name <chr>, region <chr>, field_type <ord>, yr_since <chr>
+    ## #   field_name <chr>, region <chr>, field_type <ord>, yr_since <dbl>
     ## 
     ## $broken_stick_plot
 
@@ -989,7 +867,7 @@ correction was applied.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
     ##             Df SumOfSqs      R2      F Pr(>F)    
-    ## field_type   2    5.790 0.08144 8.7335  0.001 ***
+    ## field_type   2    5.790 0.08144 8.7335  5e-04 ***
     ## Residual   197   65.303 0.91856                  
     ## Total      199   71.094 1.00000                  
     ## ---
@@ -1000,9 +878,9 @@ correction was applied.
     ## 
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
-    ## restored   corn       0.066    11.791     1   166   0.0040000         0.012
-    ## restored   remnant    0.018     2.835     1   158   0.2040000         0.204
-    ## corn       remnant    0.135    10.946     1    70   0.1428571         0.204
+    ## restored   corn       0.066    11.791     1   166   0.0010000        0.0030
+    ## restored   remnant    0.018     2.835     1   158   0.1975000        0.1975
+    ## corn       remnant    0.135    10.946     1    70   0.1428571        0.1975
 
 Axis 1 explains 8.2% and axis 2 explains 5% of the variation in the
 community data. Both axes are important based on the broken stick model,
@@ -1012,7 +890,7 @@ variation explained on axes 1 and 2 is partly due to the high number of
 dimensions used when all samples from fields are included. The fidelity
 of samples to fields was strong based on a permutation test when
 restricting permutations to fields (=plots in `how()`) within regions
-(=blocks in `how()`) $(R^2=0.08,~p=0.001)$.
+(=blocks in `how()`) $(R^2=0.08,~p=5\times 10^{-4})$.
 
 Let’s view an ordination plot with hulls around subsamples.
 
@@ -1046,7 +924,408 @@ ggplot(pcoa_its_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
 ```
 
+    ## Warning: Removed 9 rows containing missing values (`geom_text()`).
+
 <img src="microbial_communities_files/figure-gfm/its_samps_fig-1.png" style="display: block; margin: auto;" />
+
+#### PCoA in Blue Mounds, all subsamples
+
+This is as above with the diagnostics and permutation tests. Pairwise
+contrasts among field types should be ignored here because there is no
+replication.
+
+``` r
+(pcoa_its_samps_bm <- pcoa_samps_fun(
+    s = spe$its_samps_bm,
+    d = distab$its_samps_bm,
+    env = sites %>% filter(region == "BM"),
+    corr = "none",
+    df_name = "Blue Mounds, ITS gene, 97% OTU"
+))
+```
+
+    ## $dataset
+    ## [1] "Blue Mounds, ITS gene, 97% OTU"
+    ## 
+    ## $components_exceed_broken_stick
+    ## [1] 5
+    ## 
+    ## $correction_note
+    ## [1] "There were no negative eigenvalues. No correction was applied"
+    ## 
+    ## $values
+    ##   Dim Eigenvalues Relative_eig Broken_stick Cumul_eig Cumul_br_stick
+    ## 1   1   2.9566148   0.11570835   0.06826650 0.1157083      0.0682665
+    ## 2   2   1.8256344   0.07144696   0.05418199 0.1871553      0.1224485
+    ## 3   3   1.6176677   0.06330810   0.04713974 0.2504634      0.1695882
+    ## 4   4   1.1114209   0.04349592   0.04244490 0.2939593      0.2120331
+    ## 5   5   1.0014582   0.03919248   0.03892377 0.3331518      0.2509569
+    ## 6   6   0.7555239   0.02956774   0.03610687 0.3627196      0.2870638
+    ## 
+    ## $eigenvalues
+    ## [1] 11.6  7.1
+    ## 
+    ## $site_vectors
+    ## # A tibble: 72 × 11
+    ##    field_key sample_key  Axis.1   Axis.2  Axis.3  Axis.4  Axis.5 field_name
+    ##        <dbl> <chr>        <dbl>    <dbl>   <dbl>   <dbl>   <dbl> <chr>     
+    ##  1         1 1          -0.0870  0.129   -0.299   0.0302 -0.0480 BBRP1     
+    ##  2         1 2          -0.162   0.0957  -0.157  -0.0305 -0.0713 BBRP1     
+    ##  3         1 4          -0.0869  0.127   -0.199  -0.0832 -0.134  BBRP1     
+    ##  4         1 5          -0.206  -0.00235 -0.216   0.242  -0.0764 BBRP1     
+    ##  5         1 6          -0.192   0.0384  -0.313   0.0402 -0.107  BBRP1     
+    ##  6         1 7          -0.0344  0.0561  -0.142   0.165  -0.152  BBRP1     
+    ##  7         1 9          -0.104   0.0577  -0.252   0.0859 -0.139  BBRP1     
+    ##  8         1 10         -0.168   0.0738  -0.161   0.0578 -0.151  BBRP1     
+    ##  9         2 1           0.190   0.235    0.213  -0.0765 -0.135  ERRP1     
+    ## 10         2 2           0.104   0.0270   0.0566 -0.0356 -0.246  ERRP1     
+    ## # ℹ 62 more rows
+    ## # ℹ 3 more variables: region <chr>, field_type <ord>, yr_since <dbl>
+    ## 
+    ## $broken_stick_plot
+
+![](microbial_communities_files/figure-gfm/pcoa_its_samps_bm-1.png)<!-- -->
+
+    ## 
+    ## $permanova
+    ## Permutation test for adonis under reduced model
+    ## Terms added sequentially (first to last)
+    ## Blocks:  region 
+    ## Plots: field_key, plot permutation: free
+    ## Permutation: none
+    ## Number of permutations: 1999
+    ## 
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
+    ##            Df SumOfSqs      R2      F Pr(>F)  
+    ## field_type  2   3.0623 0.11984 4.6975 0.0315 *
+    ## Residual   69  22.4900 0.88016                
+    ## Total      71  25.5523 1.00000                
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $pairwise_contrasts
+    ## 
+    ## 
+    ## group1     group2        R2   F_value   df1   df2   p_value   p_value_adj
+    ## ---------  --------  ------  --------  ----  ----  --------  ------------
+    ## restored   remnant    0.068     4.522     1    62     0.119        0.1785
+    ## restored   corn       0.069     4.602     1    62     0.118        0.1785
+    ## remnant    corn       0.301     6.016     1    14     1.000        1.0000
+
+Field type remains significant.
+
+### PCoA in Faville Grove, all subsamples
+
+This is as above with the diagnostics and permutation tests. Pairwise
+contrasts among field types should be ignored here because there is no
+replication.
+
+``` r
+(pcoa_its_samps_fg <- pcoa_samps_fun(
+    s = spe$its_samps_fg,
+    d = distab$its_samps_fg,
+    env = sites %>% filter(region == "FG"),
+    corr = "none",
+    df_name = "Faville Grove, ITS gene, 97% OTU"
+))
+```
+
+    ## $dataset
+    ## [1] "Faville Grove, ITS gene, 97% OTU"
+    ## 
+    ## $components_exceed_broken_stick
+    ## [1] 1
+    ## 
+    ## $correction_note
+    ## [1] "There were no negative eigenvalues. No correction was applied"
+    ## 
+    ## $values
+    ##   Dim Eigenvalues Relative_eig Broken_stick Cumul_eig Cumul_br_stick
+    ## 1   1   1.9237070   0.26554336   0.16236050 0.2655434      0.1623605
+    ## 2   2   0.8505218   0.11740375   0.11888224 0.3829471      0.2812427
+    ## 3   3   0.4529752   0.06252748   0.09714311 0.4454746      0.3783858
+    ## 
+    ## $eigenvalues
+    ## [1] 26.6 11.7
+    ## 
+    ## $site_vectors
+    ## # A tibble: 24 × 8
+    ##    field_key sample_key Axis.1   Axis.2 field_name region field_type yr_since
+    ##        <dbl> <chr>       <dbl>    <dbl> <chr>      <chr>  <ord>         <dbl>
+    ##  1         3 1          -0.367 -0.0106  FGC1       FG     corn             NA
+    ##  2         3 2          -0.408 -0.0793  FGC1       FG     corn             NA
+    ##  3         3 3          -0.429 -0.0569  FGC1       FG     corn             NA
+    ##  4         3 5          -0.329 -0.0129  FGC1       FG     corn             NA
+    ##  5         3 6          -0.412 -0.0459  FGC1       FG     corn             NA
+    ##  6         3 7          -0.416  0.00818 FGC1       FG     corn             NA
+    ##  7         3 9          -0.414 -0.0754  FGC1       FG     corn             NA
+    ##  8         3 10         -0.384  0.0150  FGC1       FG     corn             NA
+    ##  9         4 1           0.260 -0.263   FGREM1     FG     remnant          NA
+    ## 10         4 2           0.291 -0.251   FGREM1     FG     remnant          NA
+    ## # ℹ 14 more rows
+    ## 
+    ## $broken_stick_plot
+
+![](microbial_communities_files/figure-gfm/pcoa_its_samps_fg-1.png)<!-- -->
+
+    ## 
+    ## $permanova
+    ## Permutation test for adonis under reduced model
+    ## Terms added sequentially (first to last)
+    ## Blocks:  region 
+    ## Plots: field_key, plot permutation: free
+    ## Permutation: none
+    ## Number of permutations: 5
+    ## 
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
+    ##            Df SumOfSqs      R2      F Pr(>F)
+    ## field_type  2   2.7037 0.37321 6.2521      1
+    ## Residual   21   4.5407 0.62679              
+    ## Total      23   7.2444 1.00000              
+    ## 
+    ## $pairwise_contrasts
+    ## 
+    ## 
+    ## group1    group2         R2   F_value   df1   df2   p_value   p_value_adj
+    ## --------  ---------  ------  --------  ----  ----  --------  ------------
+    ## corn      remnant     0.342     7.283     1    14         1             1
+    ## corn      restored    0.340     7.208     1    14         1             1
+    ## remnant   restored    0.224     4.048     1    14         1             1
+
+Field type is not significant here.
+
+### PCoA in Fermilab, all subsamples
+
+This is as above with the diagnostics and permutation tests. Pairwise
+contrasts among field types should be ignored here because there is no
+replication.
+
+``` r
+(pcoa_its_samps_fl <- pcoa_samps_fun(
+    s = spe$its_samps_fl,
+    d = distab$its_samps_fl,
+    env = sites %>% filter(region == "FL"),
+    corr = "lingoes",
+    df_name = "Fermilab, ITS gene, 97% OTU"
+))
+```
+
+    ## $dataset
+    ## [1] "Fermilab, ITS gene, 97% OTU"
+    ## 
+    ## $components_exceed_broken_stick
+    ## [1] 2
+    ## 
+    ## $correction_note
+    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.0168991562674868 , except diagonal elements"
+    ## 
+    ## $values
+    ##   Dim Eigenvalues Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig Cum_br_stick
+    ## 1   1    3.582195 3.599094   0.14492545   0.06904053    0.1449255   0.06904053
+    ## 2   2    2.539295 2.556194   0.10293077   0.05475481    0.2478562   0.12379534
+    ## 3   3    1.068061 1.084960   0.04368831   0.04761195    0.2915445   0.17140729
+    ## 
+    ## $eigenvalues
+    ## [1] 14.5 10.3
+    ## 
+    ## $site_vectors
+    ## # A tibble: 72 × 8
+    ##    field_key sample_key Axis.1   Axis.2 field_name region field_type yr_since
+    ##        <dbl> <chr>       <dbl>    <dbl> <chr>      <chr>  <ord>         <dbl>
+    ##  1         6 1          -0.430  0.0187  FLC1       FL     corn             NA
+    ##  2         6 2          -0.394 -0.00741 FLC1       FL     corn             NA
+    ##  3         6 4          -0.427  0.0370  FLC1       FL     corn             NA
+    ##  4         6 5          -0.416  0.0367  FLC1       FL     corn             NA
+    ##  5         6 6          -0.299 -0.0231  FLC1       FL     corn             NA
+    ##  6         6 7          -0.382  0.0406  FLC1       FL     corn             NA
+    ##  7         6 9          -0.338  0.0595  FLC1       FL     corn             NA
+    ##  8         6 10         -0.339 -0.0232  FLC1       FL     corn             NA
+    ##  9         7 1          -0.428  0.0967  FLC2       FL     corn             NA
+    ## 10         7 3          -0.406  0.112   FLC2       FL     corn             NA
+    ## # ℹ 62 more rows
+    ## 
+    ## $broken_stick_plot
+
+![](microbial_communities_files/figure-gfm/pcoa_its_samps_fl-1.png)<!-- -->
+
+    ## 
+    ## $permanova
+    ## Permutation test for adonis under reduced model
+    ## Terms added sequentially (first to last)
+    ## Blocks:  region 
+    ## Plots: field_key, plot permutation: free
+    ## Permutation: none
+    ## Number of permutations: 1999
+    ## 
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
+    ##            Df SumOfSqs      R2      F Pr(>F)  
+    ## field_type  2   4.1654 0.17625 7.3814 0.0195 *
+    ## Residual   69  19.4688 0.82375                
+    ## Total      71  23.6343 1.00000                
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $pairwise_contrasts
+    ## 
+    ## 
+    ## group1    group2         R2   F_value   df1   df2     p_value   p_value_adj
+    ## --------  ---------  ------  --------  ----  ----  ----------  ------------
+    ## corn      remnant     0.244     7.092     1    22   0.3333333         0.500
+    ## corn      restored    0.158    11.665     1    62   0.0400000         0.120
+    ## remnant   restored    0.046     2.613     1    54   0.5950000         0.595
+
+Field type is again significant by permutation test.
+
+### PCoA in Lake Petite Prairie, all subsamples
+
+This is as above with the diagnostics and permutation tests. Pairwise
+contrasts among field types should be ignored here because there is no
+replication.
+
+``` r
+(pcoa_its_samps_lp <- pcoa_samps_fun(
+    s = spe$its_samps_lp,
+    d = distab$its_samps_lp,
+    env = sites %>% filter(region == "LP"),
+    corr = "none",
+    df_name = "Lake Petite Prairie, ITS gene, 97% OTU"
+))
+```
+
+    ## $dataset
+    ## [1] "Lake Petite Prairie, ITS gene, 97% OTU"
+    ## 
+    ## $components_exceed_broken_stick
+    ## [1] 3
+    ## 
+    ## $correction_note
+    ## [1] "There were no negative eigenvalues. No correction was applied"
+    ## 
+    ## $values
+    ##   Dim Eigenvalues Relative_eig Broken_stick Cumul_eig Cumul_br_stick
+    ## 1   1   1.3447321   0.15665926   0.12991114 0.1566593      0.1299111
+    ## 2   2   0.9265234   0.10793858   0.09765307 0.2645978      0.2275642
+    ## 3   3   0.7007629   0.08163783   0.08152404 0.3462357      0.3090882
+    ## 4   4   0.4978694   0.05800104   0.07077135 0.4042367      0.3798596
+    ## 
+    ## $eigenvalues
+    ## [1] 15.7 10.8
+    ## 
+    ## $site_vectors
+    ## # A tibble: 32 × 9
+    ##    field_key sample_key Axis.1 Axis.2  Axis.3 field_name region field_type
+    ##        <dbl> <chr>       <dbl>  <dbl>   <dbl> <chr>      <chr>  <ord>     
+    ##  1        16 1          -0.239 0.0857  0.173  LPC1       LP     corn      
+    ##  2        16 3          -0.225 0.118   0.173  LPC1       LP     corn      
+    ##  3        16 5          -0.258 0.0873  0.168  LPC1       LP     corn      
+    ##  4        16 6          -0.265 0.101   0.137  LPC1       LP     corn      
+    ##  5        16 7          -0.245 0.0716  0.139  LPC1       LP     corn      
+    ##  6        16 8          -0.199 0.0372  0.236  LPC1       LP     corn      
+    ##  7        16 9          -0.253 0.0806  0.118  LPC1       LP     corn      
+    ##  8        16 10         -0.180 0.0444  0.142  LPC1       LP     corn      
+    ##  9        17 1           0.242 0.145  -0.108  LPREM1     LP     remnant   
+    ## 10        17 2           0.281 0.210  -0.0269 LPREM1     LP     remnant   
+    ## # ℹ 22 more rows
+    ## # ℹ 1 more variable: yr_since <dbl>
+    ## 
+    ## $broken_stick_plot
+
+![](microbial_communities_files/figure-gfm/pcoa_its_samps_lp-1.png)<!-- -->
+
+    ## 
+    ## $permanova
+    ## Permutation test for adonis under reduced model
+    ## Terms added sequentially (first to last)
+    ## Blocks:  region 
+    ## Plots: field_key, plot permutation: free
+    ## Permutation: none
+    ## Number of permutations: 23
+    ## 
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
+    ##            Df SumOfSqs      R2      F Pr(>F)
+    ## field_type  2   1.9200 0.22367 4.1777 0.1667
+    ## Residual   29   6.6638 0.77633              
+    ## Total      31   8.5838 1.00000              
+    ## 
+    ## $pairwise_contrasts
+    ## 
+    ## 
+    ## group1    group2         R2   F_value   df1   df2     p_value   p_value_adj
+    ## --------  ---------  ------  --------  ----  ----  ----------  ------------
+    ## corn      remnant     0.263     4.997     1    14   1.0000000           1.0
+    ## corn      restored    0.158     4.143     1    22   0.3333333           0.5
+    ## remnant   restored    0.144     3.716     1    22   0.3333333           0.5
+
+Let’s view an ordination plot with hulls around subsamples for each
+indidual region.
+
+### PCoA ordination, all regions, all subsamples.
+
+``` r
+pcoa_its_site_vectors <- bind_rows(
+    list(
+        `Blue Mounds`   = pcoa_its_samps_bm$site_vectors,
+        `Faville Grove` = pcoa_its_samps_fg$site_vectors,
+        `Fermilab`      = pcoa_its_samps_fl$site_vectors,
+        `Lake Petite`   = pcoa_its_samps_lp$site_vectors
+    ),
+    .id = "place"
+)
+pcoa_its_eigenvalues <- bind_rows(
+    list(
+        `Blue Mounds`   = pcoa_its_samps_bm$eigenvalues,
+        `Faville Grove` = pcoa_its_samps_fg$eigenvalues,
+        `Fermilab`      = pcoa_its_samps_fl$eigenvalues,
+        `Lake Petite`   = pcoa_its_samps_lp$eigenvalues
+    ),
+    .id = "place"
+) %>% 
+    mutate(axis = c(1,2)) %>% 
+    pivot_longer(cols = 1:4, names_to = "place", values_to = "eigenvalue") %>% 
+    select(place, axis, eigenvalue) %>% 
+    arrange(place, axis) %>% 
+    pivot_wider(names_from = axis, names_prefix = "axis_", values_from = eigenvalue)
+centroid_regions_its <- aggregate(cbind(Axis.1, Axis.2) ~ place + field_key, data = pcoa_its_site_vectors, mean) %>% 
+    left_join(sites %>% select(field_key, yr_since, field_type, region), by = join_by(field_key))
+hull_regions_its <- pcoa_its_site_vectors %>% 
+    group_by(place, field_key) %>% 
+    slice(chull(Axis.1, Axis.2))
+```
+
+``` r
+ggplot(pcoa_its_site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    facet_wrap(vars(place), scales = "free") +
+    geom_point(aes(fill = field_type), shape = 21) +
+    geom_polygon(data = hull_regions_its, aes(group = field_key, fill = field_type), alpha = 0.3) +
+    geom_point(data = centroid_regions_its, aes(fill = field_type, shape = region), size = 6) +
+    geom_text(data = centroid_regions_its, aes(label = yr_since), size = 2.5) +
+    labs(
+        x = paste0("Axis 1"),
+        y = paste0("Axis 2"),
+        caption = "ITS gene. Text indicates years since restoration."
+    ) +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
+    theme_bw() +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
+```
+
+    ## Warning: Removed 9 rows containing missing values (`geom_text()`).
+
+<img src="microbial_communities_files/figure-gfm/its_samps_regions_fig-1.png" style="display: block; margin: auto;" />
+
+The eigenvalues are shown below:
+
+``` r
+kable(pcoa_its_eigenvalues, format = "pandoc") 
+```
+
+| place         | axis_1 | axis_2 |
+|:--------------|-------:|-------:|
+| Blue Mounds   |   11.6 |    7.1 |
+| Faville Grove |   26.6 |   11.7 |
+| Fermilab      |   14.5 |   10.3 |
+| Lake Petite   |   15.7 |   10.8 |
 
 ## 18S gene, OTU clustering
 
@@ -1118,12 +1397,12 @@ No negative eigenvalues produced, no correction applied.
     ##    field_type yr_since
     ## 1    restored       16
     ## 2    restored        3
-    ## 3        corn        -
-    ## 4     remnant        +
+    ## 3        corn       NA
+    ## 4     remnant       NA
     ## 5    restored       15
-    ## 6        corn        -
-    ## 7        corn        -
-    ## 8     remnant        +
+    ## 6        corn       NA
+    ## 7        corn       NA
+    ## 8     remnant       NA
     ## 9    restored       40
     ## 10   restored       36
     ## 11   restored       35
@@ -1131,15 +1410,15 @@ No negative eigenvalues produced, no correction applied.
     ## 13   restored       10
     ## 14   restored       10
     ## 15   restored       28
-    ## 16       corn        -
-    ## 17    remnant        +
+    ## 16       corn       NA
+    ## 17    remnant       NA
     ## 18   restored        4
     ## 19   restored        4
-    ## 20    remnant        +
+    ## 20    remnant       NA
     ## 21   restored       18
     ## 22   restored        7
     ## 23   restored        2
-    ## 24       corn        -
+    ## 24       corn       NA
     ## 25   restored       11
     ## 
     ## $broken_stick_plot
@@ -1155,10 +1434,10 @@ No negative eigenvalues produced, no correction applied.
     ## Number of permutations: 1999
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, add = if (corr == "none") FALSE else "lingoes", strata = region)
-    ##            Df SumOfSqs      R2      F Pr(>F)    
-    ## field_type  2   1.0956 0.24872 3.6417  0.001 ***
-    ## Residual   22   3.3094 0.75128                  
-    ## Total      24   4.4050 1.00000                  
+    ##            Df SumOfSqs      R2      F Pr(>F)   
+    ## field_type  2   1.0956 0.24872 3.6417 0.0025 **
+    ## Residual   22   3.3094 0.75128                 
+    ## Total      24   4.4050 1.00000                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -1167,8 +1446,8 @@ No negative eigenvalues produced, no correction applied.
     ## 
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
-    ## restored   corn       0.254     6.474     1    19   0.0020000        0.0060
-    ## restored   remnant    0.023     0.422     1    18   0.9690000        0.9690
+    ## restored   corn       0.254     6.474     1    19   0.0010000        0.0030
+    ## restored   remnant    0.023     0.422     1    18   0.9740000        0.9740
     ## corn       remnant    0.382     4.324     1     7   0.0416667        0.0625
 
 Four axes are significant by a broken stick model, between them
@@ -1178,7 +1457,7 @@ substantial variation here is on the first axis (27.5%) with Axis 2
 explaining 17.8% of the variation in AMF abundances. Testing the design
 factor *field_type* (with *region* treated as a block using the `strata`
 argument of `adonis2`) revealed a significant clustering
-$(R^2=0.25,~p=0.001)$.
+$(R^2=0.25,~p=0.002)$.
 
 Let’s view a plot with abundances of community subgroups inset.
 
@@ -1225,6 +1504,8 @@ pcoa_amf_bray$ord +
         ymax = -0.04
     )
 ```
+
+    ## Warning: Removed 9 rows containing missing values (`geom_text()`).
 
 <img src="microbial_communities_files/figure-gfm/amf_families_fig-1.png" style="display: block; margin: auto;" />
 
@@ -1359,12 +1640,12 @@ relationship $(R^2_{Adj}=0.56,~p<0.005)$
     ##    field_key       Axis.1       Axis.2       Axis.3 region field_type yr_since
     ## 1          1  0.005000811 -0.019022480 -0.075661370     BM   restored       16
     ## 2          2  0.184329497 -0.015254402 -0.007699769     BM   restored        3
-    ## 3          3 -0.072487397  0.067424513  0.039009283     FG       corn        -
-    ## 4          4 -0.041221010 -0.036068309  0.021185618     FG    remnant        +
+    ## 3          3 -0.072487397  0.067424513  0.039009283     FG       corn       NA
+    ## 4          4 -0.041221010 -0.036068309  0.021185618     FG    remnant       NA
     ## 5          5  0.024753793 -0.052063386  0.054757181     FG   restored       15
-    ## 6          6  0.132027889  0.107077144  0.033575362     FL       corn        -
-    ## 7          7 -0.042177309  0.100432373 -0.083348303     FL       corn        -
-    ## 8          8  0.012829998 -0.029240145  0.019755980     FL    remnant        +
+    ## 6          6  0.132027889  0.107077144  0.033575362     FL       corn       NA
+    ## 7          7 -0.042177309  0.100432373 -0.083348303     FL       corn       NA
+    ## 8          8  0.012829998 -0.029240145  0.019755980     FL    remnant       NA
     ## 9          9 -0.048029289 -0.037910042  0.024674421     FL   restored       40
     ## 10        10 -0.047531002 -0.032394265  0.016179264     FL   restored       36
     ## 11        11 -0.032019394 -0.015349526  0.017878940     FL   restored       35
@@ -1372,15 +1653,15 @@ relationship $(R^2_{Adj}=0.56,~p<0.005)$
     ## 13        13  0.014601133 -0.009117052 -0.041202654     FL   restored       10
     ## 14        14  0.027018121 -0.003352651 -0.048179202     FL   restored       10
     ## 15        15 -0.040888003 -0.041071752 -0.022777348     BM   restored       28
-    ## 16        16 -0.029033616  0.101034837 -0.007893224     LP       corn        -
-    ## 17        17 -0.010295789 -0.010944908  0.003923329     LP    remnant        +
+    ## 16        16 -0.029033616  0.101034837 -0.007893224     LP       corn       NA
+    ## 17        17 -0.010295789 -0.010944908  0.003923329     LP    remnant       NA
     ## 18        18  0.001881795  0.008404165  0.035231885     LP   restored        4
     ## 19        19  0.066396377 -0.002797405  0.021616717     LP   restored        4
-    ## 20        20 -0.045321553 -0.044288430 -0.057552793     BM    remnant        +
+    ## 20        20 -0.045321553 -0.044288430 -0.057552793     BM    remnant       NA
     ## 21        21 -0.010605035 -0.038274923 -0.046884326     BM   restored       18
     ## 22        22 -0.024417886 -0.009405314  0.017526673     BM   restored        7
     ## 23        23 -0.029424159  0.005009133  0.025573301     BM   restored        2
-    ## 24        24 -0.076762389  0.062360323  0.037484938     BM       corn        -
+    ## 24        24 -0.076762389  0.062360323  0.037484938     BM       corn       NA
     ## 25        25  0.011005267 -0.032483714  0.048923871     BM   restored       11
     ## 
     ## $broken_stick_plot
@@ -1397,7 +1678,7 @@ relationship $(R^2_{Adj}=0.56,~p<0.005)$
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, add = if (corr == "none") FALSE else "lingoes", strata = region)
     ##            Df SumOfSqs     R2      F Pr(>F)   
-    ## field_type  2  0.06937 0.1657 2.1847 0.0045 **
+    ## field_type  2  0.06937 0.1657 2.1847 0.0035 **
     ## Residual   22  0.34929 0.8343                 
     ## Total      24  0.41866 1.0000                 
     ## ---
@@ -1408,8 +1689,8 @@ relationship $(R^2_{Adj}=0.56,~p<0.005)$
     ## 
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
-    ## restored   corn       0.240     5.989     1    19   0.0005000        0.0015
-    ## restored   remnant    0.025     0.467     1    18   0.9665000        0.9665
+    ## restored   corn       0.240     5.989     1    19   0.0010000        0.0030
+    ## restored   remnant    0.025     0.467     1    18   0.9695000        0.9695
     ## corn       remnant    0.382     4.324     1     7   0.0416667        0.0625
 
 Three axes are significant by a broken stick model, between them
@@ -1451,6 +1732,8 @@ pcoa_amf_uni$ord +
         ymax = 0.09
     )
 ```
+
+    ## Warning: Removed 9 rows containing missing values (`geom_text()`).
 
 <img src="microbial_communities_files/figure-gfm/amf_uni_families_fig-1.png" style="display: block; margin: auto;" />
 
@@ -1561,7 +1844,7 @@ return to Bray-Curtis distance.
 negative eigenvalues.
 
 ``` r
-(pcoa_amf_samps_bm <- pcoa_samps_bm_fun(spe$amf_samps, 
+(pcoa_amf_resto_samps_bm <- pcoa_samps_bm_fun(spe$amf_samps, 
                                         distab$amf_resto_samps_bm, 
                                         sites_resto_bm, 
                                         corr="lingoes",
@@ -1610,7 +1893,7 @@ negative eigenvalues.
     ## 
     ## $broken_stick_plot
 
-<img src="microbial_communities_files/figure-gfm/pcoa_amf_samps_bm-1.png" style="display: block; margin: auto;" />
+<img src="microbial_communities_files/figure-gfm/pcoa_amf_resto_samps_bm-1.png" style="display: block; margin: auto;" />
 
     ## 
     ## $permanova
@@ -1632,7 +1915,7 @@ negative eigenvalues.
     ## ***VECTORS
     ## 
     ##            Axis.1   Axis.2   Axis.3   Axis.4   Axis.5     r2 Pr(>r)  
-    ## yr_since -0.84928  0.37660 -0.19661  0.19812  0.24287 0.7715 0.0165 *
+    ## yr_since -0.84928  0.37660 -0.19661  0.19812  0.24287 0.7715  0.021 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -1666,31 +1949,31 @@ Let’s view an ordination plot with hulls around subsamples and a fitted
 vector for field age overlaid.
 
 ``` r
-centroid_amf_bm <- aggregate(cbind(Axis.1, Axis.2) ~ field_key, data = pcoa_amf_samps_bm$site_vectors, mean) %>% 
+centroid_amf_bm <- aggregate(cbind(Axis.1, Axis.2) ~ field_key, data = pcoa_amf_resto_samps_bm$site_vectors, mean) %>% 
     left_join(sites %>% select(field_key, yr_since), by = join_by(field_key))
-hull_amf_bm <- pcoa_amf_samps_bm$site_vectors %>% 
+hull_amf_bm <- pcoa_amf_resto_samps_bm$site_vectors %>% 
     group_by(field_key) %>% 
     slice(chull(Axis.1, Axis.2))
 ```
 
 ``` r
-ggplot(pcoa_amf_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+ggplot(pcoa_amf_resto_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
     geom_point(fill = "#5CBD92", shape = 21) +
     geom_polygon(data = hull_amf_bm, aes(group = as.character(field_key)), fill = "#5CBD92", alpha = 0.3) +
     geom_point(data = centroid_amf_bm, fill = "#5CBD92", size = 8, shape = 21) +
     geom_text(data = centroid_amf_bm, aes(label = yr_since)) +
     geom_segment(aes(x = 0, 
                      y = 0, 
-                     xend = pcoa_amf_samps_bm$vector_fit_scores[1] * 0.6, 
-                     yend = pcoa_amf_samps_bm$vector_fit_scores[2] * 0.6),
+                     xend = pcoa_amf_resto_samps_bm$vector_fit_scores[1] * 0.6, 
+                     yend = pcoa_amf_resto_samps_bm$vector_fit_scores[2] * 0.6),
                  color = "blue", 
                  arrow = arrow(length = unit(3, "mm"))) +
     labs(
-        x = paste0("Axis 1 (", pcoa_amf_samps_bm$eigenvalues[1], "%)"),
-        y = paste0("Axis 2 (", pcoa_amf_samps_bm$eigenvalues[2], "%)"),
+        x = paste0("Axis 1 (", pcoa_amf_resto_samps_bm$eigenvalues[1], "%)"),
+        y = paste0("Axis 2 (", pcoa_amf_resto_samps_bm$eigenvalues[2], "%)"),
         title = paste0(
             "PCoA Ordination (",
-            pcoa_amf_samps_bm$dataset,
+            pcoa_amf_resto_samps_bm$dataset,
             ")"
         ),
         caption = "Text indicates years since restoration.\nYears since restoration significant at p<0.05."
@@ -1764,7 +2047,7 @@ correction was applied.
     ## 10         2 5          -0.0345  -0.316  -0.343   0.166     0.0102  0.0979  
     ## # ℹ 165 more rows
     ## # ℹ 8 more variables: Axis.7 <dbl>, Axis.8 <dbl>, Axis.9 <dbl>, Axis.10 <dbl>,
-    ## #   field_name <chr>, region <chr>, field_type <ord>, yr_since <chr>
+    ## #   field_name <chr>, region <chr>, field_type <ord>, yr_since <dbl>
     ## 
     ## $broken_stick_plot
 
@@ -1780,10 +2063,10 @@ correction was applied.
     ## Number of permutations: 1999
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
-    ##             Df SumOfSqs      R2     F Pr(>F)   
-    ## field_type   2    5.367 0.10872 10.49 0.0025 **
-    ## Residual   172   44.004 0.89128                
-    ## Total      174   49.372 1.00000                
+    ##             Df SumOfSqs      R2     F Pr(>F)    
+    ## field_type   2    5.367 0.10872 10.49  0.001 ***
+    ## Residual   172   44.004 0.89128                 
+    ## Total      174   49.372 1.00000                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -1792,8 +2075,8 @@ correction was applied.
     ## 
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
-    ## restored   corn       0.056     8.657     1   145   0.0015000     0.0045000
-    ## restored   remnant    0.008     1.052     1   138   0.9970000     0.9970000
+    ## restored   corn       0.056     8.657     1   145   0.0020000     0.0060000
+    ## restored   remnant    0.008     1.052     1   138   0.9940000     0.9940000
     ## corn       remnant    0.111     7.636     1    61   0.1020408     0.1530612
 
 Axis 1 explains 7.1% and axis 2 explains 5% of the variation in the
@@ -1804,7 +2087,7 @@ variation explained on axes 1 and 2 is partly due to the high number of
 dimensions used when all samples from fields are included. The fidelity
 of samples to fields was strong based on a permutation test when
 restricting permutations to fields (=plots in `how()`) within regions
-(=blocks in `how()`) $(R^2=0.11,~p=0.0025)$.
+(=blocks in `how()`) $(R^2=0.11,~p=0.001)$.
 
 Let’s view an ordination plot with hulls around subsamples.
 
@@ -1838,4 +2121,415 @@ ggplot(pcoa_amf_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
 ```
 
+    ## Warning: Removed 9 rows containing missing values (`geom_text()`).
+
 <img src="microbial_communities_files/figure-gfm/amf_samps_fig-1.png" style="display: block; margin: auto;" />
+
+### PCoA in Blue Mounds, all subsamples
+
+This is as above with the diagnostics and permutation tests. Pairwise
+contrasts among field types should be ignored here because there is no
+replication.
+
+``` r
+(pcoa_amf_samps_bm <- pcoa_samps_fun(
+    s = spe$amf_samps_bm,
+    d = distab$amf_samps_bm,
+    env = sites %>% filter(region == "BM"),
+    corr = "lingoes",
+    df_name = "Blue Mounds, 18S gene, 97% OTU"
+))
+```
+
+    ## $dataset
+    ## [1] "Blue Mounds, 18S gene, 97% OTU"
+    ## 
+    ## $components_exceed_broken_stick
+    ## [1] 4
+    ## 
+    ## $correction_note
+    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.156890864293408 , except diagonal elements"
+    ## 
+    ## $values
+    ##   Dim Eigenvalues Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig Cum_br_stick
+    ## 1   1   3.8182310 3.975122   0.15105993   0.07698793    0.1510599   0.07698793
+    ## 2   2   2.3110161 2.467907   0.09378375   0.06059449    0.2448437   0.13758242
+    ## 3   3   1.8884114 2.045302   0.07772421   0.05239777    0.3225679   0.18998019
+    ## 4   4   1.1725316 1.329422   0.05051983   0.04693329    0.3730877   0.23691348
+    ## 5   5   0.9488616 1.105752   0.04202007   0.04283493    0.4151078   0.27974840
+    ## 
+    ## $eigenvalues
+    ## [1] 15.1  9.4
+    ## 
+    ## $site_vectors
+    ## # A tibble: 63 × 10
+    ##    field_key sample_key  Axis.1   Axis.2  Axis.3  Axis.4 field_name region
+    ##        <dbl> <chr>        <dbl>    <dbl>   <dbl>   <dbl> <chr>      <chr> 
+    ##  1         1 1          -0.104  -0.00870 -0.0997 -0.0315 BBRP1      BM    
+    ##  2         1 2          -0.189  -0.185   -0.240  -0.131  BBRP1      BM    
+    ##  3         1 4          -0.382   0.282    0.0104 -0.151  BBRP1      BM    
+    ##  4         1 5          -0.0815 -0.136   -0.421   0.0827 BBRP1      BM    
+    ##  5         1 7          -0.282  -0.213   -0.243  -0.140  BBRP1      BM    
+    ##  6         1 8          -0.350   0.125    0.0835  0.0663 BBRP1      BM    
+    ##  7         1 10         -0.385  -0.0890  -0.101  -0.158  BBRP1      BM    
+    ##  8         2 1           0.0214 -0.386    0.122  -0.0509 ERRP1      BM    
+    ##  9         2 3           0.108  -0.246    0.113   0.114  ERRP1      BM    
+    ## 10         2 5          -0.0419 -0.465   -0.0686 -0.139  ERRP1      BM    
+    ## # ℹ 53 more rows
+    ## # ℹ 2 more variables: field_type <ord>, yr_since <dbl>
+    ## 
+    ## $broken_stick_plot
+
+![](microbial_communities_files/figure-gfm/pcoa_amf_samps_bm-1.png)<!-- -->
+
+    ## 
+    ## $permanova
+    ## Permutation test for adonis under reduced model
+    ## Terms added sequentially (first to last)
+    ## Blocks:  region 
+    ## Plots: field_key, plot permutation: free
+    ## Permutation: none
+    ## Number of permutations: 1999
+    ## 
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
+    ##            Df SumOfSqs      R2      F Pr(>F)  
+    ## field_type  2   2.8261 0.17037 6.1608 0.0885 .
+    ## Residual   60  13.7616 0.82963                
+    ## Total      62  16.5876 1.00000                
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $pairwise_contrasts
+    ## 
+    ## 
+    ## group1     group2        R2   F_value   df1   df2   p_value   p_value_adj
+    ## ---------  --------  ------  --------  ----  ----  --------  ------------
+    ## restored   remnant    0.053     3.017     1    54    0.3715       0.55725
+    ## restored   corn       0.085     5.001     1    54    0.1345       0.40350
+    ## remnant    corn       0.466    10.454     1    12    1.0000       1.00000
+
+Field type trends significant. Four axes significant.
+
+### PCoA in Faville Grove, all subsamples
+
+This is as above with the diagnostics and permutation tests. Pairwise
+contrasts among field types should be ignored here because there is no
+replication.
+
+``` r
+(pcoa_amf_samps_fg <- pcoa_samps_fun(
+    s = spe$amf_samps_fg,
+    d = distab$amf_samps_fg,
+    env = sites %>% filter(region == "FG"),
+    corr = "lingoes",
+    df_name = "Faville Grove, 18S gene, 97% OTU"
+))
+```
+
+    ## $dataset
+    ## [1] "Faville Grove, 18S gene, 97% OTU"
+    ## 
+    ## $components_exceed_broken_stick
+    ## [1] 3
+    ## 
+    ## $correction_note
+    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.072582499789195 , except diagonal elements"
+    ## 
+    ## $values
+    ##   Dim Eigenvalues  Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig Cum_br_stick
+    ## 1   1   1.8313722 1.9039547   0.28165537   0.18672314    0.2816554    0.1867231
+    ## 2   2   0.9801062 1.0526887   0.15572609   0.13409156    0.4373815    0.3208147
+    ## 3   3   0.6790898 0.7516723   0.11119620   0.10777577    0.5485777    0.4285905
+    ## 4   4   0.4495900 0.5221725   0.07724589   0.09023191    0.6258236    0.5188224
+    ## 
+    ## $eigenvalues
+    ## [1] 28.2 15.6
+    ## 
+    ## $site_vectors
+    ## # A tibble: 21 × 9
+    ##    field_key sample_key Axis.1  Axis.2   Axis.3 field_name region field_type
+    ##        <dbl> <chr>       <dbl>   <dbl>    <dbl> <chr>      <chr>  <ord>     
+    ##  1         3 1           0.320 -0.0714  0.231   FGC1       FG     corn      
+    ##  2         3 2           0.419  0.0681  0.208   FGC1       FG     corn      
+    ##  3         3 4           0.388 -0.131   0.0223  FGC1       FG     corn      
+    ##  4         3 6           0.371 -0.127  -0.129   FGC1       FG     corn      
+    ##  5         3 7           0.410 -0.0548 -0.00536 FGC1       FG     corn      
+    ##  6         3 8           0.325 -0.130  -0.0713  FGC1       FG     corn      
+    ##  7         3 9           0.406 -0.0884 -0.0486  FGC1       FG     corn      
+    ##  8         4 1           0.136  0.154  -0.288   FGREM1     FG     remnant   
+    ##  9         4 2          -0.105  0.416   0.0809  FGREM1     FG     remnant   
+    ## 10         4 3          -0.248  0.345   0.251   FGREM1     FG     remnant   
+    ## # ℹ 11 more rows
+    ## # ℹ 1 more variable: yr_since <dbl>
+    ## 
+    ## $broken_stick_plot
+
+![](microbial_communities_files/figure-gfm/pcoa_amf_samps_fg-1.png)<!-- -->
+
+    ## 
+    ## $permanova
+    ## Permutation test for adonis under reduced model
+    ## Terms added sequentially (first to last)
+    ## Blocks:  region 
+    ## Plots: field_key, plot permutation: free
+    ## Permutation: none
+    ## Number of permutations: 5
+    ## 
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
+    ##            Df SumOfSqs      R2      F Pr(>F)
+    ## field_type  2   2.5358 0.47771 8.2319      1
+    ## Residual   18   2.7724 0.52229              
+    ## Total      20   5.3082 1.00000              
+    ## 
+    ## $pairwise_contrasts
+    ## 
+    ## 
+    ## group1    group2         R2   F_value   df1   df2   p_value   p_value_adj
+    ## --------  ---------  ------  --------  ----  ----  --------  ------------
+    ## corn      remnant     0.359     6.725     1    12         1             1
+    ## corn      restored    0.436     9.281     1    12         1             1
+    ## remnant   restored    0.326     5.798     1    12         1             1
+
+Field type is not significant here. Three significant axes.
+
+### PCoA in Fermilab, all subsamples
+
+This is as above with the diagnostics and permutation tests. Pairwise
+contrasts among field types should be ignored here because there is no
+replication.
+
+``` r
+(pcoa_amf_samps_fl <- pcoa_samps_fun(
+    s = spe$amf_samps_fl,
+    d = distab$amf_samps_fl,
+    env = sites %>% filter(region == "FL"),
+    corr = "lingoes",
+    df_name = "Fermilab, 18S gene, 97% OTU"
+))
+```
+
+    ## $dataset
+    ## [1] "Fermilab, 18S gene, 97% OTU"
+    ## 
+    ## $components_exceed_broken_stick
+    ## [1] 6
+    ## 
+    ## $correction_note
+    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.173298308036628 , except diagonal elements"
+    ## 
+    ## $values
+    ##   Dim Eigenvalues  Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig Cum_br_stick
+    ## 1   1   3.2356454 3.4089437   0.12145571   0.07698793    0.1214557   0.07698793
+    ## 2   2   2.2668925 2.4401908   0.08694045   0.06059449    0.2083962   0.13758242
+    ## 3   3   1.6955023 1.8688006   0.06658265   0.05239777    0.2749788   0.18998019
+    ## 4   4   1.3777785 1.5510768   0.05526261   0.04693329    0.3302414   0.23691348
+    ## 5   5   1.1819707 1.3552690   0.04828627   0.04283493    0.3785277   0.27974840
+    ## 6   6   0.9574540 1.1307523   0.04028706   0.03955624    0.4188148   0.31930464
+    ## 7   7   0.8013196 0.9746179   0.03472422   0.03682400    0.4535390   0.35612864
+    ## 
+    ## $eigenvalues
+    ## [1] 12.1  8.7
+    ## 
+    ## $site_vectors
+    ## # A tibble: 63 × 12
+    ##    field_key sample_key Axis.1  Axis.2  Axis.3  Axis.4  Axis.5  Axis.6
+    ##        <dbl> <chr>       <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
+    ##  1         6 2          -0.358  0.0293 -0.163   0.162   0.383   0.0120
+    ##  2         6 4          -0.284 -0.111   0.152   0.281   0.199  -0.0238
+    ##  3         6 5          -0.238  0.117   0.362   0.325  -0.0239  0.0802
+    ##  4         6 6          -0.197 -0.110   0.0111  0.177   0.317  -0.0957
+    ##  5         6 7          -0.255  0.133   0.266   0.336   0.118   0.101 
+    ##  6         6 8          -0.266 -0.0329  0.0109 -0.104  -0.0103  0.0397
+    ##  7         6 9          -0.409  0.110  -0.0797 -0.0243  0.0921  0.0434
+    ##  8         7 2          -0.266  0.416   0.251  -0.113  -0.116  -0.114 
+    ##  9         7 3          -0.323  0.322   0.0882 -0.211  -0.119  -0.232 
+    ## 10         7 4          -0.376  0.206  -0.0958 -0.0578 -0.120   0.160 
+    ## # ℹ 53 more rows
+    ## # ℹ 4 more variables: field_name <chr>, region <chr>, field_type <ord>,
+    ## #   yr_since <dbl>
+    ## 
+    ## $broken_stick_plot
+
+![](microbial_communities_files/figure-gfm/pcoa_amf_samps_fl-1.png)<!-- -->
+
+    ## 
+    ## $permanova
+    ## Permutation test for adonis under reduced model
+    ## Terms added sequentially (first to last)
+    ## Blocks:  region 
+    ## Plots: field_key, plot permutation: free
+    ## Permutation: none
+    ## Number of permutations: 1999
+    ## 
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
+    ##            Df SumOfSqs      R2     F Pr(>F)  
+    ## field_type  2   2.8077 0.16208 5.803 0.0455 *
+    ## Residual   60  14.5152 0.83792               
+    ## Total      62  17.3229 1.00000               
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $pairwise_contrasts
+    ## 
+    ## 
+    ## group1    group2         R2   F_value   df1   df2     p_value   p_value_adj
+    ## --------  ---------  ------  --------  ----  ----  ----------  ------------
+    ## corn      remnant     0.191     4.495     1    19   0.3333333        0.5000
+    ## corn      restored    0.101     6.039     1    54   0.0385000        0.1155
+    ## remnant   restored    0.034     1.640     1    47   0.7250000        0.7250
+
+Field type is again significant by permutation test. Six axes are
+significant.
+
+### PCoA in Lake Petite Prairie, all subsamples
+
+This is as above with the diagnostics and permutation tests. Pairwise
+contrasts among field types should be ignored here because there is no
+replication.
+
+``` r
+(pcoa_amf_samps_lp <- pcoa_samps_fun(
+    s = spe$amf_samps_lp,
+    d = distab$amf_samps_lp,
+    env = sites %>% filter(region == "LP"),
+    corr = "lingoes",
+    df_name = "Lake Petite Prairie, 18S gene, 97% OTU"
+))
+```
+
+    ## $dataset
+    ## [1] "Lake Petite Prairie, 18S gene, 97% OTU"
+    ## 
+    ## $components_exceed_broken_stick
+    ## [1] 3
+    ## 
+    ## $correction_note
+    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.0758563012088952 , except diagonal elements"
+    ## 
+    ## $values
+    ##   Dim Eigenvalues  Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig Cum_br_stick
+    ## 1   1   1.5755180 1.6513743   0.20781505   0.14824691    0.2078150    0.1482469
+    ## 2   2   1.0897542 1.1656105   0.14668474   0.10978537    0.3544998    0.2580323
+    ## 3   3   0.7207279 0.7965842   0.10024510   0.09055460    0.4547449    0.3485869
+    ## 4   4   0.5350710 0.6109274   0.07688136   0.07773409    0.5316262    0.4263210
+    ## 
+    ## $eigenvalues
+    ## [1] 20.8 14.7
+    ## 
+    ## $site_vectors
+    ## # A tibble: 28 × 9
+    ##    field_key sample_key  Axis.1  Axis.2  Axis.3 field_name region field_type
+    ##        <dbl> <chr>        <dbl>   <dbl>   <dbl> <chr>      <chr>  <ord>     
+    ##  1        16 1          -0.359   0.156   0.0245 LPC1       LP     corn      
+    ##  2        16 2          -0.116   0.239   0.0962 LPC1       LP     corn      
+    ##  3        16 4          -0.380   0.143   0.0358 LPC1       LP     corn      
+    ##  4        16 5          -0.273   0.105  -0.0209 LPC1       LP     corn      
+    ##  5        16 6          -0.342   0.189   0.0885 LPC1       LP     corn      
+    ##  6        16 7          -0.301   0.203   0.0511 LPC1       LP     corn      
+    ##  7        16 8          -0.311   0.171   0.0237 LPC1       LP     corn      
+    ##  8        17 1          -0.0873 -0.0934  0.146  LPREM1     LP     remnant   
+    ##  9        17 2           0.227   0.462  -0.175  LPREM1     LP     remnant   
+    ## 10        17 4           0.0428 -0.188  -0.0284 LPREM1     LP     remnant   
+    ## # ℹ 18 more rows
+    ## # ℹ 1 more variable: yr_since <dbl>
+    ## 
+    ## $broken_stick_plot
+
+![](microbial_communities_files/figure-gfm/pcoa_amf_samps_lp-1.png)<!-- -->
+
+    ## 
+    ## $permanova
+    ## Permutation test for adonis under reduced model
+    ## Terms added sequentially (first to last)
+    ## Blocks:  region 
+    ## Plots: field_key, plot permutation: free
+    ## Permutation: none
+    ## Number of permutations: 23
+    ## 
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
+    ##            Df SumOfSqs      R2     F Pr(>F)
+    ## field_type  2   1.5554 0.26371 4.477    0.5
+    ## Residual   25   4.3428 0.73629             
+    ## Total      27   5.8982 1.00000             
+    ## 
+    ## $pairwise_contrasts
+    ## 
+    ## 
+    ## group1    group2         R2   F_value   df1   df2     p_value   p_value_adj
+    ## --------  ---------  ------  --------  ----  ----  ----------  ------------
+    ## corn      remnant     0.286     4.805     1    12   1.0000000             1
+    ## corn      restored    0.252     6.387     1    19   0.3333333             1
+    ## remnant   restored    0.081     1.684     1    19   1.0000000             1
+
+Field type not significant with three important axes.
+
+Let’s view an ordination plot with hulls around subsamples for each
+indidual region.
+
+### PCoA ordination, all regions, all subsamples.
+
+``` r
+pcoa_amf_site_vectors <- bind_rows(
+    list(
+        `Blue Mounds`   = pcoa_amf_samps_bm$site_vectors,
+        `Faville Grove` = pcoa_amf_samps_fg$site_vectors,
+        `Fermilab`      = pcoa_amf_samps_fl$site_vectors,
+        `Lake Petite`   = pcoa_amf_samps_lp$site_vectors
+    ),
+    .id = "place"
+)
+pcoa_amf_eigenvalues <- bind_rows(
+    list(
+        `Blue Mounds`   = pcoa_amf_samps_bm$eigenvalues,
+        `Faville Grove` = pcoa_amf_samps_fg$eigenvalues,
+        `Fermilab`      = pcoa_amf_samps_fl$eigenvalues,
+        `Lake Petite`   = pcoa_amf_samps_lp$eigenvalues
+    ),
+    .id = "place"
+) %>% 
+    mutate(axis = c(1,2)) %>% 
+    pivot_longer(cols = 1:4, names_to = "place", values_to = "eigenvalue") %>% 
+    select(place, axis, eigenvalue) %>% 
+    arrange(place, axis) %>% 
+    pivot_wider(names_from = axis, names_prefix = "axis_", values_from = eigenvalue)
+centroid_regions_amf <- aggregate(cbind(Axis.1, Axis.2) ~ place + field_key, data = pcoa_amf_site_vectors, mean) %>% 
+    left_join(sites %>% select(field_key, yr_since, field_type, region), by = join_by(field_key))
+hull_regions_amf <- pcoa_amf_site_vectors %>% 
+    group_by(place, field_key) %>% 
+    slice(chull(Axis.1, Axis.2))
+```
+
+``` r
+ggplot(pcoa_amf_site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    facet_wrap(vars(place), scales = "free") +
+    geom_point(aes(fill = field_type), shape = 21) +
+    geom_polygon(data = hull_regions_amf, aes(group = field_key, fill = field_type), alpha = 0.3) +
+    geom_point(data = centroid_regions_amf, aes(fill = field_type, shape = region), size = 6) +
+    geom_text(data = centroid_regions_amf, aes(label = yr_since), size = 2.5) +
+    labs(
+        x = paste0("Axis 1"),
+        y = paste0("Axis 2"),
+        caption = "18S gene (AMF). Text indicates years since restoration."
+    ) +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
+    theme_bw() +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
+```
+
+    ## Warning: Removed 9 rows containing missing values (`geom_text()`).
+
+<img src="microbial_communities_files/figure-gfm/amf_samps_regions_fig-1.png" style="display: block; margin: auto;" />
+
+The eigenvalues are shown below:
+
+``` r
+kable(pcoa_amf_eigenvalues, format = "pandoc")
+```
+
+| place         | axis_1 | axis_2 |
+|:--------------|-------:|-------:|
+| Blue Mounds   |   15.1 |    9.4 |
+| Faville Grove |   28.2 |   15.6 |
+| Fermilab      |   12.1 |    8.7 |
+| Lake Petite   |   20.8 |   14.7 |
