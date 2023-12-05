@@ -30,7 +30,7 @@
 #' [O'Leary et al. 2021](https://link.springer.com/article/10.1007/s12237-021-00917-2).
 #' 
 #' # Packages and libraries
-packages_needed = c("tidyverse", "vegan", "colorspace", "ape", "knitr")
+packages_needed = c("tidyverse", "vegan", "colorspace", "ape", "knitr", "gridExtra")
 packages_installed = packages_needed %in% rownames(installed.packages())
 #+ packages,message=FALSE
 if (any(!packages_installed)) {
@@ -335,8 +335,8 @@ distab <- list(
 #' Let's view a plot with abundances of community subgroups inset.
 pcoa_its$ord <-
     ggplot(pcoa_its$site_vectors, aes(x = Axis.1, y = Axis.2)) +
-    geom_point(aes(fill = field_type, shape = region), size = 10) +
-    geom_text(aes(label = yr_since)) +
+    geom_point(aes(fill = field_type, shape = region), size = 8) +
+    geom_text(aes(label = yr_since), size = 4) +
     scale_fill_discrete_qualitative(palette = "harmonic") +
     scale_shape_manual(values = c(21, 22, 23, 24)) +
     labs(
@@ -519,11 +519,12 @@ hull_its <- pcoa_its_samps$site_vectors %>%
     group_by(field_key) %>% 
     slice(chull(Axis.1, Axis.2))
 #+ its_samps_fig,fig.align='center',message=FALSE
-ggplot(pcoa_its_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
-    geom_point(aes(fill = field_type), shape = 21) +
+its_samps_fig <- 
+    ggplot(pcoa_its_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_point(aes(fill = field_type), shape = 21, alpha = 0.8, color = "gray10") +
     geom_polygon(data = hull_its, aes(group = field_key, fill = field_type), alpha = 0.3) +
-    geom_point(data = centroid_its, aes(fill = field_type, shape = region), size = 8) +
-    geom_text(data = centroid_its, aes(label = yr_since)) +
+    geom_point(data = centroid_its, aes(fill = field_type, shape = region), size = 6) +
+    geom_text(data = centroid_its, aes(label = yr_since), size = 3) +
     labs(
         x = paste0("Axis 1 (", pcoa_its_samps$eigenvalues[1], "%)"),
         y = paste0("Axis 2 (", pcoa_its_samps$eigenvalues[2], "%)"),
@@ -534,10 +535,26 @@ ggplot(pcoa_its_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
         ),
         caption = "Text indicates years since restoration."
     ) +
+    lims(y = c(-0.35, 0.48)) +
     scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
     scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
+#+ its_samps_guilds_fig,fig.align='center'
+(its_samps_guilds_fig <- 
+    its_samps_fig +
+    annotation_custom(
+        ggplotGrob(
+            pcoa_its$inset + 
+                theme(
+            plot.background = element_rect(colour = "black", fill = "gray90"), 
+            axis.title.y = element_text(size = 8)
+        )),
+        xmin = -0.40,
+        xmax = -0.05,
+        ymin = 0.20,
+        ymax = 0.48
+    ))
 #' 
 #' #### PCoA in Blue Mounds, all subsamples
 #' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
@@ -622,11 +639,12 @@ hull_regions_its <- pcoa_its_site_vectors %>%
     group_by(place, field_key) %>% 
     slice(chull(Axis.1, Axis.2))
 #+ its_samps_regions_fig,fig.align='center',message=FALSE,warning=FALSE
-ggplot(pcoa_its_site_vectors, aes(x = Axis.1, y = Axis.2)) +
+(its_samps_regions_fig <- 
+    ggplot(pcoa_its_site_vectors, aes(x = Axis.1, y = Axis.2)) +
     facet_wrap(vars(place), scales = "free") +
-    geom_point(aes(fill = field_type), shape = 21) +
+    geom_point(aes(fill = field_type), shape = 21, alpha = 0.8, color = "gray10") +
     geom_polygon(data = hull_regions_its, aes(group = field_key, fill = field_type), alpha = 0.3) +
-    geom_point(data = centroid_regions_its, aes(fill = field_type, shape = region), size = 6) +
+    geom_point(data = centroid_regions_its, aes(fill = field_type, shape = region), size = 5) +
     geom_text(data = centroid_regions_its, aes(label = yr_since), size = 2.5) +
     labs(
         x = paste0("Axis 1"),
@@ -636,10 +654,20 @@ ggplot(pcoa_its_site_vectors, aes(x = Axis.1, y = Axis.2)) +
     scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
     scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
-    guides(fill = guide_legend(override.aes = list(shape = 21)))
+    guides(fill = guide_legend(override.aes = list(shape = 21))))
 #' The eigenvalues are shown below:
 #+ its_samps_regions_eigenvalues
-kable(pcoa_its_eigenvalues, format = "pandoc") 
+kable(pcoa_its_eigenvalues, format = "pandoc")
+write_csv(pcoa_its_eigenvalues, file = "microbial_communities_files/pcoa_its_eig.csv")
+#' 
+#' Let's view and save a plot that shows all the data together and broken out by regions.
+#+ its_samps_unified_fig,fig.height=10,fig.width=7,fig.align='center',message=FALSE,warning=FALSE
+grid.arrange(
+    its_samps_guilds_fig + labs(caption = ""), 
+    its_samps_regions_fig + theme(legend.position = "none"), 
+    ncol = 1,
+    heights = c(1.1,0.9)
+    )
 #' 
 #' ## 18S gene, OTU clustering
 #' ### PCoA with abundances summed in fields, Bray-Curtis distance
@@ -678,7 +706,7 @@ pcoa_amf_bray$inset <-
     group_by(family, field_type) %>% 
     summarize(avg_seq_abund = mean(seq_abund), .groups = "drop") %>% 
     ggplot(aes(x = family, y = avg_seq_abund)) +
-    geom_col(aes(fill = field_type)) +
+    geom_col(position = "dodge", aes(fill = field_type)) +
     labs(x = "",
          y = "Seq. abundance (avg)") +
     scale_fill_discrete_qualitative(palette = "Harmonic") +
@@ -687,16 +715,19 @@ pcoa_amf_bray$inset <-
     theme_classic() +
     theme(legend.position = "none")
 #+ amf_families_fig,fig.align='center'
-pcoa_amf_bray$ord +
+(amf_families_fig <- 
+    pcoa_amf_bray$ord +
     annotation_custom(
-        ggplotGrob(pcoa_amf_bray$inset + theme(
+        ggplotGrob(
+            pcoa_amf_bray$inset + 
+                theme(
             plot.background = element_rect(colour = "black", fill = "gray90")
         )),
         xmin = -0.63,
         xmax = -0.2,
         ymin = -0.32,
-        ymax = -0.04
-    )
+        ymax = -0.10
+    ))
 #'
 #' Community trajectories revealed in the ordination correlate with field type. 
 #' Corn fields stand well apart with AMF communities,
@@ -918,11 +949,12 @@ hull_amf <- pcoa_amf_samps$site_vectors %>%
     group_by(field_key) %>% 
     slice(chull(Axis.1, Axis.2))
 #+ amf_samps_fig,fig.align='center',message=FALSE
-ggplot(pcoa_amf_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
-    geom_point(aes(fill = field_type), shape = 21) +
+amf_samps_fig <- 
+    ggplot(pcoa_amf_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_point(aes(fill = field_type), shape = 21, alpha = 0.8, color = "gray10") +
     geom_polygon(data = hull_amf, aes(group = field_key, fill = field_type), alpha = 0.3) +
-    geom_point(data = centroid_amf, aes(fill = field_type, shape = region), size = 8) +
-    geom_text(data = centroid_amf, aes(label = yr_since)) +
+    geom_point(data = centroid_amf, aes(fill = field_type, shape = region), size = 6) +
+    geom_text(data = centroid_amf, aes(label = yr_since), size = 3) +
     labs(
         x = paste0("Axis 1 (", pcoa_amf_samps$eigenvalues[1], "%)"),
         y = paste0("Axis 2 (", pcoa_amf_samps$eigenvalues[2], "%)"),
@@ -937,6 +969,21 @@ ggplot(pcoa_amf_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
     scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
+#+ amf_samps_families_fig,fig.align='center'
+(amf_samps_families_fig <- 
+        amf_samps_fig +
+        annotation_custom(
+            ggplotGrob(
+                pcoa_amf_bray$inset + 
+                    theme(
+                        plot.background = element_rect(colour = "black", fill = "gray90"), 
+                        axis.title.y = element_text(size = 8)
+                    )),
+            xmin = -0.63,
+            xmax = -0.2,
+            ymin = -0.32,
+            ymax = -0.10
+        ))
 #' 
 #' ### PCoA in Blue Mounds, all subsamples
 #' This is as above with the diagnostics and permutation tests. Pairwise contrasts among field types
@@ -1023,11 +1070,12 @@ hull_regions_amf <- pcoa_amf_site_vectors %>%
     group_by(place, field_key) %>% 
     slice(chull(Axis.1, Axis.2))
 #+ amf_samps_regions_fig,fig.align='center',message=FALSE,warning=FALSE
-ggplot(pcoa_amf_site_vectors, aes(x = Axis.1, y = Axis.2)) +
+(amf_samps_regions_fig <- 
+    ggplot(pcoa_amf_site_vectors, aes(x = Axis.1, y = Axis.2)) +
     facet_wrap(vars(place), scales = "free") +
-    geom_point(aes(fill = field_type), shape = 21) +
+    geom_point(aes(fill = field_type), shape = 21, alpha = 0.8, color = "gray10") +
     geom_polygon(data = hull_regions_amf, aes(group = field_key, fill = field_type), alpha = 0.3) +
-    geom_point(data = centroid_regions_amf, aes(fill = field_type, shape = region), size = 6) +
+    geom_point(data = centroid_regions_amf, aes(fill = field_type, shape = region), size = 5) +
     geom_text(data = centroid_regions_amf, aes(label = yr_since), size = 2.5) +
     labs(
         x = paste0("Axis 1"),
@@ -1037,7 +1085,18 @@ ggplot(pcoa_amf_site_vectors, aes(x = Axis.1, y = Axis.2)) +
     scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
     scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
-    guides(fill = guide_legend(override.aes = list(shape = 21)))
+    guides(fill = guide_legend(override.aes = list(shape = 21))))
 #' The eigenvalues are shown below: 
 #+ amf_samps_regions_eigenvalues
 kable(pcoa_amf_eigenvalues, format = "pandoc")
+write_csv(pcoa_amf_eigenvalues, file = "microbial_communities_files/pcoa_amf_eig.csv")
+#' 
+#' Let's view and save a plot that shows all the data together and broken out by regions.
+#+ amf_samps_unified_fig,fig.height=10,fig.width=7,fig.align='center',message=FALSE,warning=FALSE
+grid.arrange(
+    amf_families_fig + labs(caption = ""), 
+    amf_samps_regions_fig + theme(legend.position = "none"), 
+    ncol = 1,
+    heights = c(1.1,0.9)
+)
+#' 
