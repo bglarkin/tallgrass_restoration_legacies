@@ -27,7 +27,7 @@ Last updated: 05 December, 2023
     - [PCoA in Lake Petite Prairie, all
       subsamples](#pcoa-in-lake-petite-prairie-all-subsamples)
     - [PCoA ordination, all regions, all
-      subsamples.](#pcoa-ordination-all-regions-all-subsamples)
+      subsamples](#pcoa-ordination-all-regions-all-subsamples)
   - [18S gene, OTU clustering](#18s-gene-otu-clustering)
     - [PCoA with abundances summed in fields, Bray-Curtis
       distance](#pcoa-with-abundances-summed-in-fields-bray-curtis-distance)
@@ -46,7 +46,7 @@ Last updated: 05 December, 2023
     - [PCoA in Lake Petite Prairie, all
       subsamples](#pcoa-in-lake-petite-prairie-all-subsamples-1)
     - [PCoA ordination, all regions, all
-      subsamples.](#pcoa-ordination-all-regions-all-subsamples-1)
+      subsamples](#pcoa-ordination-all-regions-all-subsamples-1)
 
 # Description
 
@@ -491,7 +491,7 @@ correction is needed for these ordinations.
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
     ## restored   corn       0.156     3.524     1    19   0.0005000        0.0015
-    ## restored   remnant    0.055     1.052     1    18   0.1390000        0.1390
+    ## restored   remnant    0.055     1.052     1    18   0.1350000        0.1350
     ## corn       remnant    0.289     2.850     1     7   0.0416667        0.0625
 
 Axis 1 explains 18.7% of the variation and is the only eigenvalue that
@@ -719,7 +719,7 @@ correction is needed for these ordinations.
     ## ***VECTORS
     ## 
     ##             Axis.1    Axis.2    r2 Pr(>r)  
-    ## yr_since -0.997420  0.071762 0.725 0.0225 *
+    ## yr_since -0.997420  0.071762 0.725  0.025 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -746,7 +746,7 @@ squares that is outside the assignment of subsamples to fields.
 Years since restoration has a moderately strong correlation with
 communities and was significant with a permutation test where samples
 were constrained within fields to account for lack of independence \#’
-$(R^2=0.72,~p=0.02)$.
+$(R^2=0.72,~p=0.03)$.
 
 Let’s view an ordination plot with hulls around subsamples and a fitted
 vector for field age overlaid.
@@ -867,7 +867,7 @@ correction was applied.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
     ##             Df SumOfSqs      R2      F Pr(>F)    
-    ## field_type   2    5.790 0.08144 8.7335  0.001 ***
+    ## field_type   2    5.790 0.08144 8.7335  5e-04 ***
     ## Residual   197   65.303 0.91856                  
     ## Total      199   71.094 1.00000                  
     ## ---
@@ -879,8 +879,8 @@ correction was applied.
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
     ## restored   corn       0.066    11.791     1   166   0.0015000        0.0045
-    ## restored   remnant    0.018     2.835     1   158   0.2120000        0.2120
-    ## corn       remnant    0.135    10.946     1    70   0.1428571        0.2120
+    ## restored   remnant    0.018     2.835     1   158   0.1935000        0.1935
+    ## corn       remnant    0.135    10.946     1    70   0.1428571        0.1935
 
 Axis 1 explains 8.2% and axis 2 explains 5% of the variation in the
 community data. Both axes are important based on the broken stick model,
@@ -890,7 +890,7 @@ variation explained on axes 1 and 2 is partly due to the high number of
 dimensions used when all samples from fields are included. The fidelity
 of samples to fields was strong based on a permutation test when
 restricting permutations to fields (=plots in `how()`) within regions
-(=blocks in `how()`) $(R^2=0.08,~p=0.001)$.
+(=blocks in `how()`) $(R^2=0.08,~p=5\times 10^{-4})$.
 
 Let’s view an ordination plot with hulls around subsamples.
 
@@ -905,6 +905,8 @@ hull_its <- pcoa_its_samps$site_vectors %>%
 ``` r
 its_samps_fig <- 
     ggplot(pcoa_its_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_vline(xintercept = 0, linewidth = 0.1) +
+    geom_hline(yintercept = 0, linewidth = 0.1) +
     geom_point(aes(fill = field_type), shape = 21, alpha = 0.8, color = "gray10") +
     geom_polygon(data = hull_its, aes(group = field_key, fill = field_type), alpha = 0.3) +
     geom_point(data = centroid_its, aes(fill = field_type, shape = region), size = 6) +
@@ -1016,7 +1018,7 @@ replication.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
     ##            Df SumOfSqs      R2      F Pr(>F)  
-    ## field_type  2   3.0623 0.11984 4.6975  0.032 *
+    ## field_type  2   3.0623 0.11984 4.6975  0.023 *
     ## Residual   69  22.4900 0.88016                
     ## Total      71  25.5523 1.00000                
     ## ---
@@ -1027,9 +1029,9 @@ replication.
     ## 
     ## group1     group2        R2   F_value   df1   df2   p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  --------  ------------
-    ## restored   remnant    0.068     4.522     1    62     0.129        0.1935
-    ## restored   corn       0.069     4.602     1    62     0.120        0.1935
-    ## remnant    corn       0.301     6.016     1    14     1.000        1.0000
+    ## restored   remnant    0.068     4.522     1    62    0.1335       0.20025
+    ## restored   corn       0.069     4.602     1    62    0.1260       0.20025
+    ## remnant    corn       0.301     6.016     1    14    1.0000       1.00000
 
 Field type remains significant.
 
@@ -1178,7 +1180,7 @@ replication.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
     ##            Df SumOfSqs      R2      F Pr(>F)  
-    ## field_type  2   4.1654 0.17625 7.3814 0.0175 *
+    ## field_type  2   4.1654 0.17625 7.3814  0.017 *
     ## Residual   69  19.4688 0.82375                
     ## Total      71  23.6343 1.00000                
     ## ---
@@ -1190,8 +1192,8 @@ replication.
     ## group1    group2         R2   F_value   df1   df2     p_value   p_value_adj
     ## --------  ---------  ------  --------  ----  ----  ----------  ------------
     ## corn      remnant     0.244     7.092     1    22   0.3333333        0.5000
-    ## corn      restored    0.158    11.665     1    62   0.0280000        0.0840
-    ## remnant   restored    0.046     2.613     1    54   0.5625000        0.5625
+    ## corn      restored    0.158    11.665     1    62   0.0300000        0.0900
+    ## remnant   restored    0.046     2.613     1    54   0.5795000        0.5795
 
 Field type is again significant by permutation test.
 
@@ -1278,7 +1280,7 @@ replication.
 Let’s view an ordination plot with hulls around subsamples for each
 indidual region.
 
-### PCoA ordination, all regions, all subsamples.
+### PCoA ordination, all regions, all subsamples
 
 ``` r
 pcoa_its_site_vectors <- bind_rows(
@@ -1315,6 +1317,8 @@ hull_regions_its <- pcoa_its_site_vectors %>%
 (its_samps_regions_fig <- 
     ggplot(pcoa_its_site_vectors, aes(x = Axis.1, y = Axis.2)) +
     facet_wrap(vars(place), scales = "free") +
+    geom_vline(xintercept = 0, linewidth = 0.1) +
+    geom_hline(yintercept = 0, linewidth = 0.1) +
     geom_point(aes(fill = field_type), shape = 21, alpha = 0.8, color = "gray10") +
     geom_polygon(data = hull_regions_its, aes(group = field_key, fill = field_type), alpha = 0.3) +
     geom_point(data = centroid_regions_its, aes(fill = field_type, shape = region), size = 5) +
@@ -1357,7 +1361,7 @@ grid.arrange(
     its_samps_guilds_fig + labs(caption = ""), 
     its_samps_regions_fig + theme(legend.position = "none"), 
     ncol = 1,
-    heights = c(1.2,0.8)
+    heights = c(1.1,0.9)
     )
 ```
 
@@ -1483,7 +1487,7 @@ No negative eigenvalues produced, no correction applied.
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
     ## restored   corn       0.254     6.474     1    19   0.0005000        0.0015
-    ## restored   remnant    0.023     0.422     1    18   0.9665000        0.9665
+    ## restored   remnant    0.023     0.422     1    18   0.9690000        0.9690
     ## corn       remnant    0.382     4.324     1     7   0.0416667        0.0625
 
 Four axes are significant by a broken stick model, between them
@@ -1518,7 +1522,7 @@ pcoa_amf_bray$inset <-
     group_by(family, field_type) %>% 
     summarize(avg_seq_abund = mean(seq_abund), .groups = "drop") %>% 
     ggplot(aes(x = family, y = avg_seq_abund)) +
-    geom_col(aes(fill = field_type)) +
+    geom_col(position = "dodge", aes(fill = field_type)) +
     labs(x = "",
          y = "Seq. abundance (avg)") +
     scale_fill_discrete_qualitative(palette = "Harmonic") +
@@ -1529,16 +1533,19 @@ pcoa_amf_bray$inset <-
 ```
 
 ``` r
-pcoa_amf_bray$ord +
+(amf_families_fig <- 
+    pcoa_amf_bray$ord +
     annotation_custom(
-        ggplotGrob(pcoa_amf_bray$inset + theme(
+        ggplotGrob(
+            pcoa_amf_bray$inset + 
+                theme(
             plot.background = element_rect(colour = "black", fill = "gray90")
         )),
         xmin = -0.63,
         xmax = -0.2,
         ymin = -0.32,
-        ymax = -0.04
-    )
+        ymax = -0.10
+    ))
 ```
 
     ## Warning: Removed 9 rows containing missing values (`geom_text()`).
@@ -1714,7 +1721,7 @@ relationship $(R^2_{Adj}=0.56,~p<0.005)$
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, add = if (corr == "none") FALSE else "lingoes", strata = region)
     ##            Df SumOfSqs     R2      F Pr(>F)   
-    ## field_type  2  0.06937 0.1657 2.1847 0.0025 **
+    ## field_type  2  0.06937 0.1657 2.1847 0.0015 **
     ## Residual   22  0.34929 0.8343                 
     ## Total      24  0.41866 1.0000                 
     ## ---
@@ -1725,8 +1732,8 @@ relationship $(R^2_{Adj}=0.56,~p<0.005)$
     ## 
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
-    ## restored   corn       0.240     5.989     1    19   0.0015000        0.0045
-    ## restored   remnant    0.025     0.467     1    18   0.9720000        0.9720
+    ## restored   corn       0.240     5.989     1    19   0.0020000        0.0060
+    ## restored   remnant    0.025     0.467     1    18   0.9750000        0.9750
     ## corn       remnant    0.382     4.324     1     7   0.0416667        0.0625
 
 Three axes are significant by a broken stick model, between them
@@ -1951,7 +1958,7 @@ negative eigenvalues.
     ## ***VECTORS
     ## 
     ##            Axis.1   Axis.2   Axis.3   Axis.4   Axis.5     r2 Pr(>r)  
-    ## yr_since -0.84928  0.37660 -0.19661  0.19812  0.24287 0.7715  0.018 *
+    ## yr_since -0.84928  0.37660 -0.19661  0.19812  0.24287 0.7715  0.016 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -2112,7 +2119,7 @@ correction was applied.
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
     ## restored   corn       0.056     8.657     1   145   0.0010000     0.0030000
-    ## restored   remnant    0.008     1.052     1   138   0.9975000     0.9975000
+    ## restored   remnant    0.008     1.052     1   138   0.9965000     0.9965000
     ## corn       remnant    0.111     7.636     1    61   0.1020408     0.1530612
 
 Axis 1 explains 7.1% and axis 2 explains 5% of the variation in the
@@ -2136,11 +2143,14 @@ hull_amf <- pcoa_amf_samps$site_vectors %>%
 ```
 
 ``` r
-ggplot(pcoa_amf_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
-    geom_point(aes(fill = field_type), shape = 21) +
+amf_samps_fig <- 
+    ggplot(pcoa_amf_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_vline(xintercept = 0, linewidth = 0.1) +
+    geom_hline(yintercept = 0, linewidth = 0.1) +
+    geom_point(aes(fill = field_type), shape = 21, alpha = 0.8, color = "gray10") +
     geom_polygon(data = hull_amf, aes(group = field_key, fill = field_type), alpha = 0.3) +
-    geom_point(data = centroid_amf, aes(fill = field_type, shape = region), size = 8) +
-    geom_text(data = centroid_amf, aes(label = yr_since)) +
+    geom_point(data = centroid_amf, aes(fill = field_type, shape = region), size = 6) +
+    geom_text(data = centroid_amf, aes(label = yr_since), size = 3) +
     labs(
         x = paste0("Axis 1 (", pcoa_amf_samps$eigenvalues[1], "%)"),
         y = paste0("Axis 2 (", pcoa_amf_samps$eigenvalues[2], "%)"),
@@ -2151,15 +2161,33 @@ ggplot(pcoa_amf_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
         ),
         caption = "Text indicates years since restoration."
     ) +
+    lims(y = c(-0.58,0.34)) +
     scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
     scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
 ```
 
+``` r
+(amf_samps_families_fig <- 
+        amf_samps_fig +
+        annotation_custom(
+            ggplotGrob(
+                pcoa_amf_bray$inset + 
+                    theme(
+                        plot.background = element_rect(colour = "black", fill = "gray90"), 
+                        axis.title.y = element_text(size = 8)
+                    )),
+            xmin = -0.52,
+            xmax = -0.18,
+            ymin = -0.60,
+            ymax = -0.32
+        ))
+```
+
     ## Warning: Removed 9 rows containing missing values (`geom_text()`).
 
-<img src="microbial_communities_files/figure-gfm/amf_samps_fig-1.png" style="display: block; margin: auto;" />
+<img src="microbial_communities_files/figure-gfm/amf_samps_families_fig-1.png" style="display: block; margin: auto;" />
 
 ### PCoA in Blue Mounds, all subsamples
 
@@ -2229,7 +2257,7 @@ replication.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
     ##            Df SumOfSqs      R2      F Pr(>F)  
-    ## field_type  2   2.8261 0.17037 6.1608 0.0935 .
+    ## field_type  2   2.8261 0.17037 6.1608   0.08 .
     ## Residual   60  13.7616 0.82963                
     ## Total      62  16.5876 1.00000                
     ## ---
@@ -2240,9 +2268,9 @@ replication.
     ## 
     ## group1     group2        R2   F_value   df1   df2   p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  --------  ------------
-    ## restored   remnant    0.053     3.017     1    54     0.371        0.5565
-    ## restored   corn       0.085     5.001     1    54     0.133        0.3990
-    ## remnant    corn       0.466    10.454     1    12     1.000        1.0000
+    ## restored   remnant    0.053     3.017     1    54    0.3695       0.55425
+    ## restored   corn       0.085     5.001     1    54    0.1235       0.37050
+    ## remnant    corn       0.466    10.454     1    12    1.0000       1.00000
 
 Field type trends significant. Four axes significant.
 
@@ -2399,7 +2427,7 @@ replication.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
     ##            Df SumOfSqs      R2     F Pr(>F)  
-    ## field_type  2   2.8077 0.16208 5.803 0.0405 *
+    ## field_type  2   2.8077 0.16208 5.803 0.0445 *
     ## Residual   60  14.5152 0.83792               
     ## Total      62  17.3229 1.00000               
     ## ---
@@ -2411,8 +2439,8 @@ replication.
     ## group1    group2         R2   F_value   df1   df2     p_value   p_value_adj
     ## --------  ---------  ------  --------  ----  ----  ----------  ------------
     ## corn      remnant     0.191     4.495     1    19   0.3333333        0.5000
-    ## corn      restored    0.101     6.039     1    54   0.0305000        0.0915
-    ## remnant   restored    0.034     1.640     1    47   0.7225000        0.7225
+    ## corn      restored    0.101     6.039     1    54   0.0365000        0.1095
+    ## remnant   restored    0.034     1.640     1    47   0.7175000        0.7175
 
 Field type is again significant by permutation test. Six axes are
 significant.
@@ -2502,7 +2530,7 @@ Field type not significant with three important axes.
 Let’s view an ordination plot with hulls around subsamples for each
 indidual region.
 
-### PCoA ordination, all regions, all subsamples.
+### PCoA ordination, all regions, all subsamples
 
 ``` r
 pcoa_amf_site_vectors <- bind_rows(
@@ -2536,11 +2564,14 @@ hull_regions_amf <- pcoa_amf_site_vectors %>%
 ```
 
 ``` r
-ggplot(pcoa_amf_site_vectors, aes(x = Axis.1, y = Axis.2)) +
+(amf_samps_regions_fig <- 
+    ggplot(pcoa_amf_site_vectors, aes(x = Axis.1, y = Axis.2)) +
     facet_wrap(vars(place), scales = "free") +
-    geom_point(aes(fill = field_type), shape = 21) +
+    geom_vline(xintercept = 0, linewidth = 0.1) +
+    geom_hline(yintercept = 0, linewidth = 0.1) +
+    geom_point(aes(fill = field_type), shape = 21, alpha = 0.8, color = "gray10") +
     geom_polygon(data = hull_regions_amf, aes(group = field_key, fill = field_type), alpha = 0.3) +
-    geom_point(data = centroid_regions_amf, aes(fill = field_type, shape = region), size = 6) +
+    geom_point(data = centroid_regions_amf, aes(fill = field_type, shape = region), size = 5) +
     geom_text(data = centroid_regions_amf, aes(label = yr_since), size = 2.5) +
     labs(
         x = paste0("Axis 1"),
@@ -2550,7 +2581,7 @@ ggplot(pcoa_amf_site_vectors, aes(x = Axis.1, y = Axis.2)) +
     scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
     scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
-    guides(fill = guide_legend(override.aes = list(shape = 21)))
+    guides(fill = guide_legend(override.aes = list(shape = 21))))
 ```
 
 <img src="microbial_communities_files/figure-gfm/amf_samps_regions_fig-1.png" style="display: block; margin: auto;" />
@@ -2567,3 +2598,21 @@ kable(pcoa_amf_eigenvalues, format = "pandoc")
 | Faville Grove |   28.2 |   15.6 |
 | Fermilab      |   12.1 |    8.7 |
 | Lake Petite   |   20.8 |   14.7 |
+
+``` r
+write_csv(pcoa_amf_eigenvalues, file = "microbial_communities_files/pcoa_amf_eig.csv")
+```
+
+Let’s view and save a plot that shows all the data together and broken
+out by regions.
+
+``` r
+grid.arrange(
+    amf_samps_families_fig + labs(caption = ""), 
+    amf_samps_regions_fig + theme(legend.position = "none"), 
+    ncol = 1,
+    heights = c(1.1,0.9)
+)
+```
+
+<img src="microbial_communities_files/figure-gfm/amf_samps_unified_fig-1.png" style="display: block; margin: auto;" />

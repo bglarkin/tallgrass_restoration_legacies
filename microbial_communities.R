@@ -521,6 +521,8 @@ hull_its <- pcoa_its_samps$site_vectors %>%
 #+ its_samps_fig,fig.align='center',message=FALSE
 its_samps_fig <- 
     ggplot(pcoa_its_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_vline(xintercept = 0, linewidth = 0.1) +
+    geom_hline(yintercept = 0, linewidth = 0.1) +
     geom_point(aes(fill = field_type), shape = 21, alpha = 0.8, color = "gray10") +
     geom_polygon(data = hull_its, aes(group = field_key, fill = field_type), alpha = 0.3) +
     geom_point(data = centroid_its, aes(fill = field_type, shape = region), size = 6) +
@@ -608,7 +610,7 @@ its_samps_fig <-
 ))
 #' Let's view an ordination plot with hulls around subsamples for each indidual region.  
 #' 
-#' ### PCoA ordination, all regions, all subsamples.
+#' ### PCoA ordination, all regions, all subsamples
 #+ its_samps_regions_plotdata
 pcoa_its_site_vectors <- bind_rows(
     list(
@@ -642,6 +644,8 @@ hull_regions_its <- pcoa_its_site_vectors %>%
 (its_samps_regions_fig <- 
     ggplot(pcoa_its_site_vectors, aes(x = Axis.1, y = Axis.2)) +
     facet_wrap(vars(place), scales = "free") +
+    geom_vline(xintercept = 0, linewidth = 0.1) +
+    geom_hline(yintercept = 0, linewidth = 0.1) +
     geom_point(aes(fill = field_type), shape = 21, alpha = 0.8, color = "gray10") +
     geom_polygon(data = hull_regions_its, aes(group = field_key, fill = field_type), alpha = 0.3) +
     geom_point(data = centroid_regions_its, aes(fill = field_type, shape = region), size = 5) +
@@ -951,6 +955,8 @@ hull_amf <- pcoa_amf_samps$site_vectors %>%
 #+ amf_samps_fig,fig.align='center',message=FALSE
 amf_samps_fig <- 
     ggplot(pcoa_amf_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    geom_vline(xintercept = 0, linewidth = 0.1) +
+    geom_hline(yintercept = 0, linewidth = 0.1) +
     geom_point(aes(fill = field_type), shape = 21, alpha = 0.8, color = "gray10") +
     geom_polygon(data = hull_amf, aes(group = field_key, fill = field_type), alpha = 0.3) +
     geom_point(data = centroid_amf, aes(fill = field_type, shape = region), size = 6) +
@@ -965,6 +971,7 @@ amf_samps_fig <-
         ),
         caption = "Text indicates years since restoration."
     ) +
+    lims(y = c(-0.58,0.34)) +
     scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
     scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
@@ -979,10 +986,10 @@ amf_samps_fig <-
                         plot.background = element_rect(colour = "black", fill = "gray90"), 
                         axis.title.y = element_text(size = 8)
                     )),
-            xmin = -0.63,
-            xmax = -0.2,
-            ymin = -0.32,
-            ymax = -0.10
+            xmin = -0.52,
+            xmax = -0.18,
+            ymin = -0.60,
+            ymax = -0.32
         ))
 #' 
 #' ### PCoA in Blue Mounds, all subsamples
@@ -1039,7 +1046,7 @@ amf_samps_fig <-
 #' 
 #' Let's view an ordination plot with hulls around subsamples for each indidual region.  
 #' 
-#' ### PCoA ordination, all regions, all subsamples.
+#' ### PCoA ordination, all regions, all subsamples
 #+ amf_samps_regions_plotdata
 pcoa_amf_site_vectors <- bind_rows(
     list(
@@ -1073,6 +1080,8 @@ hull_regions_amf <- pcoa_amf_site_vectors %>%
 (amf_samps_regions_fig <- 
     ggplot(pcoa_amf_site_vectors, aes(x = Axis.1, y = Axis.2)) +
     facet_wrap(vars(place), scales = "free") +
+    geom_vline(xintercept = 0, linewidth = 0.1) +
+    geom_hline(yintercept = 0, linewidth = 0.1) +
     geom_point(aes(fill = field_type), shape = 21, alpha = 0.8, color = "gray10") +
     geom_polygon(data = hull_regions_amf, aes(group = field_key, fill = field_type), alpha = 0.3) +
     geom_point(data = centroid_regions_amf, aes(fill = field_type, shape = region), size = 5) +
@@ -1094,7 +1103,7 @@ write_csv(pcoa_amf_eigenvalues, file = "microbial_communities_files/pcoa_amf_eig
 #' Let's view and save a plot that shows all the data together and broken out by regions.
 #+ amf_samps_unified_fig,fig.height=10,fig.width=7,fig.align='center',message=FALSE,warning=FALSE
 grid.arrange(
-    amf_families_fig + labs(caption = ""), 
+    amf_samps_families_fig + labs(caption = ""), 
     amf_samps_regions_fig + theme(legend.position = "none"), 
     ncol = 1,
     heights = c(1.1,0.9)
