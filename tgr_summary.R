@@ -53,7 +53,7 @@ sites <-
 #' The survey followed an unbalanced complete block design. Corn, restored, and remnant fields are compared, with 
 #' at least one of each field type in each block. I have called blocks "regions" so far.
 #' We collected samples and data from four regions, shown on the map below.  
-#+ site_map,echo=FALSE,fig.align='center',out.width="100%",fig.cap="\\label{fig:images}Labels show centroids of regions used for this work. BM = Blue Mounds, FG = Faville Grove, FL = Fermilab, LP = Lake Petite."
+#+ site_map,echo=FALSE,fig.align='center',out.width="100%",fig.cap="\\label{fig:}Labels show centroids of regions used for this work. BM = Blue Mounds, FG = Faville Grove, FL = Fermilab, LP = Lake Petite."
 include_graphics("site_locations_files/figure-gfm/site_map-1.png")
 #' 
 #' The design is unbalanced because there are more restored fields than corn or remnant. In all but one case,
@@ -68,7 +68,7 @@ kable(table(sites$region, sites$field_type),
 #' seven restored fields in a small geographic area, the Blue Mounds fields are our best bet for this, but we will likely 
 #' have to call this a "pseudochronosequence" and avoid some inferences. Mantel tests (not shown) failed to find correlations 
 #' between soil variables and pairwise distance, giving us a little confidence that we're avoiding systemic bias. 
-#+ site_map_bm,echo=FALSE,fig.align='center',out.width="100%",fig.cap="\\label{fig:images}Labels show individual fields in the Blue Mounds region."
+#+ site_map_bm,echo=FALSE,fig.align='center',out.width="100%",fig.cap="\\label{fig:}Labels show individual fields in the Blue Mounds region."
 include_graphics("site_locations_files/figure-gfm/site_map_bm-1.png")
 #' 
 #' ## Fungal communities
@@ -90,15 +90,15 @@ include_graphics("site_locations_files/figure-gfm/site_map_bm-1.png")
 #' 
 #' This process didn't remove many OTUs and doesn't change any major interpretation. 
 #' 
-#+ its_rarefaction_pre,echo=FALSE,fig.align='center',out.width="30%",fig.cap="\\label{fig:images}Pre"
+#+ its_rarefaction_pre,echo=FALSE,fig.align='center',out.width="30%",fig.cap="\\label{fig:}Pre"
 include_graphics("microbial_diagnostics_pre_files/figure-gfm/its_rarefaction_curve_fig-1.png")
-#+ its_rarefaction_post,echo=FALSE,fig.align='center',out.width="30%",fig.cap="\\label{fig:images}Post"
+#+ its_rarefaction_post,echo=FALSE,fig.align='center',out.width="30%",fig.cap="\\label{fig:}Post"
 include_graphics("microbial_diagnostics_post_files/figure-gfm/its_rarefaction_curve_fig-1.png")
 #' 
 #' Even after this process, it's clear that fungal communities were undersampled. 
-#+ its_accum,echo=FALSE,fig.align='center',out.width="100%",fig.cap="\\label{fig:images}ITS"
+#+ its_accum,echo=FALSE,fig.align='center',out.width="100%",fig.cap="\\label{fig:}ITS"
 include_graphics("microbial_diagnostics_post_files/figure-gfm/its_species_accumulation_fig-1.png")
-#+ amf_accum,echo=FALSE,fig.align='center',out.width="100%",fig.cap="\\label{fig:images}18S"
+#+ amf_accum,echo=FALSE,fig.align='center',out.width="100%",fig.cap="\\label{fig:}18S"
 include_graphics("microbial_diagnostics_post_files/figure-gfm/amf_species_accumulation_fig-1.png")
 #' 
 #' ## Plant data
@@ -134,3 +134,18 @@ include_graphics("microbial_diagnostics_post_files/figure-gfm/amf_species_accumu
 #' 
 #' # Results
 #' 
+
+#+ its_pcoa_unified_fig,echo=FALSE,fig.align='center',out.width="40%",fig.cap="\\label{fig:}ITS-based fungal communities, most abundant guilds inset."
+include_graphics("microbial_communities_files/figure-gfm/its_samps_unified_fig-1.png")
+
+
+#+ its_regional_eig
+# kable(read_csv("microbial_communities_files/pcoa_its_eig.csv", show_col_types = FALSE), format = "pandoc", caption = "Axis percentages for regional\nPCoAs, ITS communities")
+
+
+
+#+ amf_pcoa_unified_fig,echo=FALSE,fig.align='center',out.width="40%",fig.cap="\\label{fig:}18S-based fungal communities, most important families inset."
+include_graphics("microbial_communities_files/figure-gfm/amf_samps_unified_fig-1.png")
+
+
+

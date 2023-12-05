@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.1)  5 DEC 2023 10:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.1)  5 DEC 2023 15:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -280,7 +280,7 @@ Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
 ) (/Users/blarkin/Library/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty
 Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
 (/Users/blarkin/Library/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
-Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
+Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
 ) (/Users/blarkin/Library/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
 Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
 Package pdftexcmds Info: \pdf@primitive is available.
@@ -384,19 +384,25 @@ File: l3backend-pdftex.def 2023-11-09 L3 backend support: PDF output (pdfTeX)
 \l__pdf_internal_box=\box62
 ) (./tgr_summary.aux
 
-LaTeX Warning: Label `fig:images' multiply defined.
+LaTeX Warning: Label `fig:' multiply defined.
 
 
-LaTeX Warning: Label `fig:images' multiply defined.
+LaTeX Warning: Label `fig:' multiply defined.
 
 
-LaTeX Warning: Label `fig:images' multiply defined.
+LaTeX Warning: Label `fig:' multiply defined.
 
 
-LaTeX Warning: Label `fig:images' multiply defined.
+LaTeX Warning: Label `fig:' multiply defined.
 
 
-LaTeX Warning: Label `fig:images' multiply defined.
+LaTeX Warning: Label `fig:' multiply defined.
+
+
+LaTeX Warning: Label `fig:' multiply defined.
+
+
+LaTeX Warning: Label `fig:' multiply defined.
 
 )
 \openout1 = `tgr_summary.aux'.
@@ -547,7 +553,18 @@ Package pdftex.def Info: microbial_diagnostics_post_files/figure-gfm/amf_species
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 357.
 (/Users/blarkin/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [3{/Users/blarkin/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}] [4 <./site_locations_files/figure-gfm/site_map-1.png>] [5 <./site_locations_files/figure-gfm/site_map_bm-1.png>] [6 <./microbial_diagnostics_pre_files/figure-gfm/its_rarefaction_curve_fig-1.png> <./microbial_diagnostics_post_files/figure-gfm/its_rarefaction_curve_fig-1.png>] [7 <./microbial_diagnostics_post_files/figure-gfm/its_species_accumulation_fig-1.png> <./microbial_diagnostics_post_files/figure-gfm/amf_species_accumulation_fig-1.png>] [8] (./tgr_summary.aux)
+) [3{/Users/blarkin/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}] [4 <./site_locations_files/figure-gfm/site_map-1.png>] [5 <./site_locations_files/figure-gfm/site_map_bm-1.png>] [6 <./microbial_diagnostics_pre_files/figure-gfm/its_rarefaction_curve_fig-1.png> <./microbial_diagnostics_post_files/figure-gfm/its_rarefaction_curve_fig-1.png>] [7 <./microbial_diagnostics_post_files/figure-gfm/its_species_accumulation_fig-1.png> <./microbial_diagnostics_post_files/figure-gfm/amf_species_accumulation_fig-1.png>]
+<microbial_communities_files/figure-gfm/its_samps_unified_fig-1.png, id=128, 674.52pt x 963.6pt>
+File: microbial_communities_files/figure-gfm/its_samps_unified_fig-1.png Graphic file (type png)
+<use microbial_communities_files/figure-gfm/its_samps_unified_fig-1.png>
+Package pdftex.def Info: microbial_communities_files/figure-gfm/its_samps_unified_fig-1.png  used on input line 395.
+(pdftex.def)             Requested size: 187.89684pt x 268.42404pt.
+<microbial_communities_files/figure-gfm/amf_samps_unified_fig-1.png, id=129, 674.52pt x 963.6pt>
+File: microbial_communities_files/figure-gfm/amf_samps_unified_fig-1.png Graphic file (type png)
+<use microbial_communities_files/figure-gfm/amf_samps_unified_fig-1.png>
+Package pdftex.def Info: microbial_communities_files/figure-gfm/amf_samps_unified_fig-1.png  used on input line 410.
+(pdftex.def)             Requested size: 187.89684pt x 268.42404pt.
+[8 <./microbial_communities_files/figure-gfm/its_samps_unified_fig-1.png>] [9 <./microbial_communities_files/figure-gfm/amf_samps_unified_fig-1.png>] (./tgr_summary.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
@@ -559,18 +576,18 @@ Package rerunfilecheck Info: File `tgr_summary.out' has not changed.
 (rerunfilecheck)             Checksum: D12096879F88380450A7CC611F8A98A5;1241.
  ) 
 Here is how much of TeX's memory you used:
- 11746 strings out of 476227
- 184706 string characters out of 5795867
+ 11775 strings out of 476227
+ 186379 string characters out of 5795867
  1936555 words of memory out of 5000000
- 33467 multiletter control sequences out of 15000+600000
- 605119 words of font info for 78 fonts, out of 8000000 for 9000
+ 33492 multiletter control sequences out of 15000+600000
+ 605438 words of font info for 79 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  75i,6n,79p,374b,555s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</Users/blarkin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/blarkin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/blarkin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/blarkin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/blarkin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/blarkin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></Users/blarkin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on tgr_summary.pdf (8 pages, 2017693 bytes).
+</Users/blarkin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/blarkin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/blarkin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/blarkin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/blarkin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/blarkin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></Users/blarkin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></Users/blarkin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
+Output written on tgr_summary.pdf (9 pages, 2343704 bytes).
 PDF statistics:
- 181 PDF objects out of 1000 (max. 8388607)
- 142 compressed objects within 2 object streams
- 39 named destinations out of 1000 (max. 500000)
- 119 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 196 PDF objects out of 1000 (max. 8388607)
+ 150 compressed objects within 2 object streams
+ 42 named destinations out of 1000 (max. 500000)
+ 129 words of extra memory for PDF output out of 10000 (max. 10000000)
 
