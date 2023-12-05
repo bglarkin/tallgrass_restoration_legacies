@@ -364,13 +364,12 @@ pcoa_its$inset <-
     summarize(avg_seq_abund = mean(seq_abund), .groups = "drop") %>%
     ggplot(aes(x = primary_lifestyle, y = avg_seq_abund, fill = field_type)) +
     geom_col(position = "dodge") +
-    labs(x = "",
-         y = "Seq. abund. (avg)") +
+    labs(y = "Seq. abund. (avg)") +
     scale_fill_discrete_qualitative(palette = "Harmonic") +
     scale_x_discrete(label = c("soil sapr", "wood sapr", "plnt path")) +
     # coord_flip() +
     theme_classic() +
-    theme(legend.position = "none")
+    theme(legend.position = "none", axis.title.x = element_blank())
 #+ its_guilds_fig,fig.align='center'
 pcoa_its$ord +
     annotation_custom(
@@ -672,6 +671,23 @@ grid.arrange(
     ncol = 1,
     heights = c(1.1,0.9)
     )
+#' Then, we'll follow up with panels showing trends with the most abundant guilds. 
+#+ its_guilds_regions_fig,fig.align='center'
+spe_meta$its %>%
+    filter(primary_lifestyle %in% c("soil_saprotroph", "plant_pathogen", "wood_saprotroph", "litter_saprotroph")) %>%
+    mutate(field_type = factor(field_type, ordered = TRUE, 
+                               levels = c("corn", "restored", "remnant")),
+           primary_lifestyle = factor(primary_lifestyle, ordered = TRUE, 
+                                      levels = c("plant_pathogen", "litter_saprotroph", "soil_saprotroph", "wood_saprotroph"))) %>%
+    group_by(region, primary_lifestyle, field_type) %>%
+    summarize(avg_seq_abund = mean(seq_abund), .groups = "drop") %>%
+    ggplot(aes(x = region, y = avg_seq_abund, fill = field_type)) +
+    facet_wrap(vars(primary_lifestyle), scales = "free_y") +
+    geom_col(position = "dodge") +
+    labs(y = "Sequence abundance (avg)") +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    theme_bw() +
+    theme(axis.title.x = element_blank())
 #' 
 #' ## 18S gene, OTU clustering
 #' ### PCoA with abundances summed in fields, Bray-Curtis distance
@@ -711,13 +727,12 @@ pcoa_amf_bray$inset <-
     summarize(avg_seq_abund = mean(seq_abund), .groups = "drop") %>% 
     ggplot(aes(x = family, y = avg_seq_abund)) +
     geom_col(position = "dodge", aes(fill = field_type)) +
-    labs(x = "",
-         y = "Seq. abundance (avg)") +
+    labs(y = "Seq. abund. (avg)") +
     scale_fill_discrete_qualitative(palette = "Harmonic") +
     scale_x_discrete(label = function(x) abbreviate(x, minlength = 6)) +
     # coord_flip() +
     theme_classic() +
-    theme(legend.position = "none")
+    theme(legend.position = "none", axis.title.x = element_blank())
 #+ amf_families_fig,fig.align='center'
 (amf_families_fig <- 
     pcoa_amf_bray$ord +
@@ -971,7 +986,7 @@ amf_samps_fig <-
         ),
         caption = "Text indicates years since restoration."
     ) +
-    lims(y = c(-0.58,0.34)) +
+    lims(y = c(-0.60,0.34)) +
     scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
     scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
@@ -987,9 +1002,9 @@ amf_samps_fig <-
                         axis.title.y = element_text(size = 8)
                     )),
             xmin = -0.52,
-            xmax = -0.18,
-            ymin = -0.60,
-            ymax = -0.32
+            xmax = -0.10,
+            ymin = -0.62,
+            ymax = -0.34
         ))
 #' 
 #' ### PCoA in Blue Mounds, all subsamples
@@ -1108,4 +1123,20 @@ grid.arrange(
     ncol = 1,
     heights = c(1.1,0.9)
 )
+#' 
+#' Then, we'll follow up with panels showing trends with the most abundant guilds. 
+#+ amf_guilds_regions_fig,fig.align='center'
+spe_meta$amf %>%
+    filter(family %in% c("Claroideoglomeraceae", "Paraglomeraceae", "Diversisporaceae", "Gigasporaceae")) %>% 
+    mutate(field_type = factor(field_type, ordered = TRUE, 
+                               levels = c("corn", "restored", "remnant"))) %>%
+    group_by(region, family, field_type) %>%
+    summarize(avg_seq_abund = mean(seq_abund), .groups = "drop") %>%
+    ggplot(aes(x = region, y = avg_seq_abund, fill = field_type)) +
+    facet_wrap(vars(family), scales = "free_y") +
+    geom_col(position = "dodge") +
+    labs(y = "Sequence abundance (avg)") +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    theme_bw() +
+    theme(axis.title.x = element_blank())
 #' 
