@@ -47,10 +47,8 @@ interspersed code chunks. A few quick new analyses will be necessary, though. Da
 
 ```{r data, echo = TRUE}
 sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>%
-    mutate(
-        field_type = factor(field_type,ordered = TRUE,
-                            levels = c("corn", "restored", "remnant")),
-        yr_since = replace(yr_since, which(field_type %in% c("remnant", "corn")), NA)) %>%
+    mutate(field_type = factor(field_type,ordered = TRUE, levels = c("corn", "restored", "remnant")),
+           yr_since = replace(yr_since, which(field_type %in% c("remnant", "corn")), NA)) %>%
     select(-lat, -long, -yr_restore, -yr_rank) %>% 
     arrange(field_key)
 ```
