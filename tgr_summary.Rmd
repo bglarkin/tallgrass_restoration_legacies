@@ -72,7 +72,7 @@ sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FAL
 
 The survey followed an unbalanced complete block design. Corn, restored, and remnant fields are compared, with 
 at least one of each field type in each block. I have called blocks "regions" so far.
-We collected samples and data from four regions, shown on the map below.  
+We collected samples and data from four regions (Fig, left).  
 
 ```{r fig:site_map,out.width="40%",fig.show="hold",fig.cap="\\label{fig:site_map}(Left) Labels show centroids of regions used for this work. BM = Blue Mounds, FG = Faville Grove, FL = Fermilab, LP = Lake Petite. (Right) Labels show individual fields in the Blue Mounds region."}
 include_graphics(c("site_locations_files/figure-gfm/site_map-1.png", "site_locations_files/figure-gfm/site_map_bm-1.png"))
@@ -93,19 +93,9 @@ kable(table(sites$region, sites$field_type),
 A feature of our design is that restored fields vary in time since restoration, setting up the potential for a chronosequence
 in addition to the contrasts with corn or remnant fields. 
 The rules for establishing a chronosequence are strict. We cannot call fields from all regions a chronosequence. With 
-seven restored fields in a small geographic area, the Blue Mounds fields are our best bet for this, but we will likely 
+seven restored fields in a small geographic area, the Blue Mounds fields are our best bet for this (Fig), but we will likely 
 have to call this a "pseudochronosequence" and avoid some inferences. Mantel tests (not shown) failed to find correlations 
 between soil variables and pairwise distance, giving us a little confidence that we're avoiding systemic bias. 
-
-
-```{r its_rarefaction_pre,out.width="100%",fig.cap="\\label{fig:its_rarefaction_pre}Pre"}
-include_graphics("microbial_diagnostics_pre_files/figure-gfm/its_rarefaction_curve_fig-1.png")
-```
-
-```{r its_rarefaction_post,out.width="100%",fig.cap="\\label{fig:its_rarefaction_post}Post"}
-include_graphics( "microbial_diagnostics_post_files/figure-gfm/its_rarefaction_curve_fig-1.png")
-```
-
 
 ## Soil Fungal Communities
 
@@ -119,14 +109,23 @@ ordinations, and application function `how()` from package `permute` requires ba
 I wanted to summarize the subsamples at the field level because fields are our replicates. Any comparisons with 
 field metadata, where we have one data point per field, would be pseudoreplicated when regressed against subsample level data. 
 
-Finally, after rarefaction it was clear that several samples contained very few sequences compared with the 
-others. I used an iterative process to remove subsamples with few sequences, choosing a rarefication cutoff near the plateau of OTU 
-recovery at depth (see figures). This ended up being 8 subsamples for ITS and 7 for 18S datasets. These subsample sequence 
+Also, after rarefaction it was clear that some samples contained very few sequences compared with the 
+others. I used an iterative process to remove subsamples with few sequences, choosing a rarefaction cutoff near the plateau of OTU 
+recovery at depth (Fig). This ended up being 8 subsamples for ITS and 7 for 18S datasets. These subsample sequence 
 values were then rarefied and used as-is, or, when reporting at the field level, subsample sequence values were summed
-and rarefied. 
+and rarefied. The resulting data files recovered many more OTUs, but didn't change any major interpretation of the data. The situation with 
+18S data is similar, but at a much lower total sequencing depth (not shown). 
 
-This process didn't remove many OTUs and doesn't change any major interpretation. 
+```{r fig:its_rcurve_compare,out.width="100%",fig.cap="\\label{fig:its_rcurve_compare}Individual-based rarefaction of ITS OTUs in subsamples when nine subsamples per field are retained (pre, top row) or when eight subsamples are retained (post, bottom row). Vertical lines show the minimum sequencing depth available across samples; this is the depth to which the entire set would be rarefied. Horizontal lines show the number of OTUs that would be recovered from each sample at that rarefaction depth."}
+include_graphics("microbial_diagnostics_post_files/its_rarecurve_compare.png")
+```
 
+Species (OTU) accumulation was performed on field-level sums of sequences. Most fields were undersampled (Fig), particularly remnant and restored fields 
+(ITS) and corn and remnant fields (18S). 
+
+```{r fig:accum,out.width="100%",fig.cap="\\label{fig:accum}Species accumulations for rarefied sums of field sequences for ITS and 18S datasets. Species accumulation by the exact method; standard deviation (vertical lines) conditioned by the empirical dataset."}
+include_graphics("microbial_diagnostics_post_files/figure-gfm/rare_species_accum_fig-1.png")
+```
 
 
 

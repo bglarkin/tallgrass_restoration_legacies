@@ -26,10 +26,6 @@
 #' As of 2023-10-11, the recommended number of samples to keep from all fields is **8 from the ITS dataset** and 
 #' **7 from the 18S dataset.**
 #' 
-#' # Clean the environment
-#' Because many names are shared between the `microbial_diagnostics_x.R` scripts, it's important 
-#' to prevent confusion and clear the named objects. 
-rm(list=ls())
 #' 
 #' # Packages and libraries
 packages_needed = c(
@@ -49,6 +45,10 @@ for (i in 1:length(packages_needed)) {
 }
 #' 
 #' # Data
+#' ## Previous diagnostics objects
+#' Named items from `microbial_diagnostics_pre.R` are needed in this file. Execution will be slow. 
+#+ source_microbial_diagnostics_pre
+source("microbial_diagnostics_pre.R")
 #' ## Site metadata and design
 sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>% 
     mutate(field_type = factor(field_type, ordered = TRUE, levels = c("corn", "restored", "remnant"))) %>% 
@@ -107,7 +107,7 @@ spe_accum <- function(data) {
 #' 
 #' ### ITS
 #' 
-#' Individual-based rarefaction on samples
+#' #### Individual-based rarefaction on samples
 #' 
 #' Rarefaction is performed to assess the relationship between sequence abundance and species richness,
 #' and can help justify the decision to rarefy to the minimum sequence depth obtained. 
@@ -145,6 +145,7 @@ ggplot(its_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
          title = "Rarefaction of ITS data",
          caption = "Curves based on the nine most abundant samples per field.\nVertical line shows the minimum sequence abundance for any field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
     theme_bw()
+#' 
 #' Minimum sequencing depth reached by `rarecurve()` is `r its_depth`. Rarefying the data to this depth caused the 
 #' removal of a few samples. In each field, the top 8 samples (based on sequence abundance) were
 #' retained. **At this new minimum sequencing depth, all samples retained are well-characterized,**
@@ -179,6 +180,44 @@ summary(lm(otus ~ seqs, data = its_seqot))
 #' suggesting that our methods are on track.
 #' 
 #' **Limiting samples per field to 8 seems to make sense with the ITS data.**
+#' 
+#' #### Compare rarefaction pre and post processing
+#' These panels compare the OTUs obtained after rarefying data with 9 samples per field (pre processing) or 
+#' 8 samples per field (post processing). 
+#+ its_rarecurve_compare_plotdata
+its_rcurve_data <- 
+    bind_rows(
+        pre = its_rc_pre,
+        post = its_rc,
+        .id = "process_step") %>% 
+    mutate(process_step = factor(process_step, ordered = TRUE, levels = c("pre", "post")))
+its_rcurve_depth <- 
+    tibble(
+        process_step = c(rep("pre", 3), rep("post", 3)),
+        field_type = factor(rep(c("corn", "restored", "remnant"), 2), ordered = TRUE, levels = c("corn", "restored", "remnant")),
+        depth = c(rep(its_depth_pre, 3), rep(its_depth, 3))
+    ) %>% 
+    mutate(process_step = factor(process_step, ordered = TRUE, levels = c("pre", "post")))
+its_otus_depth <- 
+    bind_rows(
+        pre = its_at_depth_pre,
+        post = its_at_depth,
+        .id = "process_step") %>% 
+    mutate(process_step = factor(process_step, ordered = TRUE, levels = c("pre", "post")))
+#+ its_rarecurve_prepost_fig,fig.width=7,fig.height=3.5,fig.align='center',warning=FALSE,message=FALSE
+ggplot(its_rcurve_data, aes(x = seq_abund, y = otus, group = field_sample)) +
+    facet_grid(rows = vars(process_step), cols = vars(field_type), as.table = FALSE, scales = "free") +
+    geom_vline(data = its_rcurve_depth, aes(xintercept = depth), linewidth = 0.2) +
+    geom_hline(data = its_otus_depth, aes(yintercept = otus), linewidth = 0.2) +
+    geom_line(aes(color = field_type), linewidth = 0.4) +
+    scale_color_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    labs(x = "Number of individuals (sequence abundance)",
+         y = "OTUs") +
+    theme_bw() +
+    theme(legend.position = "none")
+#+ save_rarecurve_its,echo=FALSE
+ggsave("microbial_diagnostics_post_files/its_rarecurve_compare.png", width = 7, height = 3, units = "in")
+#' 
 #' 
 #' ### 18S
 #' 
@@ -329,31 +368,27 @@ ggplot(amf_accum, aes(x = samples, y = richness, group = field_name)) +
 #' All fields continue to add species at the maximum available number of samples, but the curves aren't very steep. 
 #' It's also good news that they all add species at about the same rate. With samples limited to 7 per field, 
 #' the community is still characterized fairly well, and isn't much different from retaining all samples. 
-
-
-
+#' 
+#' Finally, let's show a plot of species accumulation contrasting ITS and 18S data, using only rarefied sequence abundances. 
+#+ rare_species_accum_fig,warning=FALSE,message=FALSE,fig.width=7,fig.height=3,fig.align='center'
 bind_rows(
-    pre = its_rc_pre,
-    post = its_rc,
-    .id = "process_step"
-)
-
-
-
-
-ggplot(its_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
-    facet_wrap(vars(field_type), ncol = 1) +
-    geom_vline(xintercept = its_depth, linewidth = 0.2) +
-    geom_hline(data = its_at_depth, aes(yintercept = otus), linewidth = 0.2) +
-    geom_line(aes(color = field_type), linewidth = 0.4) +
+    ITS = its_accum,
+    AMF = amf_accum,
+    .id = "gene"
+) %>% 
+    filter(dataset == "Rarefied") %>% 
+    ggplot(aes(x = samples, y = richness, group = field_name)) +
+    facet_wrap(vars(gene), scales = "free_y") +
+    geom_line(aes(color = field_type)) +
+    geom_segment(aes(x = samples, y = richness-sd, xend = samples, yend = richness+sd, color = field_type)) +
     scale_color_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
-    labs(x = "Number of individuals (sequence abundance)",
-         y = "OTUs",
-         title = "Rarefaction of ITS data",
-         caption = "Curves based on the nine most abundant samples per field.\nVertical line shows the minimum sequence abundance for any field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
+    labs(x = "Samples", y = expression(N[0])) +
+    scale_x_continuous(breaks = c(0,3,6,9)) +
     theme_bw()
-
-
-
-
-
+    
+    
+    
+    
+    
+    
+    

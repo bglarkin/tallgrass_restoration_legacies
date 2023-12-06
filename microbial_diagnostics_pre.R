@@ -25,10 +25,6 @@
 #' 9 samples by sequence abundance from each field. Some of these nine still contain very few sequences, 
 #' and this script will help determine the consequence of that. 
 #' 
-#' # Clean the environment
-#' Because many names are shared between the `microbial_diagnostics_x.R` scripts, it's important 
-#' to prevent confusion and clear the named objects. 
-rm(list=ls())
 #' 
 #' # Packages and libraries
 packages_needed = c(

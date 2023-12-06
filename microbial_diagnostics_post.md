@@ -2,12 +2,12 @@ Microbial data: diagnostics of sequence data
 ================
 Beau Larkin
 
-Last updated: 18 October, 2023
+Last updated: 06 December, 2023
 
 - [Description](#description)
-- [Clean the environment](#clean-the-environment)
 - [Packages and libraries](#packages-and-libraries)
 - [Data](#data)
+  - [Previous diagnostics objects](#previous-diagnostics-objects)
   - [Site metadata and design](#site-metadata-and-design)
   - [Sites-species tables](#sites-species-tables)
 - [Functions](#functions)
@@ -45,16 +45,6 @@ each field. As of 2023-10-11, the recommended number of samples to keep
 from all fields is **8 from the ITS dataset** and **7 from the 18S
 dataset.**
 
-# Clean the environment
-
-Because many names are shared between the `microbial_diagnostics_x.R`
-scripts, it’s important to prevent confusion and clear the named
-objects.
-
-``` r
-rm(list=ls())
-```
-
 # Packages and libraries
 
 ``` r
@@ -80,6 +70,18 @@ for (i in 1:length(packages_needed)) {
 ```
 
 # Data
+
+## Previous diagnostics objects
+
+Named items from `microbial_diagnostics_pre.R` are needed in this file.
+Execution will be slow.
+
+``` r
+source("microbial_diagnostics_pre.R")
+```
+
+    ## Warning in rarecurve(amf_rc_data_pre, step = 1, tidy = TRUE): most observed
+    ## count data have counts 1, but smallest count is 2
 
 ## Site metadata and design
 
@@ -156,7 +158,7 @@ determined to keep 8 samples per field for ITS and 7 for 18S.
 
 ### ITS
 
-Individual-based rarefaction on samples
+#### Individual-based rarefaction on samples
 
 Rarefaction is performed to assess the relationship between sequence
 abundance and species richness, and can help justify the decision to
@@ -220,7 +222,7 @@ recovered per field vs. the richness recovered per field. A relationship
 should not be evident, or fields with more sequences could have bias to
 higher richness based on sequencing depth (or it could be real…there’s
 no way to know). This can be examined visually. The raw ITS data are
-used (these are sums of the top nine samples per field as of
+used (these are sums of the top eight samples per field as of
 2023-03-13).
 
 ``` r
@@ -238,7 +240,7 @@ ggplot(its_seqot, aes(x = seqs, y = otus)) +
     scale_fill_discrete_qualitative(palette = "Harmonic") +
     labs(x = "Sequence abundance per field",
          y = "OTUs recovered per field",
-         caption = "Raw ITS data used, sum of top 9 samples per field") +
+         caption = "Raw ITS data used, sum of top 8 samples per field") +
     theme_classic()
 ```
 
@@ -272,6 +274,49 @@ recovered sequence depth, suggesting that our methods are on track.
 
 **Limiting samples per field to 8 seems to make sense with the ITS
 data.**
+
+#### Compare rarefaction pre and post processing
+
+These panels compare the OTUs obtained after rarefying data with 9
+samples per field (pre processing) or 8 samples per field (post
+processing).
+
+``` r
+its_rcurve_data <- 
+    bind_rows(
+        pre = its_rc_pre,
+        post = its_rc,
+        .id = "process_step") %>% 
+    mutate(process_step = factor(process_step, ordered = TRUE, levels = c("pre", "post")))
+its_rcurve_depth <- 
+    tibble(
+        process_step = c(rep("pre", 3), rep("post", 3)),
+        field_type = factor(rep(c("corn", "restored", "remnant"), 2), ordered = TRUE, levels = c("corn", "restored", "remnant")),
+        depth = c(rep(its_depth_pre, 3), rep(its_depth, 3))
+    ) %>% 
+    mutate(process_step = factor(process_step, ordered = TRUE, levels = c("pre", "post")))
+its_otus_depth <- 
+    bind_rows(
+        pre = its_at_depth_pre,
+        post = its_at_depth,
+        .id = "process_step") %>% 
+    mutate(process_step = factor(process_step, ordered = TRUE, levels = c("pre", "post")))
+```
+
+``` r
+ggplot(its_rcurve_data, aes(x = seq_abund, y = otus, group = field_sample)) +
+    facet_grid(rows = vars(process_step), cols = vars(field_type), as.table = FALSE, scales = "free") +
+    geom_vline(data = its_rcurve_depth, aes(xintercept = depth), linewidth = 0.2) +
+    geom_hline(data = its_otus_depth, aes(yintercept = otus), linewidth = 0.2) +
+    geom_line(aes(color = field_type), linewidth = 0.4) +
+    scale_color_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    labs(x = "Number of individuals (sequence abundance)",
+         y = "OTUs") +
+    theme_bw() +
+    theme(legend.position = "none")
+```
+
+<img src="microbial_diagnostics_post_files/figure-gfm/its_rarecurve_prepost_fig-1.png" style="display: block; margin: auto;" />
 
 ### 18S
 
@@ -334,7 +379,8 @@ recovered per field vs. the richness recovered per field. A relationship
 should not be evident, or fields with more sequences could have bias to
 higher richness based on sequencing depth (or it could be real…there’s
 no way to know). This can be examined visually. The raw amf data are
-used (these are sums of the top six samples per field as of 2023-03-13).
+used (these are sums of the top seven samples per field as of
+2023-03-13).
 
 ``` r
 amf_seqot <- 
@@ -351,7 +397,7 @@ ggplot(amf_seqot, aes(x = seqs, y = otus)) +
     scale_fill_discrete_qualitative(palette = "Harmonic") +
     labs(x = "Sequence abundance per field",
          y = "OTUs recovered per field",
-         caption = "Raw amf data used, sum of top 9 samples per field") +
+         caption = "Raw amf data used, sum of top 7 samples per field") +
     theme_classic()
 ```
 
@@ -481,3 +527,25 @@ samples, but the curves aren’t very steep. It’s also good news that they
 all add species at about the same rate. With samples limited to 7 per
 field, the community is still characterized fairly well, and isn’t much
 different from retaining all samples.
+
+Finally, let’s show a plot of species accumulation contrasting ITS and
+18S data, using only rarefied sequence abundances.
+
+``` r
+bind_rows(
+    ITS = its_accum,
+    AMF = amf_accum,
+    .id = "gene"
+) %>% 
+    filter(dataset == "Rarefied") %>% 
+    ggplot(aes(x = samples, y = richness, group = field_name)) +
+    facet_wrap(vars(gene), scales = "free_y") +
+    geom_line(aes(color = field_type)) +
+    geom_segment(aes(x = samples, y = richness-sd, xend = samples, yend = richness+sd, color = field_type)) +
+    scale_color_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    labs(x = "Samples", y = expression(N[0])) +
+    scale_x_continuous(breaks = c(0,3,6,9)) +
+    theme_bw()
+```
+
+<img src="microbial_diagnostics_post_files/figure-gfm/rare_species_accum_fig-1.png" style="display: block; margin: auto;" />
