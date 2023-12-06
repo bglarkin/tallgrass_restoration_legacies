@@ -14,8 +14,7 @@
 packages_needed = c("tidyverse",
                     "png",
                     "knitr",
-                    "conflicted",
-                    "gridExtra")
+                    "conflicted")
 packages_installed = packages_needed %in% rownames(installed.packages())
 #+ packages,message=FALSE
 if (any(!packages_installed)) {
@@ -53,13 +52,13 @@ sites <-
 #' The survey followed an unbalanced complete block design. Corn, restored, and remnant fields are compared, with 
 #' at least one of each field type in each block. I have called blocks "regions" so far.
 #' We collected samples and data from four regions, shown on the map below.  
-#+ site_map,echo=FALSE,fig.align='center',out.width="100%",fig.cap="\\label{fig:}Labels show centroids of regions used for this work. BM = Blue Mounds, FG = Faville Grove, FL = Fermilab, LP = Lake Petite."
+#+ fig:site_map,echo=FALSE,fig.align='center',out.width="90%",fig.cap="\\label{fig:site_map}Labels show centroids of regions used for this work. BM = Blue Mounds, FG = Faville Grove, FL = Fermilab, LP = Lake Petite."
 include_graphics("site_locations_files/figure-gfm/site_map-1.png")
 #' 
 #' The design is unbalanced because there are more restored fields than corn or remnant. In all but one case,
 #' only single corn and remnant fields were available in each region. This means that we only have
 #' replication to separate field types when using the entire block design. 
-#+ fields_regions_types_table
+#+ fields_regions_types_table,echo=FALSE
 kable(table(sites$region, sites$field_type),
       format = "pandoc",
       caption = "Count of fields by type and region:\nBM = Blue Mounds, FG = Faville Grove,\nFL = Fermilab, LP = Lake Petite")
@@ -68,7 +67,7 @@ kable(table(sites$region, sites$field_type),
 #' seven restored fields in a small geographic area, the Blue Mounds fields are our best bet for this, but we will likely 
 #' have to call this a "pseudochronosequence" and avoid some inferences. Mantel tests (not shown) failed to find correlations 
 #' between soil variables and pairwise distance, giving us a little confidence that we're avoiding systemic bias. 
-#+ site_map_bm,echo=FALSE,fig.align='center',out.width="100%",fig.cap="\\label{fig:}Labels show individual fields in the Blue Mounds region."
+#+ fig:site_map_bm,echo=FALSE,fig.align='center',out.width="90%",fig.cap="\\label{fig:site_map_bm}Labels show individual fields in the Blue Mounds region."
 include_graphics("site_locations_files/figure-gfm/site_map_bm-1.png")
 #' 
 #' ## Fungal communities
@@ -90,15 +89,15 @@ include_graphics("site_locations_files/figure-gfm/site_map_bm-1.png")
 #' 
 #' This process didn't remove many OTUs and doesn't change any major interpretation. 
 #' 
-#+ its_rarefaction_pre,echo=FALSE,fig.align='center',out.width="30%",fig.cap="\\label{fig:}Pre"
+#+ fig:its_rarefaction_pre,echo=FALSE,fig.align='center',out.width="100%",fig.cap="\\label{fig:its_rarefaction_pre}Pre"
 include_graphics("microbial_diagnostics_pre_files/figure-gfm/its_rarefaction_curve_fig-1.png")
-#+ its_rarefaction_post,echo=FALSE,fig.align='center',out.width="30%",fig.cap="\\label{fig:}Post"
+#+ fig:its_rarefaction_post,echo=FALSE,fig.align='center',out.width="100%",fig.cap="\\label{fig:its_rarefaction_post}Post"
 include_graphics("microbial_diagnostics_post_files/figure-gfm/its_rarefaction_curve_fig-1.png")
 #' 
 #' Even after this process, it's clear that fungal communities were undersampled. 
-#+ its_accum,echo=FALSE,fig.align='center',out.width="100%",fig.cap="\\label{fig:}ITS"
+#+ fig:its_accum,echo=FALSE,fig.align='center',out.width="100%",fig.cap="\\label{fig:its_accum}ITS"
 include_graphics("microbial_diagnostics_post_files/figure-gfm/its_species_accumulation_fig-1.png")
-#+ amf_accum,echo=FALSE,fig.align='center',out.width="100%",fig.cap="\\label{fig:}18S"
+#+ fig:amf_accum,echo=FALSE,fig.align='center',out.width="100%",fig.cap="\\label{fig:amf_accum}18S"
 include_graphics("microbial_diagnostics_post_files/figure-gfm/amf_species_accumulation_fig-1.png")
 #' 
 #' ## Plant data
@@ -134,17 +133,47 @@ include_graphics("microbial_diagnostics_post_files/figure-gfm/amf_species_accumu
 #' 
 #' # Results
 #' 
-
-#+ its_pcoa_unified_fig,echo=FALSE,fig.align='center',out.width="40%",fig.cap="\\label{fig:}ITS-based fungal communities, most abundant guilds inset."
+#' ## Fungal communities
+#+ microbial_communities.R,echo=FALSE,message=FALSE,warning=FALSE,include=FALSE
+source("microbial_communities.R")
+#' 
+#' ### Soil fungi, field types, and regions
+#' Cornfields stand apart while remnants are mixed with restored fields. As the age of restored fields
+#' increases, their distance from corn and remnants grows. The high dimensionality here keeps the explanatory power
+#' of axes 1 & 2 low. Clusters based on field type were significant based on a permanova (with regions as blocks and 
+#' subsamples held constant within fields, the replicate). However, a pairwise post-hoc permutation failed to separate 
+#' remnant fields from any other type. This was also true when field centroids were used exclusively and the 
+#' permutation test adjusted to this scheme. 
+#+ fig:its_samps_unified_fig-1,echo=FALSE,fig.align='center',out.width="100%",fig.cap="ITS-based fungal communities, most abundant guilds inset."
 include_graphics("microbial_communities_files/figure-gfm/its_samps_unified_fig-1.png")
-
-
-#+ its_regional_eig
-# kable(read_csv("microbial_communities_files/pcoa_its_eig.csv", show_col_types = FALSE), format = "pandoc", caption = "Axis percentages for regional\nPCoAs, ITS communities")
-
-
-
-#+ amf_pcoa_unified_fig,echo=FALSE,fig.align='center',out.width="40%",fig.cap="\\label{fig:}18S-based fungal communities, most important families inset."
+#' 
+#+ pcoa_its_samps_permanova,echo=FALSE
+print(pcoa_its_samps$permanova)
+#+ pcoa_its_samps_pairwise,echo=FALSE
+print(pcoa_its_samps$pairwise_contrasts)
+#' 
+#' ### Soil fungal guilds, field types, and regions
+#' By sequence abundance across the entire dataset, the top guilds are:
+#' 
+#' 1. Unidentified (not shown on column charts)
+#' 1. plant pathogens
+#' 1. soil saprotrophs
+#' 1. wood saprotrophs
+#' 1. dung saprotrophs
+#' 1. litter saprotrophs
+#' 
+#' Compared with the sequence abundance in the NA group, plant pathogens and soil saprotrophs are
+#' abundant enough to feel somewhat confident about in terms of coverage. These are also the ones
+#' that varied most with age in restored fields as we'll see later, and they were most 
+#' conspicuous in an indicator species analysis. Trends across field types within regions
+#' aren't very consistent...
+#+ fig:its_guilds_regions,echo=FALSE,fig.align='center',out.width="100%",fig.cap="Abundant or dynamic guilds across field types in regions, ITS dataset."
+include_graphics("microbial_communities_files/figure-gfm/its_guilds_regions_fig-1.png")
+#' ## heading
+#' more text
+#' 
+#' ### heading again
+#+ fig:amf_pcoa_unified,echo=FALSE,fig.align='center',out.width="100%",fig.cap="18S-based fungal communities, most important families inset."
 include_graphics("microbial_communities_files/figure-gfm/amf_samps_unified_fig-1.png")
 
 
