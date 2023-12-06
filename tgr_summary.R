@@ -9,6 +9,9 @@
 #'      highlight: tango
 #'      toc: true
 #'      toc_depth: 2
+#' geometry: margin = 0.5in
+#' fontsize: 12
+#' urlcolor: blue
 #' ---
 #' # Packages and Libraries
 packages_needed = c("tidyverse",
@@ -175,6 +178,5 @@ include_graphics("microbial_communities_files/figure-gfm/its_guilds_regions_fig-
 #' ### heading again
 #+ fig:amf_pcoa_unified,echo=FALSE,fig.align='center',out.width="100%",fig.cap="18S-based fungal communities, most important families inset."
 include_graphics("microbial_communities_files/figure-gfm/amf_samps_unified_fig-1.png")
-
 
 

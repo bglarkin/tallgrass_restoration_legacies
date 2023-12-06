@@ -1,0 +1,60 @@
+---
+title: "Tallgrass Restoration Legacies, Summary"
+author: "Beau Larkin"
+date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
+output:
+  pdf_document:
+    df_print: tibble
+    fig_caption: yes
+    highlight: tango
+    toc: true
+    toc_depth: 2
+geometry: margin = 0.5in
+fontsize: 12
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, tidy = TRUE, message = FALSE, warning = FALSE)
+```
+
+# Packages
+
+```{r libraries, echo = TRUE}
+packages_needed = c("tidyverse",
+                    "png",
+                    "knitr",
+                    "conflicted",
+                    "formatR")
+packages_installed = packages_needed %in% rownames(installed.packages())
+if (any(!packages_installed)) {
+    install.packages(packages_needed[!packages_installed])
+    }
+for (i in 1:length(packages_needed)) {
+    library(packages_needed[i], character.only = T)
+}
+conflict_prefer("filter", "dplyr")
+conflict_prefer("select", "dplyr")
+```
+
+# Description
+The goal is to present results and discuss whether a path forward exists. If so, we will determine
+the strategy that presents the best story, organization, and interpretation of these results. 
+
+# Data
+For this summary, I'll pull as many objects as possible from existing files to reduce the number of 
+interspersed code chunks. A few quick new analyses will be necessary, though. Data are loaded here. 
+
+```{r data, echo = TRUE}
+sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>%
+    mutate(
+        field_type = factor(field_type,ordered = TRUE,
+                            levels = c("corn", "restored", "remnant")),
+        yr_since = replace(yr_since, which(field_type %in% c("remnant", "corn")), NA)) %>%
+    select(-lat, -long, -yr_restore, -yr_rank) %>% 
+    arrange(field_key)
+```
+
+
+
+recall this for code chunk options: https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf
