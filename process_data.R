@@ -19,6 +19,7 @@
 #' 1. The script `process_data.R` is run first. A few samples failed to amplify, resulting in
 #' some fields characterized by 9 samples and others by 10. To balance sampling effort
 #' across fields, the top 9 samples by sequence abundance are chosen from each field. 
+#' **Assign "pre" to the argument `process_step` in the etl function so that files are created in the /clean_data/pre/ directory.**
 #' 1. Next, `microbial_diagnostics_pre.R` is run to investigate sequencing depth in samples 
 #' and species accumulation in fields. A few samples are known to have low sequence abundance 
 #' (an order of magnitude lower than the maximum), and the consequence of rarefying to this 
@@ -30,6 +31,7 @@
 #' **7 from the 18S dataset.**
 #'    - If downstream analyses have been completed, then it's likely that the `process_data.R`
 #'    script has been left at this step. 
+#'    - **Assign "post" to the argument `process_step` in the etl function so that files are created in the /clean_data/ directory.**
 #' 1. Finally, `microbial_diagnostics_post.R` is run. It is very similar to the "_pre" script,
 #' but a different file is used so that the two may be compared. 
 #' 
@@ -87,7 +89,7 @@ for (i in 1:length(packages_needed)) {
 #' change nothing about how results would be interpreted, but they do change axis limits and other trivial
 #' parameters that cause headaches later. Be advised that downstream changes will be needed if `Rarefy()` 
 #' is rerun and new files are created by `write_csv()` in the steps at the end of this function.
-etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, colname_prefix, folder) {
+etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, colname_prefix, folder, process_step) {
     
     # Variable definitions
     # spe             = Dataframe or tibble with QIIME2 sequence abundances output, 
@@ -110,6 +112,8 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     #                   default. To use a subfolder, use this variable. Quoted. 
     #                   Include the "/" before the folder name. If no folder 
     #                   name is desired, use "".
+    #                 = logical toggle to indicate whether this is the pre or post step in 
+    #                   data processing. 
     
     set.seed <- 397
     
@@ -268,11 +272,19 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
         arrange(field_key) %>% 
         as_tibble()
     
-    write_csv(meta, paste0(getwd(), folder, "/spe_", gene, "_metadata.csv"))
-    write_csv(spe_samps_raw, paste0(getwd(), folder, "/spe_", gene, "_raw_samples.csv"))
-    write_csv(spe_samps_rfy, paste0(getwd(), folder, "/spe_", gene, "_rfy_samples.csv"))
-    write_csv(spe_raw, paste0(getwd(), folder, "/spe_", gene, "_raw.csv"))
-    write_csv(spe_rfy, paste0(getwd(), folder, "/spe_", gene, "_rfy.csv"))
+    if (process_step == "pre") {
+        write_csv(meta, paste0(getwd(), folder, "/pre/spe_", gene, "_metadata.csv"))
+        write_csv(spe_samps_raw, paste0(getwd(), folder, "/pre/spe_", gene, "_raw_samples.csv"))
+        write_csv(spe_samps_rfy, paste0(getwd(), folder, "/pre/spe_", gene, "_rfy_samples.csv"))
+        write_csv(spe_raw, paste0(getwd(), folder, "/pre/spe_", gene, "_raw.csv"))
+        write_csv(spe_rfy, paste0(getwd(), folder, "/pre/spe_", gene, "_rfy.csv"))
+    } else {
+        write_csv(meta, paste0(getwd(), folder, "/spe_", gene, "_metadata.csv"))
+        write_csv(spe_samps_raw, paste0(getwd(), folder, "/spe_", gene, "_raw_samples.csv"))
+        write_csv(spe_samps_rfy, paste0(getwd(), folder, "/spe_", gene, "_rfy_samples.csv"))
+        write_csv(spe_raw, paste0(getwd(), folder, "/spe_", gene, "_raw.csv"))
+        write_csv(spe_rfy, paste0(getwd(), folder, "/spe_", gene, "_rfy.csv"))
+    }
     
     out <- list(
         min_samples         = min_samples,
@@ -326,7 +338,8 @@ its <-
         gene = "ITS",
         cluster_type = "otu",
         colname_prefix = "ITS_TGP_",
-        folder = "/clean_data"
+        folder = "/clean_data",
+        process_step = "post"
     )
 its
 #+ otu_18S,message=FALSE,warning=FALSE
@@ -339,7 +352,8 @@ amf <-
         gene = "18S",
         cluster_type = "otu",
         colname_prefix = "X18S_TGP_",
-        folder = "/clean_data"
+        folder = "/clean_data",
+        process_step = "post"
     )
 amf
 #' 
@@ -368,3 +382,4 @@ amf_export <-
     left_join(amf$spe_meta %>% select(otu_num, otu_ID), by = join_by(otu_num)) %>%
     select(otu_ID, everything(), -otu_num)
 write_tsv(amf_export, paste0(getwd(), "/otu_tables/18S/spe_18S_rfy_export.tsv"))
+

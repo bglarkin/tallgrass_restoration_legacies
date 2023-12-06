@@ -55,14 +55,14 @@ sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FAL
 #' Object *spe_samps* holds sequence abundances for each sample. Used here for
 #' species accumulation.
 #+ spe_samps_list
-spe_samps <- list(
-    its_samps_raw = read_csv(paste0(getwd(), "/clean_data/spe_ITS_raw_samples.csv"),
+spe_samps_pre <- list(
+    its_samps_raw = read_csv(paste0(getwd(), "/clean_data/pre/spe_ITS_raw_samples.csv"),
                              show_col_types = FALSE),
-    its_samps_rfy = read_csv(paste0(getwd(), "/clean_data/spe_ITS_rfy_samples.csv"),
+    its_samps_rfy = read_csv(paste0(getwd(), "/clean_data/pre/spe_ITS_rfy_samples.csv"),
                              show_col_types = FALSE),
-    amf_samps_raw = read_csv(paste0(getwd(), "/clean_data/spe_18S_raw_samples.csv"),
+    amf_samps_raw = read_csv(paste0(getwd(), "/clean_data/pre/spe_18S_raw_samples.csv"),
                              show_col_types = FALSE),
-    amf_samps_rfy = read_csv(paste0(getwd(), "/clean_data/spe_18S_rfy_samples.csv"),
+    amf_samps_rfy = read_csv(paste0(getwd(), "/clean_data/pre/spe_18S_rfy_samples.csv"),
                              show_col_types = FALSE)
 )
 #' 
@@ -70,14 +70,14 @@ spe_samps <- list(
 #' List *spe* holds summed sequence abundances per field. Number of samples per field 
 #' which were retained is defined in `process_data.R`.
 #' CSV files were produced in `process_data.R`
-spe <- list(
-    its_raw = read_csv(paste0(getwd(), "/clean_data/spe_ITS_raw.csv"), 
+spe_pre <- list(
+    its_raw = read_csv(paste0(getwd(), "/clean_data/pre/spe_ITS_raw.csv"), 
                        show_col_types = FALSE),
-    its_rfy = read_csv(paste0(getwd(), "/clean_data/spe_ITS_rfy.csv"), 
+    its_rfy = read_csv(paste0(getwd(), "/clean_data/pre/spe_ITS_rfy.csv"), 
                        show_col_types = FALSE),
-    amf_raw = read_csv(paste0(getwd(), "/clean_data/spe_18S_raw.csv"), 
+    amf_raw = read_csv(paste0(getwd(), "/clean_data/pre/spe_18S_raw.csv"), 
                        show_col_types = FALSE),
-    amf_rfy = read_csv(paste0(getwd(), "/clean_data/spe_18S_rfy.csv"), 
+    amf_rfy = read_csv(paste0(getwd(), "/clean_data/pre/spe_18S_rfy.csv"), 
                        show_col_types = FALSE)
 )
 #' 
@@ -113,31 +113,31 @@ spe_accum <- function(data) {
 #' and can help justify the decision to rarefy to the minimum sequence depth obtained. 
 #' Caution: function `rarecurve()` takes some time to execute. 
 #' 
-its_rc_data <- 
-    spe_samps$its_samps_raw %>% 
+its_rc_data_pre <- 
+    spe_samps_pre$its_samps_raw %>% 
     mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
     column_to_rownames(var = "field_sample") %>% 
     select(-field_key, -sample)
 #+ its_rarecurve,message=FALSE,warning=FALSE
-its_rc_tidy <- rarecurve(its_rc_data, step = 1, tidy = TRUE) 
-its_rc <- 
-    its_rc_tidy %>% 
+its_rc_tidy_pre <- rarecurve(its_rc_data_pre, step = 1, tidy = TRUE) 
+its_rc_pre <- 
+    its_rc_tidy_pre %>% 
     separate_wider_delim(Site, delim = "_", names = c("field_key", "sample_key"), cols_remove = FALSE) %>% 
     rename(seq_abund = Sample, otus = Species, field_sample = Site) %>% 
     left_join(sites %>% mutate(field_key = as.character(field_key)), by = join_by(field_key))
 # Additional data and variables for plotting
-its_depth <- 
-    its_rc %>% 
+its_depth_pre <- 
+    its_rc_pre %>% 
     group_by(field_sample) %>% 
     slice_max(otus, n = 1) %>% 
     pull(seq_abund) %>% 
     min()
-its_at_depth <- its_rc %>% filter(seq_abund == its_depth)
+its_at_depth_pre <- its_rc_pre %>% filter(seq_abund == its_depth_pre)
 #+ its_rarefaction_curve_fig,fig.width=7,fig.height=9,fig.align='center'
-ggplot(its_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
+ggplot(its_rc_pre, aes(x = seq_abund, y = otus, group = field_sample)) +
     facet_wrap(vars(field_type), ncol = 1) +
-    geom_vline(xintercept = its_depth, linewidth = 0.2) +
-    geom_hline(data = its_at_depth, aes(yintercept = otus), linewidth = 0.2) +
+    geom_vline(xintercept = its_depth_pre, linewidth = 0.2) +
+    geom_hline(data = its_at_depth_pre, aes(yintercept = otus), linewidth = 0.2) +
     geom_line(aes(color = field_type), linewidth = 0.4) +
     scale_color_discrete_qualitative(palette = "Harmonic") +
     labs(x = "Number of individuals (sequence abundance)",
@@ -145,12 +145,12 @@ ggplot(its_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
          title = "Rarefaction of ITS data",
          caption = "Curves based on the nine most abundant samples per field.\nVertical line shows the minimum sequence abundance for any field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
     theme_bw()
-#' Minimum sequencing depth reached is `r its_depth`. Rarefying the data to this depth would remove
+#' Minimum sequencing depth reached is `r its_depth_pre`. Rarefying the data to this depth would remove
 #' a great number of OTUs and leave nearly all samples poorly characterized in richness and composition. 
 #' It looks like somewhere around 5000 sequences would be more appropriate. How many samples would be lost at 
 #' 5000 sequences? 
 #+ its_seq_abund_table
-its_rc %>% 
+its_rc_pre %>% 
     group_by(field_sample) %>% 
     slice_max(otus, n = 1) %>% 
     slice_max(seq_abund, n = 1) %>%
@@ -181,14 +181,14 @@ its_rc %>%
 #' could have bias to higher richness based on sequencing depth (or it could be real...there's no way to know). 
 #' This can be examined visually. The raw ITS data are used (these are sums of the top nine samples per field
 #' as of 2023-03-13). 
-its_seqot <- 
+its_seqot_pre <- 
     data.frame(
-        field_key = spe$its_raw[, 1],
-        seqs = apply(spe$its_raw[, -1], 1, sum),
-        otus = apply(spe$its_raw[, -1] > 0, 1, sum)
+        field_key = spe_pre$its_raw[, 1],
+        seqs = apply(spe_pre$its_raw[, -1], 1, sum),
+        otus = apply(spe_pre$its_raw[, -1] > 0, 1, sum)
     ) %>% left_join(sites, by = join_by(field_key))
 #+ its_seqs_otus_fig,fig.width=7,fig.height=5,fig.align='center'
-ggplot(its_seqot, aes(x = seqs, y = otus)) +
+ggplot(its_seqot_pre, aes(x = seqs, y = otus)) +
     geom_point(aes(fill = field_type), shape = 21, size = 2) +
     scale_fill_discrete_qualitative(palette = "Harmonic") +
     labs(x = "Sequence abundance per field",
@@ -196,7 +196,7 @@ ggplot(its_seqot, aes(x = seqs, y = otus)) +
          caption = "Raw ITS data used, sum of top 9 samples per field") +
     theme_classic()
 #+ its_seqs_otus_reg
-summary(lm(otus ~ seqs, data = its_seqot))
+summary(lm(otus ~ seqs, data = its_seqot_pre))
 #' The relationship is poor and not significant. Richness is not related to recovered sequence depth, 
 #' suggesting that our methods are on track.
 #' 
@@ -206,31 +206,31 @@ summary(lm(otus ~ seqs, data = its_seqot))
 #' ### 18S
 #' 
 #' Individual-based rarefaction
-amf_rc_data <- 
-    spe_samps$amf_samps_raw %>% 
+amf_rc_data_pre <- 
+    spe_samps_pre$amf_samps_raw %>% 
     mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
     column_to_rownames(var = "field_sample") %>% 
     select(-field_key, -sample)
 #+ amf_rarecurve,message=FALSE,warning=FALSE
-amf_rc_tidy <- rarecurve(amf_rc_data, step = 1, tidy = TRUE) 
-amf_rc <- 
-    amf_rc_tidy %>% 
+amf_rc_tidy_pre <- rarecurve(amf_rc_data_pre, step = 1, tidy = TRUE) 
+amf_rc_pre <- 
+    amf_rc_tidy_pre %>% 
     separate_wider_delim(Site, delim = "_", names = c("field_key", "sample_key"), cols_remove = FALSE) %>% 
     rename(seq_abund = Sample, otus = Species, field_sample = Site) %>% 
     left_join(sites %>% mutate(field_key = as.character(field_key)), by = join_by(field_key))
 # Additional data and variables for plotting
-amf_depth <- 
-    amf_rc %>% 
+amf_depth_pre <- 
+    amf_rc_pre %>% 
     group_by(field_sample) %>% 
     slice_max(otus, n = 1) %>% 
     pull(seq_abund) %>% 
     min()
-amf_at_depth <- amf_rc %>% filter(seq_abund == amf_depth)
+amf_at_depth_pre <- amf_rc_pre %>% filter(seq_abund == amf_depth_pre)
 #+ amf_rarefaction_curve_fig,fig.width=7,fig.height=9,fig.align='center'
-ggplot(amf_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
+ggplot(amf_rc_pre, aes(x = seq_abund, y = otus, group = field_sample)) +
     facet_wrap(vars(field_type), ncol = 1) +
-    geom_vline(xintercept = amf_depth, linewidth = 0.2) +
-    geom_hline(data = amf_at_depth, aes(yintercept = otus), linewidth = 0.2) +
+    geom_vline(xintercept = amf_depth_pre, linewidth = 0.2) +
+    geom_hline(data = amf_at_depth_pre, aes(yintercept = otus), linewidth = 0.2) +
     geom_line(aes(color = field_type), linewidth = 0.4) +
     scale_color_discrete_qualitative(palette = "Harmonic") +
     labs(x = "Number of individuals (sequence abundance)",
@@ -238,12 +238,12 @@ ggplot(amf_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
          title = "Rarefaction of amf data",
          caption = "Curves based on the nine most abundant samples per field.\nVertical line shows the minimum sequence abundance for any field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
     theme_bw()
-#' Minimum sequencing depth reached is `r amf_depth`. Rarefying the data to this depth would remove
+#' Minimum sequencing depth reached is `r amf_depth_pre`. Rarefying the data to this depth would remove
 #' a great number of OTUs and leave nearly all samples poorly characterized in richness and composition. 
 #' It looks like somewhere around 1250 sequences would be more appropriate at bare minimum. How many samples would be lost at 
 #' this depth? 
 #+ amf_seq_abund_table
-amf_rc %>% 
+amf_rc_pre %>% 
     group_by(field_sample) %>% 
     slice_max(otus, n = 1) %>% 
     slice_max(seq_abund, n = 1) %>%
@@ -263,14 +263,14 @@ amf_rc %>%
 #' could have bias to higher richness based on sequencing depth (or it could be real...there's no way to know). 
 #' This can be examined visually. The raw amf data are used (these are sums of the top six samples per field
 #' as of 2023-03-13). 
-amf_seqot <- 
+amf_seqot_pre <- 
     data.frame(
-        field_key = spe$amf_raw[, 1],
-        seqs = apply(spe$amf_raw[, -1], 1, sum),
-        otus = apply(spe$amf_raw[, -1] > 0, 1, sum)
+        field_key = spe_pre$amf_raw[, 1],
+        seqs = apply(spe_pre$amf_raw[, -1], 1, sum),
+        otus = apply(spe_pre$amf_raw[, -1] > 0, 1, sum)
     ) %>% left_join(sites, by = join_by(field_key))
 #+ amf_seqs_otus_fig,fig.width=7,fig.height=5,fig.align='center'
-ggplot(amf_seqot, aes(x = seqs, y = otus)) +
+ggplot(amf_seqot_pre, aes(x = seqs, y = otus)) +
     geom_point(aes(fill = field_type), shape = 21, size = 2) +
     scale_fill_discrete_qualitative(palette = "Harmonic") +
     labs(x = "Sequence abundance per field",
@@ -278,7 +278,7 @@ ggplot(amf_seqot, aes(x = seqs, y = otus)) +
          caption = "Raw amf data used, sum of top 9 samples per field") +
     theme_classic()
 #+ amf_seqs_otus_reg
-summary(lm(otus ~ seqs, data = amf_seqot))
+summary(lm(otus ~ seqs, data = amf_seqot_pre))
 #' The relationship is poor and not significant. Richness is not related to recovered sequence depth, 
 #' suggesting that our methods are on track.
 #' 
@@ -294,15 +294,15 @@ summary(lm(otus ~ seqs, data = amf_seqot))
 #' 
 #' The custom function `spe_accum()` is applied here.  
 #+ its_accum_list
-its_accum <- bind_rows(
+its_accum_pre <- bind_rows(
     list(
         Raw = bind_rows(
-            split(spe_samps$its_samps_raw, ~ field_key) %>% 
+            split(spe_samps_pre$its_samps_raw, ~ field_key) %>% 
                 map(spe_accum),
             .id = "field_key"
         ),
         Rarefied = bind_rows(
-            split(spe_samps$its_samps_rfy, ~ field_key) %>% 
+            split(spe_samps_pre$its_samps_rfy, ~ field_key) %>% 
                 map(spe_accum),
             .id = "field_key"
         )
@@ -313,7 +313,7 @@ its_accum <- bind_rows(
            field_key = as.numeric(field_key)) %>% 
     left_join(sites, by = join_by(field_key))
 #+ its_species_accumulation_fig,warning=FALSE,message=FALSE,fig.width=8,fig.height=5,fig.align='center'
-ggplot(its_accum, aes(x = samples, y = richness, group = field_name)) +
+ggplot(its_accum_pre, aes(x = samples, y = richness, group = field_name)) +
     facet_wrap(vars(dataset), scales = "free_x") +
     geom_line(aes(color = field_type)) +
     geom_segment(aes(x = samples, y = richness-sd, xend = samples, yend = richness+sd, color = field_type)) +
@@ -332,15 +332,15 @@ ggplot(its_accum, aes(x = samples, y = richness, group = field_name)) +
 #' 
 #' ### 18S
 #+ amf_accum_list
-amf_accum <- bind_rows(
+amf_accum_pre <- bind_rows(
     list(
         Raw = bind_rows(
-            split(spe_samps$amf_samps_raw, ~ field_key) %>% 
+            split(spe_samps_pre$amf_samps_raw, ~ field_key) %>% 
                 map(spe_accum),
             .id = "field_key"
         ),
         Rarefied = bind_rows(
-            split(spe_samps$amf_samps_rfy, ~ field_key) %>% 
+            split(spe_samps_pre$amf_samps_rfy, ~ field_key) %>% 
                 map(spe_accum),
             .id = "field_key"
         )
@@ -351,7 +351,7 @@ amf_accum <- bind_rows(
            field_key = as.numeric(field_key)) %>% 
     left_join(sites, by = join_by(field_key))
 #+ amf_species_accumulation_fig,warning=FALSE,message=FALSE,fig.width=8,fig.height=5,fig.align='center'
-ggplot(amf_accum, aes(x = samples, y = richness, group = field_name)) +
+ggplot(amf_accum_pre, aes(x = samples, y = richness, group = field_name)) +
     facet_wrap(vars(dataset), scales = "free_x") +
     geom_line(aes(color = field_type)) +
     geom_segment(aes(x = samples, y = richness-sd, xend = samples, yend = richness+sd, color = field_type)) +

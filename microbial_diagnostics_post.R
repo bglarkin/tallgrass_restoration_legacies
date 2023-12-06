@@ -157,7 +157,7 @@ ggplot(its_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
 #' This result can be corroborated by comparing the total sequences recovered per field vs.
 #' the richness recovered per field. A relationship should not be evident, or fields with more sequences
 #' could have bias to higher richness based on sequencing depth (or it could be real...there's no way to know). 
-#' This can be examined visually. The raw ITS data are used (these are sums of the top nine samples per field
+#' This can be examined visually. The raw ITS data are used (these are sums of the top eight samples per field
 #' as of 2023-03-13). 
 its_seqot <- 
     data.frame(
@@ -171,7 +171,7 @@ ggplot(its_seqot, aes(x = seqs, y = otus)) +
     scale_fill_discrete_qualitative(palette = "Harmonic") +
     labs(x = "Sequence abundance per field",
          y = "OTUs recovered per field",
-         caption = "Raw ITS data used, sum of top 9 samples per field") +
+         caption = "Raw ITS data used, sum of top 8 samples per field") +
     theme_classic()
 #+ its_seqs_otus_reg
 summary(lm(otus ~ seqs, data = its_seqot))
@@ -227,7 +227,7 @@ ggplot(amf_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
 #' This result can be corroborated by comparing the total sequences recovered per field vs.
 #' the richness recovered per field. A relationship should not be evident, or fields with more sequences
 #' could have bias to higher richness based on sequencing depth (or it could be real...there's no way to know). 
-#' This can be examined visually. The raw amf data are used (these are sums of the top six samples per field
+#' This can be examined visually. The raw amf data are used (these are sums of the top seven samples per field
 #' as of 2023-03-13). 
 amf_seqot <- 
     data.frame(
@@ -241,7 +241,7 @@ ggplot(amf_seqot, aes(x = seqs, y = otus)) +
     scale_fill_discrete_qualitative(palette = "Harmonic") +
     labs(x = "Sequence abundance per field",
          y = "OTUs recovered per field",
-         caption = "Raw amf data used, sum of top 9 samples per field") +
+         caption = "Raw amf data used, sum of top 7 samples per field") +
     theme_classic()
 #+ amf_seqs_otus_reg
 summary(lm(otus ~ seqs, data = amf_seqot))
@@ -329,3 +329,31 @@ ggplot(amf_accum, aes(x = samples, y = richness, group = field_name)) +
 #' All fields continue to add species at the maximum available number of samples, but the curves aren't very steep. 
 #' It's also good news that they all add species at about the same rate. With samples limited to 7 per field, 
 #' the community is still characterized fairly well, and isn't much different from retaining all samples. 
+
+
+
+bind_rows(
+    pre = its_rc_pre,
+    post = its_rc,
+    .id = "process_step"
+)
+
+
+
+
+ggplot(its_rc, aes(x = seq_abund, y = otus, group = field_sample)) +
+    facet_wrap(vars(field_type), ncol = 1) +
+    geom_vline(xintercept = its_depth, linewidth = 0.2) +
+    geom_hline(data = its_at_depth, aes(yintercept = otus), linewidth = 0.2) +
+    geom_line(aes(color = field_type), linewidth = 0.4) +
+    scale_color_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    labs(x = "Number of individuals (sequence abundance)",
+         y = "OTUs",
+         title = "Rarefaction of ITS data",
+         caption = "Curves based on the nine most abundant samples per field.\nVertical line shows the minimum sequence abundance for any field.\nHorizontal lines show expected richness when rarefied to that abundance.") +
+    theme_bw()
+
+
+
+
+
