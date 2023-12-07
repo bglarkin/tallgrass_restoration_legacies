@@ -99,11 +99,11 @@ include_graphics("microbial_diagnostics_post_files/figure-gfm/rare_species_accum
 
 ## Plant data
 
-Plant community data resulted from two independent surveys. In the Wisconsin regions, haphazard transects were established and 10 meter frames placed, with percent cover estimated for all species, resulting in a dataset with plant composition. In Fermi, relevé methods were used, resulting in presence/absence data only. Plant metadata were assembled from multiple sources and include plant traits and natural history details. These metadata aren't used with fields from Fermi because it doesn't make sense to think of the presence/absence of traits only. More information about the plant data, including preliminary analysis, is available in this [report](https://mpgcloud.egnyte.com/dl/MwvwVxhLZ6)
+Plant community data resulted from two independent surveys. In the Wisconsin regions, haphazard transects were established and 10 meter frames placed, with percent cover estimated for all species, resulting in a dataset with plant composition. In Fermi, relevé methods were used, resulting in presence/absence data only. Plant metadata were assembled from multiple sources and include plant traits and natural history details. These metadata aren't used with fields from Fermi because it doesn't make sense to think of the presence/absence of traits only. More information about the plant data, including preliminary analysis, is available in this [report](https://mpgcloud.egnyte.com/dl/MwvwVxhLZ6).
 
 ## Soil data
 
-In the field, soil was pooled from 10 haphazardly-selected locations, mixed, and sampled once for soil chemical analysis. Soil data includes abiotic macro and micronutrients, organic carbon, and properties like pH. Average precipitation was determined for each field using PRISM climate data and is included with the soil data for constrained analyses. More information is available [here](https://mpgcloud.egnyte.com/dl/MwvwVxhLZ6)
+In the field, soil was pooled from 10 haphazardly-selected locations, mixed, and sampled once for soil chemical analysis. Soil data includes abiotic macro and micronutrients, organic carbon, and properties like pH. Average precipitation was determined for each field using PRISM climate data and is included with the soil data for constrained analyses. More information is available [here](https://mpgcloud.egnyte.com/dl/MwvwVxhLZ6).
 
 ## Design/site data
 
@@ -159,10 +159,13 @@ kable(pist, format = "pandoc", caption = "Pairwise tests under reduced model. Bl
 
 ## Fungal diversity
 
+Species richness, Shannon's, and Simpson's diversity are lowest in cornfields, and the trend is an increase in all indices through restored and remnant fields (Fig \ref{fig:div_its}). These differences are significant for Richness and Shannon's diversity, with cornfields being significnatly lower than either remnants or restored fields, which were not significantly different. Index values were more variable for restored fields than for other field types, which insults prerequisite needs for equal variance among groups. 
 
+Trends in diversity were similar in Blue Mounds, Faville Grove, and Fermilab, but at Lake Petite, Shannon's and Simpson's diversity indices were much higher than in cornfields or remnants (not shown), indicating that a sizeable percentage of OTUs were in relatively equal abundance there compared with other sites. This may partially be because the restored fields at Lake Petite are both young and haven't had time to develop the long tail which characterizes most older habitats. 
 
-
-
+```{r fig:div_its,out.width="80%",fig.cap="\\label{fig:div_its}Counts of species or species equivalents are shown for richness and Shannon's and Simpson's diversity in all field types. Differences in means among field types were tested with mixed-effects linear models where region was coded as a random effect. Post-hoc comparisions are Tukey contrasts and letters show significant differences at p<0.05."}
+include_graphics("microbial_diversity_files/figure-gfm/div_its_box-1.png")
+```
 
 ## Fungal guilds
 
@@ -188,15 +191,15 @@ Natural history details about indicator fungi could make this paper more compell
 If natural history details are included, I think the most important case studies will come from these taxa: 
 
 1. Mortierella
-    1. Cornfields mostly, lots known about them, interesting
+    - Cornfields mostly, lots known about them, they have interesting physiology
 1. Stagnospora
-    1. Aligns restored and remnant
+    - Aligns restored and remnant
 1. Pseudopithomyces
-    1. Aligns corn and restored
+    - Aligns corn and restored
 1. Clavaria
-    1. Aligns restored and remnant
+    - Aligns restored and remnant
 1. Microscypha/DSE
-    1. proposed mycorrhizae, in all remnants and 4 restored
+    - proposed mycorrhizae, in all remnants and 4 restored
 
 
 ```{r fig:ssap_ppat_comp,out.width="40%",fig.show="hold",fig.cap="\\label{fig:ssap_ppat_comp}Composition of soil saprotroph (left) and plant pathogen (right) orders are shown across field types. Unidentified taxa were not included, and low abundance OTUs were filtered, see legends for the cutoff percentage."}
@@ -204,7 +207,7 @@ include_graphics(c("microbial_guild_taxonomy_files/figure-gfm/ssap_comp_plot-1.p
 ```
 
 
-
+Better to look at trends from regions and see if trends exist. Then, how about changes over time.
 
 
 
