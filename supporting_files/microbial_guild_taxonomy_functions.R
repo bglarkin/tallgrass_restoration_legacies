@@ -549,7 +549,11 @@ gudicom <- function(div, rrfd, grp_var, gene="its", other_threshold=2) {
             Composition_yr_since = comp_yr_plot
         ))
         
-        return(list(comp_ft, comp_yr))
+        return(
+            list(
+                comp_ft = comp_ft, 
+                comp_yr = comp_yr)
+            )
         
     } else {
         print(list(

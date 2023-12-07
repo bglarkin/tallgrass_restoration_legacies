@@ -258,7 +258,7 @@ ssap <- filgu(spe$its_rfy, meta$its, primary_lifestyle, "soil_saprotroph", sites
 ssap_div <- calc_diversity(ssap$filspe)
 #' Diversity measures are stored in this data frame for further use...
 #+ ssap_composition,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
-ssap_comp <- gudicom(ssap_div, ssap$filspeTaxa, "soil_saprotroph")
+ssap_comp <- gudicom(ssap_div, ssap$filspeTaxa, "soil_saprotroph", other_threshold = 5)
 #' Richness increases from corn to remnant, but within-group variability is high. Diversity 
 #' indices look muddy. Diversity indices increase with years since restoration, but the 
 #' significance of this remains to be seen. 
@@ -730,6 +730,24 @@ its_taxaGuild(spe_meta$its_rfy %>% filter(region == "FL"), other_threshold = 5)
 its_taxaGuild(spe_meta$its_rfy %>% filter(region == "LP"), other_threshold = 5)
 #' Soil saprotrophs highest in remnants, but lowest in restored. Pathogens flat. Again, wood and litter saprotrophs
 #' lowest in remnant, although also missing from corn in this case. 
+#' 
+#' # Appendix: Plots for final report
+#+ ssap_comp_plot
+ggplot(ssap_comp$comp_ft, aes(x = field_type, y = seq_comp)) +
+    geom_col(aes(fill = order), color = "black") +
+    labs(x = "", y = "Proportion of sequence abundance") +
+    scale_fill_discrete_sequential(name = "Order", palette = "Batlow") +
+    theme_classic()
+#+ ppat_comp_plot
+ggplot(ppat_comp$comp_ft, aes(x = field_type, y = seq_comp)) +
+    geom_col(aes(fill = order), color = "black") +
+    labs(x = "", y = "Proportion of sequence abundance") +
+    scale_fill_discrete_sequential(name = "Order", palette = "Batlow") +
+    theme_classic()
+
+
+
+
 
 
 

@@ -61,7 +61,7 @@ sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FAL
 
 ## Sites
 
-The survey followed an unbalanced complete block design. Corn, restored, and remnant fields are compared, with at least one of each field type in each block. I have called blocks "regions" so far. We collected samples and data from four regions (Fig \ref{fig:site_map}, left).  
+We visited fields in southern Wisconsin and at Fermilab, just west of Chicago, Illinois. Site descriptions and photos are available in this [field note](https://mpgcloud.egnyte.com/dl/39NPws0Z5l). The survey followed an unbalanced complete block design. Corn, restored, and remnant fields are compared, with at least one of each field type in each block. I have called blocks "regions" so far. We collected samples and data from four regions (Fig \ref{fig:site_map}, left).  
 
 ```{r fig:site_map,out.width="40%",fig.show="hold",fig.cap="\\label{fig:site_map}(Left) Labels show centroids of regions used for this work. BM = Blue Mounds, FG = Faville Grove, FL = Fermilab, LP = Lake Petite. (Right) Labels show individual fields in the Blue Mounds region."}
 include_graphics(c("site_locations_files/figure-gfm/site_map-1.png", "site_locations_files/figure-gfm/site_map_bm-1.png"))
@@ -99,11 +99,11 @@ include_graphics("microbial_diagnostics_post_files/figure-gfm/rare_species_accum
 
 ## Plant data
 
-Plant community data resulted from two independent surveys. In the Wisconsin regions, haphazard transects were established and 10 meter frames placed, with percent cover estimated for all species, resulting in a dataset with plant composition. In Fermi, relevé methods were used, resulting in presence/absence data only. Plant metadata were assembled from multiple sources and include plant traits and natural history details. These metadata aren't used with fields from Fermi because it doesn't make sense to think of the presence/absence of traits only. 
+Plant community data resulted from two independent surveys. In the Wisconsin regions, haphazard transects were established and 10 meter frames placed, with percent cover estimated for all species, resulting in a dataset with plant composition. In Fermi, relevé methods were used, resulting in presence/absence data only. Plant metadata were assembled from multiple sources and include plant traits and natural history details. These metadata aren't used with fields from Fermi because it doesn't make sense to think of the presence/absence of traits only. More information about the plant data, including preliminary analysis, is available in this [report](https://mpgcloud.egnyte.com/dl/MwvwVxhLZ6)
 
 ## Soil data
 
-In the field, soil was pooled from 10 haphazardly-selected locations, mixed, and sampled once for soil chemical analysis. Soil data includes abiotic macro and micronutrients, organic carbon, and properties like pH. Average precipitation was determined for each field using PRISM climate data and is included with the soil data. 
+In the field, soil was pooled from 10 haphazardly-selected locations, mixed, and sampled once for soil chemical analysis. Soil data includes abiotic macro and micronutrients, organic carbon, and properties like pH. Average precipitation was determined for each field using PRISM climate data and is included with the soil data for constrained analyses. More information is available [here](https://mpgcloud.egnyte.com/dl/MwvwVxhLZ6)
 
 ## Design/site data
 
@@ -120,8 +120,9 @@ and one for quantification of microbial biomass.
 - Fungal genomic data, ITS and 18S, OTU clusters
 - Plant community data, composition in Wisconsin and presence/absence in Fermi
 - Plant traits and natural history
+   - Native status, photosystem, functional guild, lifecycle...
 - Soil properties
-- Fungal biomass
+- Fungal biomass (PLFA, NLFA)
 - Water stable aggregates
 - Site metadata and design
 
@@ -156,6 +157,13 @@ kable(pisp, format = "pandoc", caption = "Permutation test under reduced model. 
 kable(pist, format = "pandoc", caption = "Pairwise tests under reduced model. Blocks: region, samples not permuted (not independent), number of permutations: 1999, p values corrected after multiple tests using the Benjamini & Hochberg correction.")
 ```
 
+## Fungal diversity
+
+
+
+
+
+
 ## Fungal guilds
 
 By sequence abundance across the entire dataset, the top guilds are:
@@ -167,12 +175,70 @@ By sequence abundance across the entire dataset, the top guilds are:
 1. dung saprotrophs: 6,543 sequences
 1. litter saprotrophs: 5,574 sequences
 
-Compared with the sequence abundance in the unidentified group, plant pathogens and soil saprotrophs are abundant enough to feel somewhat confident about in terms of coverage. 
+Compared with the sequence abundance in the unidentified group, plant pathogens and soil saprotrophs are abundant enough to feel somewhat confident about in terms of coverage. At the level of taxonomic order, composition of soil saprotrophs in corn fields looks different from restored and remnant fields (Fig \ref{fig:ssap_ppat_comp}, left). Among well-represented orders, Agarics increase from corn to remnant, Cystofilobasidiales are prevalent only in corn, and Filobasidiales, often human pathogens, decline from corn to remnant. Geoglossales, which are associated with woodlands, moss, grasslands, probably don't like tillage or lack of substrate in cornfields and aren't found there. The order Hypocreales only occurs in restored and remnant fields. OTUs identified as Mortierellales are abundant in corn and restored fields, less so in remnants, with different OTUs associated with different field types.
+
+OTUs from these guilds were also heavily represented in an analysis to find indicator species for each field type. Note that the indicator species analysis is flawed because of the unbalanced number of fields for each field type. It's easier for a species to be detected in five cornfields than in sixteen restored fields, for example. I'd argue that as a basic filter to find interesting species, this analysis is acceptable if we don't try to call these species "indicators" of a particular habitat. 
+
+I filtered indicator species to those which were identified to at least the genus level. Saprotrophs associated with cornfields tended to be disturbance-tolerant extremophiles, in particular, tolerating very cold environments. Some are known to produce suites of extracellular enzymes, exploting various nutrient sources (*Tausonia pullulans*) and making recalcitrant nutrients available to plants (*Mortierella minutissima*, which is used as an agricultural inoculant). *Pseudaleuria sp.* was also associated with cornfields. Species in this genus are suspected to increase crop yields and protect plants from disease. The only saprotroph associated with restored fields was another species in the genus *Mortierella*. Remnants hosted few indicator species. OTUs identified as *Gymnostellatospora sp.* and *Striaticonidium cinctum* appear to have little natural history information. An OTU in the genus *Clavaria* is a coral fungus, associated with woodland, savanna, or old-field habitats worldwide. 
+
+The contrast among field types with plant pathogens isn't obvious (Fig \ref{fig:ssap_ppat_comp}, right). Not surprisingly, most pathogenic taxa associated with cornfields are known agricultural pathogens, including *Corynespora cassiicola*, *Curvularia sp.*, *Plectosphaerella cucumerina*, and *Setophoma terrestris*. *Microdochium colombiense*, a snow mold of rye and other cereal grains, is also an extreme cold tolerant species. In restored fields, an indicator pathogen was a *Pseudopithomyces sp.*, which is often found in anthropogenic environments and is a known wheat pathogen.
+
+Natural history details about indicator fungi could make this paper more compelling, but the best value for such an analysis here is to show whether restored fields look more like cornfields, more like remnants, or more like something else entirely. But only 36% of these OTUs were assigned to a guild and 46% were assigned to a genus. It's likely that many saprotrophs and pathogens exist in these data that are opaque to our analysis. We'd have to assume that these unassigned taxa are distributed equally across field types, but this assumption is likely invalid because agricultural systems have received much more attention. Recovery of crop-associated fungi in restored fields probably reflects this bias as much as it shows a similarity with cornfield fungi. With few taxa identified in remnant fields, there's not much to compare with restored fields. Finally, very abundant OTUs tended to be commonly distributed, but all of these indicator OTUs occur in low abundance. Are they relevant to ecological processes in these fields? It's hard to say.
+
+If natural history details are included, I think the most important case studies will come from these taxa: 
+
+1. Mortierella
+    1. Cornfields mostly, lots known about them, interesting
+1. Stagnospora
+    1. Aligns restored and remnant
+1. Pseudopithomyces
+    1. Aligns corn and restored
+1. Clavaria
+    1. Aligns restored and remnant
+1. Microscypha/DSE
+    1. proposed mycorrhizae, in all remnants and 4 restored
+
+
+```{r fig:ssap_ppat_comp,out.width="40%",fig.show="hold",fig.cap="\\label{fig:ssap_ppat_comp}Composition of soil saprotroph (left) and plant pathogen (right) orders are shown across field types. Unidentified taxa were not included, and low abundance OTUs were filtered, see legends for the cutoff percentage."}
+include_graphics(c("microbial_guild_taxonomy_files/figure-gfm/ssap_comp_plot-1.png", "microbial_guild_taxonomy_files/figure-gfm/ppat_comp_plot-1.png"))
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 ```{r fig:its_guilds_regions,out.width="80%",fig.cap="\\label{fig:its_guilds_regions}Abundant or dynamic guilds across field types in regions, ITS dataset."}
 include_graphics("microbial_communities_files/figure-gfm/its_guilds_regions_fig-1.png")
 ```
 
+## AMF diversity
+
+
+
+
+
+
+
+
+## AMF taxa
+
+
+
+
+
+
+
+## Responses
+WSA
+Biomass
 
 
 
