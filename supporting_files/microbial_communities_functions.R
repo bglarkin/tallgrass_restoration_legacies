@@ -217,7 +217,7 @@ pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
                    site_vectors                   = scores,
                    broken_stick_plot              = p_bstick,
                    permanova                      = gl_permtest,
-                   pairwise_contrasts             = kable(contrasts, format = "pandoc"))
+                   pairwise_contrasts             = contrasts, format = "pandoc")
     return(output)
 }
 #' 

@@ -2,11 +2,13 @@ Supplemental: microbial communities
 ================
 Beau Larkin
 
-Last updated: 04 December, 2023
+Last updated: 07 December, 2023
 
 - [Description](#description)
   - [PCoA function](#pcoa-function)
   - [PCoA function with subsamples](#pcoa-function-with-subsamples)
+  - [PCoA function with subsamples, Blue Mounds
+    only](#pcoa-function-with-subsamples-blue-mounds-only)
 
 # Description
 
@@ -219,10 +221,12 @@ pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
                    site_vectors                   = scores,
                    broken_stick_plot              = p_bstick,
                    permanova                      = gl_permtest,
-                   pairwise_contrasts             = kable(contrasts, format = "pandoc"))
+                   pairwise_contrasts             = contrasts, format = "pandoc")
     return(output)
 }
 ```
+
+## PCoA function with subsamples, Blue Mounds only
 
 ``` r
 pcoa_samps_bm_fun <- function(s, d, env=sites_resto_bm, corr="none", df_name, nperm=1999) {
