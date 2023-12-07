@@ -668,8 +668,8 @@ write_csv(pcoa_its_eigenvalues, file = "microbial_communities_files/pcoa_its_eig
 #' Let's view and save a plot that shows all the data together and broken out by regions.
 #+ its_samps_unified_fig,fig.height=10,fig.width=7,fig.align='center',message=FALSE,warning=FALSE
 grid.arrange(
-    its_samps_guilds_fig + labs(caption = ""), 
-    its_samps_regions_fig + theme(legend.position = "none"), 
+    its_samps_guilds_fig + labs(caption = "") + theme(plot.title = element_blank()), 
+    its_samps_regions_fig + labs(caption = "") + theme(legend.position = "none"), 
     ncol = 1,
     heights = c(1.1,0.9)
     )
@@ -951,6 +951,8 @@ ggplot(pcoa_amf_resto_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
                                   distab$amf_samps, 
                                   corr="lingoes", 
                                   df_name = "18S gene, 97% OTU"))
+write_delim(pcoa_amf_samps$permanova, "microbial_communities_files/pcoa_amf_samps_permanova.txt")
+write_delim(pcoa_amf_samps$pairwise_contrasts, "microbial_communities_files/pcoa_amf_samps_pairwise.txt")
 #' 
 #' Axis 1 explains `r pcoa_amf_samps$eigenvalues[1]`% and axis 2 
 #' explains `r pcoa_amf_samps$eigenvalues[2]`% of the variation in the community data. Both axes are important
@@ -1120,8 +1122,8 @@ write_csv(pcoa_amf_eigenvalues, file = "microbial_communities_files/pcoa_amf_eig
 #' Let's view and save a plot that shows all the data together and broken out by regions.
 #+ amf_samps_unified_fig,fig.height=10,fig.width=7,fig.align='center',message=FALSE,warning=FALSE
 grid.arrange(
-    amf_samps_families_fig + labs(caption = ""), 
-    amf_samps_regions_fig + theme(legend.position = "none"), 
+    amf_samps_families_fig + labs(caption = "") + theme(plot.title = element_blank()), 
+    amf_samps_regions_fig + labs(caption = "") + theme(legend.position = "none"), 
     ncol = 1,
     heights = c(1.1,0.9)
 )

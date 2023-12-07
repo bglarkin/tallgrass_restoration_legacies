@@ -8,7 +8,7 @@ output:
     fig_caption: yes
     highlight: tango
     toc: true
-    toc_depth: 2
+    toc_depth: 1
 geometry: margin = 0.5in
 fontsize: 12pt
 urlcolor: blue
@@ -39,9 +39,7 @@ conflict_prefer("select", "dplyr")
 
 # Introduction
 
-The tallgrass prairie biome in North America is nearly extinct, creating a tremendous desire for restoration or recreation of
-this critical habitat. In the upper Midwest, interested landowners have attempted to convert previous agricultural fields
-(corn or soybeans, usually) to prairie for decades. The consequences of this practice for soil biota are largely unknown. Agricultural fields filter fungal and bacterial communities for species that can tolerate extreme nutrient loads, frequent tillage, and poor plant diversity. When agricultural practices cease, and native perennial plants are introduced, soil biotic communities are again filtered and rapidly change. What is the endpoint of these new communities? Do they begin to resemble communities in remnant prairie (the reference condition), or do they form novel communities, indicating a change of state in the system due to disturbance associated with agriculture? 
+The tallgrass prairie biome in North America is nearly extinct, creating a tremendous desire for restoration or recreation of this critical habitat. In the upper Midwest, interested landowners have attempted to convert previous agricultural fields (corn or soybeans, usually) to prairie for decades. The consequences of this practice for soil biota are largely unknown. Agricultural fields filter fungal and bacterial communities for species that can tolerate extreme nutrient loads, frequent tillage, and poor plant diversity. When agricultural practices cease, and native perennial plants are introduced, soil biotic communities are filtered by the new regime and rapidly change. What is the endpoint of these new communities? Do they begin to resemble communities in remnant prairie (the reference condition), or do they form novel communities, indicating a change of state in the system due to disturbance associated with agriculture? Are these communities' fates similar across distant regions, or is each context dependent?
 
 # Description
 
@@ -83,7 +81,7 @@ A feature of our design is that restored fields vary in time since restoration, 
 
 ## Soil Fungal Communities
 
-We collected soil cores from 10 haphazardly-selected locations in each field. Genomic DNA was extracted, and the lab and bioinformatics pipeline delivered community data from ITS or 18S regions clustered as OTUs or SVs. In preliminary work, inferences made with SVs were weaker but not qualitatively different. I continued with OTUs only.  
+We collected soil cores from 10 haphazardly-selected locations in each field. Genomic DNA was extracted, and the lab and bioinformatics pipeline delivered community data from ITS or 18S regions clustered as 97% similar OTUs or 99% similar SVs. In preliminary work, inferences made with SVs were weaker but not qualitatively different. I continued with OTUs only.  
 
 Originally, I had planned to average the sequence abundance per OTU in each field. In part, I did this for stastistical design reasons. Since fields are replicates, the samples in fields aren't independent. Also, explanatory and response data exist as one data point per field, meaning that they should not be expanded to apply singly to each sample. Finally, I didn't have the tools to account for this design in permutation tests. With available tools, I could only choose one "nesting" factor, but to include samples, I'd have to account for regions and fields as blocking elements when testing the design element of field type. Luckily, I've recently found a new tool, namely function `how()` from package `permute`, that allows for more complicated permutation designs. I decided to proceed along parallel analysis paths: one with sample-level data, and one with field-level data. 
 
@@ -130,48 +128,50 @@ and one for quantification of microbial biomass.
 # Results
 
 ## Fungal communities
-#+ microbial_communities.R,echo=FALSE,message=FALSE,warning=FALSE,include=FALSE
-source("microbial_communities.R")
 
-### Soil fungi, field types, and regions
-Cornfields stand apart while remnants are mixed with restored fields. As the age of restored fields
-increases, their distance from corn and remnants grows. The high dimensionality here keeps the explanatory power
-of axes 1 & 2 low. Clusters based on field type were significant based on a permanova (with regions as blocks and 
-subsamples held constant within fields, the replicate). However, a pairwise post-hoc permutation failed to separate 
-remnant fields from any other type. This was also true when field centroids were used exclusively and the 
-permutation test adjusted to this scheme. 
+Fungal communities in cornfields stand apart from remnants and restored fields restored fields (Fig \ref{fig:its_samps_unified}). As the age of restored fields increases, their distance from corn grows, and remnants lie in an intermediate position among restored fields. The high dimensionality here keeps the explanatory power of axes 1 & 2 low. Clusters based on field type were significant based on a permanova (with regions as blocks and subsamples held constant within fields, the replicate). However, a pairwise post-hoc permutation failed to separate remnant fields from any other type. This is due partially to a low number of replicates, and it's also a problem with dispersion. The remnants are as distant from each other as they are from corn. I also attempted this using field-level data (not shown), and the p values were somewhat improved, but remnants still failed to separate from corn or restored fields.
+
+```{r fig:its_samps_unified,out.width="80%",fig.cap="\\label{fig:its_samps_unified}The top panel is a db-PCoA ordination of samples in fields, ITS dataset. Small circular icons show locations of samples and hulls enclose fields. Each field is represented with a large icon on the field centroid, where icon shapes identify the field region and color identifies the field type. Text on the restored field icons shows years since restoration. The inset column chart displays average sequence abundance across all fields for the three most abundant fungal guilds. The lower four panels show independent db-PCoAs for each region."}
 #+ fig:its_samps_unified_fig-1,echo=FALSE,fig.align='center',out.width="100%",fig.cap="ITS-based fungal communities, most abundant guilds inset."
 include_graphics("microbial_communities_files/figure-gfm/its_samps_unified_fig-1.png")
+```
 
-#+ pcoa_its_samps_permanova,echo=FALSE
-print(pcoa_its_samps$permanova)
-#+ pcoa_its_samps_pairwise,echo=FALSE
-print(pcoa_its_samps$pairwise_contrasts)
+```{r pcoa_its_samps_stats}
+pisp <- read_delim("microbial_communities_files/pcoa_its_samps_permanova.txt", show_col_types = FALSE)
+pist <- read_delim("microbial_communities_files/pcoa_its_samps_pairwise.txt", show_col_types = FALSE)
+kable(pisp, format = "pandoc", caption = "Permutation test under reduced model. Blocks: region, samples not permuted (not independent), number of permutations: 1999")
+kable(pist, format = "pandoc", caption = "Pairwise tests under reduced model. Blocks: region, samples not permuted (not independent), number of permutations: 1999, p values corrected after multiple tests using the Benjamini & Hochberg correction.")
+```
 
-### Soil fungal guilds, field types, and regions
+AMF communities (18S data) showed qualitatively similar patterns to the ITS results (Fig \ref{fig:amf_samps_unified}), but with weaker support. 
+
+```{r fig:amf_samps_unified,out.width="80%",fig.cap="\\label{fig:amf_samps_unified}The top panel is a db-PCoA ordination of samples in fields, 18S dataset. Small circular icons show locations of samples and hulls enclose fields. Each field is represented with a large icon on the field centroid, where icon shapes identify the field region and color identifies the field type. Text on the restored field icons shows years since restoration. The inset column chart displays average sequence abundance across all fields for the three most abundant fungal guilds. The lower four panels show independent db-PCoAs for each region."}
+include_graphics("microbial_communities_files/figure-gfm/amf_samps_unified_fig-1.png")
+```
+
+```{r pcoa_amf_samps_stats}
+pasp <- read_delim("microbial_communities_files/pcoa_amf_samps_permanova.txt", show_col_types = FALSE)
+past <- read_delim("microbial_communities_files/pcoa_amf_samps_pairwise.txt", show_col_types = FALSE)
+kable(pisp, format = "pandoc", caption = "Permutation test under reduced model. Blocks: region, samples not permuted (not independent), number of permutations: 1999")
+kable(pist, format = "pandoc", caption = "Pairwise tests under reduced model. Blocks: region, samples not permuted (not independent), number of permutations: 1999, p values corrected after multiple tests using the Benjamini & Hochberg correction.")
+```
+
+## Fungal guilds
+
 By sequence abundance across the entire dataset, the top guilds are:
 
-1. Unidentified (not shown on column charts)
-1. plant pathogens
-1. soil saprotrophs
-1. wood saprotrophs
-1. dung saprotrophs
-1. litter saprotrophs
+1. Unidentified (not shown on column charts): 92,534 sequences
+1. plant pathogens: 25,471 sequences
+1. soil saprotrophs: 24,538 sequences
+1. wood saprotrophs: 8,353 sequences
+1. dung saprotrophs: 6,543 sequences
+1. litter saprotrophs: 5,574 sequences
 
-Compared with the sequence abundance in the NA group, plant pathogens and soil saprotrophs are
-abundant enough to feel somewhat confident about in terms of coverage. These are also the ones
-that varied most with age in restored fields as we'll see later, and they were most 
-conspicuous in an indicator species analysis. Trends across field types within regions
-aren't very consistent...
-#+ fig:its_guilds_regions,echo=FALSE,fig.align='center',out.width="100%",fig.cap="Abundant or dynamic guilds across field types in regions, ITS dataset."
+Compared with the sequence abundance in the unidentified group, plant pathogens and soil saprotrophs are abundant enough to feel somewhat confident about in terms of coverage. 
+
+```{r fig:its_guilds_regions,out.width="80%",fig.cap="\\label{fig:its_guilds_regions}Abundant or dynamic guilds across field types in regions, ITS dataset."}
 include_graphics("microbial_communities_files/figure-gfm/its_guilds_regions_fig-1.png")
-## heading
-more text
-
-### heading again
-#+ fig:amf_pcoa_unified,echo=FALSE,fig.align='center',out.width="100%",fig.cap="18S-based fungal communities, most important families inset."
-include_graphics("microbial_communities_files/figure-gfm/amf_samps_unified_fig-1.png")
-
+```
 
 
 
