@@ -2,15 +2,13 @@ Soil: water stable aggregates
 ================
 Beau Larkin
 
-Last updated: 19 October, 2023
+Last updated: 07 December, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
 - [Data](#data)
 - [Results](#results)
   - [WSA in field types and regions](#wsa-in-field-types-and-regions)
-  - [WSA over time in restored
-    fields](#wsa-over-time-in-restored-fields)
 
 # Description
 
@@ -172,9 +170,9 @@ summary(wsa_mod_tuk)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)   
-    ## restored - corn == 0      14.538      4.183   3.475  0.00149 **
-    ## remnant - corn == 0        3.227      5.365   0.602  0.81715   
-    ## remnant - restored == 0  -11.311      4.593  -2.462  0.03613 * 
+    ## restored - corn == 0      14.538      4.183   3.475  0.00143 **
+    ## remnant - corn == 0        3.227      5.365   0.602  0.81716   
+    ## remnant - restored == 0  -11.311      4.593  -2.462  0.03612 * 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## (Adjusted p values reported -- single-step method)
@@ -220,19 +218,19 @@ ggplot(wsa,
     geom_boxplot(fill = "gray90", varwidth = FALSE, outlier.shape = NA) +
     geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
     geom_text(data = sig_letters, aes(x = xpos, y = ypos, label = lab)) +
-    labs(x = "", y = "Water stable aggregates (%)",
-         caption = "Linear mixed models with region as random effect.\nLetters show differences based on Tukey's post hoc\nwith Holm correction at p<0.05") +
+    labs(x = "", y = "Water stable aggregates (%)") +
     scale_fill_discrete_qualitative(name = "Region", palette = "Dark2") +
     theme_bw()
 ```
 
 <img src="soil_wsa_files/figure-gfm/wsa_regions_fieldtypes_fig-1.png" style="display: block; margin: auto;" />
 
-## WSA over time in restored fields
-
-Percent WSA varies greatly across restored fields. Can some of this
-variation be explained by how long it’s been since the field was
-restored? This comparison can only be justified in the Blue Mounds area.
+In the figure above, Linear mixed models with region as random effect.
+Letters show differences based on Tukey’s post hoc with Holm correction
+at p\<0.05 \## WSA over time in restored fields Percent WSA varies
+greatly across restored fields. Can some of this variation be explained
+by how long it’s been since the field was restored? This comparison can
+only be justified in the Blue Mounds area.
 
 ``` r
 wsa_bm_resto <- 

@@ -95,17 +95,17 @@ sig_letters <- data.frame(
     xpos = c(1,2,3),
     ypos = rep(85,3)
 )
-#+ wsa_regions_fieldtypes_fig,fig.align='center',fig.width=5,fig.height=5
+#+ wsa_regions_fieldtypes_fig,fig.align='center',fig.width=4.5,fig.height=3.5
 ggplot(wsa, 
        aes(x = field_type, y = wsa)) +
     geom_boxplot(fill = "gray90", varwidth = FALSE, outlier.shape = NA) +
     geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
     geom_text(data = sig_letters, aes(x = xpos, y = ypos, label = lab)) +
-    labs(x = "", y = "Water stable aggregates (%)",
-         caption = "Linear mixed models with region as random effect.\nLetters show differences based on Tukey's post hoc\nwith Holm correction at p<0.05") +
+    labs(x = "", y = "Water stable aggregates (%)") +
     scale_fill_discrete_qualitative(name = "Region", palette = "Dark2") +
     theme_bw()
-#' 
+#' In the figure above, Linear mixed models with region as random effect. 
+#' Letters show differences based on Tukey's post hoc with Holm correction at p<0.05
 #' ## WSA over time in restored fields
 #' Percent WSA varies greatly across restored fields. Can some of this variation be explained by 
 #' how long it's been since the field was restored? This comparison can only be justified in the Blue 
