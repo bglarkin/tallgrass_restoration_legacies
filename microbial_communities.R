@@ -674,13 +674,11 @@ grid.arrange(
     heights = c(1.1,0.9)
     )
 #' Then, we'll follow up with panels showing trends with the most abundant guilds. 
-#+ its_guilds_regions_fig,fig.align='center'
+#+ its_guilds_regions_fig,fig.align='center',fig.width=7,fig.height=3.5
 spe_meta$its %>%
-    filter(primary_lifestyle %in% c("soil_saprotroph", "plant_pathogen", "wood_saprotroph", "litter_saprotroph")) %>%
+    filter(primary_lifestyle %in% c("soil_saprotroph", "plant_pathogen")) %>%
     mutate(field_type = factor(field_type, ordered = TRUE, 
-                               levels = c("corn", "restored", "remnant")),
-           primary_lifestyle = factor(primary_lifestyle, ordered = TRUE, 
-                                      levels = c("plant_pathogen", "litter_saprotroph", "soil_saprotroph", "wood_saprotroph"))) %>%
+                               levels = c("corn", "restored", "remnant"))) %>%
     group_by(region, primary_lifestyle, field_type) %>%
     summarize(avg_seq_abund = mean(seq_abund), .groups = "drop") %>%
     ggplot(aes(x = region, y = avg_seq_abund, fill = field_type)) +
