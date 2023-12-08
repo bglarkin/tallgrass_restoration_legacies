@@ -45,8 +45,7 @@ its_taxaGuild <- function(data, other_threshold=2) {
     guild_df <-
         data %>%
         group_by(primary_lifestyle, field_type, field_name) %>%
-        summarize(abund = sum(seq_abund), .groups = "drop") %>%
-        group_by(primary_lifestyle, field_type) %>%
+        summarize(abund = sum(seq_abund), .groups = "drop_last") %>%
         summarize(mean = round(mean(abund), 1), .groups = "drop") %>%
         pivot_wider(
             names_from = field_type,

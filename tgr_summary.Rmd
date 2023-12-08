@@ -191,7 +191,7 @@ OTUs from these guilds were also heavily represented in an analysis to find indi
 
 I filtered indicator species to those which were identified to at least the genus level. Saprotrophs associated with cornfields tended to be disturbance-tolerant extremophiles, in particular, tolerating very cold environments. Some are known to produce suites of extracellular enzymes, exploting various nutrient sources (*Tausonia pullulans*) and making recalcitrant nutrients available to plants (*Mortierella minutissima*, which is used as an agricultural inoculant). *Pseudaleuria sp.* was also associated with cornfields. Species in this genus are suspected to increase crop yields and protect plants from disease. The only saprotroph associated with restored fields was another species in the genus *Mortierella*. Remnants hosted few indicator species. OTUs identified as *Gymnostellatospora sp.* and *Striaticonidium cinctum* appear to have little natural history information. An OTU in the genus *Clavaria* is a coral fungus, associated with woodland, savanna, or old-field habitats worldwide. 
 
-The contrast among field types with plant pathogens isn't obvious (Fig \ref{fig:ssap_ppat_comp}, right). Not surprisingly, most pathogenic taxa associated with cornfields are known agricultural pathogens, including *Corynespora cassiicola*, *Curvularia sp.*, *Plectosphaerella cucumerina*, and *Setophoma terrestris*. *Microdochium colombiense*, a snow mold of rye and other cereal grains, is also an extreme cold tolerant species. In restored fields, an indicator pathogen was a *Pseudopithomyces sp.*, which is often found in anthropogenic environments and is a known wheat pathogen.
+The contrast among field types with plant pathogens isn't obvious (Fig \ref{fig:ssap-ppat-comp}, right). Not surprisingly, most pathogenic taxa associated with cornfields are known agricultural pathogens, including *Corynespora cassiicola*, *Curvularia sp.*, *Plectosphaerella cucumerina*, and *Setophoma terrestris*. *Microdochium colombiense*, a snow mold of rye and other cereal grains, is also an extreme cold tolerant species. In restored fields, an indicator pathogen was a *Pseudopithomyces sp.*, which is often found in anthropogenic environments and is a known wheat pathogen.
 
 Natural history details about indicator fungi could make this paper more compelling, but the best value for such an analysis here is to show whether restored fields look more like cornfields, more like remnants, or more like something else entirely. But only 36% of these OTUs were assigned to a guild and 46% were assigned to a genus. It's likely that many saprotrophs and pathogens exist in these data that are opaque to our analysis. We'd have to assume that these unassigned taxa are distributed equally across field types, but this assumption is likely invalid because agricultural systems have received much more attention. Recovery of crop-associated fungi in restored fields probably reflects this bias as much as it shows a similarity with cornfield fungi. With few taxa identified in remnant fields, there's not much to compare with restored fields. Finally, very abundant OTUs tended to be commonly distributed, but all of these indicator OTUs occur in low abundance. Are they relevant to ecological processes in these fields? It's hard to say.
 
@@ -213,9 +213,9 @@ If natural history details are included, I think the most important case studies
 include_graphics(c("microbial_guild_taxonomy_files/figure-gfm/ssap_comp_plot-1.png", "microbial_guild_taxonomy_files/figure-gfm/ppat_comp_plot-1.png"))
 ```
 
-### Trends in regions
+### Trends with guilds
 
-With guilds, trends across field types vary among regions. 
+Average sequence abundance of the most numerous guilds varied with field type (table \@ref(tab:guild-abund)), but when looking at patterns in regions, no trends look like they will be significant (Fig \@ref(fig:guilds-regions)). 
 
 
 Better to look at trends from regions and see if trends exist. Then, how about changes over time.
@@ -229,7 +229,7 @@ Better to look at trends from regions and see if trends exist. Then, how about c
 
 
 
-```{r guilds-regions,out.width="80%",fig.cap="Abundant or dynamic guilds across field types in regions, ITS dataset."}
+```{r guilds-regions,out.width="80%",fig.cap="Soil saprotroph and pathogen guilds across field types, regional trends. Values are average sequence abundance in fields"}
 include_graphics("microbial_communities_files/figure-gfm/its_guilds_regions_fig-1.png")
 ```
 
