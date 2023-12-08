@@ -158,7 +158,7 @@ spe <- list(
 #' ## Species metadata
 #' Needed to make inset figures showing most important categories of species. The OTUs
 #' and sequence abundances in these files matches the rarefied data in `spe$` above.
-#' CSV files were produced in the [microbial diversity script](microbial_diversity.md).
+#' CSV files were produced in the guild taxonomy [script](microbial_guild_taxonomy.md).
 spe_meta <- list(
     its =
         read_csv(
@@ -354,12 +354,8 @@ pcoa_its$ord <-
     guides(fill = guide_legend(override.aes = list(shape = 21)))
 pcoa_its$inset <-
     spe_meta$its %>%
-    filter(primary_lifestyle %in% c("soil_saprotroph", "plant_pathogen", "wood_saprotroph")) %>%
-    mutate(field_type = factor(
-        field_type,
-        ordered = TRUE,
-        levels = c("corn", "restored", "remnant")
-    )) %>%
+    filter(primary_lifestyle %in% c("plant_pathogen", "soil_saprotroph")) %>%
+    mutate(field_type = factor(field_type, ordered = TRUE, levels = c("corn", "restored", "remnant"))) %>%
     group_by(primary_lifestyle, field_type, field_name) %>%
     summarize(sum_seq_abund = sum(seq_abund), .groups = "drop_last") %>% 
     summarize(avg_seq_abund = mean(sum_seq_abund), .groups = "drop") %>%
@@ -367,7 +363,7 @@ pcoa_its$inset <-
     geom_col(position = "dodge") +
     labs(y = "Seq. abund. (avg)") +
     scale_fill_discrete_qualitative(palette = "Harmonic") +
-    scale_x_discrete(label = c("soil sapr", "wood sapr", "plnt path")) +
+    scale_x_discrete(label = c("plnt path", "soil sapr")) +
     # coord_flip() +
     theme_classic() +
     theme(legend.position = "none", axis.title.x = element_blank())
@@ -677,10 +673,9 @@ grid.arrange(
 #' Then, we'll follow up with panels showing trends with the most abundant guilds. 
 #+ its_guilds_regions_fig,fig.align='center',fig.width=7,fig.height=3.5
 spe_meta$its %>%
-    filter(primary_lifestyle %in% c("soil_saprotroph", "plant_pathogen")) %>%
+    filter(primary_lifestyle %in% c("plant_pathogen", "soil_saprotroph")) %>%
     mutate(field_type = factor(field_type, ordered = TRUE, 
-                               levels = c("corn", "restored", "remnant")),
-           primary_lifestyle = factor(primary_lifestyle, ordered = TRUE, levels = c("soil_saprotroph", "plant_pathogen"))) %>%
+                               levels = c("corn", "restored", "remnant"))) %>%
     group_by(region, primary_lifestyle, field_type, field_name) %>%
     summarize(sum_seq_abund = sum(seq_abund), .groups = "drop_last") %>% 
     summarize(avg_seq_abund = mean(sum_seq_abund), .groups = "drop") %>%
