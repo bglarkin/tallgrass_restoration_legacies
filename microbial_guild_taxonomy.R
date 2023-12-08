@@ -735,13 +735,13 @@ its_taxaGuild(spe_meta$its_rfy %>% filter(region == "LP"), other_threshold = 5)
 #+ ssap_comp_plot
 ggplot(ssap_comp$comp_ft, aes(x = field_type, y = seq_comp)) +
     geom_col(aes(fill = order), color = "black") +
-    labs(x = "", y = "Proportion of sequence abundance") +
+    labs(x = "", y = "Proportion of sequence abundance", title = "Soil Saprotroph") +
     scale_fill_discrete_sequential(name = "Order", palette = "Batlow") +
     theme_classic()
 #+ ppat_comp_plot
 ggplot(ppat_comp$comp_ft, aes(x = field_type, y = seq_comp)) +
     geom_col(aes(fill = order), color = "black") +
-    labs(x = "", y = "Proportion of sequence abundance") +
+    labs(x = "", y = "Proportion of sequence abundance", title = "Plant Pathogen") +
     scale_fill_discrete_sequential(name = "Order", palette = "Batlow") +
     theme_classic()
 

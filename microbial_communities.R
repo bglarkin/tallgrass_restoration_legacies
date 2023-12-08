@@ -678,12 +678,18 @@ grid.arrange(
 spe_meta$its %>%
     filter(primary_lifestyle %in% c("soil_saprotroph", "plant_pathogen")) %>%
     mutate(field_type = factor(field_type, ordered = TRUE, 
-                               levels = c("corn", "restored", "remnant"))) %>%
+                               levels = c("corn", "restored", "remnant")),
+           primary_lifestyle = factor(primary_lifestyle, ordered = TRUE, levels = c("soil_saprotroph", "plant_pathogen"))) %>%
     group_by(region, primary_lifestyle, field_type) %>%
-    summarize(avg_seq_abund = mean(seq_abund), .groups = "drop") %>%
+    summarize(avg_seq_abund = mean(seq_abund),
+              ci_seq_abund = qnorm(0.975) * sd(seq_abund) / sqrt(n()),
+              .groups = "drop") %>%
     ggplot(aes(x = region, y = avg_seq_abund, fill = field_type)) +
     facet_wrap(vars(primary_lifestyle), scales = "free_y") +
-    geom_col(position = "dodge") +
+    geom_col(position = position_dodge(width = 0.9), color = "black", linewidth = 0.2) +
+    geom_errorbar(position = position_dodge(width = 0.9), 
+                  aes(x = region, ymin = avg_seq_abund-ci_seq_abund, ymax = avg_seq_abund+ci_seq_abund), 
+                  linewidth = 0.2, width = 0.25) +
     labs(y = "Sequence abundance (avg)") +
     scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
     theme_bw() +

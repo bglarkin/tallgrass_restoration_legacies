@@ -3,12 +3,14 @@ title: "Tallgrass Restoration Legacies, Summary"
 author: "Beau Larkin"
 date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
 output:
-  pdf_document:
+  bookdown::pdf_document2:
     df_print: tibble
     fig_caption: yes
     highlight: tango
     toc: true
     toc_depth: 1
+header-includes:
+    \usepackage{float}
 geometry: margin = 0.5in
 fontsize: 12pt
 urlcolor: blue
@@ -61,23 +63,23 @@ sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FAL
 
 ## Sites
 
-We visited fields in southern Wisconsin and at Fermilab, just west of Chicago, Illinois. Site descriptions and photos are available in this [field note](https://mpgcloud.egnyte.com/dl/39NPws0Z5l). The survey followed an unbalanced complete block design. Corn, restored, and remnant fields are compared, with at least one of each field type in each block. I have called blocks "regions" so far. We collected samples and data from four regions (Fig \ref{fig:site_map}, left).  
+We visited fields in southern Wisconsin and at Fermilab, just west of Chicago, Illinois. Site descriptions and photos are available in this [field note](https://mpgcloud.egnyte.com/dl/39NPws0Z5l). The survey followed an unbalanced complete block design. Corn, restored, and remnant fields are compared, with at least one of each field type in each block. I have called blocks "regions" so far. We collected samples and data from four regions (Fig \@ref(fig:site-map), left).  
 
-```{r fig:site_map,out.width="40%",fig.show="hold",fig.cap="\\label{fig:site_map}(Left) Labels show centroids of regions used for this work. BM = Blue Mounds, FG = Faville Grove, FL = Fermilab, LP = Lake Petite. (Right) Labels show individual fields in the Blue Mounds region."}
+```{r site-map,out.width="40%",fig.show="hold",fig.cap="(Left) Labels show centroids of regions used for this work. BM = Blue Mounds, FG = Faville Grove, FL = Fermilab, LP = Lake Petite. (Right) Labels show individual fields in the Blue Mounds region."}
 include_graphics(c("site_locations_files/figure-gfm/site_map-1.png", "site_locations_files/figure-gfm/site_map_bm-1.png"))
 ```
 
 ## Design
 
-The design is unbalanced because there are more restored fields than corn or remnant. In all but one case, only single corn and remnant fields were available in each region. This means that we only have replication to separate field types when using the entire block design.
+The design is unbalanced because there are more restored fields than corn or remnant (table \@ref(tab:design-table)). In all but one case, only single corn and remnant fields were available in each region. This means that we only have replication to separate field types when using the entire block design.
 
-```{r fields_regions_types_table}
+```{r design-table}
 kable(table(sites$region, sites$field_type),
       format = "pandoc",
       caption = "Count of fields by type and region:\nBM = Blue Mounds, FG = Faville Grove,\nFL = Fermilab, LP = Lake Petite")
 ```
 
-A feature of our design is that restored fields vary in time since restoration, setting up the potential for a chronosequence in addition to the contrasts with corn or remnant fields. The rules for establishing a chronosequence are strict. We cannot call fields from all regions a chronosequence. With seven restored fields in a small geographic area, the Blue Mounds fields are our best bet for this (Fig \ref{fig:site_map}, right), but we will likely have to call this a "pseudochronosequence" and avoid some inferences. Mantel tests (not shown) failed to find correlations between soil variables and pairwise distance, giving us a little confidence that we're avoiding systemic bias. 
+A feature of our design is that restored fields vary in time since restoration, setting up the potential for a chronosequence in addition to the contrasts with corn or remnant fields. The rules for establishing a chronosequence are strict. We cannot call fields from all regions a chronosequence. With seven restored fields in a small geographic area, the Blue Mounds fields are our best bet for this (Fig \@ref(fig:site-map), right), but we will likely have to call this a "pseudochronosequence" and avoid some inferences. Mantel tests (not shown) failed to find correlations between soil variables and pairwise distance, giving us a little confidence that we're avoiding systemic bias. 
 
 ## Soil Fungal Communities
 
@@ -85,15 +87,15 @@ We collected soil cores from 10 haphazardly-selected locations in each field. Ge
 
 Originally, I had planned to average the sequence abundance per OTU in each field. In part, I did this for stastistical design reasons. Since fields are replicates, the samples in fields aren't independent. Also, explanatory and response data exist as one data point per field, meaning that they should not be expanded to apply singly to each sample. Finally, I didn't have the tools to account for this design in permutation tests. With available tools, I could only choose one "nesting" factor, but to include samples, I'd have to account for regions and fields as blocking elements when testing the design element of field type. Luckily, I've recently found a new tool, namely function `how()` from package `permute`, that allows for more complicated permutation designs. I decided to proceed along parallel analysis paths: one with sample-level data, and one with field-level data. 
 
-Creating the sample-level data took some work. A few samples had failed to amplify, leaving some fields represented with 9 samples instead of 10. This unbalance, which is normally not a problem, became unacceptable for a couple of reasons. First, the permutations I had planned using function `how()` require balance at the plot (i.e., field) level. Also, some samples contained very few sequences compared with the others. Rarefying the entire dataset to these tiny depths would result in the loss of many admittedly low-abundance OTUs. To acheive a balanced count of samples per field and retain a higher rarefaction threshold, I used an iterative process to remove samples with few sequences, choosing a rarefaction cutoff near the plateau of OTU recovery at depth (Fig \ref{fig:its_rcurve_compare}). This ended up being 8 samples for ITS and 7 for 18S datasets. These sample sequence values were then rarefied and used as-is for sample-level data, or, when analyzing at the field level, sample sequence values were summed and rarefied. The resulting data files recovered many more OTUs, but didn't change any major interpretation of the data. The situation with 18S data is similar, but at a much lower total sequencing depth (not shown). 
+Creating the sample-level data took some work. A few samples had failed to amplify, leaving some fields represented with 9 samples instead of 10. This unbalance, which is normally not a problem, became unacceptable for a couple of reasons. First, the permutations I had planned using function `how()` require balance at the plot (i.e., field) level. Also, some samples contained very few sequences compared with the others. Rarefying the entire dataset to these tiny depths would result in the loss of many admittedly low-abundance OTUs. To acheive a balanced count of samples per field and retain a higher rarefaction threshold, I used an iterative process to remove samples with few sequences, choosing a rarefaction cutoff near the plateau of OTU recovery at depth (Fig \@ref(fig:its-rcurve)). This ended up being 8 samples for ITS and 7 for 18S datasets. These sample sequence values were then rarefied and used as-is for sample-level data, or, when analyzing at the field level, sample sequence values were summed and rarefied. The resulting data files recovered many more OTUs, but didn't change any major interpretation of the data. The situation with 18S data is similar, but at a much lower total sequencing depth (not shown). 
 
-```{r fig:its_rcurve_compare,out.width="100%",fig.cap="\\label{fig:its_rcurve_compare}Individual-based rarefaction of ITS OTUs in subsamples when nine subsamples per field are retained (pre, top row) or when eight subsamples are retained (post, bottom row). Vertical lines show the minimum sequencing depth available across samples; this is the depth to which the entire set would be rarefied. Horizontal lines show the number of OTUs that would be recovered from each sample at that rarefaction depth."}
+```{r its-rcurve,out.width="100%",fig.cap="Individual-based rarefaction of ITS OTUs in subsamples when nine subsamples per field are retained (pre, top row) or when eight subsamples are retained (post, bottom row). Vertical lines show the minimum sequencing depth available across samples; this is the depth to which the entire set would be rarefied. Horizontal lines show the number of OTUs that would be recovered from each sample at that rarefaction depth."}
 include_graphics("microbial_diagnostics_post_files/its_rarecurve_compare.png")
 ```
 
-Species (OTU) accumulation was performed on field-level sums of sequences. Most fields were undersampled (Fig \ref{fig:accum}), particularly remnant and restored fields (ITS) and corn and remnant fields (18S). 
+Species (OTU) accumulation was performed on field-level sums of sequences. Most fields were undersampled (Fig \@ref(fig:accum)), particularly remnant and restored fields (ITS) and corn and remnant fields (18S). 
 
-```{r fig:accum,out.width="100%",fig.cap="\\label{fig:accum}Species accumulations for rarefied sums of field sequences for ITS and 18S datasets. Species accumulation by the exact method; standard deviation (vertical lines) conditioned by the empirical dataset."}
+```{r accum,out.width="100%",fig.cap="Species accumulations for rarefied sums of field sequences for ITS and 18S datasets. Species accumulation by the exact method; standard deviation (vertical lines) conditioned by the empirical dataset."}
 include_graphics("microbial_diagnostics_post_files/figure-gfm/rare_species_accum_fig-1.png")
 ```
 
@@ -130,57 +132,62 @@ and one for quantification of microbial biomass.
 
 ## Fungal communities
 
-Fungal communities in cornfields stand apart from remnants and restored fields restored fields (Fig \ref{fig:its_samps_unified}). As the age of restored fields increases, their distance from corn grows, and remnants lie in an intermediate position among restored fields. The high dimensionality here keeps the explanatory power of axes 1 & 2 low. Clusters based on field type were significant based on a permanova (with regions as blocks and subsamples held constant within fields, the replicate). However, a pairwise post-hoc permutation failed to separate remnant fields from any other type. This is due partially to a low number of replicates, and it's also a problem with dispersion. The remnants are as distant from each other as they are from corn. I also attempted this using field-level data (not shown), and the p values were somewhat improved, but remnants still failed to separate from corn or restored fields.
+Fungal communities in cornfields stand apart from remnants and restored fields restored fields (Fig \@ref(fig:its-samps-pcoa)). As the age of restored fields increases, their distance from corn grows, and remnants lie in an intermediate position among restored fields. The high dimensionality here keeps the explanatory power of axes 1 & 2 low. Clusters based on field type were significant based on a permanova (with regions as blocks and subsamples held constant within fields, the replicate, table \@ref(tab:its-pcoa-permanova)). However, a pairwise post-hoc permutation failed to separate remnant fields from any other type (table \@ref(tab:its-pcoa-pairwise)). This is due partially to a low number of replicates, and it's also a problem with dispersion. The remnants are as distant from each other as they are from corn. I also attempted this using field-level data (not shown), and the p values were somewhat improved, but remnants still failed to separate from corn or restored fields.
 
-```{r fig:its_samps_unified,out.width="80%",fig.cap="\\label{fig:its_samps_unified}The top panel is a db-PCoA ordination of samples in fields, ITS dataset. Small circular icons show locations of samples and hulls enclose fields. Each field is represented with a large icon on the field centroid, where icon shapes identify the field region and color identifies the field type. Text on the restored field icons shows years since restoration. The inset column chart displays average sequence abundance across all fields for the three most abundant fungal guilds. The lower four panels show independent db-PCoAs for each region."}
+```{r its-samps-pcoa,out.width="80%",fig.cap="The top panel is a db-PCoA ordination of samples in fields, ITS dataset. Small circular icons show locations of samples and hulls enclose fields. Each field is represented with a large icon on the field centroid, where icon shapes identify the field region and color identifies the field type. Text on the restored field icons shows years since restoration. The inset column chart displays average sequence abundance across all fields for the three most abundant fungal guilds. The lower four panels show independent db-PCoAs for each region."}
 #+ fig:its_samps_unified_fig-1,echo=FALSE,fig.align='center',out.width="100%",fig.cap="ITS-based fungal communities, most abundant guilds inset."
 include_graphics("microbial_communities_files/figure-gfm/its_samps_unified_fig-1.png")
 ```
 
-```{r pcoa_its_samps_stats}
-pisp <- read_delim("microbial_communities_files/pcoa_its_samps_permanova.txt", show_col_types = FALSE)
-pist <- read_delim("microbial_communities_files/pcoa_its_samps_pairwise.txt", show_col_types = FALSE)
-kable(pisp, format = "pandoc", caption = "Permutation test under reduced model. Blocks: region, samples not permuted (not independent), number of permutations: 1999")
-kable(pist, format = "pandoc", caption = "Pairwise tests under reduced model. Blocks: region, samples not permuted (not independent), number of permutations: 1999, p values corrected after multiple tests using the Benjamini & Hochberg correction.")
+```{r its-pcoa-permanova}
+read_delim("microbial_communities_files/pcoa_its_samps_permanova.txt", show_col_types = FALSE) %>% 
+kable(format = "pandoc", caption = "Permutation test under reduced model. Blocks: region, samples not permuted (not independent), number of permutations: 1999")
 ```
 
-AMF communities (18S data) showed qualitatively similar patterns to the ITS results (Fig \ref{fig:amf_samps_unified}), but with weaker support. 
+```{r its-pcoa-pairwise}
+read_delim("microbial_communities_files/pcoa_its_samps_pairwise.txt", show_col_types = FALSE) %>% 
+kable(format = "pandoc", caption = "Pairwise tests under reduced model. Blocks: region, samples not permuted (not independent), number of permutations: 1999, p values corrected after multiple tests using the Benjamini & Hochberg correction.")
+```
 
-```{r fig:amf_samps_unified,out.width="80%",fig.cap="\\label{fig:amf_samps_unified}The top panel is a db-PCoA ordination of samples in fields, 18S dataset. Small circular icons show locations of samples and hulls enclose fields. Each field is represented with a large icon on the field centroid, where icon shapes identify the field region and color identifies the field type. Text on the restored field icons shows years since restoration. The inset column chart displays average sequence abundance across all fields for the three most abundant fungal guilds. The lower four panels show independent db-PCoAs for each region."}
+AMF communities (18S data) showed qualitatively similar patterns to the ITS results (Fig \@ref(fig:amf-samps-pcoa)), but with weaker support (tables \@ref(tab:amf-pcoa-permanova) & \@ref(tab:amf-pcoa-pairwise)). 
+
+```{r amf-samps-pcoa,out.width="80%",fig.cap="The top panel is a db-PCoA ordination of samples in fields, 18S dataset. Small circular icons show locations of samples and hulls enclose fields. Each field is represented with a large icon on the field centroid, where icon shapes identify the field region and color identifies the field type. Text on the restored field icons shows years since restoration. The inset column chart displays average sequence abundance across all fields for the three most abundant fungal guilds. The lower four panels show independent db-PCoAs for each region."}
 include_graphics("microbial_communities_files/figure-gfm/amf_samps_unified_fig-1.png")
 ```
 
-```{r pcoa_amf_samps_stats}
-pasp <- read_delim("microbial_communities_files/pcoa_amf_samps_permanova.txt", show_col_types = FALSE)
-past <- read_delim("microbial_communities_files/pcoa_amf_samps_pairwise.txt", show_col_types = FALSE)
-kable(pisp, format = "pandoc", caption = "Permutation test under reduced model. Blocks: region, samples not permuted (not independent), number of permutations: 1999")
-kable(pist, format = "pandoc", caption = "Pairwise tests under reduced model. Blocks: region, samples not permuted (not independent), number of permutations: 1999, p values corrected after multiple tests using the Benjamini & Hochberg correction.")
+```{r amf-pcoa-permanova}
+read_delim("microbial_communities_files/pcoa_amf_samps_permanova.txt", show_col_types = FALSE) %>% 
+kable(format = "pandoc", caption = "Permutation test under reduced model. Blocks: region, samples not permuted (not independent), number of permutations: 1999")
 ```
+
+```{r amf-pcoa-pairwise}
+read_delim("microbial_communities_files/pcoa_amf_samps_pairwise.txt", show_col_types = FALSE) %>% 
+kable(format = "pandoc", caption = "Pairwise tests under reduced model. Blocks: region, samples not permuted (not independent), number of permutations: 1999, p values corrected after multiple tests using the Benjamini & Hochberg correction.")
+```
+
 
 ## Fungal diversity
 
-Species richness, Shannon's, and Simpson's diversity are lowest in cornfields, and the trend is an increase in all indices through restored and remnant fields (Fig \ref{fig:div_its}). These differences are significant for Richness and Shannon's diversity, with cornfields being significnatly lower than either remnants or restored fields, which were not significantly different. Index values were more variable for restored fields than for other field types, which insults prerequisite needs for equal variance among groups. 
+Species richness, Shannon's, and Simpson's diversity are lowest in cornfields, and the trend is an increase in all indices through restored and remnant fields (Fig \@ref(fig:its-div)). These differences are significant for Richness and Shannon's diversity, with cornfields being significnatly lower than either remnants or restored fields, which were not significantly different. Index values were more variable for restored fields than for other field types, which insults prerequisite needs for equal variance among groups. 
 
 Trends in diversity were similar in Blue Mounds, Faville Grove, and Fermilab, but at Lake Petite, Shannon's and Simpson's diversity indices were much higher than in cornfields or remnants (not shown), indicating that a sizeable percentage of OTUs were in relatively equal abundance there compared with other sites. This may partially be because the restored fields at Lake Petite are both young and haven't had time to develop the long tail which characterizes most older habitats. 
 
-```{r fig:div_its,out.width="80%",fig.cap="\\label{fig:div_its}Counts of species or species equivalents are shown for richness and Shannon's and Simpson's diversity in all field types. Differences in means among field types were tested with mixed-effects linear models where region was coded as a random effect. Post-hoc comparisions are Tukey contrasts and letters show significant differences at p<0.05."}
+```{r its-div,out.width="80%",fig.cap="Counts of species or species equivalents are shown for richness and Shannon's and Simpson's diversity in all field types. Differences in means among field types were tested with mixed-effects linear models where region was coded as a random effect. Post-hoc comparisions are Tukey contrasts and letters show significant differences at p<0.05."}
 include_graphics("microbial_diversity_files/figure-gfm/div_its_box-1.png")
 ```
 
 ## Fungal guilds
 
-By sequence abundance across the entire dataset, the top guilds are:
+Pathogen and saprotroph guilds are the most numerous in this dataset (table \@ref(tab:guild-abund)). Compared with the sequence abundance in the unidentified group, plant pathogens and soil saprotrophs are abundant enough to feel somewhat confident about in terms of coverage. At the level of taxonomic order, composition of soil saprotrophs in corn fields looks different from restored and remnant fields (Fig \@ref(fig:ssap-ppat-comp), left). Among well-represented orders, Agarics increase from corn to remnant, Cystofilobasidiales are prevalent only in corn, and Filobasidiales, often human pathogens, decline from corn to remnant. Geoglossales, which are associated with woodlands, moss, grasslands, probably don't like tillage or lack of substrate in cornfields and aren't found there. The order Hypocreales only occurs in restored and remnant fields. OTUs identified as Mortierellales are abundant in corn and restored fields, less so in remnants, with different OTUs associated with different field types.
 
-1. Unidentified (not shown on column charts): 92,534 sequences
-1. plant pathogens: 25,471 sequences
-1. soil saprotrophs: 24,538 sequences
-1. wood saprotrophs: 8,353 sequences
-1. dung saprotrophs: 6,543 sequences
-1. litter saprotrophs: 5,574 sequences
-
-Compared with the sequence abundance in the unidentified group, plant pathogens and soil saprotrophs are abundant enough to feel somewhat confident about in terms of coverage. At the level of taxonomic order, composition of soil saprotrophs in corn fields looks different from restored and remnant fields (Fig \ref{fig:ssap_ppat_comp}, left). Among well-represented orders, Agarics increase from corn to remnant, Cystofilobasidiales are prevalent only in corn, and Filobasidiales, often human pathogens, decline from corn to remnant. Geoglossales, which are associated with woodlands, moss, grasslands, probably don't like tillage or lack of substrate in cornfields and aren't found there. The order Hypocreales only occurs in restored and remnant fields. OTUs identified as Mortierellales are abundant in corn and restored fields, less so in remnants, with different OTUs associated with different field types.
+```{r guild-abund}
+read_csv("microbial_guild_taxonomy_files/guilds.csv", show_col_types = FALSE) %>% 
+kable(caption = "Average sequence abundances per field in each field type are shown for the top six guilds.")
+```
 
 OTUs from these guilds were also heavily represented in an analysis to find indicator species for each field type. Note that the indicator species analysis is flawed because of the unbalanced number of fields for each field type. It's easier for a species to be detected in five cornfields than in sixteen restored fields, for example. I'd argue that as a basic filter to find interesting species, this analysis is acceptable if we don't try to call these species "indicators" of a particular habitat. 
+
+### Natural history
 
 I filtered indicator species to those which were identified to at least the genus level. Saprotrophs associated with cornfields tended to be disturbance-tolerant extremophiles, in particular, tolerating very cold environments. Some are known to produce suites of extracellular enzymes, exploting various nutrient sources (*Tausonia pullulans*) and making recalcitrant nutrients available to plants (*Mortierella minutissima*, which is used as an agricultural inoculant). *Pseudaleuria sp.* was also associated with cornfields. Species in this genus are suspected to increase crop yields and protect plants from disease. The only saprotroph associated with restored fields was another species in the genus *Mortierella*. Remnants hosted few indicator species. OTUs identified as *Gymnostellatospora sp.* and *Striaticonidium cinctum* appear to have little natural history information. An OTU in the genus *Clavaria* is a coral fungus, associated with woodland, savanna, or old-field habitats worldwide. 
 
@@ -202,9 +209,13 @@ If natural history details are included, I think the most important case studies
     - proposed mycorrhizae, in all remnants and 4 restored
 
 
-```{r fig:ssap_ppat_comp,out.width="40%",fig.show="hold",fig.cap="\\label{fig:ssap_ppat_comp}Composition of soil saprotroph (left) and plant pathogen (right) orders are shown across field types. Unidentified taxa were not included, and low abundance OTUs were filtered, see legends for the cutoff percentage."}
+```{r ssap-ppat-comp,out.width="40%",fig.show="hold",fig.cap="Composition of soil saprotroph (left) and plant pathogen (right) orders are shown across field types. Unidentified taxa were not included, and low abundance OTUs were filtered, see legends for the cutoff percentage."}
 include_graphics(c("microbial_guild_taxonomy_files/figure-gfm/ssap_comp_plot-1.png", "microbial_guild_taxonomy_files/figure-gfm/ppat_comp_plot-1.png"))
 ```
+
+### Trends in regions
+
+With guilds, trends across field types vary among regions. 
 
 
 Better to look at trends from regions and see if trends exist. Then, how about changes over time.
@@ -218,7 +229,7 @@ Better to look at trends from regions and see if trends exist. Then, how about c
 
 
 
-```{r fig:its_guilds_regions,out.width="80%",fig.cap="\\label{fig:its_guilds_regions}Abundant or dynamic guilds across field types in regions, ITS dataset."}
+```{r guilds-regions,out.width="80%",fig.cap="Abundant or dynamic guilds across field types in regions, ITS dataset."}
 include_graphics("microbial_communities_files/figure-gfm/its_guilds_regions_fig-1.png")
 ```
 
