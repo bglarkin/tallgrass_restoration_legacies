@@ -744,7 +744,19 @@ ggplot(ppat_comp$comp_ft, aes(x = field_type, y = seq_comp)) +
     labs(x = "", y = "Proportion of sequence abundance", title = "Plant Pathogen") +
     scale_fill_discrete_sequential(name = "Order", palette = "Batlow") +
     theme_classic()
-
+#+ ssap_ppat_bm_trends,fig.width=7,fig.height=3.5
+spe_meta$its_rfy %>% 
+    filter(primary_lifestyle %in% c("plant_pathogen", "soil_saprotroph"),
+           region == "BM", field_type == "restored") %>% 
+    mutate(pl_labs = case_match(primary_lifestyle, "plant_pathogen" ~ "Plant Pathogens", "soil_saprotroph" ~ "Soil Saprotrophs")) %>% 
+    group_by(primary_lifestyle, pl_labs, field_name, yr_since) %>% 
+    summarize(sum_seq = sum(seq_abund), .groups = "drop") %>% 
+    ggplot(aes(x = yr_since, y = sum_seq)) +
+    facet_wrap(vars(pl_labs), scales = "free_y") +
+    geom_smooth(method = "lm", se = FALSE, color = "black", linewidth = 0.4) +
+    geom_point(fill = "#5CBD92", shape = 21, size = 2.5) +
+    labs(x = "Years since restoration", y = "Sum of ITS sequences") +
+    theme_bw()
 
 
 

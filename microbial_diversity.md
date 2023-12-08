@@ -2,7 +2,7 @@ Microbial data: overview of data, diversity statistics
 ================
 Beau Larkin
 
-Last updated: 07 December, 2023
+Last updated: 08 December, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -1142,7 +1142,7 @@ labs_amf <- data.frame(
                         levels = c("N0", "N1", "N2", "E10", "E20")),
     lab = c("a", "b", "b", "a", "b", "b", "a", "b", "b", "a", "a", "b"),
     xpos = rep(c(1,2,3), 4),
-    ypos = rep(c(64, 33, 25, 0.59), each = 3)
+    ypos = rep(c(66, 35, 26, 0.59), each = 3)
 )
 ```
 
@@ -1159,6 +1159,25 @@ ggplot(div$amf_rfy, aes(x = field_type, y = value)) +
 ```
 
 <img src="microbial_diversity_files/figure-gfm/plot_div_amf_otu-1.png" style="display: block; margin: auto;" />
+
+Let’s also make a figure to show just the diversity measures, and with
+better labels.
+
+``` r
+div$amf_rfy %>% 
+    filter(hill_index %in% c("N0", "N1", "N2")) %>% 
+    ggplot(aes(x = field_type, y = value)) +
+    facet_wrap(vars(hill_index), scales = "free_y", labeller = labeller(hill_index = hill_labs)) +
+    geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
+    geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
+    geom_label(data = labs_amf %>% filter(hill_index != "E10"), aes(x = xpos, y = ypos, label = lab), label.size = NA) +
+    labs(y = "Species equivalent (n)") +
+    scale_fill_discrete_qualitative(name = "Region", palette = "Dark3") +
+    theme_bw() +
+    theme(axis.title.x = element_blank())
+```
+
+![](microbial_diversity_files/figure-gfm/div_amf_box-1.png)<!-- -->
 
 Richness increases from corn, to restored and remnant fields, and some
 support exists for this pattern to occur across regions. The trend is

@@ -1,6 +1,6 @@
 ---
 title: "Tallgrass Restoration Legacies, Summary"
-author: "Beau Larkin"
+author: "Beau Larkin, coauthors L Bullington, Y Lekberg, and P Ramsey"
 date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
 output:
   bookdown::pdf_document2:
@@ -20,9 +20,7 @@ urlcolor: blue
 knitr::opts_chunk$set(echo = FALSE, tidy = TRUE, message = FALSE, warning = FALSE, fig.align = 'center')
 ```
 
-# Packages
-
-```{r libraries, echo = TRUE}
+```{r libraries}
 packages_needed = c("tidyverse",
                     "png",
                     "knitr",
@@ -39,6 +37,15 @@ conflict_prefer("filter", "dplyr")
 conflict_prefer("select", "dplyr")
 ```
 
+```{r data}
+# Data that must be explicitly loaded for the summary. Most files will be accessed from the working directory. 
+sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>%
+    mutate(field_type = factor(field_type,ordered = TRUE, levels = c("corn", "restored", "remnant")),
+           yr_since = replace(yr_since, which(field_type %in% c("remnant", "corn")), NA)) %>%
+    select(-lat, -long, -yr_restore, -yr_rank) %>% 
+    arrange(field_key)
+```
+
 # Introduction
 
 The tallgrass prairie biome in North America is nearly extinct, creating a tremendous desire for restoration or recreation of this critical habitat. In the upper Midwest, interested landowners have attempted to convert previous agricultural fields (corn or soybeans, usually) to prairie for decades. The consequences of this practice for soil biota are largely unknown. Agricultural fields filter fungal and bacterial communities for species that can tolerate extreme nutrient loads, frequent tillage, and poor plant diversity. When agricultural practices cease, and native perennial plants are introduced, soil biotic communities are filtered by the new regime and rapidly change. What is the endpoint of these new communities? Do they begin to resemble communities in remnant prairie (the reference condition), or do they form novel communities, indicating a change of state in the system due to disturbance associated with agriculture? Are these communities' fates similar across distant regions, or is each context dependent?
@@ -46,18 +53,6 @@ The tallgrass prairie biome in North America is nearly extinct, creating a treme
 # Description
 
 The goal is to present results and discuss whether a path forward exists. If so, we will determine the strategy that presents the best story, organization, and interpretation of these results. 
-
-# Data
-
-For this summary, I'll pull as many objects as possible from existing files to reduce the number of interspersed code chunks. A few quick new analyses will be necessary, though. Data are loaded here. 
-
-```{r data, echo = TRUE}
-sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FALSE) %>%
-    mutate(field_type = factor(field_type,ordered = TRUE, levels = c("corn", "restored", "remnant")),
-           yr_since = replace(yr_since, which(field_type %in% c("remnant", "corn")), NA)) %>%
-    select(-lat, -long, -yr_restore, -yr_rank) %>% 
-    arrange(field_key)
-```
 
 # Methods
 
@@ -151,7 +146,7 @@ kable(format = "pandoc", caption = "Pairwise tests under reduced model. Blocks: 
 
 AMF communities (18S data) showed qualitatively similar patterns to the ITS results (Fig \@ref(fig:amf-samps-pcoa)), but with weaker support (tables \@ref(tab:amf-pcoa-permanova) & \@ref(tab:amf-pcoa-pairwise)). 
 
-```{r amf-samps-pcoa,out.width="80%",fig.cap="The top panel is a db-PCoA ordination of samples in fields, 18S dataset. Small circular icons show locations of samples and hulls enclose fields. Each field is represented with a large icon on the field centroid, where icon shapes identify the field region and color identifies the field type. Text on the restored field icons shows years since restoration. The inset column chart displays average sequence abundance across all fields for the three most abundant fungal guilds. The lower four panels show independent db-PCoAs for each region."}
+```{r amf-samps-pcoa,out.width="80%",fig.cap="The top panel is a db-PCoA ordination of samples in fields, 18S dataset. Small circular icons show locations of samples and hulls enclose fields. Each field is represented with a large icon on the field centroid, where icon shapes identify the field region and color identifies the field type. Text on the restored field icons shows years since restoration. The inset column chart displays average sequence abundance across all fields for the most variable taxa (Claroideoglomeraceae, Diversisporaceae, Gigasporaceae, and Paraglomeraceae) The lower four panels show independent db-PCoAs for each region."}
 include_graphics("microbial_communities_files/figure-gfm/amf_samps_unified_fig-1.png")
 ```
 
@@ -165,33 +160,64 @@ read_delim("microbial_communities_files/pcoa_amf_samps_pairwise.txt", show_col_t
 kable(format = "pandoc", caption = "Pairwise tests under reduced model. Blocks: region, samples not permuted (not independent), number of permutations: 1999, p values corrected after multiple tests using the Benjamini & Hochberg correction.")
 ```
 
-
 ## Fungal diversity
 
-Species richness, Shannon's, and Simpson's diversity are lowest in cornfields, and the trend is an increase in all indices through restored and remnant fields (Fig \@ref(fig:its-div)). These differences are significant for Richness and Shannon's diversity, with cornfields being significnatly lower than either remnants or restored fields, which were not significantly different. Index values were more variable for restored fields than for other field types, which insults prerequisite needs for equal variance among groups. 
-
-Trends in diversity were similar in Blue Mounds, Faville Grove, and Fermilab, but at Lake Petite, Shannon's and Simpson's diversity indices were much higher than in cornfields or remnants (not shown), indicating that a sizeable percentage of OTUs were in relatively equal abundance there compared with other sites. This may partially be because the restored fields at Lake Petite are both young and haven't had time to develop the long tail which characterizes most older habitats. 
-
-```{r its-div,out.width="80%",fig.cap="Counts of species or species equivalents are shown for richness and Shannon's and Simpson's diversity in all field types. Differences in means among field types were tested with mixed-effects linear models where region was coded as a random effect. Post-hoc comparisions are Tukey contrasts and letters show significant differences at p<0.05."}
+```{r its-div,out.width="80%",fig.cap="Counts of ITS OTUs are shown for richness and Shannon's and Simpson's diversity in all field types. Differences in means among field types were tested with mixed-effects linear models where region was coded as a random effect. Post-hoc comparisions are Tukey contrasts and letters show significant differences at p<0.05."}
 include_graphics("microbial_diversity_files/figure-gfm/div_its_box-1.png")
 ```
 
-## Fungal guilds
+Species richness, Shannon's, and Simpson's diversity are lowest in cornfields, and the trend is an increase in all indices through restored and remnant fields (Fig \@ref(fig:its-div)). These differences are significant for Richness and Shannon's diversity, with cornfields being significnatly lower than either remnants or restored fields, which were not significantly different. Index values were more variable for restored fields than for other field types, which insults prerequisite needs for equal variance among groups. 
 
-Pathogen and saprotroph guilds are the most numerous in this dataset (table \@ref(tab:guild-abund)). Compared with the sequence abundance in the unidentified group, plant pathogens and soil saprotrophs are abundant enough to feel somewhat confident about in terms of coverage. At the level of taxonomic order, composition of soil saprotrophs in corn fields looks different from restored and remnant fields (Fig \@ref(fig:ssap-ppat-comp), left). Among well-represented orders, Agarics increase from corn to remnant, Cystofilobasidiales are prevalent only in corn, and Filobasidiales, often human pathogens, decline from corn to remnant. Geoglossales, which are associated with woodlands, moss, grasslands, probably don't like tillage or lack of substrate in cornfields and aren't found there. The order Hypocreales only occurs in restored and remnant fields. OTUs identified as Mortierellales are abundant in corn and restored fields, less so in remnants, with different OTUs associated with different field types.
+Trends in diversity were similar in Blue Mounds, Faville Grove, and Fermilab, but at Lake Petite, Shannon's and Simpson's diversity indices were much higher than in cornfields or remnants (not shown), indicating that a sizeable percentage of OTUs were in relatively equal abundance there compared with other sites. This may partially be because the restored fields at Lake Petite are both young and haven't had time to develop the long tail of rarer species which characterizes most older habitats and tends to lower Shannon's and Simpson's index values. 
+
+```{r amf-div,out.width="80%",fig.cap="Counts of AMF OTUs are shown for richness and Shannon's and Simpson's diversity in all field types. Differences in means among field types were tested with mixed-effects linear models where region was coded as a random effect. Post-hoc comparisions are Tukey contrasts and letters show significant differences at p<0.05."}
+include_graphics("microbial_diversity_files/figure-gfm/div_amf_box-1.png")
+```
+
+With AMF, trends in diversity largely matched those of soil fungi in general. Species richness showed a mild interaction, where it was highest in restored fields for Blue Mounds and Faville Grove, and in remnants for Fermilab and Lake Petite. Shannon's and Simpson's indices increased from corn through restored and remnant fields for all regions. 
+
+For both soil fungi and AMF, diversity indices were significantly lower for corn but not between restored and remnant fields, suggesting a similarity between the latter. 
+
+## Fungal guilds
 
 ```{r guild-abund}
 read_csv("microbial_guild_taxonomy_files/guilds.csv", show_col_types = FALSE) %>% 
-kable(caption = "Average sequence abundances per field in each field type are shown for the top six guilds.")
+kable(caption = "Average sequence abundances per field in each field type are shown for the top six guilds.", format = "pandoc")
 ```
 
-OTUs from these guilds were also heavily represented in an analysis to find indicator species for each field type. Note that the indicator species analysis is flawed because of the unbalanced number of fields for each field type. It's easier for a species to be detected in five cornfields than in sixteen restored fields, for example. I'd argue that as a basic filter to find interesting species, this analysis is acceptable if we don't try to call these species "indicators" of a particular habitat. 
+Pathogen and saprotroph guilds are the most numerous in this dataset (table \@ref(tab:guild-abund)). Compared with the sequence abundance in the unidentified group, plant pathogens and soil saprotrophs are abundant enough to feel somewhat confident about in terms of coverage. I would have predicted soil saprotrophs to be lowest in cornfields (which have the least organic material), increasing in restored fields, and highest in remnants. With pathogens, I would have predicted the highest abundance in cornfields (due to the plant monoculture and high nutrients), lowest in restored fields (many plant species and less time for specialists to accumulate), and intermediate in remnants (high plant diversity and the presence of antagonistic fungi, but perennial plants in place to be attacked for decades). Instead, we found that the abundance of most guilds is highest in cornfields, intermediate in restored fields, and lowest in remnants.  
+
+```{r ssap-ppat-comp,out.width="40%",fig.show="hold",fig.cap="Composition of soil saprotroph (left) and plant pathogen (right) orders are shown across field types. Unidentified taxa were not included, and low abundance OTUs were filtered, see legends for the cutoff percentage."}
+include_graphics(c("microbial_guild_taxonomy_files/figure-gfm/ppat_comp_plot-1.png", "microbial_guild_taxonomy_files/figure-gfm/ssap_comp_plot-1.png"))
+```
+
+At the level of taxonomic order, composition of soil saprotrophs in corn fields looks different from restored and remnant fields (Fig \@ref(fig:ssap-ppat-comp), left). Among well-represented orders, Agarics increase from corn to remnant, Cystofilobasidiales are prevalent only in corn, and Filobasidiales, often human pathogens, decline from corn to remnant. Geoglossales, which are associated with woodlands, moss, grasslands, probably don't like tillage or lack of substrate in cornfields and aren't found there. The order Hypocreales only occurs in restored and remnant fields. OTUs identified as Mortierellales are abundant in corn and restored fields, less so in remnants, with different OTUs associated with different field types. The contrast among field types with plant pathogens isn't obvious (Fig \@ref(fig:ssap-ppat-comp), right). The orders Glomerales, Hypocreales, and Pleosporales were the most abundant.
+
+### Trends in regions
+
+Within regions, trends in abundance were also apparent for soil saprotrophs and plant pathogens, but these trends weren't consistent among regions (Fig \@ref(fig:guilds-regions)). The abundance of soil saprotrophs in restored fields falls between corn and remnant fields in Blue Mounds and Fermilab, indicating that restored fields become more like remnants, but these trends are in opposite directions. In Lake Petite, the abundance of soil saprotrophs is much lower than in corn or remnant fields, indicating little resemblance to either. In Faville Grove, soil saprotroph abundance is similar in all field types. Pathogen abundance is similarly inconsistent. In Blue Mounds and Faville Grove, pathogens spike in remnants and are lowest in remnants. At Fermilab, pathogens are instead lowest in restored fields. In Lake Petite, pathogens are highest in cornfields (which I would have predicted across the board), and decline from restored to remnant fields. 
+
+```{r guilds-regions,out.width="80%",fig.cap="Soil saprotroph and pathogen guilds across field types, regional trends. Values are average sequence abundance in fields. No symbols of variance are shown because corn and remnant fields have only one replicate in most regions."}
+include_graphics("microbial_communities_files/figure-gfm/its_guilds_regions_fig-1.png")
+```
+
+### Trends over time
+
+```{r guild-time,out.width="80%",fig.cap="Icons show sums of ITS sequences in each restored field from the Blue Mounds region. Plant pathogen abundance decines with years since restoration (left, $R^2_{Adj}=0.75,~p=0.013$). Soil saprotroph abundance increases with years since restoration (right, $R^2_{Adj}=0.54,~p=0.037$), although leverage of the most extreme value is apparent."}
+include_graphics("microbial_guild_taxonomy_files/figure-gfm/ssap_ppat_bm_trends-1.png")
+```
+
+Contrary to predictions, plant pathogens show a strong decline from young to old restorations in the Blue Mounds region (Fig \@ref(fig:guild-time), left). Pathogen abundance reaches a low of 5,233 sequences in the 28 year old field, which is lower than we found in the cornfield (5,822), though not as low as we found in the remnant (3,104). Aligned with predictions, soil saprotrophs increased with time in Blue Mounds' restored fields (Fig \@ref(fig:guild-time), right). Again, this increase is trending in the right direction, away from the cornfield's abundance of 5,950, reaching a high of 14,147 in the 28 year old field, which exceeds the remnant's abundance of 10,145. 
+
+### Indicator species
+
+OTUs from saprotroph and pathogen guilds were also heavily represented in an analysis to find indicator species for each field type. Note that the indicator species analysis is flawed because of the unbalanced number of fields for each field type. It's easier for a species to be detected in five cornfields than in sixteen restored fields, for example. I'd argue that as a basic filter to find interesting species, this analysis is acceptable if we don't try to call these species "indicators" of a particular habitat. 
 
 ### Natural history
 
 I filtered indicator species to those which were identified to at least the genus level. Saprotrophs associated with cornfields tended to be disturbance-tolerant extremophiles, in particular, tolerating very cold environments. Some are known to produce suites of extracellular enzymes, exploting various nutrient sources (*Tausonia pullulans*) and making recalcitrant nutrients available to plants (*Mortierella minutissima*, which is used as an agricultural inoculant). *Pseudaleuria sp.* was also associated with cornfields. Species in this genus are suspected to increase crop yields and protect plants from disease. The only saprotroph associated with restored fields was another species in the genus *Mortierella*. Remnants hosted few indicator species. OTUs identified as *Gymnostellatospora sp.* and *Striaticonidium cinctum* appear to have little natural history information. An OTU in the genus *Clavaria* is a coral fungus, associated with woodland, savanna, or old-field habitats worldwide. 
 
-The contrast among field types with plant pathogens isn't obvious (Fig \ref{fig:ssap-ppat-comp}, right). Not surprisingly, most pathogenic taxa associated with cornfields are known agricultural pathogens, including *Corynespora cassiicola*, *Curvularia sp.*, *Plectosphaerella cucumerina*, and *Setophoma terrestris*. *Microdochium colombiense*, a snow mold of rye and other cereal grains, is also an extreme cold tolerant species. In restored fields, an indicator pathogen was a *Pseudopithomyces sp.*, which is often found in anthropogenic environments and is a known wheat pathogen.
+Not surprisingly, most pathogenic taxa associated with cornfields are known agricultural pathogens, including *Corynespora cassiicola*, *Curvularia sp.*, *Plectosphaerella cucumerina*, and *Setophoma terrestris*. *Microdochium colombiense*, a snow mold of rye and other cereal grains, is also an extreme cold tolerant species. In restored fields, an indicator pathogen was a *Pseudopithomyces sp.*, which is often found in anthropogenic environments and is a known wheat pathogen.
 
 Natural history details about indicator fungi could make this paper more compelling, but the best value for such an analysis here is to show whether restored fields look more like cornfields, more like remnants, or more like something else entirely. But only 36% of these OTUs were assigned to a guild and 46% were assigned to a genus. It's likely that many saprotrophs and pathogens exist in these data that are opaque to our analysis. We'd have to assume that these unassigned taxa are distributed equally across field types, but this assumption is likely invalid because agricultural systems have received much more attention. Recovery of crop-associated fungi in restored fields probably reflects this bias as much as it shows a similarity with cornfield fungi. With few taxa identified in remnant fields, there's not much to compare with restored fields. Finally, very abundant OTUs tended to be commonly distributed, but all of these indicator OTUs occur in low abundance. Are they relevant to ecological processes in these fields? It's hard to say.
 
@@ -208,51 +234,18 @@ If natural history details are included, I think the most important case studies
 1. Microscypha/DSE
     - proposed mycorrhizae, in all remnants and 4 restored
 
-
-```{r ssap-ppat-comp,out.width="40%",fig.show="hold",fig.cap="Composition of soil saprotroph (left) and plant pathogen (right) orders are shown across field types. Unidentified taxa were not included, and low abundance OTUs were filtered, see legends for the cutoff percentage."}
-include_graphics(c("microbial_guild_taxonomy_files/figure-gfm/ssap_comp_plot-1.png", "microbial_guild_taxonomy_files/figure-gfm/ppat_comp_plot-1.png"))
-```
-
-### Trends with guilds
-
-Average sequence abundance of the most numerous guilds varied with field type (table \@ref(tab:guild-abund)), but when looking at patterns in regions, no trends look like they will be significant (Fig \@ref(fig:guilds-regions)). 
-
-
-Better to look at trends from regions and see if trends exist. Then, how about changes over time.
-
-
-
-
-
-
-
-
-
-
-```{r guilds-regions,out.width="80%",fig.cap="Soil saprotroph and pathogen guilds across field types, regional trends. Values are average sequence abundance in fields"}
-include_graphics("microbial_communities_files/figure-gfm/its_guilds_regions_fig-1.png")
-```
-
-## AMF diversity
-
-
-
-
-
-
-
-
 ## AMF taxa
+Taxa and natural history
 
-
-
-
-
-
+## Constrained
+years, but PLANTS...
 
 ## Responses
-WSA
-Biomass
+
+
+
+
+
 
 
 

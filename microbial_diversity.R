@@ -345,7 +345,7 @@ labs_amf <- data.frame(
                         levels = c("N0", "N1", "N2", "E10", "E20")),
     lab = c("a", "b", "b", "a", "b", "b", "a", "b", "b", "a", "a", "b"),
     xpos = rep(c(1,2,3), 4),
-    ypos = rep(c(64, 33, 25, 0.59), each = 3)
+    ypos = rep(c(66, 35, 26, 0.59), each = 3)
 )
 #+ plot_div_amf_otu,fig.width=9,fig.height=7,fig.align='center'
 ggplot(div$amf_rfy, aes(x = field_type, y = value)) +
@@ -357,6 +357,19 @@ ggplot(div$amf_rfy, aes(x = field_type, y = value)) +
          caption = "N0-richness, N1-e^Shannon, N2-Simpson, E10=N1/N0, E20=N2/N0, width=n,\nletters indicate significant differences at p<0.05") +
     scale_fill_discrete_qualitative(palette = "Dark3") +
     theme_bw()
+#' Let's also make a figure to show just the diversity measures, and with better labels. 
+#+ div_amf_box,fig.width=7,fig.height=3
+div$amf_rfy %>% 
+    filter(hill_index %in% c("N0", "N1", "N2")) %>% 
+    ggplot(aes(x = field_type, y = value)) +
+    facet_wrap(vars(hill_index), scales = "free_y", labeller = labeller(hill_index = hill_labs)) +
+    geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
+    geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
+    geom_label(data = labs_amf %>% filter(hill_index != "E10"), aes(x = xpos, y = ypos, label = lab), label.size = NA) +
+    labs(y = "Species equivalent (n)") +
+    scale_fill_discrete_qualitative(name = "Region", palette = "Dark3") +
+    theme_bw() +
+    theme(axis.title.x = element_blank())
 #' Richness increases from corn, to restored and remnant fields, and some 
 #' support exists for this pattern to occur across regions. The trend is weakest with $N_{0}$, suggesting
 #' that both restored and remnant soils contain more functionally abundant and co-dominant species than are found in cornfields, 
