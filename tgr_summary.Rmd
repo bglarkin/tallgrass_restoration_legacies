@@ -1,9 +1,15 @@
 ---
 title: "Tallgrass Restoration Legacies, Summary"
-author: "Beau Larkin, coauthors L Bullington, Y Lekberg, and P Ramsey"
+author: "Beau Larkin, coauthors L. Bullington, P. Ramsey, & Y. Lekberg"
 date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
 output:
   bookdown::pdf_document2:
+    df_print: tibble
+    fig_caption: yes
+    highlight: tango
+    toc: true
+    toc_depth: 1
+  github_document:
     df_print: tibble
     fig_caption: yes
     highlight: tango
@@ -245,18 +251,56 @@ Within the 18S dataset (AMF), taxa in the *Glomeraceae* are most abundant (\@ref
 
 [^1]: Ylva, I'm hoping that you can help me with the natural history and interpreting how abundant these taxa must be to matter in this system.
 
-```{r gigatime,out.width="80%",fig.cap="Icons show sums of 18S sequences in each restored field from the Blue Mounds region. The abundance of taxa in the *Gigasporaceae* increase with years since restoration ($R^2_{Adj}=0.61,~p=0.023$)."}
+```{r gigatime,out.width="50%",fig.cap="Icons show sums of 18S sequences in each restored field from the Blue Mounds region. The abundance of taxa in the \\textit{Gigasporaceae} increase with years since restoration ($R^2_{Adj}=0.61,~p=0.023$)."}
 include_graphics("microbial_guild_taxonomy_files/figure-gfm/giga_seq_abund_years-1.png")
 ```
 
 ## Environmental constraints on fungal communities
 
+We want to know how environmental/explanatory variables like soil chemistry, precipitation, and plant communities affect change in soil microbes among sites. But which sites? Constraining variables would undoubtedly find that soil nutrients explained differences between corn and restored or remnant fields, but this is hardly an interesting result. More worthwhile would be to constrain on restored fields and test whether years since restoration aligns fields in a relatively linear manner. Discovering if other explanatory variables constrain the data in a similar direction to years since restoration would be a wonderful outcome, because we'd learn what it is in the soil abiotic environment that's correlated with microbial community change.
+
+Since the Blue Mounds restored fields are the most amenable to chronosequence methodology, I started there. With only seven fields, the available number of permutations was low, and with axes defined by very weak effects already, no significant constraining variables were found. Although reviewers may object, I decided that the only way forward was to use restored fields from other regions, breaking the rules of chronosequence analysis. Since the regions' soils and other environmental characteristics are so different, I parsed some out as covariables in a partial db-RDA (covariables: pH, SO4, Zn, Fe, Mn, Cu, Ca, Mg, Na, precipitation). I retained the soil nutrients N, P, and K as test variables because they were undoubtedly applied to cornfields and would decrease rapidly after agricultural practice ceased. I kept soil organic matter (OM) as a test variable too because it should be low in cornfields and increase after tillage ceases and mycotrophic, perennial plant species begin to culture microbial communities. I also included plant traits or plant community axes as test variables. Finally, I used years since restoration (yr_since) as a test variable. For the analysis, I first ran forward selection on regions in Wisconsin only because that's where we have plant composition data. Then, I ran forward selection with explanatory variables on all regions, using plant presence/absence axes only. 
+
+## Constrained analysis
+
+### Wisconsin regions, plant traits data
 
 
+```{r dbRDA-wi,fig.width=5,fig.height=4,fig.cap="Results of a distance-based redundancy analysis of soil fungal community composition in restored fields in Wisconsin regions. Icons represent the constrained locations of fields. Solid blue arrows show the direction and strength of associations between communities and explanatory variables. Dotted blue arrows show correlations with strong, but non-significant explanatory variables. Axis 1 is significant based on 1999 permutations at p=0.011."}
+wi_sc <- read_csv("tgr_constrained_files/wi_tr_its_sitelocs.csv", show_col_types = FALSE) %>% 
+        left_join(sites, by = join_by(field_name))
+wi_bp <- read_csv("tgr_constrained_files/wi_tr_its_bp.csv", show_col_types = FALSE) %>% 
+        mutate(
+            origin = 0,
+            m = dbRDA2 / dbRDA1, 
+            d = sqrt(dbRDA1^2 + dbRDA2^2), 
+            dadd = sqrt((max(dbRDA1)-min(dbRDA2))^2 + (max(dbRDA2)-min(dbRDA2))^2)*0.1,
+            labx = ((d+dadd)*cos(atan(m)))*(dbRDA1/abs(dbRDA1)), 
+            laby = ((d+dadd)*sin(atan(m)))*(dbRDA1/abs(dbRDA1)))
+ggplot(wi_sc, aes(x = dbRDA1, y = dbRDA2)) + 
+    geom_vline(xintercept = 0, linewidth = 0.1) +
+    geom_hline(yintercept = 0, linewidth = 0.1) +
+    geom_segment(data = wi_bp, 
+                 aes(x = origin, xend = dbRDA1, y = origin, yend = dbRDA2), 
+                 arrow = arrow(angle = 20, length = unit(3, "mm"), type = "closed"),
+                 color = "blue", linetype = c(1,3,3)) +
+    geom_point(aes(shape = region), fill = "#5CBD92", size = 3) +
+    geom_text(data = wi_bp, 
+              aes(x = labx, y = laby, label = envvar),
+              nudge_x = c(0.2, 0, 0.2),
+              color = "blue") +
+    scale_shape_manual(name = "Region", values = c(21, 22, 24)) +
+    labs(x = "dbRDA axis 1 (17%)", y = "MDS axis 1 (23%)", ) +
+    theme_bw()
+
+```
 
 
-## Constrained
-years, but PLANTS...
+### All regions, plant presence/absence data
+
+
+### Plants constraint...
+
 
 ## Responses
 

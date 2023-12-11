@@ -348,6 +348,8 @@ dbrda_fun(
 #+ plot_wi_tr_its,fig.align='center'
 plot_dbrda(site_sc = dbrda_wi_tr_its$plot_data$sites,
            site_bp = dbrda_wi_tr_its$plot_data$biplot)
+write_csv(as_tibble(dbrda_wi_tr_its$plot_data$sites, rownames = "field_name"), "tgr_constrained_files/wi_tr_its_sitelocs.csv")
+write_csv(as_tibble(dbrda_wi_tr_its$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/wi_tr_its_bp.csv")
 #'
 #' #### Wisconsin sites with plant community axes
 #+ dbrda_wi_ab_its
@@ -383,6 +385,9 @@ plot_dbrda(site_sc = dbrda_wi_tr_its$plot_data$sites,
 #+ plot_all_pr_its,fig.align='center'
 plot_dbrda(site_sc = dbrda_all_pr_its$plot_data$sites,
            site_bp = dbrda_all_pr_its$plot_data$biplot)
+write_csv(as_tibble(dbrda_all_pr_its$plot_data$sites, rownames = "field_name"), "tgr_constrained_files/all_its_sitelocs.csv")
+write_csv(as_tibble(dbrda_all_pr_its$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/all_its_bp.csv")
+
 #'
 #' ### AMF community (18S sequence abundance)
 #' #### Blue Mounds with plant traits data
