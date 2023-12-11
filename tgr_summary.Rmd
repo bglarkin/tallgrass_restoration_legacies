@@ -48,17 +48,17 @@ sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FAL
 
 # Introduction
 
-The tallgrass prairie biome in North America is nearly extinct, creating a tremendous desire for restoration or recreation of this critical habitat. In the upper Midwest, interested landowners have attempted to convert previous agricultural fields (corn or soybeans, usually) to prairie for decades. The consequences of this practice for soil biota are largely unknown. Agricultural fields filter fungal and bacterial communities for species that can tolerate extreme nutrient loads, frequent tillage, and poor plant diversity. When agricultural practices cease, and native perennial plants are introduced, soil biotic communities are filtered by the new regime and rapidly change. What is the endpoint of these new communities? Do they begin to resemble communities in remnant prairie (the reference condition), or do they form novel communities, indicating a change of state in the system due to disturbance associated with agriculture? Are these communities' fates similar across distant regions, or is each context dependent?
+The tallgrass prairie biome in North America is nearly extinct, creating a tremendous desire for restoration of this critical habitat. In the upper Midwest, interested landowners have attempted to convert previous agricultural fields (corn or soybeans, usually) to something that looks like prairie for decades. The consequences of this practice for soil biota are largely unknown. Agricultural practices filter fungal and bacterial communities for species that can tolerate extreme nutrient loads, frequent tillage, and poor plant diversity. When agricultural practices cease, and native perennial plants are introduced, soil biotic communities are again filtered by the new regime and rapidly change. What is the endpoint of these new communities? Do they begin to resemble communities in remnant prairie (the reference condition), or do they form novel communities, indicating a change of state in the system due to disturbance associated with agriculture? Are these communities' fates similar across distant regions, or is each context dependent?
 
 # Description
 
-The goal is to present results and discuss whether a path forward exists. If so, we will determine the strategy that presents the best story, organization, and interpretation of these results. 
+The goal is to present results and discuss whether a path forward with these data exists. If so, we will determine the strategy that presents the best story, organization, and interpretation of these results. 
 
 # Methods
 
 ## Sites
 
-We visited fields in southern Wisconsin and at Fermilab, just west of Chicago, Illinois. Site descriptions and photos are available in this [field note](https://mpgcloud.egnyte.com/dl/39NPws0Z5l). The survey followed an unbalanced complete block design. Corn, restored, and remnant fields are compared, with at least one of each field type in each block. I have called blocks "regions" so far. We collected samples and data from four regions (Fig \@ref(fig:site-map), left).  
+We visited fields in southern Wisconsin and at Fermilab, just west of Chicago, Illinois. Site descriptions and photos are available in this [field note](https://mpgcloud.egnyte.com/dl/39NPws0Z5l). The survey followed an unbalanced complete block design. Corn, restored, and remnant fields are compared, with at least one of each field type in each block. I have called blocks "regions". We collected samples and data from four regions (Fig \@ref(fig:site-map), left).  
 
 ```{r site-map,out.width="40%",fig.show="hold",fig.cap="(Left) Labels show centroids of regions used for this work. BM = Blue Mounds, FG = Faville Grove, FL = Fermilab, LP = Lake Petite. (Right) Labels show individual fields in the Blue Mounds region."}
 include_graphics(c("site_locations_files/figure-gfm/site_map-1.png", "site_locations_files/figure-gfm/site_map_bm-1.png"))
@@ -66,7 +66,7 @@ include_graphics(c("site_locations_files/figure-gfm/site_map-1.png", "site_locat
 
 ## Design
 
-The design is unbalanced because there are more restored fields than corn or remnant (table \@ref(tab:design-table)). In all but one case, only single corn and remnant fields were available in each region. This means that we only have replication to separate field types when using the entire block design.
+The design is unbalanced because there are more restored fields than corn or remnant (table \@ref(tab:design-table)), and the count of restored fields differs among regions. In all but one case, only single corn and remnant fields were available in each region. This means that we only have replication to separate field types when using the entire block design.
 
 ```{r design-table}
 kable(table(sites$region, sites$field_type),
@@ -74,7 +74,7 @@ kable(table(sites$region, sites$field_type),
       caption = "Count of fields by type and region:\nBM = Blue Mounds, FG = Faville Grove,\nFL = Fermilab, LP = Lake Petite")
 ```
 
-A feature of our design is that restored fields vary in time since restoration, setting up the potential for a chronosequence in addition to the contrasts with corn or remnant fields. The rules for establishing a chronosequence are strict. We cannot call fields from all regions a chronosequence. With seven restored fields in a small geographic area, the Blue Mounds fields are our best bet for this (Fig \@ref(fig:site-map), right), but we will likely have to call this a "pseudochronosequence" and avoid some inferences. Mantel tests (not shown) failed to find correlations between soil variables and pairwise distance, giving us a little confidence that we're avoiding systemic bias. 
+A feature of our design is that restored fields vary in time since restoration, setting up the potential for a chronosequence in addition to the contrasts among corn, restored, or remnant fields. The rules for establishing a chronosequence are strict. We cannot call fields from all regions a chronosequence. The Blue Mounds region, which has seven restored fields in a relatively small geographic area, is our only opportunity to take advantage different field ages (Fig \@ref(fig:site-map), right), but we will likely have to call this a "pseudochronosequence" and avoid some inferences. Supporting our case in the Blue Mounds, mantel tests (not shown) failed to find correlations between soil variables and pairwise distance, giving us a little confidence that we're avoiding systemic bias. 
 
 ## Soil Fungal Communities
 
@@ -235,7 +235,16 @@ If natural history details are included, I think the most important case studies
     - proposed mycorrhizae, in all remnants and 4 restored
 
 ## AMF taxa
-Taxa and natural history
+
+```{r family-abund}
+read_csv("microbial_guild_taxonomy_files/families.csv", show_col_types = FALSE) %>% 
+kable(caption = "Average sequence abundances per field in each field type are shown for the top five families.", format = "pandoc")
+```
+
+Within the 18S dataset (AMF), taxa in the *Glomeraceae* are most abundant (\@ref(tab:family-abund)). As far as I know, these tend to be generalist taxa and are widespread. In this case, they do not differ in abundance among field types. Abundances fall off quickly for other taxa, with *Claroideoglomeraceae* and *Paraglomeraceae* an order of magnitude lower than the *Glomeraceae*, and *Gigasporaceae* abundance only 0.5% as much[^1]. 
+
+[^1]: Ylva, I'm hoping that you can help me with the natural history and interpreting how abundant these taxa must be to matter in this system.
+
 
 ## Constrained
 years, but PLANTS...
