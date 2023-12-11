@@ -9,12 +9,6 @@ output:
     highlight: tango
     toc: true
     toc_depth: 1
-  github_document:
-    df_print: tibble
-    fig_caption: yes
-    highlight: tango
-    toc: true
-    toc_depth: 1
 header-includes:
     \usepackage{float}
 geometry: margin = 0.5in
