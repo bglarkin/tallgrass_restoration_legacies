@@ -182,7 +182,7 @@ For both soil fungi and AMF, diversity indices were significantly lower for corn
 
 ```{r guild-abund}
 read_csv("microbial_guild_taxonomy_files/guilds.csv", show_col_types = FALSE) %>% 
-kable(caption = "Average sequence abundances per field in each field type are shown for the top six guilds.", format = "pandoc")
+kable(caption = "Average sequence abundances per field in each field type are shown for the top six guilds. A linear mixed model was used to separate means in field types and letters indicate significant differences based on Tukey's post-hoc test of that model at p<0.05.", format = "pandoc")
 ```
 
 Pathogen and saprotroph guilds are the most numerous in this dataset (table \@ref(tab:guild-abund)). Compared with the sequence abundance in the unidentified group, plant pathogens and soil saprotrophs are abundant enough to feel somewhat confident about in terms of coverage. I would have predicted soil saprotrophs to be lowest in cornfields (which have the least organic material), increasing in restored fields, and highest in remnants. With pathogens, I would have predicted the highest abundance in cornfields (due to the plant monoculture and high nutrients), lowest in restored fields (many plant species and less time for specialists to accumulate), and intermediate in remnants (high plant diversity and the presence of antagonistic fungi, but perennial plants in place to be attacked for decades). Instead, we found that the abundance of most guilds is highest in cornfields, intermediate in restored fields, and lowest in remnants.  
@@ -238,16 +238,18 @@ If natural history details are included, I think the most important case studies
 
 ```{r family-abund}
 read_csv("microbial_guild_taxonomy_files/families.csv", show_col_types = FALSE) %>% 
-kable(caption = "Average sequence abundances per field in each field type are shown for the top five families.", format = "pandoc")
+kable(caption = "Average 18S sequence abundances per field in each field type are shown for the top five families. A linear mixed model was used to separate means in field types and letters indicate significant differences based on Tukey's post-hoc test of that model at p<0.05.", format = "pandoc")
 ```
 
-Within the 18S dataset (AMF), taxa in the *Glomeraceae* are most abundant (\@ref(tab:family-abund)). As far as I know, these tend to be generalist taxa and are widespread. In this case, they do not differ in abundance among field types. Abundances fall off quickly for other taxa, with *Claroideoglomeraceae* and *Paraglomeraceae* an order of magnitude lower than the *Glomeraceae*, and *Gigasporaceae* abundance only 0.5% as much[^1]. Differences among corn and restored fields are significant for the *Claroideoglomeraceae*, where they are lowest in corn and highest in restored fields. The abundance of these taxa in remnants doesn't separate due to large within-group variance, but the mean for remnants is closer to restored fields. 
+Within the 18S dataset (AMF), taxa in the *Glomeraceae* are most abundant (\@ref(tab:family-abund)). As far as I know, these tend to be generalist taxa and are widespread. In this case, they do not differ in abundance among field types. Abundances fall off quickly for other taxa, with *Claroideoglomeraceae* and *Paraglomeraceae* an order of magnitude lower than the *Glomeraceae*, and *Gigasporaceae* abundance only 0.5% as much[^1]. Differences among corn and restored fields are significant for the *Claroideoglomeraceae*, where they are lowest in corn and highest in restored fields (\@ref(tab:family-abund)). The abundance of these taxa in remnants doesn't separate due to large within-group variance, but the mean for remnants is closer to restored fields. Despite their small overall abundance, taxa in the *Gigasporaceae* showed a strong, increasing relationship with years since restoration in the Blue Mounds' restored fields (\@ref(fig:gigatime)). 
 
 [^1]: Ylva, I'm hoping that you can help me with the natural history and interpreting how abundant these taxa must be to matter in this system.
 
-```{r gigatime,out.width="100%",fig.cap="Icons show sums of 18S sequences in each restored field from the Blue Mounds region. The abundance of taxa in the *Gigasporaceae* increase with years since restoration ($R^2_{Adj}=0.61,~p=0.023$)."}
+```{r gigatime,out.width="80%",fig.cap="Icons show sums of 18S sequences in each restored field from the Blue Mounds region. The abundance of taxa in the *Gigasporaceae* increase with years since restoration ($R^2_{Adj}=0.61,~p=0.023$)."}
 include_graphics("microbial_guild_taxonomy_files/figure-gfm/giga_seq_abund_years-1.png")
 ```
+
+## Environmental constraints on fungal communities
 
 
 
