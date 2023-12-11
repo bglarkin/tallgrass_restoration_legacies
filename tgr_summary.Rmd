@@ -241,9 +241,16 @@ read_csv("microbial_guild_taxonomy_files/families.csv", show_col_types = FALSE) 
 kable(caption = "Average sequence abundances per field in each field type are shown for the top five families.", format = "pandoc")
 ```
 
-Within the 18S dataset (AMF), taxa in the *Glomeraceae* are most abundant (\@ref(tab:family-abund)). As far as I know, these tend to be generalist taxa and are widespread. In this case, they do not differ in abundance among field types. Abundances fall off quickly for other taxa, with *Claroideoglomeraceae* and *Paraglomeraceae* an order of magnitude lower than the *Glomeraceae*, and *Gigasporaceae* abundance only 0.5% as much[^1]. 
+Within the 18S dataset (AMF), taxa in the *Glomeraceae* are most abundant (\@ref(tab:family-abund)). As far as I know, these tend to be generalist taxa and are widespread. In this case, they do not differ in abundance among field types. Abundances fall off quickly for other taxa, with *Claroideoglomeraceae* and *Paraglomeraceae* an order of magnitude lower than the *Glomeraceae*, and *Gigasporaceae* abundance only 0.5% as much[^1]. Differences among corn and restored fields are significant for the *Claroideoglomeraceae*, where they are lowest in corn and highest in restored fields. The abundance of these taxa in remnants doesn't separate due to large within-group variance, but the mean for remnants is closer to restored fields. 
 
 [^1]: Ylva, I'm hoping that you can help me with the natural history and interpreting how abundant these taxa must be to matter in this system.
+
+```{r gigatime,out.width="100%",fig.cap="Icons show sums of 18S sequences in each restored field from the Blue Mounds region. The abundance of taxa in the *Gigasporaceae* increase with years since restoration ($R^2_{Adj}=0.61,~p=0.023$)."}
+include_graphics("microbial_guild_taxonomy_files/figure-gfm/giga_seq_abund_years-1.png")
+```
+
+
+
 
 
 ## Constrained

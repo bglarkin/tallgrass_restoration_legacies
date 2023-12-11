@@ -600,17 +600,15 @@ giga <- filgu(spe$amf_rfy, meta$amf, family, "Gigasporaceae", sites)
 #' that these are just too low abundance to work more with. 
 #+ giga_div
 giga_div <- calc_diversity(giga$filspe)
-#+ giga_seq_abund_years,message=FALSE,fig.width=7,fig.height=5,fig.align='center'
+#+ giga_seq_abund_years,message=FALSE,fig.width=4,fig.height=3.5,fig.align='center'
 giga$filspeTaxa %>% 
-    filter(field_type == "restored", region %in% c("BM", "FL")) %>% 
-    group_by(region, field_type, field_key, yr_since) %>% 
+    filter(field_type == "restored", region == "BM") %>% 
+    group_by(field_type, field_key, yr_since) %>% 
     summarize(seq_sum = sum(seq_abund), .groups = "drop") %>% 
     ggplot(aes(x = yr_since, y = seq_sum)) +
-    facet_wrap(vars(region), scales = "free") +
-    geom_smooth(aes(linetype = region), method = "lm", se = FALSE) +
-    geom_point() +
-    scale_linetype_manual(values = c("solid", NA), guide = "none") +
-    labs(x = "Years since restoration", y = "Sum of sequences", title = "Gigasporaceae") +
+    geom_smooth(method = "lm", se = FALSE, color = "black", linewidth = 0.4) +
+    geom_point(fill = "#5CBD92", shape = 21, size = 2.5) +
+    labs(x = "Years since restoration", y = "Sum of 18S sequences") +
     theme_bw()
 #' 
 #' Pity that there are so few of these AMF. It's a nice relationship. Maybe there is a natural 
