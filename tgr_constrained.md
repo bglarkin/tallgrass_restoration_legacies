@@ -2,7 +2,7 @@ Constrained and summary analysis
 ================
 Beau Larkin
 
-Last updated: 04 December, 2023
+Last updated: 12 December, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -196,6 +196,7 @@ dbrda_fun <- function(s, pspe_pcoa="none", ft, rg) {
                          direction = "forward", 
                          permutations = how(nperm = 1999), 
                          trace = FALSE)
+    mod_r2   <- RsquareAdj(mod_step, permutations = 1999)
     mod_glax <- anova(mod_step, permutations = how(nperm = 1999))
     mod_inax <- anova(mod_step, by = "axis", permutations = how(nperm = 1999))
     # Produce plot data including borderline vars if possible
@@ -215,6 +216,7 @@ dbrda_fun <- function(s, pspe_pcoa="none", ft, rg) {
     return(list(
         plot_data = mod_scor,
         select_mod = mod_step,
+        R2 = mod_r2 %>% map(\(x) round(x, 2)),
         global_axis_test = mod_glax,
         individual_axis_test = mod_inax
     ))
@@ -479,35 +481,35 @@ dbrda_fun(
 )[c(3, 4, 2)]
 ```
 
+    ## $R2
+    ## $R2$r.squared
+    ## numeric(0)
+    ## 
+    ## $R2$adj.r.squared
+    ## numeric(0)
+    ## 
+    ## 
     ## $global_axis_test
     ## No constrained component
     ## 
     ## Model: dbrda(formula = fspe_bray ~ 1 + Condition(covars), data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs  F Pr(>F)
     ## Model     0   0.0000  0       
-    ## Residual  6   1.4097          
-    ## 
-    ## $individual_axis_test
-    ## No constrained component
-    ## 
-    ## Model: dbrda(formula = fspe_bray ~ 1 + Condition(covars), data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs  F Pr(>F)
-    ## Model     0   0.0000  0       
-    ## Residual  6   1.4097          
+    ## Residual  6   1.4099          
     ## 
     ## $select_mod
     ## Call: dbrda(formula = fspe_bray ~ 1 + Condition(covars), data = expl,
     ## sqrt.dist = TRUE)
     ## 
     ##               Inertia Proportion Rank
-    ## Total          2.1525     1.0000     
-    ## Conditional    0.7428     0.3451    2
-    ## Unconstrained  1.4097     0.6549    4
+    ## Total          2.1520     1.0000     
+    ## Conditional    0.7420     0.3448    2
+    ## Unconstrained  1.4099     0.6552    4
     ## Inertia is Bray distance 
     ## 
     ## Eigenvalues for unconstrained axes:
     ##   MDS1   MDS2   MDS3   MDS4 
-    ## 0.4834 0.3679 0.3135 0.2449
+    ## 0.4836 0.3676 0.3127 0.2460
 
 No explanatory variables were selected, and the set of permutations was
 less than the 1999 selected, suggesting that this is a pretty small
@@ -525,6 +527,14 @@ dataset.
         ))[c(3, 4, 2)]
 ```
 
+    ## $R2
+    ## $R2$r.squared
+    ## [1] 0.17
+    ## 
+    ## $R2$adj.r.squared
+    ## [1] 0.09
+    ## 
+    ## 
     ## $global_axis_test
     ## Permutation test for dbrda under reduced model
     ## Permutation: free
@@ -532,21 +542,8 @@ dataset.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.54709 1.7407  0.013 *
-    ## Residual  6  1.88570                
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## $individual_axis_test
-    ## Permutation test for dbrda under reduced model
-    ## Forward tests for axes
-    ## Permutation: free
-    ## Number of permutations: 1999
-    ## 
-    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)  
-    ## dbRDA1    1  0.54709 1.7407 0.0105 *
-    ## Residual  6  1.88570                
+    ## Model     1  0.54694 1.7384  0.017 *
+    ## Residual  6  1.88772                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -555,19 +552,19 @@ dataset.
     ## expl, sqrt.dist = TRUE)
     ## 
     ##               Inertia Proportion Rank
-    ## Total          3.1931     1.0000     
-    ## Conditional    0.7603     0.2381    2
-    ## Constrained    0.5471     0.1713    1
-    ## Unconstrained  1.8857     0.5906    6
+    ## Total          3.1951     1.0000     
+    ## Conditional    0.7604     0.2380    2
+    ## Constrained    0.5469     0.1712    1
+    ## Unconstrained  1.8877     0.5908    6
     ## Inertia is Bray distance 
     ## 
     ## Eigenvalues for constrained axes:
     ## dbRDA1 
-    ## 0.5471 
+    ## 0.5469 
     ## 
     ## Eigenvalues for unconstrained axes:
     ##   MDS1   MDS2   MDS3   MDS4   MDS5   MDS6 
-    ## 0.3879 0.3720 0.3467 0.3007 0.2557 0.2227
+    ## 0.3876 0.3722 0.3477 0.3010 0.2563 0.2230
 
 Global and individual axis test for axis 1 were significant. Years since
 restoration was selected, and it explains 17% of the variation. Forb and
@@ -581,6 +578,11 @@ plot_dbrda(site_sc = dbrda_wi_tr_its$plot_data$sites,
 ```
 
 <img src="tgr_constrained_files/figure-gfm/plot_wi_tr_its-1.png" style="display: block; margin: auto;" />
+
+``` r
+write_csv(as_tibble(dbrda_wi_tr_its$plot_data$sites, rownames = "field_name"), "tgr_constrained_files/wi_tr_its_sitelocs.csv")
+write_csv(as_tibble(dbrda_wi_tr_its$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/wi_tr_its_bp.csv")
+```
 
 #### Wisconsin sites with plant community axes
 
@@ -596,6 +598,14 @@ plot_dbrda(site_sc = dbrda_wi_tr_its$plot_data$sites,
 )[c(3, 4, 2)]
 ```
 
+    ## $R2
+    ## $R2$r.squared
+    ## [1] 0.17
+    ## 
+    ## $R2$adj.r.squared
+    ## [1] 0.09
+    ## 
+    ## 
     ## $global_axis_test
     ## Permutation test for dbrda under reduced model
     ## Permutation: free
@@ -603,21 +613,8 @@ plot_dbrda(site_sc = dbrda_wi_tr_its$plot_data$sites,
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.54709 1.7407 0.0145 *
-    ## Residual  6  1.88570                
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## $individual_axis_test
-    ## Permutation test for dbrda under reduced model
-    ## Forward tests for axes
-    ## Permutation: free
-    ## Number of permutations: 1999
-    ## 
-    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)  
-    ## dbRDA1    1  0.54709 1.7407 0.0145 *
-    ## Residual  6  1.88570                
+    ## Model     1  0.54694 1.7384 0.0115 *
+    ## Residual  6  1.88772                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -626,19 +623,19 @@ plot_dbrda(site_sc = dbrda_wi_tr_its$plot_data$sites,
     ## expl, sqrt.dist = TRUE)
     ## 
     ##               Inertia Proportion Rank
-    ## Total          3.1931     1.0000     
-    ## Conditional    0.7603     0.2381    2
-    ## Constrained    0.5471     0.1713    1
-    ## Unconstrained  1.8857     0.5906    6
+    ## Total          3.1951     1.0000     
+    ## Conditional    0.7604     0.2380    2
+    ## Constrained    0.5469     0.1712    1
+    ## Unconstrained  1.8877     0.5908    6
     ## Inertia is Bray distance 
     ## 
     ## Eigenvalues for constrained axes:
     ## dbRDA1 
-    ## 0.5471 
+    ## 0.5469 
     ## 
     ## Eigenvalues for unconstrained axes:
     ##   MDS1   MDS2   MDS3   MDS4   MDS5   MDS6 
-    ## 0.3879 0.3720 0.3467 0.3007 0.2557 0.2227
+    ## 0.3876 0.3722 0.3477 0.3010 0.2563 0.2230
 
 Global and individual axis test for axis 1 were significant. Years since
 restoration was selected, and it explains 17% of the variation. Since
@@ -659,6 +656,14 @@ result of the test is identical to the previous one.
 )[c(3, 4, 2)]
 ```
 
+    ## $R2
+    ## $R2$r.squared
+    ## [1] 0.16
+    ## 
+    ## $R2$adj.r.squared
+    ## [1] 0.11
+    ## 
+    ## 
     ## $global_axis_test
     ## Permutation test for dbrda under reduced model
     ## Permutation: free
@@ -666,21 +671,8 @@ result of the test is identical to the previous one.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)    
-    ## Model     1  0.70182 2.2329  0.001 ***
-    ## Residual  9  2.82875                  
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## $individual_axis_test
-    ## Permutation test for dbrda under reduced model
-    ## Forward tests for axes
-    ## Permutation: free
-    ## Number of permutations: 1999
-    ## 
-    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)    
-    ## dbRDA1    1  0.70182 2.2329  0.001 ***
-    ## Residual  9  2.82875                  
+    ## Model     1   0.7023 2.2343  5e-04 ***
+    ## Residual  9   2.8289                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -689,19 +681,19 @@ result of the test is identical to the previous one.
     ## expl, sqrt.dist = TRUE)
     ## 
     ##               Inertia Proportion Rank
-    ## Total          4.3402     1.0000     
-    ## Conditional    0.8097     0.1865    2
-    ## Constrained    0.7018     0.1617    1
-    ## Unconstrained  2.8287     0.6518    9
+    ## Total          4.3407     1.0000     
+    ## Conditional    0.8095     0.1865    2
+    ## Constrained    0.7023     0.1618    1
+    ## Unconstrained  2.8289     0.6517    9
     ## Inertia is Bray distance 
     ## 
     ## Eigenvalues for constrained axes:
     ## dbRDA1 
-    ## 0.7018 
+    ## 0.7023 
     ## 
     ## Eigenvalues for unconstrained axes:
     ##   MDS1   MDS2   MDS3   MDS4   MDS5   MDS6   MDS7   MDS8   MDS9 
-    ## 0.4454 0.3874 0.3615 0.3437 0.3056 0.2642 0.2530 0.2474 0.2205
+    ## 0.4449 0.3870 0.3617 0.3448 0.3054 0.2633 0.2533 0.2474 0.2210
 
 Global and individual axis test for axis 1 were significant and strong.
 Years since restoration was selected and it explains 16% of the
@@ -718,6 +710,11 @@ plot_dbrda(site_sc = dbrda_all_pr_its$plot_data$sites,
 
 <img src="tgr_constrained_files/figure-gfm/plot_all_pr_its-1.png" style="display: block; margin: auto;" />
 
+``` r
+write_csv(as_tibble(dbrda_all_pr_its$plot_data$sites, rownames = "field_name"), "tgr_constrained_files/all_its_sitelocs.csv")
+write_csv(as_tibble(dbrda_all_pr_its$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/all_its_bp.csv")
+```
+
 ### AMF community (18S sequence abundance)
 
 #### Blue Mounds with plant traits data
@@ -731,35 +728,35 @@ dbrda_fun(
 )[c(3, 4, 2)]
 ```
 
+    ## $R2
+    ## $R2$r.squared
+    ## numeric(0)
+    ## 
+    ## $R2$adj.r.squared
+    ## numeric(0)
+    ## 
+    ## 
     ## $global_axis_test
     ## No constrained component
     ## 
     ## Model: dbrda(formula = fspe_bray ~ 1 + Condition(covars), data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs  F Pr(>F)
     ## Model     0   0.0000  0       
-    ## Residual  6   1.1147          
-    ## 
-    ## $individual_axis_test
-    ## No constrained component
-    ## 
-    ## Model: dbrda(formula = fspe_bray ~ 1 + Condition(covars), data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs  F Pr(>F)
-    ## Model     0   0.0000  0       
-    ## Residual  6   1.1147          
+    ## Residual  6   1.1161          
     ## 
     ## $select_mod
     ## Call: dbrda(formula = fspe_bray ~ 1 + Condition(covars), data = expl,
     ## sqrt.dist = TRUE)
     ## 
     ##               Inertia Proportion Rank
-    ## Total          1.6947     1.0000     
-    ## Conditional    0.5800     0.3422    2
-    ## Unconstrained  1.1147     0.6578    4
+    ## Total          1.6960     1.0000     
+    ## Conditional    0.5799     0.3419    2
+    ## Unconstrained  1.1161     0.6581    4
     ## Inertia is Bray distance 
     ## 
     ## Eigenvalues for unconstrained axes:
     ##   MDS1   MDS2   MDS3   MDS4 
-    ## 0.5249 0.2560 0.1919 0.1418
+    ## 0.5240 0.2568 0.1960 0.1393
 
 No explanatory variables were selected. Blue Mounds has too few sites
 for the number of conditional and explanatory variables used, perhaps.
@@ -776,6 +773,14 @@ for the number of conditional and explanatory variables used, perhaps.
         ))[c(3, 4, 2)]
 ```
 
+    ## $R2
+    ## $R2$r.squared
+    ## [1] 0.23
+    ## 
+    ## $R2$adj.r.squared
+    ## [1] 0.19
+    ## 
+    ## 
     ## $global_axis_test
     ## Permutation test for dbrda under reduced model
     ## Permutation: free
@@ -783,21 +788,8 @@ for the number of conditional and explanatory variables used, perhaps.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.57408 2.7216 0.0045 **
-    ## Residual  6  1.26562                 
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## $individual_axis_test
-    ## Permutation test for dbrda under reduced model
-    ## Forward tests for axes
-    ## Permutation: free
-    ## Number of permutations: 1999
-    ## 
-    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.57408 2.7216  0.008 **
-    ## Residual  6  1.26562                 
+    ## Model     1  0.57437 2.7177 0.0055 **
+    ## Residual  6  1.26808                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -806,19 +798,19 @@ for the number of conditional and explanatory variables used, perhaps.
     ## expl, sqrt.dist = TRUE)
     ## 
     ##               Inertia Proportion Rank
-    ## Total          2.4975     1.0000     
-    ## Conditional    0.6578     0.2634    2
-    ## Constrained    0.5741     0.2299    1
-    ## Unconstrained  1.2656     0.5068    6
+    ## Total          2.4978     1.0000     
+    ## Conditional    0.6554     0.2624    2
+    ## Constrained    0.5744     0.2299    1
+    ## Unconstrained  1.2681     0.5077    6
     ## Inertia is Bray distance 
     ## 
     ## Eigenvalues for constrained axes:
     ## dbRDA1 
-    ## 0.5741 
+    ## 0.5744 
     ## 
     ## Eigenvalues for unconstrained axes:
     ##    MDS1    MDS2    MDS3    MDS4    MDS5    MDS6 
-    ## 0.30700 0.27775 0.21350 0.18386 0.15709 0.12642
+    ## 0.30525 0.27886 0.21898 0.18494 0.15579 0.12426
 
 Global and individual axis test for axis 1 were significant in site rank
 at p\<0.01. Years since restoration was the selected explanatory
@@ -848,6 +840,14 @@ plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites,
 )[c(3, 4, 2)]
 ```
 
+    ## $R2
+    ## $R2$r.squared
+    ## [1] 0.23
+    ## 
+    ## $R2$adj.r.squared
+    ## [1] 0.19
+    ## 
+    ## 
     ## $global_axis_test
     ## Permutation test for dbrda under reduced model
     ## Permutation: free
@@ -855,21 +855,8 @@ plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites,
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.57408 2.7216 0.0055 **
-    ## Residual  6  1.26562                 
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## $individual_axis_test
-    ## Permutation test for dbrda under reduced model
-    ## Forward tests for axes
-    ## Permutation: free
-    ## Number of permutations: 1999
-    ## 
-    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.57408 2.7216 0.0055 **
-    ## Residual  6  1.26562                 
+    ## Model     1  0.57437 2.7177  0.004 **
+    ## Residual  6  1.26808                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -878,19 +865,19 @@ plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites,
     ## expl, sqrt.dist = TRUE)
     ## 
     ##               Inertia Proportion Rank
-    ## Total          2.4975     1.0000     
-    ## Conditional    0.6578     0.2634    2
-    ## Constrained    0.5741     0.2299    1
-    ## Unconstrained  1.2656     0.5068    6
+    ## Total          2.4978     1.0000     
+    ## Conditional    0.6554     0.2624    2
+    ## Constrained    0.5744     0.2299    1
+    ## Unconstrained  1.2681     0.5077    6
     ## Inertia is Bray distance 
     ## 
     ## Eigenvalues for constrained axes:
     ## dbRDA1 
-    ## 0.5741 
+    ## 0.5744 
     ## 
     ## Eigenvalues for unconstrained axes:
     ##    MDS1    MDS2    MDS3    MDS4    MDS5    MDS6 
-    ## 0.30700 0.27775 0.21350 0.18386 0.15709 0.12642
+    ## 0.30525 0.27886 0.21898 0.18494 0.15579 0.12426
 
 Global and individual axis test for axis 1 were significant. Years since
 restoration was selected with the same strength as the previous test.
@@ -909,28 +896,23 @@ restoration was selected with the same strength as the previous test.
 )[c(3, 4, 2)]
 ```
 
+    ## $R2
+    ## $R2$r.squared
+    ## [1] 0.21
+    ## 
+    ## $R2$adj.r.squared
+    ## [1] 0.18
+    ## 
+    ## 
     ## $global_axis_test
     ## Permutation test for dbrda under reduced model
     ## Permutation: free
     ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.69717 3.3004 0.0025 **
-    ## Residual  9  1.90112                 
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## $individual_axis_test
-    ## Permutation test for dbrda under reduced model
-    ## Forward tests for axes
-    ## Permutation: free
-    ## Number of permutations: 1999
-    ## 
-    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.69717 3.3004 0.0015 **
-    ## Residual  9  1.90112                 
+    ##          Df SumOfSqs      F Pr(>F)    
+    ## Model     1    0.695 3.2851  0.001 ***
+    ## Residual  9    1.904                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -939,19 +921,19 @@ restoration was selected with the same strength as the previous test.
     ## expl, sqrt.dist = TRUE)
     ## 
     ##               Inertia Proportion Rank
-    ## Total          3.2964     1.0000     
-    ## Conditional    0.6981     0.2118    2
-    ## Constrained    0.6972     0.2115    1
-    ## Unconstrained  1.9011     0.5767    9
+    ## Total          3.2951     1.0000     
+    ## Conditional    0.6961     0.2112    2
+    ## Constrained    0.6950     0.2109    1
+    ## Unconstrained  1.9040     0.5778    9
     ## Inertia is Bray distance 
     ## 
     ## Eigenvalues for constrained axes:
     ## dbRDA1 
-    ## 0.6972 
+    ##  0.695 
     ## 
     ## Eigenvalues for unconstrained axes:
     ##   MDS1   MDS2   MDS3   MDS4   MDS5   MDS6   MDS7   MDS8   MDS9 
-    ## 0.3631 0.2896 0.2725 0.2190 0.1762 0.1648 0.1573 0.1366 0.1221
+    ## 0.3596 0.2898 0.2732 0.2252 0.1779 0.1656 0.1561 0.1355 0.1211
 
 Global and individual axis test for axis 1 were significant in site
 rank. Years since restoration explained 21% of the variation and
@@ -1010,20 +992,20 @@ vpdat_its_zcols <- vpdat_its %>% map(\(df) which(apply(df, 2, sum) == 0))
     ## X2:  vpdat_its$X2 
     ## 
     ## No. of explanatory tables: 2 
-    ## Total variation (SS): 264966495 
-    ##             Variance: 44161082 
+    ## Total variation (SS): 264796663 
+    ##             Variance: 44132777 
     ## No. of observations: 7 
     ## 
     ## Partition table:
     ##                      Df R.squared Adj.R.squared Testable
-    ## [a+c] = X1            2   0.38680       0.08020     TRUE
-    ## [b+c] = X2            2   0.34582       0.01873     TRUE
-    ## [a+b+c] = X1+X2       4   0.70243       0.10728     TRUE
+    ## [a+c] = X1            2   0.38627       0.07941     TRUE
+    ## [b+c] = X2            2   0.34566       0.01849     TRUE
+    ## [a+b+c] = X1+X2       4   0.70270       0.10810     TRUE
     ## Individual fractions                                    
-    ## [a] = X1|X2           2                 0.08855     TRUE
-    ## [b] = X2|X1           2                 0.02708     TRUE
-    ## [c]                   0                -0.00835    FALSE
-    ## [d] = Residuals                         0.89272    FALSE
+    ## [a] = X1|X2           2                 0.08962     TRUE
+    ## [b] = X2|X1           2                 0.02869     TRUE
+    ## [c]                   0                -0.01021    FALSE
+    ## [d] = Residuals                         0.89190    FALSE
     ## ---
     ## Use function 'rda' to test significance of fractions of interest
 

@@ -155,6 +155,7 @@ dbrda_fun <- function(s, pspe_pcoa="none", ft, rg) {
                          direction = "forward", 
                          permutations = how(nperm = 1999), 
                          trace = FALSE)
+    mod_r2   <- RsquareAdj(mod_step, permutations = 1999)
     mod_glax <- anova(mod_step, permutations = how(nperm = 1999))
     mod_inax <- anova(mod_step, by = "axis", permutations = how(nperm = 1999))
     # Produce plot data including borderline vars if possible
@@ -174,6 +175,7 @@ dbrda_fun <- function(s, pspe_pcoa="none", ft, rg) {
     return(list(
         plot_data = mod_scor,
         select_mod = mod_step,
+        R2 = mod_r2 %>% map(\(x) round(x, 2)),
         global_axis_test = mod_glax,
         individual_axis_test = mod_inax
     ))
@@ -551,10 +553,3 @@ axis_corr_plot <-
 #' This isn't a satisfying analysis. The most defensible chronosequence, the sites from Blue Mounds, 
 #' failed to significantly relate to any constraints, and no functional responses showed any meaningful 
 #' relationship here. 
-
-
-
-
-
-
-
