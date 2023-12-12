@@ -478,7 +478,7 @@ dbrda_fun(
     pspe_pcoa = "none",
     ft = c("restored"),
     rg = c("BM")
-)[c(3, 4, 2)]
+)[c(3, 4, 5, 2)]
 ```
 
     ## $R2
@@ -490,6 +490,14 @@ dbrda_fun(
     ## 
     ## 
     ## $global_axis_test
+    ## No constrained component
+    ## 
+    ## Model: dbrda(formula = fspe_bray ~ 1 + Condition(covars), data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs  F Pr(>F)
+    ## Model     0   0.0000  0       
+    ## Residual  6   1.4099          
+    ## 
+    ## $individual_axis_test
     ## No constrained component
     ## 
     ## Model: dbrda(formula = fspe_bray ~ 1 + Condition(covars), data = expl, sqrt.dist = TRUE)
@@ -524,7 +532,7 @@ dataset.
             pspe_pcoa = "none",
             ft = c("restored"),
             rg = c("BM", "LP", "FG")
-        ))[c(3, 4, 2)]
+        ))[c(3, 4, 5, 2)]
 ```
 
     ## $R2
@@ -542,7 +550,20 @@ dataset.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.54694 1.7384  0.017 *
+    ## Model     1  0.54694 1.7384 0.0185 *
+    ## Residual  6  1.88772                
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $individual_axis_test
+    ## Permutation test for dbrda under reduced model
+    ## Forward tests for axes
+    ## Permutation: free
+    ## Number of permutations: 1999
+    ## 
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)  
+    ## dbRDA1    1  0.54694 1.7384  0.018 *
     ## Residual  6  1.88772                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -595,7 +616,7 @@ write_csv(as_tibble(dbrda_wi_tr_its$plot_data$biplot, rownames = "envvar"), "tgr
             ft = c("restored"),
             rg = c("BM", "LP", "FG")
         )
-)[c(3, 4, 2)]
+)[c(3, 4, 5, 2)]
 ```
 
     ## $R2
@@ -613,7 +634,20 @@ write_csv(as_tibble(dbrda_wi_tr_its$plot_data$biplot, rownames = "envvar"), "tgr
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.54694 1.7384 0.0115 *
+    ## Model     1  0.54694 1.7384  0.013 *
+    ## Residual  6  1.88772                
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $individual_axis_test
+    ## Permutation test for dbrda under reduced model
+    ## Forward tests for axes
+    ## Permutation: free
+    ## Number of permutations: 1999
+    ## 
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)  
+    ## dbRDA1    1  0.54694 1.7384  0.011 *
     ## Residual  6  1.88772                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -653,7 +687,7 @@ result of the test is identical to the previous one.
             ft = c("restored"),
             rg = c("BM", "LP", "FG", "FL")
         )
-)[c(3, 4, 2)]
+)[c(3, 4, 5, 2)]
 ```
 
     ## $R2
@@ -670,8 +704,21 @@ result of the test is identical to the previous one.
     ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## Model     1   0.7023 2.2343 0.0015 **
+    ## Residual  9   2.8289                 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $individual_axis_test
+    ## Permutation test for dbrda under reduced model
+    ## Forward tests for axes
+    ## Permutation: free
+    ## Number of permutations: 1999
+    ## 
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)    
-    ## Model     1   0.7023 2.2343  5e-04 ***
+    ## dbRDA1    1   0.7023 2.2343  0.001 ***
     ## Residual  9   2.8289                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -725,7 +772,7 @@ dbrda_fun(
     pspe_pcoa = "none",
     ft = c("restored"),
     rg = c("BM")
-)[c(3, 4, 2)]
+)[c(3, 4, 5, 2)]
 ```
 
     ## $R2
@@ -737,6 +784,14 @@ dbrda_fun(
     ## 
     ## 
     ## $global_axis_test
+    ## No constrained component
+    ## 
+    ## Model: dbrda(formula = fspe_bray ~ 1 + Condition(covars), data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs  F Pr(>F)
+    ## Model     0   0.0000  0       
+    ## Residual  6   1.1161          
+    ## 
+    ## $individual_axis_test
     ## No constrained component
     ## 
     ## Model: dbrda(formula = fspe_bray ~ 1 + Condition(covars), data = expl, sqrt.dist = TRUE)
@@ -770,7 +825,7 @@ for the number of conditional and explanatory variables used, perhaps.
             pspe_pcoa = "none",
             ft = c("restored"),
             rg = c("BM", "LP", "FG")
-        ))[c(3, 4, 2)]
+        ))[c(3, 4, 5, 2)]
 ```
 
     ## $R2
@@ -788,7 +843,20 @@ for the number of conditional and explanatory variables used, perhaps.
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.57437 2.7177 0.0055 **
+    ## Model     1  0.57437 2.7177  0.005 **
+    ## Residual  6  1.26808                 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $individual_axis_test
+    ## Permutation test for dbrda under reduced model
+    ## Forward tests for axes
+    ## Permutation: free
+    ## Number of permutations: 1999
+    ## 
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## dbRDA1    1  0.57437 2.7177 0.0065 **
     ## Residual  6  1.26808                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -837,7 +905,7 @@ plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites,
             ft = c("restored"),
             rg = c("BM", "LP", "FG")
         )
-)[c(3, 4, 2)]
+)[c(3, 4, 5, 2)]
 ```
 
     ## $R2
@@ -855,7 +923,20 @@ plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites,
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.57437 2.7177  0.004 **
+    ## Model     1  0.57437 2.7177 0.0065 **
+    ## Residual  6  1.26808                 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $individual_axis_test
+    ## Permutation test for dbrda under reduced model
+    ## Forward tests for axes
+    ## Permutation: free
+    ## Number of permutations: 1999
+    ## 
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## dbRDA1    1  0.57437 2.7177  0.007 **
     ## Residual  6  1.26808                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -893,7 +974,7 @@ restoration was selected with the same strength as the previous test.
             ft = c("restored"),
             rg = c("BM", "LP", "FG", "FL")
         )
-)[c(3, 4, 2)]
+)[c(3, 4, 5, 2)]
 ```
 
     ## $R2
@@ -910,9 +991,22 @@ restoration was selected with the same strength as the previous test.
     ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)    
-    ## Model     1    0.695 3.2851  0.001 ***
-    ## Residual  9    1.904                  
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## Model     1    0.695 3.2851 0.0025 **
+    ## Residual  9    1.904                 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $individual_axis_test
+    ## Permutation test for dbrda under reduced model
+    ## Forward tests for axes
+    ## Permutation: free
+    ## Number of permutations: 1999
+    ## 
+    ## Model: dbrda(formula = fspe_bray ~ Condition(covars) + yr_since, data = expl, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## dbRDA1    1    0.695 3.2851 0.0025 **
+    ## Residual  9    1.904                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 

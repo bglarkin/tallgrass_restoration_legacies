@@ -330,7 +330,7 @@ dbrda_fun(
     pspe_pcoa = "none",
     ft = c("restored"),
     rg = c("BM")
-)[c(3, 4, 2)]
+)[c(3, 4, 5, 2)]
 #' No explanatory variables were selected, and the set of permutations was less than the 1999 selected, suggesting
 #' that this is a pretty small dataset.
 #'
@@ -342,7 +342,7 @@ dbrda_fun(
             pspe_pcoa = "none",
             ft = c("restored"),
             rg = c("BM", "LP", "FG")
-        ))[c(3, 4, 2)]
+        ))[c(3, 4, 5, 2)]
 #' Global and individual axis test for axis 1 were significant.
 #' Years since restoration was selected, and it explains 17% of the variation. Forb and C4 grass are
 #' runners-up but appear highly correlated with years (not shown). Let's view a plot and include
@@ -363,7 +363,7 @@ write_csv(as_tibble(dbrda_wi_tr_its$plot_data$biplot, rownames = "envvar"), "tgr
             ft = c("restored"),
             rg = c("BM", "LP", "FG")
         )
-)[c(3, 4, 2)]
+)[c(3, 4, 5, 2)]
 #' Global and individual axis test for axis 1 were significant.
 #' Years since restoration was selected, and it explains 17% of the variation. Since the plant community axes
 #' failed to contribute explanatory power, the result of the test is identical to the previous one.
@@ -378,7 +378,7 @@ write_csv(as_tibble(dbrda_wi_tr_its$plot_data$biplot, rownames = "envvar"), "tgr
             ft = c("restored"),
             rg = c("BM", "LP", "FG", "FL")
         )
-)[c(3, 4, 2)]
+)[c(3, 4, 5, 2)]
 #' Global and individual axis test for axis 1 were significant and strong. Years since restoration was selected
 #' and it explains 16% of the variation here. Potassium and plant axis 1 were runners up. It's nice to see that
 #' the addition of a very different plant community didn't make much of a difference, and that the conditional
@@ -399,7 +399,7 @@ dbrda_fun(
     pspe_pcoa = "none",
     ft = c("restored"),
     rg = c("BM")
-)[c(3, 4, 2)]
+)[c(3, 4, 5, 2)]
 #' No explanatory variables were selected. Blue Mounds has too few sites for the number of conditional and
 #' explanatory variables used, perhaps.
 #'
@@ -411,7 +411,7 @@ dbrda_fun(
             pspe_pcoa = "none",
             ft = c("restored"),
             rg = c("BM", "LP", "FG")
-        ))[c(3, 4, 2)]
+        ))[c(3, 4, 5, 2)]
 #' Global and individual axis test for axis 1 were significant in site rank at p<0.01. Years since restoration was the selected
 #' explanatory variable, explaining 23% of the variation in communities. Forb and C4 grass were runners up and
 #' appear highly correlated with years since restoration. Let's view a plot and include
@@ -430,7 +430,7 @@ plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites,
             ft = c("restored"),
             rg = c("BM", "LP", "FG")
         )
-)[c(3, 4, 2)]
+)[c(3, 4, 5, 2)]
 #' Global and individual axis test for axis 1 were significant. Years since restoration was selected with the same
 #' strength as the previous test.
 #'
@@ -444,7 +444,7 @@ plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites,
             ft = c("restored"),
             rg = c("BM", "LP", "FG", "FL")
         )
-)[c(3, 4, 2)]
+)[c(3, 4, 5, 2)]
 #' Global and individual axis test for axis 1 were significant in site rank. Years since restoration explained 21%
 #' of the variation and potassium was a runner up. Let's view a plot and add
 #' SOM, plant axis 1, and potassium for visualization purposes.
