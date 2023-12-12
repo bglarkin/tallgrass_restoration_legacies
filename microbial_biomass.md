@@ -2,7 +2,7 @@ Microbial data: fatty acids (biomass)
 ================
 Beau Larkin
 
-Last updated: 23 October, 2023
+Last updated: 12 December, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -26,7 +26,7 @@ PLFA/NLFA quantification.
 # Packages and libraries
 
 ``` r
-packages_needed = c("GGally", "tidyverse", "vegan", "colorspace")
+packages_needed = c("GGally", "tidyverse", "vegan", "colorspace", "ggbeeswarm")
 packages_installed = packages_needed %in% rownames(installed.packages())
 ```
 
@@ -112,6 +112,23 @@ We see a variety of patterns across field types. Most often, biomass is
 highest in restored fields, with notable exceptions for actionmycetes
 and Fermilab. In Blue Mounds, the pattern is consistent across field
 types, and the magnitude of difference isn’t large.
+
+Let’s make a figure that can work in the summary.
+
+``` r
+ggplot(fa_grp %>% filter(group %in% c("amf", "fungi")), aes(x = field_type, y = qty)) +
+    facet_wrap(vars(group), scales = "free_y") +
+    geom_boxplot(fill = "gray90", varwidth = FALSE, outlier.shape = NA) +
+    geom_beeswarm(aes(shape = region, fill = field_type), size = 2, dodge.width = 0.3) +
+    labs(y = "Fatty acid quantity") +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
+    theme_bw() +
+    theme(axis.title.x = element_blank()) +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
+```
+
+<img src="microbial_biomass_files/figure-gfm/fa_boxplot-1.png" style="display: block; margin: auto;" />
 
 ## Ordination with PCA
 
