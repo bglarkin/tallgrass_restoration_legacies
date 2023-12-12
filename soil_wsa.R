@@ -99,11 +99,14 @@ sig_letters <- data.frame(
 ggplot(wsa, 
        aes(x = field_type, y = wsa)) +
     geom_boxplot(fill = "gray90", varwidth = FALSE, outlier.shape = NA) +
-    geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
-    geom_text(data = sig_letters, aes(x = xpos, y = ypos, label = lab)) +
-    labs(x = "", y = "Water stable aggregates (%)") +
-    scale_fill_discrete_qualitative(name = "Region", palette = "Dark2") +
-    theme_bw()
+    geom_beeswarm(aes(shape = region, fill = field_type), size = 2, dodge.width = 0.3) +
+    geom_label(data = sig_letters, aes(x = xpos, y = ypos, label = lab), label.size = NA) +
+    labs(y = "Species equivalent (n)") +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
+    theme_bw() +
+    theme(axis.title.x = element_blank()) +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
 #' In the figure above, Linear mixed models with region as random effect. 
 #' Letters show differences based on Tukey's post hoc with Holm correction at p<0.05
 #' ## WSA over time in restored fields

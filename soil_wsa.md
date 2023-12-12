@@ -2,7 +2,7 @@ Soil: water stable aggregates
 ================
 Beau Larkin
 
-Last updated: 07 December, 2023
+Last updated: 12 December, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -170,9 +170,9 @@ summary(wsa_mod_tuk)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)   
-    ## restored - corn == 0      14.538      4.183   3.475  0.00143 **
-    ## remnant - corn == 0        3.227      5.365   0.602  0.81716   
-    ## remnant - restored == 0  -11.311      4.593  -2.462  0.03612 * 
+    ## restored - corn == 0      14.538      4.183   3.475  0.00145 **
+    ## remnant - corn == 0        3.227      5.365   0.602  0.81715   
+    ## remnant - restored == 0  -11.311      4.593  -2.462  0.03613 * 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## (Adjusted p values reported -- single-step method)
@@ -216,11 +216,14 @@ sig_letters <- data.frame(
 ggplot(wsa, 
        aes(x = field_type, y = wsa)) +
     geom_boxplot(fill = "gray90", varwidth = FALSE, outlier.shape = NA) +
-    geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
-    geom_text(data = sig_letters, aes(x = xpos, y = ypos, label = lab)) +
-    labs(x = "", y = "Water stable aggregates (%)") +
-    scale_fill_discrete_qualitative(name = "Region", palette = "Dark2") +
-    theme_bw()
+    geom_beeswarm(aes(shape = region, fill = field_type), size = 2, dodge.width = 0.3) +
+    geom_label(data = sig_letters, aes(x = xpos, y = ypos, label = lab), label.size = NA) +
+    labs(y = "Species equivalent (n)") +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
+    theme_bw() +
+    theme(axis.title.x = element_blank()) +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
 ```
 
 <img src="soil_wsa_files/figure-gfm/wsa_regions_fieldtypes_fig-1.png" style="display: block; margin: auto;" />

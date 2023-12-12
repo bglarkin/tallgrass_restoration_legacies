@@ -230,12 +230,15 @@ div$its_rfy %>%
     ggplot(aes(x = field_type, y = value)) +
     facet_wrap(vars(hill_index), scales = "free_y", labeller = labeller(hill_index = hill_labs)) +
     geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
-    geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
+    geom_beeswarm(aes(shape = region, fill = field_type), size = 2, dodge.width = 0.3) +
     geom_label(data = labs_its, aes(x = xpos, y = ypos, label = lab), label.size = NA) +
     labs(y = "Species equivalent (n)") +
-    scale_fill_discrete_qualitative(name = "Region", palette = "Dark3") +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
-    theme(axis.title.x = element_blank())
+    theme(axis.title.x = element_blank()) +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
+
 #' Richness and evenness parameters increase from corn, to restored, to remnant fields, and some 
 #' support exists for this pattern to occur across regions. 
 #+ plot_div_its_otu_interaction,fig.width=9,fig.height=7,fig.align='center'
@@ -364,12 +367,14 @@ div$amf_rfy %>%
     ggplot(aes(x = field_type, y = value)) +
     facet_wrap(vars(hill_index), scales = "free_y", labeller = labeller(hill_index = hill_labs)) +
     geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
-    geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
+    geom_beeswarm(aes(shape = region, fill = field_type), size = 2, dodge.width = 0.3) +
     geom_label(data = labs_amf %>% filter(hill_index != "E10"), aes(x = xpos, y = ypos, label = lab), label.size = NA) +
     labs(y = "Species equivalent (n)") +
-    scale_fill_discrete_qualitative(name = "Region", palette = "Dark3") +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
-    theme(axis.title.x = element_blank())
+    theme(axis.title.x = element_blank()) +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
 #' Richness increases from corn, to restored and remnant fields, and some 
 #' support exists for this pattern to occur across regions. The trend is weakest with $N_{0}$, suggesting
 #' that both restored and remnant soils contain more functionally abundant and co-dominant species than are found in cornfields, 

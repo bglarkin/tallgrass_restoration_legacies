@@ -2,7 +2,7 @@ Microbial data: overview of data, diversity statistics
 ================
 Beau Larkin
 
-Last updated: 08 December, 2023
+Last updated: 12 December, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -639,12 +639,14 @@ div$its_rfy %>%
     ggplot(aes(x = field_type, y = value)) +
     facet_wrap(vars(hill_index), scales = "free_y", labeller = labeller(hill_index = hill_labs)) +
     geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
-    geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
+    geom_beeswarm(aes(shape = region, fill = field_type), size = 2, dodge.width = 0.3) +
     geom_label(data = labs_its, aes(x = xpos, y = ypos, label = lab), label.size = NA) +
     labs(y = "Species equivalent (n)") +
-    scale_fill_discrete_qualitative(name = "Region", palette = "Dark3") +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
-    theme(axis.title.x = element_blank())
+    theme(axis.title.x = element_blank()) +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
 ```
 
 ![](microbial_diversity_files/figure-gfm/div_its_box-1.png)<!-- -->
@@ -1169,12 +1171,14 @@ div$amf_rfy %>%
     ggplot(aes(x = field_type, y = value)) +
     facet_wrap(vars(hill_index), scales = "free_y", labeller = labeller(hill_index = hill_labs)) +
     geom_boxplot(varwidth = TRUE, fill = "gray90", outlier.shape = NA) +
-    geom_beeswarm(aes(fill = region), shape = 21, size = 2, dodge.width = 0.2) +
+    geom_beeswarm(aes(shape = region, fill = field_type), size = 2, dodge.width = 0.3) +
     geom_label(data = labs_amf %>% filter(hill_index != "E10"), aes(x = xpos, y = ypos, label = lab), label.size = NA) +
     labs(y = "Species equivalent (n)") +
-    scale_fill_discrete_qualitative(name = "Region", palette = "Dark3") +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
-    theme(axis.title.x = element_blank())
+    theme(axis.title.x = element_blank()) +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
 ```
 
 ![](microbial_diversity_files/figure-gfm/div_amf_box-1.png)<!-- -->
