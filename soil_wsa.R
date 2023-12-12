@@ -58,16 +58,18 @@ wsa <- read_csv(paste0(getwd(), "/clean_data/wsa.csv"), show_col_types = FALSE)[
 #' # Results
 #' ## WSA in field types and regions
 #' Let's first visualize the data across regions and field types
-#+ wsa_visual_fig,fig.align='center'
+#+ wsa_visual_fig,fig.align='center',fig.width=4.5,fig.height=3.5
 ggplot(wsa %>% group_by(field_type, region) %>% summarize(wsa_avg = mean(wsa), .groups = "drop"),
        aes(x = field_type, y = wsa_avg, group = region)) +
-    geom_point(data = wsa, aes(x = field_type, y = wsa, fill = region), shape = 21) +
+    geom_point(data = wsa, aes(x = field_type, y = wsa, shape = region, fill = field_type)) +
     geom_line(linetype = "dotted") +
-    geom_point(aes(fill = region), shape = 21, size = 5) +
-    scale_fill_discrete_qualitative(name = "Region", palette = "Dark2") +
-    labs(x = "", y = "Water stable aggregates (%)", 
-         caption = "Large points show regional means. Small points show values from individual fields.") +
-    theme_bw()
+    geom_point(aes(shape = region, fill = field_type), size = 4) +
+    scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
+    scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
+    labs(y = "") +
+    theme_bw() +
+    theme(axis.title.x = element_blank()) +
+    guides(fill = guide_legend(override.aes = list(shape = 21)))
 #' A minor interaction appears, with WSA in restored fields being higher in all regions except Lake Petite. 
 #' Let's try a mixed model with region as a random effect and test the difference in WSAs across field types.
 wsa_mod <- lmer(wsa ~ field_type + (1 | region), data = wsa)
@@ -101,7 +103,7 @@ ggplot(wsa,
     geom_boxplot(fill = "gray90", varwidth = FALSE, outlier.shape = NA) +
     geom_beeswarm(aes(shape = region, fill = field_type), size = 2, dodge.width = 0.3) +
     geom_label(data = sig_letters, aes(x = xpos, y = ypos, label = lab), label.size = NA) +
-    labs(y = "Species equivalent (n)") +
+    labs(y = "Water stable aggregates (%)") +
     scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
     scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
@@ -109,6 +111,7 @@ ggplot(wsa,
     guides(fill = guide_legend(override.aes = list(shape = 21)))
 #' In the figure above, Linear mixed models with region as random effect. 
 #' Letters show differences based on Tukey's post hoc with Holm correction at p<0.05
+#' 
 #' ## WSA over time in restored fields
 #' Percent WSA varies greatly across restored fields. Can some of this variation be explained by 
 #' how long it's been since the field was restored? This comparison can only be justified in the Blue 

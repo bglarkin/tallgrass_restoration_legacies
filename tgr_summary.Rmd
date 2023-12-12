@@ -96,7 +96,7 @@ include_graphics("microbial_diagnostics_post_files/figure-gfm/rare_species_accum
 
 ## Plant data
 
-Plant community data resulted from two independent surveys. In the Wisconsin regions, haphazard transects were established and 10 meter frames placed, with percent cover estimated for all species, resulting in a dataset with plant composition. In Fermi, relevé methods were used, resulting in presence/absence data only. Plant metadata were assembled from multiple sources and include plant traits and natural history details. These metadata aren't used with fields from Fermi because it doesn't make sense to think of the presence/absence of traits only. More information about the plant data, including preliminary analysis, is available in this [report](https://mpgcloud.egnyte.com/dl/MwvwVxhLZ6).
+Plant community data resulted from two independent surveys. In the Wisconsin regions, haphazard transects were established and 10 meter frames placed, with percent cover estimated for all species, resulting in a dataset with plant composition. Functional traits and natural history information for these plant species was compiled from multiple sources. Plant species were grouped according to traits and natural history, resulting in another dataset with plant abundance in functional groups. In Fermilab, plant surveys were only done in fields 1, 4, and 5 (none of the "switchgrass" fields), and relevé methods were used. This resulted in presence/absence data only. It doesn't make sense to think of the presence/absence of functional groups because they are nearly all present in all fields, so when fields from Fermilab are used in analyses, only plant community data are available. More information about the plant data, including preliminary analysis, is available in this [report](https://mpgcloud.egnyte.com/dl/MwvwVxhLZ6).
 
 ## Soil data
 
@@ -253,14 +253,15 @@ include_graphics("microbial_guild_taxonomy_files/figure-gfm/giga_seq_abund_years
 
 We want to know how environmental/explanatory variables like soil chemistry, precipitation, and plant communities affect change in soil microbes among sites. But which sites? Constraining variables would undoubtedly find that soil nutrients explained differences between corn and restored or remnant fields, but this is hardly an interesting result. More worthwhile would be to constrain on restored fields and test whether years since restoration aligns fields in a relatively linear manner. Discovering if other explanatory variables constrain the data in a similar direction to years since restoration would be a wonderful outcome, because we'd learn what it is in the soil abiotic environment that's correlated with microbial community change.
 
-Since the Blue Mounds restored fields are the most amenable to chronosequence methodology, I started there. With only seven fields, the available number of permutations was low, and with axes defined by very weak effects already, no significant constraining variables were found. Although reviewers may object, I decided that the only way forward was to use restored fields from other regions, breaking the rules of chronosequence analysis. Since the regions' soils and other environmental characteristics are so different, I parsed some out as covariables in a partial db-RDA (covariables: pH, SO4, Zn, Fe, Mn, Cu, Ca, Mg, Na, precipitation). I retained the soil nutrients N, P, and K as test variables because they were undoubtedly applied to cornfields and would decrease rapidly after agricultural practice ceased. I kept soil organic matter (OM) as a test variable too because it should be low in cornfields and increase after tillage ceases and mycotrophic, perennial plant species establish. I also included plant traits or plant community axes as test variables. Finally, I used years since restoration (yr_since) as a test variable. For the analysis, I first ran forward selection on regions in Wisconsin only because that's where we have plant composition data. Then, I ran forward selection with explanatory variables on all regions, using plant presence/absence axes only[^1].
+Since the Blue Mounds restored fields are the most amenable to chronosequence methodology, I started there. With only seven fields, the available number of permutations was low, and with axes defined by very weak effects already, no significant constraining variables were found. Although reviewers may object, I decided that the only way forward was to use restored fields from other regions, breaking the rules of chronosequence analysis. Since the regions' soils and other environmental characteristics are so different, I parsed some out as covariables in a partial db-RDA (covariables: pH, SO4, Zn, Fe, Mn, Cu, Ca, Mg, Na, precipitation). I retained the soil nutrients N, P, and K as test variables because they were undoubtedly applied to cornfields and would decrease rapidly after agricultural practice ceased. I kept soil organic matter (OM) as a test variable too because it should be low in cornfields and increase after tillage ceases and mycotrophic, perennial plant species establish. I also included plant traits or plant community axes as test variables. Finally, I used years since restoration (yr_since) as a test variable. For the analysis, I first ran forward selection on regions in Wisconsin only because that's where we have plant composition data. Then, I ran forward selection with explanatory variables on all regions, using plant presence/absence axes only[^2].
 
-[^1]: The switchgrass fields at Fermilab could not be included because no plant data exists for these fileds.
+[^2]: The switchgrass fields at Fermilab could not be included because no plant data exists for these fileds.
 
 ## Constrained analysis
 
 ### Wisconsin regions, plant traits data
 
+The soil data used as covariables in this analysis explained 24% of the variation among sites. Explanatory variables were weaker at 17% and 59% of the variation remains unexplained by these data. Years since restoration was the only variable that significantly correlated with turnover in soil fungal communities, and the relationship was weak ($R^2_{Adj}=0.09,~p=0.018$). The abundance of C4 grasses increased, and the abundance of forbs decreased, with years since restoration. Because these variables were highly collinear with years since restoration, they were eliminated in forward selection, but they likely help explain a change over time that's associated with fungal community turnover (Fig \@ref(fig:dbRDA-wi)). 
 
 ```{r dbRDA-wi,fig.width=5,fig.height=4,fig.cap="Results of a distance-based redundancy analysis of soil fungal community composition in restored fields in Wisconsin regions. Icons represent the constrained locations of fields. Solid blue arrows show the direction and strength of associations between communities and explanatory variables. Dotted blue arrows show correlations with strong, but non-significant explanatory variables. Axis 1 is significant based on 1999 permutations at p=0.011."}
 wi_sc <- read_csv("tgr_constrained_files/wi_tr_its_sitelocs.csv", show_col_types = FALSE) %>% 
@@ -294,6 +295,7 @@ ggplot(wi_sc, aes(x = dbRDA1, y = dbRDA2)) +
 
 ### All regions, plant presence/absence data
 
+Adding restored fields from Fermilab to the analysis changes little of the result. The soil data used as covariables explained 19% of the variation among sites. Explanatory variables were weaker at 16% and 65% of the variation remains unexplained by these data.  Years since restoration was the only significant explanatory variable ($R^2_{Adj}=0.11,~p=0.001$). Again, a few variables were collinear with years since restoration and were eliminated during forward selection. These variables reflect the addition of fields from Fermilab more than they help explain change over time in restored fields. Vectors for soil organic matter and potassium point towards Fermilab fields, which are richer and have a very different natural history (wet meadows). The alignment of plant PCoA axis 1 in opposition to Fermilab fields reflects that plant communities used in restoration were very different there (Fig \@ref(fig:dbRDA-all)).   
 
 ```{r dbRDA-all,fig.width=5,fig.height=4,fig.cap="Results of a distance-based redundancy analysis of soil fungal community composition in restored fields from all regions. Icons represent the constrained locations of fields. Solid blue arrows show the direction and strength of associations between communities and explanatory variables. Dotted blue arrows show correlations with strong, but non-significant explanatory variables. Axis 1 is significant based on 1999 permutations at p=0.008."}
 all_sc <- read_csv("tgr_constrained_files/all_its_sitelocs.csv", show_col_types = FALSE) %>% 
@@ -324,25 +326,35 @@ ggplot(all_sc, aes(x = dbRDA1, y = dbRDA2)) +
     theme_bw()
 ```
 
+### AMF
+
+Strangely, the results are nearly identical with AMF communities. Years since restoration was the only significant constraining variable, but relationships were weak. Supporting, but non-significant, explanatory variables were the same.
+
+## Response variables
+We measured water stable aggregates (wsa) and fungal biomass. I think of these as responses to restoration. With the planting of diverse, perennial plant communities, it follows that fungal diversity and particularly the abundance of AMF would increase. My prediction was that cornfields would have the lowest percent wsa, and that these values would increase through restorations, approaching the highest values in remnants. I didn't know what to think about fungal biomass. The bonanza of nutrients in cornfields could support high biomass, despite the low diversity that we detected. This comes down to whether the diversity-productivity relationship has any value in this case. 
+
+Water stable aggregates were highly variable in restored[^3] and remnant fields, but they were highest on average in restorations (Fig \@ref(fig:wsa), left). In Lake Petite, wsa was highest in cornfields, lower in restorations, and lowest in the remnant, but in all other regions, cornfields were lowest, restorations were highest, and remnants were intermediate (Fig \@ref(fig:wsa), right). There was no relationship with years since restoration for wsa. Wsa were not related to any of the constrained axes shown previously either.
+
+[^3]: Phil, it's noteworthy that fields in Lake Petite had very low wsa and soil organic matter, even lower than many cornfields. Surprisingly, wsa was even lower in the remnant, suggesting that we have poor soil conditions across the board in the hard, poor soil of Lake Petite. Maybe this will improve with time, but it's possible that some amendments would help, like liquid carbon applications.  
+
+```{r wsa,out.width="40%",fig.show="hold",fig.cap="(Left) Boxplots show distributions and quartiles of percent water stable aggregates. Icons show field values. A linear mixed model was used to separate means in field types and letters indicate significant differences based on Tukey's post-hoc test of that model at p<0.05. (Right) Trends in each region are shown, with small icons representing individual fields and large icons representing regional means for each field type."}
+include_graphics(c("soil_wsa_files/figure-gfm/wsa_regions_fieldtypes_fig-1.png", "soil_wsa_files/figure-gfm/wsa_visual_fig-1.png"))
+```
 
 
 
 
 
-### Plants constraint...
-
-
-## Responses
 
 
 
 
 
 
+# Discussion
 
-
-
-
-
+planting strategies confound
+guilds overrepresented in ag
+remnants aren't high quality
 
 
