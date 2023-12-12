@@ -331,14 +331,21 @@ ggplot(all_sc, aes(x = dbRDA1, y = dbRDA2)) +
 Strangely, the results are nearly identical with AMF communities. Years since restoration was the only significant constraining variable, but relationships were weak. Supporting, but non-significant, explanatory variables were the same.
 
 ## Response variables
+
 We measured water stable aggregates (wsa) and fungal biomass. I think of these as responses to restoration. With the planting of diverse, perennial plant communities, it follows that fungal diversity and particularly the abundance of AMF would increase. My prediction was that cornfields would have the lowest percent wsa, and that these values would increase through restorations, approaching the highest values in remnants. I didn't know what to think about fungal biomass. The bonanza of nutrients in cornfields could support high biomass, despite the low diversity that we detected. This comes down to whether the diversity-productivity relationship has any value in this case. 
 
 Water stable aggregates were highly variable in restored[^3] and remnant fields, but they were highest on average in restorations (Fig \@ref(fig:wsa), left). In Lake Petite, wsa was highest in cornfields, lower in restorations, and lowest in the remnant, but in all other regions, cornfields were lowest, restorations were highest, and remnants were intermediate (Fig \@ref(fig:wsa), right). There was no relationship with years since restoration for wsa. Wsa were not related to any of the constrained axes shown previously either.
 
-[^3]: Phil, it's noteworthy that fields in Lake Petite had very low wsa and soil organic matter, even lower than many cornfields. Surprisingly, wsa was even lower in the remnant, suggesting that we have poor soil conditions across the board in the hard, poor soil of Lake Petite. Maybe this will improve with time, but it's possible that some amendments would help, like liquid carbon applications.  
+[^3]: Phil, it's noteworthy that fields in Lake Petite had very low wsa and soil organic matter, even lower than many cornfields. Surprisingly, wsa was even lower in the remnant, suggesting that we have poor soil conditions across the board in the hard, poor soil of Lake Petite. Maybe this will improve with time, but it's possible that some amendments would help, like liquid carbon applications. 
 
 ```{r wsa,out.width="40%",fig.show="hold",fig.cap="(Left) Boxplots show distributions and quartiles of percent water stable aggregates. Icons show field values. A linear mixed model was used to separate means in field types and letters indicate significant differences based on Tukey's post-hoc test of that model at p<0.05. (Right) Trends in each region are shown, with small icons representing individual fields and large icons representing regional means for each field type."}
 include_graphics(c("soil_wsa_files/figure-gfm/wsa_regions_fieldtypes_fig-1.png", "soil_wsa_files/figure-gfm/wsa_visual_fig-1.png"))
+```
+
+Biomass of AMF and soil fungi showed a qualitatively similar pattern with wsa. Values were highest in restored fields, lowest in cornfields, and intermediate in remnants. In the Blue Mounds region, biomass of AMF is highest in recently restored fields, and it falls over time, approaching the relatively low value found in the remnant. 
+
+```{r fa,out.height="180px",fig.show="hold",fig.cap="(Left panels) Boxplots show distributions and quartiles of AMF and soil fungal biomass. Icons show field values. (Right panel) Icons show values of AMF biomass regressed against years since restoration. Icons show field values from restored fields in the Blue Mounds region. $R^2_{Adj}=0.52,~p=0.041$."}
+include_graphics(c("microbial_biomass_files/figure-gfm/fa_boxplot-1.png", "microbial_biomass_files/figure-gfm/fa_amf_yrs-1.png"))
 ```
 
 
@@ -350,8 +357,10 @@ include_graphics(c("soil_wsa_files/figure-gfm/wsa_regions_fieldtypes_fig-1.png",
 
 
 
-
 # Discussion
+
+
+
 
 planting strategies confound
 guilds overrepresented in ag

@@ -69,7 +69,8 @@ ggplot(wsa %>% group_by(field_type, region) %>% summarize(wsa_avg = mean(wsa), .
     labs(y = "") +
     theme_bw() +
     theme(axis.title.x = element_blank()) +
-    guides(fill = guide_legend(override.aes = list(shape = 21)))
+    guides(fill = guide_legend(override.aes = list(shape = 21)),
+           shape = guide_legend(override.aes = list(size = 4)))
 #' A minor interaction appears, with WSA in restored fields being higher in all regions except Lake Petite. 
 #' Let's try a mixed model with region as a random effect and test the difference in WSAs across field types.
 wsa_mod <- lmer(wsa ~ field_type + (1 | region), data = wsa)
@@ -107,8 +108,7 @@ ggplot(wsa,
     scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
     scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
-    theme(axis.title.x = element_blank()) +
-    guides(fill = guide_legend(override.aes = list(shape = 21)))
+    theme(axis.title.x = element_blank(), legend.position = "none") 
 #' In the figure above, Linear mixed models with region as random effect. 
 #' Letters show differences based on Tukey's post hoc with Holm correction at p<0.05
 #' 

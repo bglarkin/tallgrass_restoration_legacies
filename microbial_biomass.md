@@ -120,7 +120,7 @@ ggplot(fa_grp %>% filter(group %in% c("amf", "fungi")), aes(x = field_type, y = 
     facet_wrap(vars(group), scales = "free_y") +
     geom_boxplot(fill = "gray90", varwidth = FALSE, outlier.shape = NA) +
     geom_beeswarm(aes(shape = region, fill = field_type), size = 2, dodge.width = 0.3) +
-    labs(y = "Fatty acid quantity") +
+    labs(y = expression(Biomass~(nmol%*%g[soil]^-1))) +
     scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
     scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
@@ -129,6 +129,48 @@ ggplot(fa_grp %>% filter(group %in% c("amf", "fungi")), aes(x = field_type, y = 
 ```
 
 <img src="microbial_biomass_files/figure-gfm/fa_boxplot-1.png" style="display: block; margin: auto;" />
+
+And one that shows the correlation between AMF and time
+
+``` r
+fa_grp %>% 
+    filter(group == "amf", field_type == "restored", region == "BM") %>% 
+    lm(yr_since ~ qty, data = .) %>% 
+    summary()
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = yr_since ~ qty, data = .)
+    ## 
+    ## Residuals:
+    ##      1      2      3      4      5      6      7 
+    ## -2.990 -3.363 11.877 -4.477 -3.395 -1.155  3.503 
+    ## 
+    ## Coefficients:
+    ##             Estimate Std. Error t value Pr(>|t|)   
+    ## (Intercept)  31.7784     7.5854   4.189  0.00858 **
+    ## qty          -0.6282     0.2299  -2.732  0.04116 * 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 6.426 on 5 degrees of freedom
+    ## Multiple R-squared:  0.5989, Adjusted R-squared:  0.5187 
+    ## F-statistic: 7.466 on 1 and 5 DF,  p-value: 0.04116
+
+``` r
+fa_grp %>% 
+    filter(group == "amf", field_type == "restored", region == "BM") %>% 
+    ggplot(aes(x = as.numeric(yr_since), y = qty)) +
+    geom_smooth(method = "lm", se = FALSE, color = "black", linewidth = 0.4) +
+    geom_point(fill = "#5CBD92", shape = 21, size = 2.5) +
+    labs(x = "Years since restoration", y = expression(Biomass~(nmol%*%g[soil]^-1))) +
+    theme_bw()
+```
+
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+<img src="microbial_biomass_files/figure-gfm/fa_amf_yrs-1.png" style="display: block; margin: auto;" />
 
 ## Ordination with PCA
 

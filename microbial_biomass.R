@@ -84,17 +84,32 @@ ggplot(
 #' and the magnitude of difference isn't large. 
 #' 
 #' Let's make a figure that can work in the summary.
-#+ fa_boxplot,fig.align='center',fig.width=7,fig.height=3.5
+#+ fa_boxplot,fig.align='center',fig.width=6,fig.height=3.5
 ggplot(fa_grp %>% filter(group %in% c("amf", "fungi")), aes(x = field_type, y = qty)) +
     facet_wrap(vars(group), scales = "free_y") +
     geom_boxplot(fill = "gray90", varwidth = FALSE, outlier.shape = NA) +
     geom_beeswarm(aes(shape = region, fill = field_type), size = 2, dodge.width = 0.3) +
-    labs(y = "Fatty acid quantity") +
+    labs(y = expression(Biomass~(nmol%*%g[soil]^-1))) +
     scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
     scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
     theme(axis.title.x = element_blank()) +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
+#' 
+#' And one that shows the correlation between AMF and time
+#+ fa_amf_reg
+fa_grp %>% 
+    filter(group == "amf", field_type == "restored", region == "BM") %>% 
+    lm(yr_since ~ qty, data = .) %>% 
+    summary()
+#+ fa_amf_yrs,fig.align='center',fig.width=3,fig.height=3.5
+fa_grp %>% 
+    filter(group == "amf", field_type == "restored", region == "BM") %>% 
+    ggplot(aes(x = as.numeric(yr_since), y = qty)) +
+    geom_smooth(method = "lm", se = FALSE, color = "black", linewidth = 0.4) +
+    geom_point(fill = "#5CBD92", shape = 21, size = 2.5) +
+    labs(x = "Years since restoration", y = expression(Biomass~(nmol%*%g[soil]^-1))) +
+    theme_bw()
 #' 
 #' ## Ordination with PCA
 fa_z <- decostand(data.frame(fa_meta %>% select(field_name, starts_with("fa")), row.names = 1), "standardize")

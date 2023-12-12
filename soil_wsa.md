@@ -96,7 +96,8 @@ ggplot(wsa %>% group_by(field_type, region) %>% summarize(wsa_avg = mean(wsa), .
     labs(y = "") +
     theme_bw() +
     theme(axis.title.x = element_blank()) +
-    guides(fill = guide_legend(override.aes = list(shape = 21)))
+    guides(fill = guide_legend(override.aes = list(shape = 21)),
+           shape = guide_legend(override.aes = list(size = 4)))
 ```
 
 <img src="soil_wsa_files/figure-gfm/wsa_visual_fig-1.png" style="display: block; margin: auto;" />
@@ -174,9 +175,9 @@ summary(wsa_mod_tuk)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)   
-    ## restored - corn == 0      14.538      4.183   3.475  0.00137 **
-    ## remnant - corn == 0        3.227      5.365   0.602  0.81716   
-    ## remnant - restored == 0  -11.311      4.593  -2.462  0.03617 * 
+    ## restored - corn == 0      14.538      4.183   3.475   0.0014 **
+    ## remnant - corn == 0        3.227      5.365   0.602   0.8172   
+    ## remnant - restored == 0  -11.311      4.593  -2.462   0.0361 * 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## (Adjusted p values reported -- single-step method)
@@ -226,8 +227,7 @@ ggplot(wsa,
     scale_fill_discrete_qualitative(name = "Field Type", palette = "Harmonic") +
     scale_shape_manual(name = "Region", values = c(21, 22, 23, 24)) +
     theme_bw() +
-    theme(axis.title.x = element_blank()) +
-    guides(fill = guide_legend(override.aes = list(shape = 21)))
+    theme(axis.title.x = element_blank(), legend.position = "none") 
 ```
 
 <img src="soil_wsa_files/figure-gfm/wsa_regions_fieldtypes_fig-1.png" style="display: block; margin: auto;" />
