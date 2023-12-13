@@ -263,7 +263,7 @@ We want to know how environmental/explanatory variables like soil chemistry, pre
 
 Since the Blue Mounds restored fields are the most amenable to chronosequence methodology, I started there. With only seven fields, the available number of permutations was low, and with axes defined by very weak effects already, no significant constraining variables were found. Although reviewers may object, I decided that the only way forward was to use restored fields from other regions, breaking the rules of chronosequence analysis. Since the regions' soils and other environmental characteristics are so different, I parsed some out as covariables in a partial db-RDA (covariables: pH, SO4, Zn, Fe, Mn, Cu, Ca, Mg, Na, precipitation). I retained the soil nutrients N, P, and K as test variables because they were undoubtedly applied to cornfields and would decrease rapidly after agricultural practice ceased. I kept soil organic matter (OM) as a test variable too because it should be low in cornfields and increase after tillage ceases and mycotrophic, perennial plant species establish. I also included plant traits or plant community axes as test variables. Finally, I used years since restoration (yr_since) as a test variable. For the analysis, I first ran forward selection on regions in Wisconsin only because that's where we have plant composition data. Then, I ran forward selection with explanatory variables on all regions, using plant presence/absence axes only[^2].
 
-[^2]: The switchgrass fields at Fermilab could not be included because no plant data exists for these fileds.
+[^2]: The switchgrass fields at Fermilab could not be included because no plant data exists for these fields.
 
 ## Constrained analysis
 
@@ -271,7 +271,7 @@ Since the Blue Mounds restored fields are the most amenable to chronosequence me
 
 The soil data used as covariables in this analysis explained 24% of the variation among sites. Explanatory variables were weaker at 17% and 59% of the variation remains unexplained by these data. Years since restoration was the only variable that significantly correlated with turnover in soil fungal communities, and the relationship was weak ($R^2_{Adj}=0.09,~p=0.018$). The abundance of C4 grasses increased, and the abundance of forbs decreased, with years since restoration. Because these variables were highly collinear with years since restoration, they were eliminated in forward selection, but they likely help explain a change over time that's associated with fungal community turnover (Fig \@ref(fig:dbRDA-wi)). 
 
-```{r dbRDA-wi,fig.width=5,fig.height=4,fig.cap="Results of a distance-based redundancy analysis of soil fungal community composition in restored fields in Wisconsin regions. Icons represent the constrained locations of fields. Solid blue arrows show the direction and strength of associations between communities and explanatory variables. Dotted blue arrows show correlations with strong, but non-significant explanatory variables. Axis 1 is significant based on 1999 permutations at p=0.011."}
+```{r dbRDA-wi,fig.width=4.5,fig.height=3.5,fig.cap="Results of a distance-based redundancy analysis of soil fungal community composition in restored fields in Wisconsin regions. Icons represent the constrained locations of fields. Solid blue arrows show the direction and strength of associations between communities and explanatory variables. Dotted blue arrows show correlations with strong, but non-significant explanatory variables. Axis 1 is significant based on 1999 permutations at p=0.011."}
 wi_sc <- read_csv("tgr_constrained_files/wi_tr_its_sitelocs.csv", show_col_types = FALSE) %>% 
         left_join(sites, by = join_by(field_name))
 wi_bp <- read_csv("tgr_constrained_files/wi_tr_its_bp.csv", show_col_types = FALSE) %>% 
@@ -305,7 +305,7 @@ ggplot(wi_sc, aes(x = dbRDA1, y = dbRDA2)) +
 
 Adding restored fields from Fermilab to the analysis changes little of the result. The soil data used as covariables explained 19% of the variation among sites. Explanatory variables were weaker at 16% and 65% of the variation remains unexplained by these data.  Years since restoration was the only significant explanatory variable ($R^2_{Adj}=0.11,~p=0.001$). Again, a few variables were collinear with years since restoration and were eliminated during forward selection. These variables reflect the addition of fields from Fermilab more than they help explain change over time in restored fields. Vectors for soil organic matter and potassium point towards Fermilab fields, which are richer and have a very different natural history (wet meadows). The alignment of plant PCoA axis 1 in opposition to Fermilab fields reflects that plant communities used in restoration were very different there (Fig \@ref(fig:dbRDA-all)).   
 
-```{r dbRDA-all,fig.width=5,fig.height=4,fig.cap="Results of a distance-based redundancy analysis of soil fungal community composition in restored fields from all regions. Icons represent the constrained locations of fields. Solid blue arrows show the direction and strength of associations between communities and explanatory variables. Dotted blue arrows show correlations with strong, but non-significant explanatory variables. Axis 1 is significant based on 1999 permutations at p=0.008."}
+```{r dbRDA-all,fig.width=4.5,fig.height=3.5,fig.cap="Results of a distance-based redundancy analysis of soil fungal community composition in restored fields from all regions. Icons represent the constrained locations of fields. Solid blue arrows show the direction and strength of associations between communities and explanatory variables. Dotted blue arrows show correlations with strong, but non-significant explanatory variables. Axis 1 is significant based on 1999 permutations at p=0.008."}
 all_sc <- read_csv("tgr_constrained_files/all_its_sitelocs.csv", show_col_types = FALSE) %>% 
         left_join(sites, by = join_by(field_name))
 all_bp <- read_csv("tgr_constrained_files/all_its_bp.csv", show_col_types = FALSE) %>% 
@@ -356,6 +356,8 @@ include_graphics(c("microbial_biomass_files/figure-gfm/fa_boxplot-1.png", "micro
 
 Biomass of AMF and soil fungi showed a qualitatively similar pattern with wsa. Values were highest in restored fields, lowest in cornfields, and intermediate in remnants (Fig \@ref(fig:fa), left panels, no mixed model was run). In the Blue Mounds region, biomass of AMF is highest in recently restored fields, and it falls over time, approaching the relatively low value found in the remnant (Fig \@ref(fig:fa), right panel). 
 
+\newpage
+
 # Discussion
 
 Soil fungal communities in cornfields are very different from those in restored or prairie remnant fields. That's not surprising, and neither is the rapid change in communities as the years pass after agricultural management ceases and restoration starts. With this project, we had hoped to find evidence that restored fields either become more like remnants over time, or that they become something new entirely. There are examples of both in the literature, particularly with bacterial communities. What we found instead is generally weak effects and inconclusive results. Communities in restored fields do change and years since restoration is the strongest correlating variable with change, but it's hard to say whether they become more like remnants or not. With soil fungi, it looks like communities in restorations trend away from remnant communities as they age (Fig \@ref(fig:its-samps-pcoa), but restored and remnant communities appear indistinguishable for AMF (Fig \@ref(fig:amf-samps-pcoa)). With so few replicates, these differences are even harder to detect. 
@@ -364,11 +366,34 @@ Richness and diversity indices tend to align restored fields with remnants for b
 
 Looking at soil fungi in guilds (Fig \@ref(fig:guilds-regions)), cornfields contain more OTUs assigned to nearly every guild, and little summary exists to separate restored from remnant fields. But drawing conclusions based on these data may be fraught anyway. The agricultural industry certainly knows that the soil microbiome matters for production, if for no other reason than monitoring pathogens. I'm concerned that this added attention inflates metadata from agricultural species in trait and guild databases. Since 54% of OTUs were unassigned at the genus level, it's entirely possible that the trends we've observed in guilds among field types could be reversed. With AMF in families (table \@ref(tab:family-abund)), the situation is similar in that differences among field types are weak, but at least with AMF, we avoid the unknown bias of trait databases. 
 
-The fact that years since restoration is the strongest explanatory variable for community change in restored fields is compelling because it suggests that the rules for community change after restoration, whatever they are, might generalize across regions. The problem I have with these results is that our chronosequence is compromised. I went back and looked at ordinations based on plant communities and found that years since restoration is also a strongly correlated explanatory variable (Fig \@ref(fig:plant-yr)), also collinear with forbs and C4 grasses. If this change in plant communities were natural, it'd be fine, but we know from landowners and restoration managers that the older restoration practice was to plant mostly grass, and now, forbs are almost exclusively planted. So is the change we see in soil microbial communities due to some natural process over time or simply to the choice of plant species? I think it's both because C4 grasses do tend to increase in restored fields over time on their own, but we don't have any way to separate these confounded explanations. 
-
 ```{r plant-yr,out.width="60%",fig.cap="PCoA of plant data from restored fields in Wisconsin regions. Small icons represent samples and hulls enclose fields. Large icons show locations of field centroids, where shapes identify regions. Text on the large icons shows years since restoration. The blue arrow shows the fitted vector of years since restoration, which is significantly associated with the ordination at $p=0.029$ based on 1999 permutations."}
 include_graphics("plant_files/figure-gfm/pcoa_ab_samps_wi_fig-1.png")
 ```
+
+The fact that years since restoration is the strongest explanatory variable for community change in restored fields is compelling because it suggests that the rules for community change after restoration, whatever they are, might generalize across regions. The problem I have with these results is that our chronosequence is compromised. I went back and looked at ordinations based on plant communities and found that years since restoration is also a strongly correlated explanatory variable (Fig \@ref(fig:plant-yr)), also collinear with forbs and C4 grasses. If this change in plant communities were natural, it'd be fine, but we know from landowners and restoration managers that the older restoration practice was to plant mostly grass, and now, forbs are almost exclusively planted. So is the change we see in soil microbial communities due to some natural process over time or simply to the choice of plant species? I think it's both because C4 grasses do tend to increase in restored fields over time on their own, but we don't have any way to separate these confounded explanations. 
+
+
+***
+
+Soil fungal communities in cornfields differ significantly from those in restored or prairie remnant fields, showing a noticeable shift over the years following the cessation of agricultural management. Our project aimed to determine whether restored fields evolve towards remnant characteristics or develop unique profiles. Contrary to expectations, the results indicate generally weak effects and inconclusive outcomes. While communities in restored fields undergo changes, especially over time since restoration, determining if they converge with remnant communities remains challenging.
+
+Analysis of soil fungi reveals a trend of restored fields moving away from remnant communities as they age (Fig @ref(fig:its-samps-pcoa)), but no such distinction is observed for arbuscular mycorrhizal fungi (AMF) (Fig @ref(fig:amf-samps-pcoa)). The limited number of replicates makes these differences harder to discern.
+
+Richness and diversity indices align restored fields with remnants for both soil fungi and AMF (Figs @ref(fig:its-div) and @ref(fig:amf-div)), suggesting that cornfields exert selective pressure on fungi, favoring species resilient to extreme conditions. The identification of extremophile taxa as indicators of cornfields supports this interpretation.
+
+Examining soil fungi in guilds reveals that cornfields host more Operational Taxonomic Units (OTUs) across various guilds, making it challenging to differentiate restored from remnant fields. However, drawing conclusions from these data may be precarious, given potential inflation of metadata from agricultural species in trait and guild databases.
+
+While the influence of years since restoration emerges as a significant variable in community change in restored fields, concerns arise about the compromised nature of our chronosequence. Analysis of plant communities also correlates strongly with years since restoration, raising questions about whether observed changes in soil microbial communities are due to natural processes or the choice of plant species.
+
+In summary, our findings emphasize the complexity of soil microbial dynamics in restored fields, with implications for understanding community changes and the need for further research to disentangle confounding factors.
+
+***
+
+
+
+
+
+
 
 Finally, after seeing the glorious restorations at Fermilab, I think we expected similar results in Wisconsin. Restored fields in Wisconsin had nice plant communities, but were often weedy and the soil seemed beat up and hard in most cases. Teh restoration practice was to stop plowing and sow native seeds. That's it. Reintroduction of fire isn't practical in these populated rural areas, and no other soil amendments (e.g., to restore soil carbon) were attempted as far as I could find out. 
 
