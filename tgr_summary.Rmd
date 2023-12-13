@@ -15,7 +15,7 @@ geometry: margin = 0.5in
 fontsize: 12pt
 urlcolor: blue
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 ```{r setup, include=FALSE}
@@ -50,11 +50,11 @@ sites <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = FAL
 
 # Introduction
 
-The tallgrass prairie biome in North America is nearly extinct, creating a tremendous desire for restoration of this critical habitat. In the upper Midwest, interested landowners have attempted to convert previous agricultural fields (corn or soybeans, usually) to something that looks like prairie for decades. The consequences of this practice for soil biota are largely unknown. Agricultural practices filter fungal and bacterial communities for species that can tolerate extreme nutrient loads, frequent tillage, and poor plant diversity. When agricultural practices cease, and native perennial plants are introduced, soil biotic communities are again filtered by the new regime and rapidly change. What is the endpoint of these new communities? Do they begin to resemble communities in remnant prairie (the reference condition), or do they form novel communities, indicating a change of state in the system due to disturbance associated with agriculture? Are these communities' fates similar across distant regions, or is each context dependent?
+The tallgrass prairie biome in North America is nearly extinct, prompting a significant interest in its restoration. In the upper Midwest, landowners have been converting former agricultural fields, mainly corn or soybeans, into prairie-like landscapes for several decades. However, the impact of this conversion on soil biota remains largely unknown. Before restoration, agricultural practices had shaped fungal and bacterial communities, favoring species resilient to high nutrient loads, frequent tillage, and low plant diversity. With the cessation of agriculture and the introduction of native perennial plants, the soil biotic communities undergo rapid changes, guided by the new conditions. The crucial question is whether these new communities eventually resemble those in remnant prairies (the reference condition), or if they form unique communities, indicating a system state change due to the agricultural legacy. Additionally, understanding whether these community outcomes are context-dependent or consistent across distant regions is essential.
 
 # Description
 
-The goal is to present results and discuss whether a path forward with these data exists. If so, we will determine the strategy that presents the best story, organization, and interpretation of these results. 
+The goal is to present results and discuss whether a path forward with these data exists. If so, we will determine the strategy that presents the best story, organization, and interpretation of these results.
 
 # Methods
 
@@ -68,7 +68,7 @@ include_graphics(c("site_locations_files/figure-gfm/site_map-1.png", "site_locat
 
 ## Design
 
-The design is unbalanced because there are more restored fields than corn or remnant (table \@ref(tab:design-table)), and the count of restored fields differs among regions. In all but one case, only single corn and remnant fields were available in each region. This means that we only have replication to separate field types when using the entire block design.
+The design is unbalanced due to a higher number of restored fields compared to corn or remnant fields (see Table \@ref(tab:design-table)). The count of restored fields also varies across regions, and all regions but one have a single corn and remnant field. Consequently, field types cannot be statistically differentiated within regions. This can only be done using the full block design.
 
 ```{r design-table}
 kable(table(sites$region, sites$field_type),
@@ -76,15 +76,15 @@ kable(table(sites$region, sites$field_type),
       caption = "Count of fields by type and region:\nBM = Blue Mounds, FG = Faville Grove,\nFL = Fermilab, LP = Lake Petite")
 ```
 
-A feature of our design is that restored fields vary in time since restoration, setting up the potential for a chronosequence in addition to the contrasts among corn, restored, or remnant fields. The rules for establishing a chronosequence are strict. We cannot call fields from all regions a chronosequence. The Blue Mounds region, which has seven restored fields in a relatively small geographic area, is our only opportunity to take advantage different field ages (Fig \@ref(fig:site-map), right), but we will likely have to call this a "pseudochronosequence" and avoid some inferences. Supporting our case in the Blue Mounds, mantel tests (not shown) failed to find correlations between soil variables and pairwise distance, giving us a little confidence that we're avoiding systemic bias. 
+A feature of our design is that restored fields exhibit variation in time since restoration, potentially forming a chronosequence alongside the contrasts among field types. The rules for establishing a chronosequence are strict, limiting our ability to label fields from all regions as such. In the Blue Mounds region, where seven restored fields exist in close proximity (see Fig \@ref(fig:site-map), right), we can capitalize on differing field ages, though we may categorize this as a "pseudochronosequence", necessitating caution in certain inferences. Supporting this designation in the Blue Mounds, mantel tests (not shown) found no correlations between soil variables and pairwise distance, providing some confidence in avoiding systematic bias.
 
 ## Soil Fungal Communities
 
-We collected soil cores from 10 haphazardly-selected locations in each field. Genomic DNA was extracted, and the lab and bioinformatics pipeline delivered community data from ITS or 18S regions clustered as 97% similar OTUs or 99% similar SVs. In preliminary work, inferences made with SVs were weaker but not qualitatively different. I continued with OTUs only.  
+We collected soil cores from 10 randomly selected locations in each field. Genomic DNA extraction, along with the lab and bioinformatics pipeline, provided community data from ITS or 18S regions, clustered as 97% similar operational taxonomic units (OTUs) or 99% similar sequence variants (SVs). Preliminary work indicated slightly weaker inferences with SVs but no qualitative differences. I proceeded with OTUs exclusively.
 
-Originally, I had planned to average the sequence abundance per OTU in each field. In part, I did this for stastistical design reasons. Since fields are replicates, the samples in fields aren't independent. Also, explanatory and response data exist as one data point per field, meaning that they should not be expanded to apply singly to each sample. Finally, I didn't have the tools to account for this design in permutation tests. With available tools, I could only choose one "nesting" factor, but to include samples, I'd have to account for regions and fields as blocking elements when testing the design element of field type. Luckily, I've recently found a new tool, the function `how()` from package `permute`, that allows for more complicated permutation designs. I decided to proceed along parallel analysis paths: one with sample-level data, and one with field-level data.
+Originally, I had intended to average sequence abundance per OTU in each field because fields are replicates in this design, and samples from fields aren't independent. Further, the explanatory and response data are represented as one data point per field, restricting expansion to individual samples. Recently, I found new tool — the `how()` function from the `permute` package — that accounts for non-independent samples and blocks in the permutation design. I proceeded along parallel analysis paths: one with sample-level data and one with field-level data.
 
-Creating the sample-level data took some work. A few samples had failed to amplify, leaving some fields represented with 9 samples instead of 10. This unbalance, which is normally not a problem, became unacceptable for a couple of reasons. First, the permutations I had planned using function `how()` require balance at the plot (i.e., field) level. Also, some samples contained very few sequences compared with the others. Rarefying the entire dataset to these tiny depths would result in the loss of many admittedly low-abundance OTUs. To acheive a balanced count of samples per field and retain a higher rarefaction threshold, I used an iterative process to remove samples with few sequences, choosing a rarefaction cutoff near the plateau of OTU recovery at depth (Fig \@ref(fig:its-rcurve)). This ended up being 8 samples for ITS and 7 for 18S datasets. These sample sequence values were then rarefied and used as-is for sample-level data, or, when analyzing at the field level, sample sequence values were summed and rarefied. The resulting data files recovered many more OTUs, but didn't change any major interpretation of the data. The situation with 18S data is similar, but at a much lower total sequencing depth (not shown). 
+Creating sample-level data required addressing failed amplifications in a few samples, resulting in some fields having 9 instead of 10 samples. This imbalance, normally not an issue, became problematic for planned permutations using the `how()` function. It requires balance at the field level. Additionally, some samples contained very few sequences. To achieve a balanced sample count per field and maintain a higher rarefaction threshold, I used an iterative process. I sequentially removed samples with few sequences, using a rarefaction cutoff near the plateau of OTU recovery at depth (see Fig \@ref(fig:its-rcurve)) as a cut-off point. This resulted in 8 samples for ITS and 7 for 18S datasets. The sample sequence values were then rarefied and used as-is for sample-level data or, at the field level, summed and rarefied. The resulting data files recovered more OTUs without altering major data interpretations. 
 
 ```{r its-rcurve,out.width="100%",fig.cap="Individual-based rarefaction of ITS OTUs in subsamples when nine subsamples per field are retained (pre, top row) or when eight subsamples are retained (post, bottom row). Vertical lines show the minimum sequencing depth available across samples; this is the depth to which the entire set would be rarefied. Horizontal lines show the number of OTUs that would be recovered from each sample at that rarefaction depth."}
 include_graphics("microbial_diagnostics_post_files/its_rarecurve_compare.png")
@@ -98,21 +98,22 @@ include_graphics("microbial_diagnostics_post_files/figure-gfm/rare_species_accum
 
 ## Plant data
 
-Plant community data resulted from two independent surveys. In the Wisconsin regions, haphazard transects were established and 10 meter frames placed, with percent cover estimated for all species, resulting in a dataset with plant composition. Functional traits and natural history information for these plant species was compiled from multiple sources. Plant species were grouped according to traits and natural history, resulting in another dataset with plant abundance in functional groups. In Fermilab, plant surveys were only done in fields 1, 4, and 5 (none of the "switchgrass" fields), and relevé methods were used. This resulted in presence/absence data only. It doesn't make sense to think of the presence/absence of functional groups because they are nearly all present in all fields, so when fields from Fermilab are used in analyses, only plant community data are available. More information about the plant data, including preliminary analysis, is available in this [report](https://mpgcloud.egnyte.com/dl/MwvwVxhLZ6).
+Plant community data resulted from two independent surveys. In the Wisconsin regions, haphazard transects were established and 10 meter frames placed, with percent cover estimated for all species. Thus, the Wisconsin regions have plant composition data. Functional traits and natural history information for these plant species was compiled from multiple sources. Plant species were grouped according to traits and natural history, resulting in another dataset with plant abundance in functional groups. In Fermilab, plant surveys were only done in fields 1, 4, and 5 (none of the "switchgrass" fields), and relevé methods were used. This resulted in presence/absence data only. It doesn't make sense to think of the presence/absence of functional groups because they are nearly all present in all fields, so when fields from Fermilab are used in analyses, only plant community data are available. More information about the plant data, including preliminary analysis, is available in this [report](https://mpgcloud.egnyte.com/dl/MwvwVxhLZ6).
 
 ## Soil data
 
 In the field, soil was pooled from 10 haphazardly-selected locations, mixed, and sampled once for soil chemical analysis. Soil data includes abiotic macro and micronutrients, organic carbon, and properties like pH. Average precipitation was determined for each field using PRISM climate data and is included with the soil data for constrained analyses. More information is available [here](https://mpgcloud.egnyte.com/dl/MwvwVxhLZ6).
+
+## Response data
+Also taken from the pooled soil in each field, one sample was taken for analysis of Water Stable Aggregates (wsa)[^1], and one for quantification of microbial biomass. 
+
+[^1]: Ylva, I'm not sure who quantified wsa for us on this...
 
 ## Design/site data
 
 - Field type: corn, restored, remnant
 - Field age: years since restoration (NA for corn and remnant)
 - Region: blocks
-
-## Response data
-Also taken from the pooled soil in each field, one sample was taken for analysis of Water Stable Aggregates (I don't know who did this),
-and one for quantification of microbial biomass. 
 
 ## Data sources, summary
 
@@ -129,7 +130,7 @@ and one for quantification of microbial biomass.
 
 ## Fungal communities
 
-Fungal communities in cornfields stand apart from remnants and restored fields restored fields (Fig \@ref(fig:its-samps-pcoa)). As the age of restored fields increases, their distance from corn grows, and remnants lie in an intermediate position among restored fields. The high dimensionality here keeps the explanatory power of axes 1 & 2 low. Clusters based on field type were significant based on a permanova (with regions as blocks and subsamples held constant within fields, the replicate, table \@ref(tab:its-pcoa-permanova)). However, a pairwise post-hoc permutation failed to separate remnant fields from any other type (table \@ref(tab:its-pcoa-pairwise)). This is due partially to a low number of replicates, and it's also a problem with dispersion. The remnants are as distant from each other as they are from corn. I also attempted this using field-level data (not shown), and the p values were somewhat improved, but remnants still failed to separate from corn or restored fields. AMF communities showed similar patterns with soil fungi (Fig \@ref(fig:amf-samps-pcoa)), but with weaker support (tables \@ref(tab:amf-pcoa-permanova) & \@ref(tab:amf-pcoa-pairwise)). 
+Fungal communities in cornfields are distinct from remnants and restored fields (Fig \@ref(fig:its-samps-pcoa)). As the age of restored fields increases, their communities become more distant from cornfields, with remnants occupying an intermediate position. High dimensionality limits the explanatory power of axes 1 & 2 and isn't concerning. Clusters based on field type were statistically significant in a permanova (with regions as blocks and subsamples held constant within fields, Table \@ref(tab:its-pcoa-permanova)). Nevertheless, a pairwise post-hoc permutation failed to distinguish remnant fields from any other type (Table \@ref(tab:its-pcoa-pairwise)). This is partly due to a low number of replicates and high within-group dispersion, where remnant fields are as distant from each other as they are from corn. Attempting the same analysis with field-level data (not shown) yielded somewhat improved p-values, but remnants still did not separate from corn or restored fields. Similar patterns were observed in AMF communities (see Fig \@ref(fig:amf-samps-pcoa)), but with weaker support (Tables \@ref(tab:amf-pcoa-permanova) & \@ref(tab:amf-pcoa-pairwise)).
 
 \  
 
@@ -141,14 +142,13 @@ include_graphics("microbial_communities_files/figure-gfm/its_samps_unified_fig-1
 
 ```{r its-pcoa-permanova}
 read_delim("microbial_communities_files/pcoa_its_samps_permanova.txt", show_col_types = FALSE) %>% 
-kable(format = "pandoc", caption = "Permutation test under reduced model. Blocks: region, samples not permuted (not independent), number of permutations: 1999")
+kable(format = "pandoc", caption = "Permutation test under reduced model for PCoA of soil fungi. Blocks: region, samples not permuted (not independent), number of permutations: 1999")
 ```
 
-\  
 
 ```{r its-pcoa-pairwise}
 read_delim("microbial_communities_files/pcoa_its_samps_pairwise.txt", show_col_types = FALSE) %>% 
-kable(format = "pandoc", caption = "Pairwise tests under reduced model. Blocks: region, samples not permuted (not independent), number of permutations: 1999, p values corrected after multiple tests using the Benjamini & Hochberg correction.")
+kable(format = "pandoc", caption = "Pairwise tests under reduced model for PCoA of soil fungi. Blocks: region, samples not permuted (not independent), number of permutations: 1999, p values corrected after multiple tests using the Benjamini & Hochberg correction.")
 ```
 
 
@@ -156,19 +156,20 @@ kable(format = "pandoc", caption = "Pairwise tests under reduced model. Blocks: 
 include_graphics("microbial_communities_files/figure-gfm/amf_samps_unified_fig-1.png")
 ```
 
-\newpage
+\  
 
 ```{r amf-pcoa-permanova}
 read_delim("microbial_communities_files/pcoa_amf_samps_permanova.txt", show_col_types = FALSE) %>% 
-kable(format = "pandoc", caption = "Permutation test under reduced model. Blocks: region, samples not permuted (not independent), number of permutations: 1999")
+kable(format = "pandoc", caption = "Permutation test under reduced model for PCoA of AMF. Blocks: region, samples not permuted (not independent), number of permutations: 1999")
 ```
 
-\  
 
 ```{r amf-pcoa-pairwise}
 read_delim("microbial_communities_files/pcoa_amf_samps_pairwise.txt", show_col_types = FALSE) %>% 
-kable(format = "pandoc", caption = "Pairwise tests under reduced model. Blocks: region, samples not permuted (not independent), number of permutations: 1999, p values corrected after multiple tests using the Benjamini & Hochberg correction.")
+kable(format = "pandoc", caption = "Pairwise tests under reduced model for PCoA of AMF. Blocks: region, samples not permuted (not independent), number of permutations: 1999, p values corrected after multiple tests using the Benjamini & Hochberg correction.")
 ```
+
+\newpage
 
 ## Fungal diversity
 
@@ -176,36 +177,42 @@ kable(format = "pandoc", caption = "Pairwise tests under reduced model. Blocks: 
 include_graphics("microbial_diversity_files/figure-gfm/div_its_box-1.png")
 ```
 
-Species richness, Shannon's, and Simpson's diversity are lowest in cornfields, and the trend is an increase in all indices through restored and remnant fields (Fig \@ref(fig:its-div)). These differences are significant for Richness and Shannon's diversity, with cornfields being significnatly lower than either remnants or restored fields, which were not significantly different. Index values were more variable for restored fields than for other field types, which insults prerequisite needs for equal variance among groups. 
+Species richness, Shannon's, and Simpson's diversity are lowest in cornfields, and these indices increase through restored and remnant fields (Fig \@ref(fig:its-div)). Differences are significant for Richness and Shannon's diversity, with cornfields being lower than either remnants or restored fields. Index values were more variable for restored fields than for other field types, which isn't surprising giving the unbalanced design and insults prerequisite needs for equal variance among groups. 
 
-Trends in diversity were similar in Blue Mounds, Faville Grove, and Fermilab, but at Lake Petite, Shannon's and Simpson's diversity indices were much higher than in cornfields or remnants (not shown), indicating that a sizeable percentage of OTUs were in relatively equal abundance there compared with other sites. This may partially be because the restored fields at Lake Petite are both young and haven't had time to develop the long tail of rarer species which characterizes most older habitats and tends to lower Shannon's and Simpson's index values. 
+Trends in diversity were similar in Blue Mounds, Faville Grove, and Fermilab, but at Lake Petite, Shannon's and Simpson's diversity indices were much higher in restored fields than in cornfields or remnants (not shown), indicating that a sizeable percentage of OTUs were in relatively equal abundance there compared with other sites. This may partially be because the restored fields at Lake Petite are both young and haven't had time to develop the long tail of rarer species which characterizes most older habitats and tends to lower Shannon's and Simpson's index values. 
 
 ```{r amf-div,out.width="80%",fig.cap="Counts of AMF OTUs are shown for richness and Shannon's and Simpson's diversity in all field types. Differences in means among field types were tested with mixed-effects linear models where region was coded as a random effect. Post-hoc comparisions are Tukey contrasts and letters show significant differences at p<0.05."}
 include_graphics("microbial_diversity_files/figure-gfm/div_amf_box-1.png")
 ```
 
-With AMF, trends in diversity largely matched those of soil fungi in general. Species richness showed a mild interaction, where it was highest in restored fields for Blue Mounds and Faville Grove, and in remnants for Fermilab and Lake Petite. Shannon's and Simpson's indices increased from corn through restored and remnant fields for all regions. 
+With AMF, trends in diversity largely matched those of soil fungi. Species richness showed a mild interaction, where it was highest in restored fields for Blue Mounds and Faville Grove, and in remnants for Fermilab and Lake Petite. Shannon's and Simpson's indices increased from corn through restored and remnant fields for all regions. 
 
 For both soil fungi and AMF, diversity indices were significantly lower for corn but not between restored and remnant fields, suggesting a similarity between the latter. 
 
 ## Fungal guilds
+
+Pathogen and saprotroph guilds[^2] are the most numerous in this dataset (table \@ref(tab:guild-abund)). Compared with the sequence abundance in the unidentified group, plant pathogens and soil saprotrophs are abundant enough to feel somewhat confident about in terms of coverage. I would have predicted soil saprotrophs to be lowest in cornfields (which have the least organic material), increasing in restored fields, and highest in remnants. With pathogens, I would have predicted the highest abundance in cornfields (due to the plant monoculture and high nutrients), lowest in restored fields (many plant species and less time for specialists to accumulate), and intermediate in remnants (high plant diversity and the presence of antagonistic fungi, but perennial plants in place to be attacked for decades). Instead, we found that the abundance of most guilds is highest in cornfields, intermediate in restored fields, and lowest in remnants.  
+
+\  
+
+[^2]: I'm using the term "guilds" throughout because I think it's most easily understandable, but specifically I'm using the newer database, which calls these groups _primary lifestyles_.
 
 ```{r guild-abund}
 read_csv("microbial_guild_taxonomy_files/guilds.csv", show_col_types = FALSE) %>% 
 kable(caption = "Average sequence abundances per field in each field type are shown for the top six guilds. A linear mixed model was used to separate means in field types and letters indicate significant differences based on Tukey's post-hoc test of that model at p<0.05.", format = "pandoc")
 ```
 
-Pathogen and saprotroph guilds are the most numerous in this dataset (table \@ref(tab:guild-abund)). Compared with the sequence abundance in the unidentified group, plant pathogens and soil saprotrophs are abundant enough to feel somewhat confident about in terms of coverage. I would have predicted soil saprotrophs to be lowest in cornfields (which have the least organic material), increasing in restored fields, and highest in remnants. With pathogens, I would have predicted the highest abundance in cornfields (due to the plant monoculture and high nutrients), lowest in restored fields (many plant species and less time for specialists to accumulate), and intermediate in remnants (high plant diversity and the presence of antagonistic fungi, but perennial plants in place to be attacked for decades). Instead, we found that the abundance of most guilds is highest in cornfields, intermediate in restored fields, and lowest in remnants.  
+\newpage
 
 ```{r ssap-ppat-comp,out.width="40%",fig.show="hold",fig.cap="Composition of soil saprotroph (left) and plant pathogen (right) orders are shown across field types. Unidentified taxa were not included, and low abundance OTUs were filtered, see legends for the cutoff percentage."}
 include_graphics(c("microbial_guild_taxonomy_files/figure-gfm/ppat_comp_plot-1.png", "microbial_guild_taxonomy_files/figure-gfm/ssap_comp_plot-1.png"))
 ```
 
-At the level of taxonomic order, composition of soil saprotrophs in corn fields looks different from restored and remnant fields (Fig \@ref(fig:ssap-ppat-comp), left). Among well-represented orders, Agarics increase from corn to remnant, Cystofilobasidiales are prevalent only in corn, and Filobasidiales, often human pathogens, decline from corn to remnant. Geoglossales, which are associated with woodlands, moss, grasslands, probably don't like tillage or lack of substrate in cornfields and aren't found there. The order Hypocreales only occurs in restored and remnant fields. OTUs identified as Mortierellales are abundant in corn and restored fields, less so in remnants, with different OTUs associated with different field types. The contrast among field types with plant pathogens isn't obvious (Fig \@ref(fig:ssap-ppat-comp), right). The orders Glomerales, Hypocreales, and Pleosporales were the most abundant.
+At the level of taxonomic order, composition of soil saprotrophs in corn fields looks different from restored and remnant fields (Fig \@ref(fig:ssap-ppat-comp), left). Among well-represented orders, Agarics increase from corn to remnant, Cystofilobasidiales are prevalent only in corn, and Filobasidiales, which include human pathogens, decline from corn to remnant. Geoglossales, which are associated with woodlands, moss, and grasslands, probably don't like conditions in cornfields and aren't found there. The order Hypocreales only occurs in restored and remnant fields. OTUs identified as Mortierellales are abundant in corn and restored fields, less so in remnants, with different OTUs associated with different field types. The contrast among field types with plant pathogens isn't obvious (Fig \@ref(fig:ssap-ppat-comp), right). Pathogen orders Glomerales, Hypocreales, and Pleosporales were the most abundant.
 
 ### Trends in regions
 
-Within regions, trends in abundance were also apparent for soil saprotrophs and plant pathogens, but these trends weren't consistent among regions (Fig \@ref(fig:guilds-regions)). The abundance of soil saprotrophs in restored fields falls between corn and remnant fields in Blue Mounds and Fermilab, indicating that restored fields become more like remnants, but these trends are in opposite directions. In Lake Petite, the abundance of soil saprotrophs is much lower than in corn or remnant fields, indicating little resemblance to either. In Faville Grove, soil saprotroph abundance is similar in all field types. Pathogen abundance is similarly inconsistent. In Blue Mounds and Faville Grove, pathogens spike in remnants and are lowest in remnants. At Fermilab, pathogens are instead lowest in restored fields. In Lake Petite, pathogens are highest in cornfields (which I would have predicted across the board), and decline from restored to remnant fields. 
+Regionally, trends in abundance were evident for plant pathogens and soil saprotrophs, although these trends varied across regions (see Fig \@ref(fig:guilds-regions)). In Blue Mounds and Faville Grove, pathogen abundance peaks in restored fields and is lowest in remnants. Conversely, at Fermilab, pathogens are lowest in restored fields. In Lake Petite, pathogens are highest in cornfields and decrease from restored to remnant fields. Trends with soil saprotrophs are similarly inconsistent. Their abundance in restored fields at Blue Mounds and Fermilab falls between corn and remnant fields, suggesting a shift towards remnant characteristics. However, these trends are in opposite directions. In Lake Petite, soil saprotroph abundance is notably low in restored fields, indicating little resemblance to corn or remnant fields. In Faville Grove, soil saprotroph abundance is comparable across all field types.
 
 ```{r guilds-regions,out.width="80%",fig.cap="Soil saprotroph and pathogen guilds across field types, regional trends. Values are average sequence abundance in fields. No symbols of variance are shown because corn and remnant fields have only one replicate in most regions."}
 include_graphics("microbial_communities_files/figure-gfm/its_guilds_regions_fig-1.png")
@@ -221,15 +228,15 @@ Contrary to predictions, plant pathogens show a strong decline from young to old
 
 ### Indicator species
 
-OTUs from saprotroph and pathogen guilds were also heavily represented in an analysis to find indicator species for each field type. Note that the indicator species analysis is flawed because of the unbalanced number of fields for each field type. It's easier for a species to be detected in five cornfields than in sixteen restored fields, for example. I'd argue that as a basic filter to find interesting species, this analysis is acceptable if we don't try to call these species "indicators" of a particular habitat. 
+OTUs from saprotroph and pathogen guilds were also heavily represented in an analysis to find indicator species for each field type. Note that the indicator species analysis is flawed because of the unbalanced number of fields for each field type. It's easier for a species to be detected across five cornfields than across sixteen restored fields. I'd argue that as a basic filter to find interesting species, this analysis is acceptable if we don't try to call these species "indicators" of a particular habitat. 
 
 ### Natural history
 
-I filtered indicator species to those which were identified to at least the genus level. Saprotrophs associated with cornfields tended to be disturbance-tolerant extremophiles, in particular, tolerating very cold environments. Some are known to produce suites of extracellular enzymes, exploting various nutrient sources (*Tausonia pullulans*) and making recalcitrant nutrients available to plants (*Mortierella minutissima*, which is used as an agricultural inoculant). *Pseudaleuria sp.* was also associated with cornfields. Species in this genus are suspected to increase crop yields and protect plants from disease. The only saprotroph associated with restored fields was another species in the genus *Mortierella*. Remnants hosted few indicator species. OTUs identified as *Gymnostellatospora sp.* and *Striaticonidium cinctum* appear to have little natural history information. An OTU in the genus *Clavaria* is a coral fungus, associated with woodland, savanna, or old-field habitats worldwide. 
+I filtered indicator species to those identified at least to the genus level. Cornfield-associated saprotrophs tended to be extremophiles tolerant of disturbance and cold environments. Some, like *Tausonia pullulans*, produce various extracellular enzymes, exploiting different nutrient sources, while *Mortierella minutissima* is known as an agricultural inoculant, making recalcitrant nutrients available to plants. *Pseudaleuria sp.*, associated with cornfields, is suspected to enhance crop yields and protect plants from disease. Restored fields showed association with another *Mortierella* species. Remnants hosted few indicator species, with *Gymnostellatospora sp.* and *Striaticonidium cinctum* lacking much natural history information, and a *Clavaria* genus OTU known as a coral fungus associated with woodland, savanna, or old-field habitats globally.
 
-Not surprisingly, most pathogenic taxa associated with cornfields are known agricultural pathogens, including *Corynespora cassiicola*, *Curvularia sp.*, *Plectosphaerella cucumerina*, and *Setophoma terrestris*. *Microdochium colombiense*, a snow mold of rye and other cereal grains, is also an extreme cold tolerant species. In restored fields, an indicator pathogen was a *Pseudopithomyces sp.*, which is often found in anthropogenic environments and is a known wheat pathogen.
+Most pathogenic indicators in cornfields are known agricultural pathogens, including *Corynespora cassiicola*, *Curvularia sp.*, *Plectosphaerella cucumerina*, and *Setophoma terrestris*. *Microdochium colombiense*, a snow mold of rye and other cereal grains, is another cold-tolerant species. In restored fields, an indicator pathogen was *Pseudopithomyces sp.*, often found in anthropogenic environments and known as a wheat pathogen.
 
-Natural history details about indicator fungi could make this paper more compelling, but the best value for such an analysis here is to show whether restored fields look more like cornfields, more like remnants, or more like something else entirely. But only 36% of these OTUs were assigned to a guild and 46% were assigned to a genus. It's likely that many saprotrophs and pathogens exist in these data that are opaque to our analysis. We'd have to assume that these unassigned taxa are distributed equally across field types, but this assumption is likely invalid because agricultural systems have received much more attention. Recovery of crop-associated fungi in restored fields probably reflects this bias as much as it shows a similarity with cornfield fungi. With few taxa identified in remnant fields, there's not much to compare with restored fields. Finally, very abundant OTUs tended to be commonly distributed, but all of these indicator OTUs occur in low abundance. Are they relevant to ecological processes in these fields? It's hard to say.
+Although natural history details about indicator fungi could enhance our paper's appeal, the primary value lies in assessing whether restored fields resemble cornfields, remnants, or represent something entirely different. However, only 36% of these OTUs were assigned to a guild, and 46% were assigned to a genus, suggesting that many saprotrophs and pathogens may be opaque to our analysis, and that their true abundances aren't reflected in what we see now. Further, comparing abundances in guilds assumes that database coverage of species is similar among our field types, but this assumption is likely invalid due to biased attention favoring agricultural soils. The recovery of numerous crop-associated fungi in restored fields likely reflects this bias as much as it indicates similarity with cornfield fungi. With fewer taxa identified in remnant fields, there's limited comparison with restored fields. Finally, though very abundant OTUs tend to be commonly distributed, the indicator OTUs occur in relatively low abundance, raising questions about their relevance to ecological processes in these fields.
 
 If natural history details are included, I think the most important case studies will come from these taxa: 
 
@@ -246,14 +253,17 @@ If natural history details are included, I think the most important case studies
 
 ## AMF taxa
 
+Within the 18S dataset (AMF), taxa in the *Glomeraceae* are most abundant (table \@ref(tab:family-abund)). As far as I know, these tend to be generalist taxa and are widespread. In this case, they do not differ in abundance among field types. Abundances fall off quickly for other taxa, with *Claroideoglomeraceae* and *Paraglomeraceae* an order of magnitude lower than the *Glomeraceae*, and *Gigasporaceae* abundance only 0.5% as much[^3]. Differences among corn and restored fields are significant for the *Claroideoglomeraceae*, where they are lowest in corn and highest in restored fields (table \@ref(tab:family-abund)). The abundance of these taxa in remnants doesn't separate due to large within-group variance, but the mean for remnants is closer to restored fields. Despite their small overall abundance, taxa in the *Gigasporaceae* showed a strong, increasing relationship with years since restoration in the Blue Mounds' restored fields (Fig \@ref(fig:gigatime)). 
+
+\  
+
+[^3]: Ylva, I'm hoping that you can help me with the natural history and interpreting how abundant these taxa must be to matter in this system.
+
 ```{r family-abund}
 read_csv("microbial_guild_taxonomy_files/families.csv", show_col_types = FALSE) %>% 
 kable(caption = "Average 18S sequence abundances per field in each field type are shown for the top five families. A linear mixed model was used to separate means in field types and letters indicate significant differences based on Tukey's post-hoc test of that model at p<0.05.", format = "pandoc")
 ```
 
-Within the 18S dataset (AMF), taxa in the *Glomeraceae* are most abundant (table \@ref(tab:family-abund)). As far as I know, these tend to be generalist taxa and are widespread. In this case, they do not differ in abundance among field types. Abundances fall off quickly for other taxa, with *Claroideoglomeraceae* and *Paraglomeraceae* an order of magnitude lower than the *Glomeraceae*, and *Gigasporaceae* abundance only 0.5% as much[^1]. Differences among corn and restored fields are significant for the *Claroideoglomeraceae*, where they are lowest in corn and highest in restored fields (\@ref(tab:family-abund)). The abundance of these taxa in remnants doesn't separate due to large within-group variance, but the mean for remnants is closer to restored fields. Despite their small overall abundance, taxa in the *Gigasporaceae* showed a strong, increasing relationship with years since restoration in the Blue Mounds' restored fields (\@ref(fig:gigatime)). 
-
-[^1]: Ylva, I'm hoping that you can help me with the natural history and interpreting how abundant these taxa must be to matter in this system.
 
 ```{r gigatime,out.width="50%",fig.cap="Icons show sums of 18S sequences in each restored field from the Blue Mounds region. The abundance of taxa in the \\textit{Gigasporaceae} increase with years since restoration ($R^2_{Adj}=0.61,~p=0.023$)."}
 include_graphics("microbial_guild_taxonomy_files/figure-gfm/giga_seq_abund_years-1.png")
@@ -261,17 +271,17 @@ include_graphics("microbial_guild_taxonomy_files/figure-gfm/giga_seq_abund_years
 
 ## Environmental constraints on fungal communities
 
-We want to know how environmental/explanatory variables like soil chemistry, precipitation, and plant communities affect change in soil microbes among sites. But which sites? Constraining variables would undoubtedly find that soil nutrients explained differences between corn and restored or remnant fields, but this is hardly an interesting result. More worthwhile would be to constrain on restored fields and test whether years since restoration aligns fields in a relatively linear manner. Discovering if other explanatory variables constrain the data in a similar direction to years since restoration would be a wonderful outcome, because we'd learn what it is in the soil abiotic environment that's correlated with microbial community change.
+We want to understand how environmental/explanatory variables, such as soil chemistry, precipitation, and plant communities, influence changes in soil microbes among fields. However, choosing which fields to focus on is critical. Constraining variables could reveal that soil nutrients explain differences between corn and restored or remnant fields, but this result may lack novelty. A more insightful approach would be to constrain the analysis on restored fields and investigate whether years since restoration aligns fields in a relatively linear manner. Discovering if other explanatory variables correlate with years since restoration would provide valuable insights potential drivers of microbial community change.
 
-Since the Blue Mounds restored fields are the most amenable to chronosequence methodology, I started there. With only seven fields, the available number of permutations was low, and with axes defined by very weak effects already, no significant constraining variables were found. Although reviewers may object, I decided that the only way forward was to use restored fields from other regions, breaking the rules of chronosequence analysis. Since the regions' soils and other environmental characteristics are so different, I parsed some out as covariables in a partial db-RDA (covariables: pH, SO4, Zn, Fe, Mn, Cu, Ca, Mg, Na, precipitation). I retained the soil nutrients N, P, and K as test variables because they were undoubtedly applied to cornfields and would decrease rapidly after agricultural practice ceased. I kept soil organic matter (OM) as a test variable too because it should be low in cornfields and increase after tillage ceases and mycotrophic, perennial plant species establish. I also included plant traits or plant community axes as test variables. Finally, I used years since restoration (yr_since) as a test variable. For the analysis, I first ran forward selection on regions in Wisconsin only because that's where we have plant composition data. Then, I ran forward selection with explanatory variables on all regions, using plant presence/absence axes only[^2].
+Given the suitability of Blue Mounds restored fields for chronosequence methodology, I focused initial attention there. With only seven fields, this approach did not yield significant constraining variables due to weak effects and low replication. To overcome this limitation, and acknowledging the regional differences in soils and environmental characteristics, I extended the analysis to include restored fields from other regions. While deviating from traditional chronosequence rules, this approach was deemed necessary for meaningful results. In a partial db-RDA, covariables (pH, SO4, Zn, Fe, Mn, Cu, Ca, Mg, Na, precipitation) were incorporated to control for regional variation. Test variables included soil nutrients N, P, and K, expected to decrease rapidly after agricultural practice ceased, as well as soil organic matter (OM), expected to increase after the cessation of tillage. Plant traits or plant community axes were also considered as test variables, along with years since restoration. The analysis began with forward selection on regions in Wisconsin, where plant composition data were available, and then extended to forward selection with explanatory variables on all regions, utilizing plant presence/absence axes exclusively[^4].
 
-[^2]: The switchgrass fields at Fermilab could not be included because no plant data exists for these fields.
+[^4]: The switchgrass fields at Fermilab could not be included because no plant data exists for these fields.
 
 ## Constrained analysis
 
 ### Wisconsin regions, plant traits data
 
-The soil data used as covariables in this analysis explained 24% of the variation among sites. Explanatory variables were weaker at 17% and 59% of the variation remains unexplained by these data. Years since restoration was the only variable that significantly correlated with turnover in soil fungal communities, and the relationship was weak ($R^2_{Adj}=0.09,~p=0.018$). The abundance of C4 grasses increased, and the abundance of forbs decreased, with years since restoration. Because these variables were highly collinear with years since restoration, they were eliminated in forward selection, but they likely help explain a change over time that's associated with fungal community turnover (Fig \@ref(fig:dbRDA-wi)). 
+The soil data used as covariables in this analysis explained 24% of the variation among sites. Explanatory variables were weaker at 17%, and 59% of the variation remains unexplained by these data. Years since restoration was the only variable that significantly correlated with turnover in soil fungal communities, and the relationship was weak ($R^2_{Adj}=0.09,~p=0.018$). The abundance of C4 grasses increased, and the abundance of forbs decreased, with years since restoration. Because these variables were highly collinear with years since restoration, they were eliminated in forward selection, but they likely help explain a change over time that's associated with fungal community turnover (Fig \@ref(fig:dbRDA-wi)). 
 
 ```{r dbRDA-wi,fig.width=4.5,fig.height=3.5,fig.cap="Results of a distance-based redundancy analysis of soil fungal community composition in restored fields in Wisconsin regions. Icons represent the constrained locations of fields. Solid blue arrows show the direction and strength of associations between communities and explanatory variables. Dotted blue arrows show correlations with strong, but non-significant explanatory variables. Axis 1 is significant based on 1999 permutations at p=0.011."}
 wi_sc <- read_csv("tgr_constrained_files/wi_tr_its_sitelocs.csv", show_col_types = FALSE) %>% 
@@ -305,7 +315,7 @@ ggplot(wi_sc, aes(x = dbRDA1, y = dbRDA2)) +
 
 ### All regions, plant presence/absence data
 
-Adding restored fields from Fermilab to the analysis changes little of the result. The soil data used as covariables explained 19% of the variation among sites. Explanatory variables were weaker at 16% and 65% of the variation remains unexplained by these data.  Years since restoration was the only significant explanatory variable ($R^2_{Adj}=0.11,~p=0.001$). Again, a few variables were collinear with years since restoration and were eliminated during forward selection. These variables reflect the addition of fields from Fermilab more than they help explain change over time in restored fields. Vectors for soil organic matter and potassium point towards Fermilab fields, which are richer and have a very different natural history (wet meadows). The alignment of plant PCoA axis 1 in opposition to Fermilab fields reflects that plant communities used in restoration were very different there (Fig \@ref(fig:dbRDA-all)).   
+These results are little changed after adding restored fields from Fermilab to the analysis. The soil data used as covariables explained 19% of the variation among sites. Explanatory variables were weaker at 16% and 65% of the variation remains unexplained by these data. Years since restoration was the only significant explanatory variable ($R^2_{Adj}=0.11,~p=0.001$). Again, a few variables were collinear with years since restoration and were eliminated during forward selection. These variables reflect the addition of fields from Fermilab more than they help explain change over time in restored fields generally. Vectors for soil organic matter and potassium point towards Fermilab fields, which are richer and have a very different natural history (wet meadows). The alignment of plant PCoA axis 1 in opposition to Fermilab fields reflects that plant communities used in restoration were very different there (Fig \@ref(fig:dbRDA-all)).   
 
 ```{r dbRDA-all,fig.width=4.5,fig.height=3.5,fig.cap="Results of a distance-based redundancy analysis of soil fungal community composition in restored fields from all regions. Icons represent the constrained locations of fields. Solid blue arrows show the direction and strength of associations between communities and explanatory variables. Dotted blue arrows show correlations with strong, but non-significant explanatory variables. Axis 1 is significant based on 1999 permutations at p=0.008."}
 all_sc <- read_csv("tgr_constrained_files/all_its_sitelocs.csv", show_col_types = FALSE) %>% 
@@ -340,6 +350,8 @@ ggplot(all_sc, aes(x = dbRDA1, y = dbRDA2)) +
 
 Strangely, the results are nearly identical with AMF communities. Years since restoration was the only significant constraining variable, but relationships were weak. Supporting, but non-significant, explanatory variables were the same.
 
+\newpage
+
 ## Response variables
 
 We measured water stable aggregates (wsa) and fungal biomass. I think of these as responses to restoration. With the planting of diverse, perennial plant communities, it follows that fungal diversity and particularly the abundance of AMF would increase. My prediction was that cornfields would have the lowest percent wsa, and that these values would increase through restorations, approaching the highest values in remnants. I didn't know what to think about fungal biomass. The bonanza of nutrients in cornfields could support high biomass, despite the low diversity that we detected. This comes down to whether the diversity-productivity relationship has any value in this case. Diversity of soil fungi was much higher in restored and remnant fields, but were all these species busy filling niches and creating a bounty of biomass?
@@ -348,57 +360,39 @@ We measured water stable aggregates (wsa) and fungal biomass. I think of these a
 include_graphics(c("soil_wsa_files/figure-gfm/wsa_regions_fieldtypes_fig-1.png", "soil_wsa_files/figure-gfm/wsa_visual_fig-1.png"))
 ```
 
-Water stable aggregates were highly variable in restored[^3] and remnant fields, but they were highest on average in restorations (Fig \@ref(fig:wsa), left). In Lake Petite, wsa was highest in cornfields, lower in restorations, and lowest in the remnant, but in all other regions, cornfields were lowest, restorations were highest, and remnants were intermediate (Fig \@ref(fig:wsa), right). There was no relationship with years since restoration for wsa. Wsa were not related to any of the constrained axes shown previously either.
+Water stable aggregates were highly variable in restored[^5] and remnant fields, but they were highest on average in restorations (Fig \@ref(fig:wsa), left). In Lake Petite, wsa was highest in cornfields, lower in restorations, and lowest in the remnant, but in all other regions, cornfields were lowest, restorations were highest, and remnants were intermediate (Fig \@ref(fig:wsa), right). There was no relationship with years since restoration for wsa. Wsa were not related to any of the constrained axes shown previously either.
 
-[^3]: Phil, it's noteworthy that fields in Lake Petite had very low wsa and soil organic matter, even lower than many cornfields. Surprisingly, wsa was even lower in the remnant, suggesting that we have poor soil conditions across the board in the hard, poor soil of Lake Petite. Maybe this will improve with time, but it's possible that some amendments would help, like liquid carbon applications. 
+[^5]: Phil, it's noteworthy that fields in Lake Petite had very low wsa and soil organic matter, even lower than many cornfields. Surprisingly, wsa was even lower in the remnant, suggesting that we have poor soil conditions across the board in the hard, poor soil of Lake Petite. Maybe this will improve with time, but it's possible that some amendments would help, like liquid carbon applications. 
+
+\newpage
+
+\  
+
+Biomass of AMF and soil fungi showed a qualitatively similar pattern with wsa. Values were highest in restored fields, lowest in cornfields, and intermediate in remnants (Fig \@ref(fig:fa), left panels, no mixed model was run). In the Blue Mounds region, biomass of AMF is highest in recently restored fields, and it falls over time, approaching the relatively low value found in the remnant (Fig \@ref(fig:fa), right panel). 
 
 ```{r fa,out.height="180px",fig.show="hold",fig.cap="(Left panels) Boxplots show distributions and quartiles of AMF and soil fungal biomass. Icons show field values. (Right panel) Icons show values of AMF biomass regressed against years since restoration. Icons show field values from restored fields in the Blue Mounds region. $R^2_{Adj}=0.52,~p=0.041$."}
 include_graphics(c("microbial_biomass_files/figure-gfm/fa_boxplot-1.png", "microbial_biomass_files/figure-gfm/fa_amf_yrs-1.png"))
 ```
 
-Biomass of AMF and soil fungi showed a qualitatively similar pattern with wsa. Values were highest in restored fields, lowest in cornfields, and intermediate in remnants (Fig \@ref(fig:fa), left panels, no mixed model was run). In the Blue Mounds region, biomass of AMF is highest in recently restored fields, and it falls over time, approaching the relatively low value found in the remnant (Fig \@ref(fig:fa), right panel). 
-
-\newpage
-
 # Discussion
 
-Soil fungal communities in cornfields are very different from those in restored or prairie remnant fields. That's not surprising, and neither is the rapid change in communities as the years pass after agricultural management ceases and restoration starts. With this project, we had hoped to find evidence that restored fields either become more like remnants over time, or that they become something new entirely. There are examples of both in the literature, particularly with bacterial communities. What we found instead is generally weak effects and inconclusive results. Communities in restored fields do change and years since restoration is the strongest correlating variable with change, but it's hard to say whether they become more like remnants or not. With soil fungi, it looks like communities in restorations trend away from remnant communities as they age (Fig \@ref(fig:its-samps-pcoa), but restored and remnant communities appear indistinguishable for AMF (Fig \@ref(fig:amf-samps-pcoa)). With so few replicates, these differences are even harder to detect. 
+Soil fungal communities in cornfields markedly differ from those in restored or prairie remnant fields, an expected finding that's consistent with the cessation of agricultural management. The primary objective was to discern whether communities in restored fields become more like remnant communities over time or develop into something entirely new, as observed in bacterial communities in the literature. However, our findings reveal generally weak effects and inconclusive results. Although communities in restored fields do change, with years since restoration emerging as the strongest correlating variable, it remains challenging to determine if they become more akin to remnants. Examining soil fungi, restorations appear to diverge from remnant communities as they age (Fig \@ref(fig:its-samps-pcoa)), while restored and remnant communities seem indistinguishable for AMF (Fig \@ref(fig:amf-samps-pcoa)). With limited replication, detecting these differences becomes even more challenging.
 
-Richness and diversity indices tend to align restored fields with remnants for both soil fungi and AMF (Figs \@ref(fig:its-div) and \@ref(fig:amf-div)). What this suggests more than anything else is that cornfields are a difficult place for fungi to live, filtering communities for those species that can tolerate extreme environments. The discovery of numerous extremophile taxa as indicators of cornfields supports this interpretation. 
+Richness and diversity indices align restored fields with remnants for both soil fungi and AMF (Figs \@ref(fig:its-div) and \@ref(fig:amf-div)), suggesting that cornfields pose challenges for fungi, filtering for species tolerant of extreme environments. Numerous extremophile taxa as indicators of cornfields support this interpretation. 
 
-Looking at soil fungi in guilds (Fig \@ref(fig:guilds-regions)), cornfields contain more OTUs assigned to nearly every guild, and little summary exists to separate restored from remnant fields. But drawing conclusions based on these data may be fraught anyway. The agricultural industry certainly knows that the soil microbiome matters for production, if for no other reason than monitoring pathogens. I'm concerned that this added attention inflates metadata from agricultural species in trait and guild databases. Since 54% of OTUs were unassigned at the genus level, it's entirely possible that the trends we've observed in guilds among field types could be reversed. With AMF in families (table \@ref(tab:family-abund)), the situation is similar in that differences among field types are weak, but at least with AMF, we avoid the unknown bias of trait databases. 
+Examining soil fungi in guilds (Fig \@ref(fig:guilds-regions)), cornfields exhibit higher OTUs in nearly every guild, with little clarity to differentiate restored from remnant fields. However, drawing conclusions from these data may be challenging. The agricultural industry acknowledges the significance of the soil microbiome for production, if only in monitoring pathogens. Concerns arise about potential inflation of metadata from agricultural species in trait and guild databases. Given that 54% of OTUs remain unassigned at the genus level, this leaves room for the possibility that trends observed in guilds among field types could be null or even reversed. Analyzing AMF in families (table \@ref(tab:family-abund)) reveals weak differences among field types, but at least with AMF, we mitigate the unknown bias of trait databases.
 
 ```{r plant-yr,out.width="60%",fig.cap="PCoA of plant data from restored fields in Wisconsin regions. Small icons represent samples and hulls enclose fields. Large icons show locations of field centroids, where shapes identify regions. Text on the large icons shows years since restoration. The blue arrow shows the fitted vector of years since restoration, which is significantly associated with the ordination at $p=0.029$ based on 1999 permutations."}
 include_graphics("plant_files/figure-gfm/pcoa_ab_samps_wi_fig-1.png")
 ```
 
-The fact that years since restoration is the strongest explanatory variable for community change in restored fields is compelling because it suggests that the rules for community change after restoration, whatever they are, might generalize across regions. The problem I have with these results is that our chronosequence is compromised. I went back and looked at ordinations based on plant communities and found that years since restoration is also a strongly correlated explanatory variable (Fig \@ref(fig:plant-yr)), also collinear with forbs and C4 grasses. If this change in plant communities were natural, it'd be fine, but we know from landowners and restoration managers that the older restoration practice was to plant mostly grass, and now, forbs are almost exclusively planted. So is the change we see in soil microbial communities due to some natural process over time or simply to the choice of plant species? I think it's both because C4 grasses do tend to increase in restored fields over time on their own, but we don't have any way to separate these confounded explanations. 
+\  
 
+The observation that years since restoration stands out as the most influential explanatory variable for community change in restored fields is intriguing. This suggests that the dynamics governing community change post-restoration might exhibit general patterns across different regions. However, a significant challenge arises with our compromised chronosequence. Upon revisiting ordinations based on plant communities, it became evident that years since restoration also strongly correlates with plant communities (Fig \@ref(fig:plant-yr)), showing strong collinearity with forbs and C4 grasses. The complication arises from the fact that this shift in plant communities is not entirely natural. Historical restoration practices predominantly involved planting grasses, but the current trend leans towards the near-exclusive planting of forbs because C4 grasses are seen as too competitive. This prompts the question: Is the observed change in soil microbial communities a result of a natural process over time or simply a consequence of the chosen suite of plant species? The likely answer lies in a combination of both factors. C4 grasses are documented to naturally increase in restored fields over time, yet the issue lies in the challenge of disentangling these confounding explanations without a clear means to do so.
 
-***
+Finally, after seeing the glorious restorations at Fermilab, I think we expected similar beauty in Wisconsin. Restored fields there had nice plant communities, but were often weedy and the soil seemed beat up and hard in most cases. The restoration practice there was to simply stop plowing and hire a contractor to sow native seeds in one treatment. Landowners were attempting some limited management, but reintroduction of natural processes like fire isn't practical in these populated rural areas, and no other soil amendments (e.g., to restore soil carbon) were attempted as far as I could find out. These hobby projects just don't compare to the decades of work put in by botanists and ecologists at Fermilab over many decades. 
 
-Soil fungal communities in cornfields differ significantly from those in restored or prairie remnant fields, showing a noticeable shift over the years following the cessation of agricultural management. Our project aimed to determine whether restored fields evolve towards remnant characteristics or develop unique profiles. Contrary to expectations, the results indicate generally weak effects and inconclusive outcomes. While communities in restored fields undergo changes, especially over time since restoration, determining if they converge with remnant communities remains challenging.
+We also expected the remnants to provide compelling reference conditions. Instead, remnants were often on slopes or within railroad rights-of-way where they escaped the plow, but had been grazed and neglected, small fragments with substantial cover of exotics or woodland invasion due to lack of fire. The Faville Grove remnant was the only example of a true reference condition, in my opinion. 
 
-Analysis of soil fungi reveals a trend of restored fields moving away from remnant communities as they age (Fig @ref(fig:its-samps-pcoa)), but no such distinction is observed for arbuscular mycorrhizal fungi (AMF) (Fig @ref(fig:amf-samps-pcoa)). The limited number of replicates makes these differences harder to discern.
+I'll leave this there. It's been a tremendous effort to deal with these data, and I think I've developed some nifty tools for analysis. Right now, I don't see what the story is here, but I'm hoping that you do. 
 
-Richness and diversity indices align restored fields with remnants for both soil fungi and AMF (Figs @ref(fig:its-div) and @ref(fig:amf-div)), suggesting that cornfields exert selective pressure on fungi, favoring species resilient to extreme conditions. The identification of extremophile taxa as indicators of cornfields supports this interpretation.
-
-Examining soil fungi in guilds reveals that cornfields host more Operational Taxonomic Units (OTUs) across various guilds, making it challenging to differentiate restored from remnant fields. However, drawing conclusions from these data may be precarious, given potential inflation of metadata from agricultural species in trait and guild databases.
-
-While the influence of years since restoration emerges as a significant variable in community change in restored fields, concerns arise about the compromised nature of our chronosequence. Analysis of plant communities also correlates strongly with years since restoration, raising questions about whether observed changes in soil microbial communities are due to natural processes or the choice of plant species.
-
-In summary, our findings emphasize the complexity of soil microbial dynamics in restored fields, with implications for understanding community changes and the need for further research to disentangle confounding factors.
-
-***
-
-
-
-
-
-
-
-Finally, after seeing the glorious restorations at Fermilab, I think we expected similar results in Wisconsin. Restored fields in Wisconsin had nice plant communities, but were often weedy and the soil seemed beat up and hard in most cases. Teh restoration practice was to stop plowing and sow native seeds. That's it. Reintroduction of fire isn't practical in these populated rural areas, and no other soil amendments (e.g., to restore soil carbon) were attempted as far as I could find out. 
-
-We also expected the remnants to provide compelling reference conditions. Instead, remnants were often on slopes where or within railroad rights-of-way where they escaped the plow, but had been grazed and neglected, small fragments with substantial cover of exotics or woodland invasion due to lack of fire. The Faville Grove remnant was the only example of a true reference condition, in my opinion. 
-
-I would love to hear your ideas about what I could be missing here. 

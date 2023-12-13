@@ -675,9 +675,9 @@ grid.arrange(
 #+ its_guilds_regions_fig,fig.align='center',fig.width=7,fig.height=3.5
 spe_meta$its %>%
     filter(primary_lifestyle %in% c("plant_pathogen", "soil_saprotroph")) %>%
-    mutate(field_type = factor(field_type, ordered = TRUE, 
+    mutate(field_type = factor(field_type, ordered = TRUE,
                                levels = c("corn", "restored", "remnant")),
-           pl_labs = case_match(primary_lifestyle, "plant_pathogen" ~ "Plant Pathoghens", "soil_saprotroph" ~ "Soil Saprotrophs")) %>%
+           pl_labs = case_match(primary_lifestyle, "plant_pathogen" ~ "Plant Pathogens", "soil_saprotroph" ~ "Soil Saprotrophs")) %>%
     group_by(region, primary_lifestyle, pl_labs, field_type, field_name) %>%
     summarize(sum_seq_abund = sum(seq_abund), .groups = "drop_last") %>% 
     summarize(avg_seq_abund = mean(sum_seq_abund), .groups = "drop") %>%
