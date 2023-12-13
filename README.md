@@ -70,3 +70,4 @@ power of years since restoration, plant community axes or plant traits, and soil
 regional differences and rather come from an agricultural legacy: SOM, NO<sub>3</sub>, P, and K.  
 
 ## Summary
+The goal of this final [report](tgr_summary.pdf) is to present results and discuss whether a path forward with these data exists. If so, we will determine the strategy that presents the best story, organization, and interpretation of these results.
