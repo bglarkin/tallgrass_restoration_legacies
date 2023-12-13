@@ -608,7 +608,7 @@ giga$filspeTaxa %>%
     ggplot(aes(x = yr_since, y = seq_sum)) +
     geom_smooth(method = "lm", se = FALSE, color = "black", linewidth = 0.4) +
     geom_point(fill = "#5CBD92", shape = 21, size = 2.5) +
-    labs(x = "Years since restoration", y = "Sum of 18S sequences") +
+    labs(x = "Years since restoration", y = expression(italic(Gigasporaceae)~sequences~(sum))) +
     theme_bw()
 #' 
 #' Pity that there are so few of these AMF. It's a nice relationship. Maybe there is a natural 

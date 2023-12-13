@@ -454,31 +454,25 @@ centroid_ab_samps_wi <- aggregate(cbind(Axis.1, Axis.2) ~ field_name, data = pco
 hull_ab_samps_wi <- pcoa_ab_samps_wi$site_vectors %>% 
     group_by(field_name) %>% 
     slice(chull(Axis.1, Axis.2))
-#+ pcoa_ab_samps_wi_fig,fig.align='center',message=FALSE
+#+ pcoa_ab_samps_wi_fig,fig.align='center',message=FALSE,fig.width=5,fig.height=4
 ggplot(pcoa_ab_samps_wi$site_vectors, aes(x = Axis.1, y = Axis.2)) +
-    geom_point(aes(fill = region), shape = 21) +
-    geom_polygon(data = hull_ab_samps_wi, aes(group = field_name, fill = region), alpha = 0.3) +
-    geom_point(data = centroid_ab_samps_wi, aes(fill = region), shape = 21, size = 8) +
-    geom_text(data = centroid_ab_samps_wi, aes(label = yr_since)) +
+    geom_vline(xintercept = 0, linewidth = 0.1) +
+    geom_hline(yintercept = 0, linewidth = 0.1) +
+    geom_point(aes(shape = region), fill = "#5CBD92") +
+    geom_polygon(data = hull_ab_samps_wi, aes(group = field_name), fill = "#5CBD92", alpha = 0.3) +
+    geom_point(data = centroid_ab_samps_wi, aes(shape = region), fill = "#5CBD92", size = 6) +
+    geom_text(data = centroid_ab_samps_wi, aes(label = yr_since), size = 3) +
     geom_segment(aes(x = 0, 
                      y = 0, 
                      xend = pcoa_ab_samps_wi$vector_fit_scores[1] * 0.65, 
                      yend = pcoa_ab_samps_wi$vector_fit_scores[2] * 0.65),
                  color = "blue", 
-                 arrow = arrow(length = unit(3, "mm"))) +
+                 arrow = arrow(angle = 20, length = unit(3, "mm"), type = "closed")) +
     labs(
         x = paste0("Axis 1 (", pcoa_ab_samps_wi$eigenvalues[1], "%)"),
-        y = paste0("Axis 2 (", pcoa_ab_samps_wi$eigenvalues[2], "%)"),
-        title = paste0(
-            "PCoA Ordination (",
-            pcoa_ab_samps_wi$dataset,
-            ")"
-        ),
-        caption = "Text indicates years since restoration\nYears since restoration significant at p<0.05"
-    ) +
-    scale_fill_discrete_qualitative(name = "Region", palette = "Dynamic") +
-    theme_bw() +
-    guides(fill = guide_legend(override.aes = list(shape = 21)))
+        y = paste0("Axis 2 (", pcoa_ab_samps_wi$eigenvalues[2], "%)")) +
+    scale_shape_manual(name = "Region", values = c(21, 22, 24)) +
+    theme_bw()
 #' 
 #' The permutation test reveals that subsamples cluster to fields based on plant communities, and 
 #' that years since restoration is significantly related community difference. This shows that 
@@ -501,11 +495,11 @@ centroid_ab_samps_bm <- aggregate(cbind(Axis.1, Axis.2) ~ field_name, data = pco
 hull_ab_samps_bm <- pcoa_ab_samps_bm$site_vectors %>% 
     group_by(field_name) %>% 
     slice(chull(Axis.1, Axis.2))
-#+ pcoa_ab_samps_bm_fig,fig.align='center',message=FALSE
+#+ pcoa_ab_samps_bm_fig,fig.align='center',message=FALSE,fig.width=3.5,fig.height=3.5
 ggplot(pcoa_ab_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
-    geom_point(aes(fill = region), shape = 21) +
-    geom_polygon(data = hull_ab_samps_bm, aes(group = field_name, fill = region), alpha = 0.3) +
-    geom_point(data = centroid_ab_samps_bm, aes(fill = region), shape = 21, size = 8) +
+    geom_point(fill = "#DB9D85", shape = 21) +
+    geom_polygon(data = hull_ab_samps_bm, aes(group = field_name), fill = "#DB9D85", alpha = 0.3) +
+    geom_point(data = centroid_ab_samps_bm, fill = "#DB9D85", shape = 21, size = 8) +
     geom_text(data = centroid_ab_samps_bm, aes(label = yr_since)) +
     geom_segment(aes(x = 0, 
                      y = 0, 
@@ -515,17 +509,8 @@ ggplot(pcoa_ab_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
                  arrow = arrow(length = unit(3, "mm"))) +
     labs(
         x = paste0("Axis 1 (", pcoa_ab_samps_bm$eigenvalues[1], "%)"),
-        y = paste0("Axis 2 (", pcoa_ab_samps_bm$eigenvalues[2], "%)"),
-        title = paste0(
-            "PCoA Ordination (",
-            pcoa_ab_samps_bm$dataset,
-            ")"
-        ),
-        caption = "Text indicates years since restoration\nYears since restoration significant at p<0.05"
-    ) +
-    scale_fill_discrete_qualitative(name = "Field Type", palette = "Dynamic") +
-    theme_bw() +
-    guides(fill = guide_legend(override.aes = list(shape = 21)))
+        y = paste0("Axis 2 (", pcoa_ab_samps_bm$eigenvalues[2], "%)")) +
+    theme_bw()
 #' 
 #' The Blue Mounds area is our most defensible chronosequence. But even here, 
 #' the permutation test reveals that subsamples cluster to fields based on plant communities, and 

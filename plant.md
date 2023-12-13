@@ -2,7 +2,7 @@ Plant data: communities and traits
 ================
 Beau Larkin
 
-Last updated: 01 December, 2023
+Last updated: 12 December, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -644,7 +644,7 @@ abundance data An ordiation is run on plant abundance data using
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
     ##            Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type  2   2.0343 0.36566 3.7469  0.005 **
+    ## field_type  2   2.0343 0.36566 3.7469  0.003 **
     ## Residual   13   3.5290 0.63434                 
     ## Total      15   5.5634 1.00000                 
     ## ---
@@ -655,7 +655,7 @@ exceeds a broken stick model. The most substantial variation here will
 be on the first axis. Axis 2 explains 13.2% of the variation and was not
 very close to the broken stick value. Testing the design factor
 *field_type* (with *region* treated as a block using arguments to
-`how()` revealed a significant clustering $(R^2=0.37,~p=0.005)$. Let’s
+`how()` revealed a significant clustering $(R^2=0.37,~p=0.003)$. Let’s
 view a plot of these results.
 
 ``` r
@@ -747,7 +747,7 @@ differences with plant data.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
     ##            Df SumOfSqs      R2      F Pr(>F)    
-    ## field_type  2   1.6996 0.22953 2.5322  0.001 ***
+    ## field_type  2   1.6996 0.22953 2.5322  5e-04 ***
     ## Residual   17   5.7051 0.77047                  
     ## Total      19   7.4047 1.00000                  
     ## ---
@@ -757,7 +757,7 @@ Axis 1 explains 19% of the variation and axis 2 explains 13.2% of the
 variation. These two eigenvalues exceed the broken stick value. stick
 value. Testing the design factor *field_type* (with *region* treated as
 a block using arguments to `how()` revealed a significant clustering
-$(R^2=0.23,~p=0.001)$. Let’s view a plot of these results.
+$(R^2=0.23,~p=5\times 10^{-4})$. Let’s view a plot of these results.
 
 ``` r
 ggplot(pcoa_pr$site_vectors, aes(x = Axis.1, y = Axis.2)) +
@@ -871,7 +871,7 @@ and permute within regions.
     ##                         Axis.1    Axis.2    Axis.3    Axis.4    Axis.5
     ## as.numeric(yr_since)  0.845160 -0.398380  0.116942  0.180121  0.144907
     ##                         Axis.6    Axis.7    Axis.8     r2 Pr(>r)  
-    ## as.numeric(yr_since) -0.011507  0.241990 -0.034590 0.7822 0.0285 *
+    ## as.numeric(yr_since) -0.011507  0.241990 -0.034590 0.7822 0.0305 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -898,29 +898,23 @@ hull_ab_samps_wi <- pcoa_ab_samps_wi$site_vectors %>%
 
 ``` r
 ggplot(pcoa_ab_samps_wi$site_vectors, aes(x = Axis.1, y = Axis.2)) +
-    geom_point(aes(fill = region), shape = 21) +
-    geom_polygon(data = hull_ab_samps_wi, aes(group = field_name, fill = region), alpha = 0.3) +
-    geom_point(data = centroid_ab_samps_wi, aes(fill = region), shape = 21, size = 8) +
-    geom_text(data = centroid_ab_samps_wi, aes(label = yr_since)) +
+    geom_vline(xintercept = 0, linewidth = 0.1) +
+    geom_hline(yintercept = 0, linewidth = 0.1) +
+    geom_point(aes(shape = region), fill = "#5CBD92") +
+    geom_polygon(data = hull_ab_samps_wi, aes(group = field_name), fill = "#5CBD92", alpha = 0.3) +
+    geom_point(data = centroid_ab_samps_wi, aes(shape = region), fill = "#5CBD92", size = 6) +
+    geom_text(data = centroid_ab_samps_wi, aes(label = yr_since), size = 3) +
     geom_segment(aes(x = 0, 
                      y = 0, 
                      xend = pcoa_ab_samps_wi$vector_fit_scores[1] * 0.65, 
                      yend = pcoa_ab_samps_wi$vector_fit_scores[2] * 0.65),
                  color = "blue", 
-                 arrow = arrow(length = unit(3, "mm"))) +
+                 arrow = arrow(angle = 20, length = unit(3, "mm"), type = "closed")) +
     labs(
         x = paste0("Axis 1 (", pcoa_ab_samps_wi$eigenvalues[1], "%)"),
-        y = paste0("Axis 2 (", pcoa_ab_samps_wi$eigenvalues[2], "%)"),
-        title = paste0(
-            "PCoA Ordination (",
-            pcoa_ab_samps_wi$dataset,
-            ")"
-        ),
-        caption = "Text indicates years since restoration\nYears since restoration significant at p<0.05"
-    ) +
-    scale_fill_discrete_qualitative(name = "Region", palette = "Dynamic") +
-    theme_bw() +
-    guides(fill = guide_legend(override.aes = list(shape = 21)))
+        y = paste0("Axis 2 (", pcoa_ab_samps_wi$eigenvalues[2], "%)")) +
+    scale_shape_manual(name = "Region", values = c(21, 22, 24)) +
+    theme_bw()
 ```
 
 <img src="plant_files/figure-gfm/pcoa_ab_samps_wi_fig-1.png" style="display: block; margin: auto;" />
@@ -1011,7 +1005,7 @@ soil microbial communities.
     ##                         Axis.1    Axis.2    Axis.3    Axis.4    Axis.5
     ## as.numeric(yr_since)  0.838630  0.272579 -0.188770 -0.027578 -0.013142
     ##                         Axis.6    Axis.7     r2 Pr(>r)  
-    ## as.numeric(yr_since)  0.175546 -0.393730 0.8619 0.0125 *
+    ## as.numeric(yr_since)  0.175546 -0.393730 0.8619 0.0145 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -1038,9 +1032,9 @@ hull_ab_samps_bm <- pcoa_ab_samps_bm$site_vectors %>%
 
 ``` r
 ggplot(pcoa_ab_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
-    geom_point(aes(fill = region), shape = 21) +
-    geom_polygon(data = hull_ab_samps_bm, aes(group = field_name, fill = region), alpha = 0.3) +
-    geom_point(data = centroid_ab_samps_bm, aes(fill = region), shape = 21, size = 8) +
+    geom_point(fill = "#DB9D85", shape = 21) +
+    geom_polygon(data = hull_ab_samps_bm, aes(group = field_name), fill = "#DB9D85", alpha = 0.3) +
+    geom_point(data = centroid_ab_samps_bm, fill = "#DB9D85", shape = 21, size = 8) +
     geom_text(data = centroid_ab_samps_bm, aes(label = yr_since)) +
     geom_segment(aes(x = 0, 
                      y = 0, 
@@ -1050,17 +1044,8 @@ ggplot(pcoa_ab_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
                  arrow = arrow(length = unit(3, "mm"))) +
     labs(
         x = paste0("Axis 1 (", pcoa_ab_samps_bm$eigenvalues[1], "%)"),
-        y = paste0("Axis 2 (", pcoa_ab_samps_bm$eigenvalues[2], "%)"),
-        title = paste0(
-            "PCoA Ordination (",
-            pcoa_ab_samps_bm$dataset,
-            ")"
-        ),
-        caption = "Text indicates years since restoration\nYears since restoration significant at p<0.05"
-    ) +
-    scale_fill_discrete_qualitative(name = "Field Type", palette = "Dynamic") +
-    theme_bw() +
-    guides(fill = guide_legend(override.aes = list(shape = 21)))
+        y = paste0("Axis 2 (", pcoa_ab_samps_bm$eigenvalues[2], "%)")) +
+    theme_bw()
 ```
 
 <img src="plant_files/figure-gfm/pcoa_ab_samps_bm_fig-1.png" style="display: block; margin: auto;" />
