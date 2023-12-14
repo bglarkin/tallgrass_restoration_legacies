@@ -206,7 +206,7 @@ its_otus_depth <-
     mutate(process_step = factor(process_step, ordered = TRUE, levels = c("pre", "post")))
 #+ its_rarecurve_prepost_fig,fig.width=7,fig.height=3.5,fig.align='center',warning=FALSE,message=FALSE
 ggplot(its_rcurve_data, aes(x = seq_abund, y = otus, group = field_sample)) +
-    facet_grid(rows = vars(process_step), cols = vars(field_type), as.table = FALSE, scales = "free") +
+    facet_grid(rows = vars(process_step), cols = vars(field_type), as.table = TRUE, scales = "free") +
     geom_vline(data = its_rcurve_depth, aes(xintercept = depth), linewidth = 0.2) +
     geom_hline(data = its_otus_depth, aes(yintercept = otus), linewidth = 0.2) +
     geom_line(aes(color = field_type), linewidth = 0.4) +
