@@ -2,7 +2,7 @@ Microbial data: fatty acids (biomass)
 ================
 Beau Larkin
 
-Last updated: 12 December, 2023
+Last updated: 15 December, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -130,7 +130,8 @@ ggplot(fa_grp %>% filter(group %in% c("amf", "fungi")), aes(x = field_type, y = 
 
 <img src="microbial_biomass_files/figure-gfm/fa_boxplot-1.png" style="display: block; margin: auto;" />
 
-And one that shows the correlation between AMF and time
+And one that shows the correlation between AMF and time. Note: there is
+no relationship between fungi and time.
 
 ``` r
 fa_grp %>% 

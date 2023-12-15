@@ -96,7 +96,7 @@ ggplot(fa_grp %>% filter(group %in% c("amf", "fungi")), aes(x = field_type, y = 
     theme(axis.title.x = element_blank()) +
     guides(fill = guide_legend(override.aes = list(shape = 21)))
 #' 
-#' And one that shows the correlation between AMF and time
+#' And one that shows the correlation between AMF and time. Note: there is no relationship between fungi and time.
 #+ fa_amf_reg
 fa_grp %>% 
     filter(group == "amf", field_type == "restored", region == "BM") %>% 
