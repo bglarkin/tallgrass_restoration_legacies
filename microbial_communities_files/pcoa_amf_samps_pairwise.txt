@@ -1,4 +1,4 @@
 group1 group2 R2 F_value df1 df2 p_value p_value_adj
-restored corn 0.057 8.787 1 145 0.001 0.003
-restored remnant 0.008 1.072 1 138 0.998 0.998
+restored corn 0.057 8.787 1 145 0.002 0.007
+restored remnant 0.008 1.072 1 138 0.997 0.997
 corn remnant 0.111 7.616 1 61 0.143 0.214
