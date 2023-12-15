@@ -2,7 +2,7 @@ Plant data: communities and traits
 ================
 Beau Larkin
 
-Last updated: 12 December, 2023
+Last updated: 15 December, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -644,7 +644,7 @@ abundance data An ordiation is run on plant abundance data using
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
     ##            Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type  2   2.0343 0.36566 3.7469  0.003 **
+    ## field_type  2   2.0343 0.36566 3.7469  0.005 **
     ## Residual   13   3.5290 0.63434                 
     ## Total      15   5.5634 1.00000                 
     ## ---
@@ -655,7 +655,7 @@ exceeds a broken stick model. The most substantial variation here will
 be on the first axis. Axis 2 explains 13.2% of the variation and was not
 very close to the broken stick value. Testing the design factor
 *field_type* (with *region* treated as a block using arguments to
-`how()` revealed a significant clustering $(R^2=0.37,~p=0.003)$. Let’s
+`how()` revealed a significant clustering $(R^2=0.37,~p=0.005)$. Let’s
 view a plot of these results.
 
 ``` r
@@ -747,7 +747,7 @@ differences with plant data.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = h)
     ##            Df SumOfSqs      R2      F Pr(>F)    
-    ## field_type  2   1.6996 0.22953 2.5322  5e-04 ***
+    ## field_type  2   1.6996 0.22953 2.5322  0.001 ***
     ## Residual   17   5.7051 0.77047                  
     ## Total      19   7.4047 1.00000                  
     ## ---
@@ -757,7 +757,7 @@ Axis 1 explains 19% of the variation and axis 2 explains 13.2% of the
 variation. These two eigenvalues exceed the broken stick value. stick
 value. Testing the design factor *field_type* (with *region* treated as
 a block using arguments to `how()` revealed a significant clustering
-$(R^2=0.23,~p=5\times 10^{-4})$. Let’s view a plot of these results.
+$(R^2=0.23,~p=0.001)$. Let’s view a plot of these results.
 
 ``` r
 ggplot(pcoa_pr$site_vectors, aes(x = Axis.1, y = Axis.2)) +
@@ -871,7 +871,7 @@ and permute within regions.
     ##                         Axis.1    Axis.2    Axis.3    Axis.4    Axis.5
     ## as.numeric(yr_since)  0.845160 -0.398380  0.116942  0.180121  0.144907
     ##                         Axis.6    Axis.7    Axis.8     r2 Pr(>r)  
-    ## as.numeric(yr_since) -0.011507  0.241990 -0.034590 0.7822 0.0305 *
+    ## as.numeric(yr_since) -0.011507  0.241990 -0.034590 0.7822 0.0315 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -924,6 +924,55 @@ plant communities, and that years since restoration is significantly
 related community difference. This shows that plant communities and time
 since restoration are potentially confounded as explanatory variables of
 soil microbial communities.
+
+Years since restoration is clearly related to plant communities. Let’s
+look at how composition in functional groups changes and see if patterns
+exist.
+
+``` r
+p_ab_trait_tidy <- 
+    p_ab_trait %>% 
+    pivot_longer(-field_name, names_to = "trait", values_to = "cvr") %>% 
+    mutate(category = case_match(trait, 
+                                 c("annual", "biennial", "perennial") ~ "Life History", 
+                                 c("native", "nonnative") ~ "Native Status", 
+                                 .default = "Functional Group")
+           ) %>% 
+    left_join(sites %>% select(-field_key), by = join_by(field_name)) %>% 
+    filter(field_type == "restored") %>% 
+    mutate(yr_since = as.numeric(yr_since), 
+           trait = factor(trait, ordered = TRUE, 
+                          levels = c("C3_grass", "C4_grass", "forb", "legume", "shrubTree", "annual", "biennial", "perennial", "native", "nonnative")))
+```
+
+``` r
+ggplot(p_ab_trait_tidy, aes(x = fct_reorder(field_name, yr_since), y = cvr)) +
+    facet_wrap(vars(category)) +
+    geom_col(aes(fill = trait)) +
+    labs(y = "Percent cover") +
+    scale_fill_manual(name = "Trait", values = c(sequential_hcl(5, "Batlow"), qualitative_hcl(3, "Dark3"), "gray30", "gray70")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5), axis.title.x = element_blank())
+```
+
+<img src="plant_files/figure-gfm/plant_fg-1.png" style="display: block; margin: auto;" />
+
+``` r
+plant_abiotic %>% 
+    group_by(region, field_type, field_name, code) %>% 
+    summarize(cover_avg = mean(cover_pct), .groups = "drop") %>% 
+    left_join(sites %>% select(field_name, yr_since), by = join_by(field_name)) %>% 
+    filter(field_type == "restored") %>% 
+    mutate(yr_since = as.numeric(yr_since)) %>% 
+    ggplot(aes(x = fct_reorder(field_name, yr_since), y = cover_avg)) +
+    geom_col(aes(fill = code)) +
+    labs(y = "Percent cover") +
+    scale_fill_discrete_qualitative(name = "Ground Cover", palette = "Dark3") +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5), axis.title.x = element_blank())
+```
+
+<img src="plant_files/figure-gfm/plant_abio-1.png" style="display: block; margin: auto;" />
 
 #### Blue Mounds fields
 
@@ -1005,7 +1054,7 @@ soil microbial communities.
     ##                         Axis.1    Axis.2    Axis.3    Axis.4    Axis.5
     ## as.numeric(yr_since)  0.838630  0.272579 -0.188770 -0.027578 -0.013142
     ##                         Axis.6    Axis.7     r2 Pr(>r)  
-    ## as.numeric(yr_since)  0.175546 -0.393730 0.8619 0.0145 *
+    ## as.numeric(yr_since)  0.175546 -0.393730 0.8619 0.0115 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free

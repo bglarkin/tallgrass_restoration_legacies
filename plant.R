@@ -479,6 +479,44 @@ ggplot(pcoa_ab_samps_wi$site_vectors, aes(x = Axis.1, y = Axis.2)) +
 #' plant communities and time since restoration are potentially confounded as explanatory variables
 #' of soil microbial communities.  
 #' 
+#' Years since restoration is clearly related to plant communities. Let's look at how composition 
+#' in functional groups changes and see if patterns exist.
+#+ plant_functional_groups_data
+p_ab_trait_tidy <- 
+    p_ab_trait %>% 
+    pivot_longer(-field_name, names_to = "trait", values_to = "cvr") %>% 
+    mutate(category = case_match(trait, 
+                                 c("annual", "biennial", "perennial") ~ "Life History", 
+                                 c("native", "nonnative") ~ "Native Status", 
+                                 .default = "Functional Group")
+           ) %>% 
+    left_join(sites %>% select(-field_key), by = join_by(field_name)) %>% 
+    filter(field_type == "restored") %>% 
+    mutate(yr_since = as.numeric(yr_since), 
+           trait = factor(trait, ordered = TRUE, 
+                          levels = c("C3_grass", "C4_grass", "forb", "legume", "shrubTree", "annual", "biennial", "perennial", "native", "nonnative")))
+#+ plant_fg,fig.align='center',fig_width=7,fig.height=4
+ggplot(p_ab_trait_tidy, aes(x = fct_reorder(field_name, yr_since), y = cvr)) +
+    facet_wrap(vars(category)) +
+    geom_col(aes(fill = trait)) +
+    labs(y = "Percent cover") +
+    scale_fill_manual(name = "Trait", values = c(sequential_hcl(5, "Batlow"), qualitative_hcl(3, "Dark3"), "gray30", "gray70")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5), axis.title.x = element_blank())
+#+ plant_abio,fig.align='center',fig.width=5,fig.height=3.5
+plant_abiotic %>% 
+    group_by(region, field_type, field_name, code) %>% 
+    summarize(cover_avg = mean(cover_pct), .groups = "drop") %>% 
+    left_join(sites %>% select(field_name, yr_since), by = join_by(field_name)) %>% 
+    filter(field_type == "restored") %>% 
+    mutate(yr_since = as.numeric(yr_since)) %>% 
+    ggplot(aes(x = fct_reorder(field_name, yr_since), y = cover_avg)) +
+    geom_col(aes(fill = code)) +
+    labs(y = "Percent cover") +
+    scale_fill_discrete_qualitative(name = "Ground Cover", palette = "Dark3") +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5), axis.title.x = element_blank())
+#' 
 #' #### Blue Mounds fields
 #+ pcoa_ab_samps_bm,message=FALSE,warnings=FALSE
 (pcoa_ab_samps_bm <- 
