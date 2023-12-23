@@ -12,21 +12,9 @@
 #' ---
 #'
 #' # Description
-#' This script will combine and summarize the many single datasets presented so far. 
-#' Several multivariate analyses will be considered. Symmetrical analyses will attempt 
-#' to discern the relative contributions of plant and soil data on site ordination.
-#' Asymmetric constrained analyses will attempt to determine the most significant 
-#' contributors of fungal community difference. 
-#' 
-#' Other data, like microbial biomass and soil water stable aggregates may also be 
-#' considered.
-#' 
-#' All explanatory data are provided as field-based averages. Using them to constrain
-#' microbial community data will require alignment with field-based summary data and cannot
-#' use subsamples of microbial data.
-#' 
-#' Note that the plant data are not available for all sites, leading to some
-#' complication in the analysis. See further notes below. 
+#' This script presents a constrained analysis on restored sites in the Blue Mounds area. 
+#' Lack of replication prevents constraints from being significants across regions, although
+#' this was tried previously (not shown). 
 #' 
 #' # Packages and libraries
 packages_needed = c("tidyverse", "vegan", "conflicted", "knitr", "GGally", "ape", "ade4", "GGally")
@@ -44,171 +32,8 @@ conflict_prefer("filter", "dplyr")
 conflict_prefer("select", "dplyr")
 #' 
 #' # Functions
-#' ## PCoA axes
-#' Produce community axes for use in constrained analyses later. 
-#+ pcoa_function
-pcoa_fun <- function(s, ft=c("restored"), rg, method="bray", binary=FALSE, corr="none") {
-    d <- vegdist(
-        data.frame(
-            s %>% 
-                filter(field_type %in% ft, region %in% rg) %>% 
-                select(-field_type, -region) %>% 
-                select(field_name, where(~ is.numeric(.) && sum(.) > 0)),
-            row.names = 1),
-        method = method,
-        binary = binary)
-    p <- pcoa(d, correction = corr)
-    p_vals <- data.frame(p$values) %>% 
-        rownames_to_column(var = "Dim") %>% 
-        mutate(Dim = as.integer(Dim))
-    p_vec <- data.frame(p$vectors)
-    if(corr == "none" | ncol(p_vals) == 6) {
-        p_ncomp <- with(p_vals, which(Relative_eig < Broken_stick)[1]-1)
-    } else {
-        p_ncomp <- with(p_vals, which(Rel_corr_eig < Broken_stick)[1]-1)
-    }
-    ncomp <- if(p_ncomp <= 2) {2} else {p_ncomp}
-    # Ordination plot
-    scores <- p_vec[, 1:2]
-    # Output data
-    output <- list(correction_note = p$note,
-                   values          = p_vals[1:(ncomp+1), ],
-                   site_vectors    = scores)
-    return(output)
-}
-#' 
-#' ## Constrained analyses
-#' This function performs a db-RDA on microbial data with soil/site covariables and 
-#' forward selects on plant communities, agricultural nutrients, and soil carbon.
-#+ dbrda_function
-dbrda_fun <- function(s, pspe_pcoa="none", ft, rg) {
-    fspe_bray <- vegdist(
-        data.frame(
-            s %>% 
-                filter(field_type %in% ft, region %in% rg) %>% 
-                select(-field_type, -region) %>% 
-                select(field_name, where(~ is.numeric(.) && sum(.) > 0)),
-            row.names = 1),
-        method = "bray")
-    if(is.data.frame(pspe_pcoa) == TRUE) {
-        pspe_ax <- pspe_pcoa %>% 
-            rownames_to_column("field_name") %>% 
-            rename(plant1 = Axis.1, plant2 = Axis.2)
-    }
-    ptr_norm <- decostand(
-        data.frame(
-            ptr %>% 
-                filter(field_type %in% ft, region %in% rg) %>% 
-                select(-field_type, -region),
-            row.names = 1),
-        "normalize") %>% 
-        rownames_to_column("field_name")
-    soil_cov_z <- decostand(
-        data.frame(
-            soil %>% 
-                filter(field_type %in% ft, region %in% rg) %>% 
-                select(-field_type, -region, -OM, -NO3, -P, -K),
-            row.names = 1),
-        "standardize")
-    soil_cov_sc <- data.frame(scores(rda(soil_cov_z), display = "sites")) %>% 
-        rename(soil1 = PC1, soil2 = PC2) %>% 
-        rownames_to_column("field_name")
-    soil_expl_z <- decostand(
-        data.frame(
-            soil %>% 
-                filter(field_type %in% ft, region %in% rg) %>% 
-                select(field_name, OM, NO3, P, K, -field_type, -region),
-            row.names = 1),
-        "standardize") %>% 
-        rownames_to_column("field_name")
-    yr_z <- decostand(
-        data.frame(
-            sites %>% 
-                filter(field_type %in% ft, region %in% rg) %>% 
-                select(field_name, yr_since),
-            row.names = 1),
-        "standardize") %>% 
-        rownames_to_column("field_name")
-    # Create explanatory data frame and covariables matrix
-    env <- if(is.data.frame(pspe_pcoa) == FALSE) {
-        soil_cov_sc %>% 
-            left_join(ptr_norm, by = join_by(field_name)) %>% 
-            left_join(soil_expl_z, by = join_by(field_name)) %>% 
-            left_join(yr_z, by = join_by(field_name)) %>% 
-            column_to_rownames("field_name") %>% 
-            drop_na()
-    } else {
-        soil_cov_sc %>% 
-            left_join(pspe_ax, by = join_by(field_name)) %>% 
-            left_join(soil_expl_z, by = join_by(field_name)) %>% 
-            left_join(yr_z, by = join_by(field_name)) %>% 
-            column_to_rownames("field_name") %>% 
-            drop_na()
-    }
-    covars <- as.matrix(env[, 1:2])
-    expl <- env[, 3:ncol(env)]
-    # Forward select on explanatory data with covariables
-    mod_null <- dbrda(fspe_bray ~ 1 + Condition(covars), data = expl, sqrt.dist = TRUE)
-    mod_full <- dbrda(fspe_bray ~ . + Condition(covars), data = expl, sqrt.dist = TRUE)
-    mod_step <- ordistep(mod_null, 
-                         scope = formula(mod_full), 
-                         direction = "forward", 
-                         permutations = how(nperm = 1999), 
-                         trace = FALSE)
-    mod_r2   <- RsquareAdj(mod_step, permutations = 1999)
-    mod_glax <- anova(mod_step, permutations = how(nperm = 1999))
-    mod_inax <- anova(mod_step, by = "axis", permutations = how(nperm = 1999))
-    # Produce plot data including borderline vars if possible
-    mod_scor <- if(is.data.frame(pspe_pcoa) == FALSE) {
-        scores(
-            dbrda(fspe_bray ~ yr_since + forb + C4_grass + Condition(covars), data = expl, sqrt.dist = TRUE),
-            choices = c(1,2),
-            display = c("bp", "sites"), tidy = FALSE
-        )
-    } else {
-        scores(
-            dbrda(fspe_bray ~ yr_since + K + plant1 + OM + Condition(covars), data = expl, sqrt.dist = TRUE),
-            choices = c(1,2),
-            display = c("bp", "sites"), tidy = FALSE
-        )
-    }
-    return(list(
-        plot_data = mod_scor,
-        select_mod = mod_step,
-        R2 = mod_r2 %>% map(\(x) round(x, 2)),
-        global_axis_test = mod_glax,
-        individual_axis_test = mod_inax
-    ))
-} 
-#' 
-#' ## Plot results
-#+ plot_dbrda_function
-plot_dbrda <- function(site_sc, site_bp) {
-    site_df <- site_sc %>% 
-        data.frame() %>% 
-        rownames_to_column(var = "field_name") %>% 
-        left_join(sites, by = join_by(field_name))
-    bp_df <- site_bp %>% 
-        data.frame() %>% 
-        rownames_to_column(var = "envvar") %>% 
-        mutate(
-            origin = 0,
-            m = dbRDA2 / dbRDA1, 
-            d = sqrt(dbRDA1^2 + dbRDA2^2), 
-            dadd = sqrt((max(dbRDA1)-min(dbRDA2))^2 + (max(dbRDA2)-min(dbRDA2))^2)*0.1,
-            labx = ((d+dadd)*cos(atan(m)))*(dbRDA1/abs(dbRDA1)), 
-            laby = ((d+dadd)*sin(atan(m)))*(dbRDA1/abs(dbRDA1)))
-    ggplot(site_df, aes(x = dbRDA1, y = dbRDA2)) +
-        geom_text(aes(label = field_name)) +
-        geom_segment(data = bp_df, 
-                     aes(x = origin, xend = dbRDA1, y = origin, yend = dbRDA2), 
-                     arrow = arrow(length = unit(3, "mm")),
-                     color = "blue") +
-        geom_text(data = bp_df, 
-                  aes(x = labx, y = laby, label = envvar),
-                  color = "blue") +
-        theme_bw()
-}
+#' Reference the sidecar file `tgr_constrained_functions.R`.
+source("supporting_files/tgr_constrained_functions.R")
 #' 
 #' # Data
 #' ## Site metadata and experimental design
@@ -238,7 +63,7 @@ ptr <- read_csv(paste0(getwd(), "/clean_data/plant_trait_abund.csv"), show_col_t
 #' Trait data isn't included for the plant presence dataset. 
 #' 
 #' ### Plant communities
-#' Both abundance and presence data are used. 
+#' Both abundance and presence data are provided. 
 #' Plant site-species matrices use field names for rows, site metadata will be joined. 
 pspe <- list(
     ab = read_csv(paste0(getwd(), "/clean_data/spe_plant_abund.csv"), show_col_types = FALSE),
@@ -296,161 +121,61 @@ wsa <- read_csv(paste0(getwd(), "/clean_data/wsa.csv"), show_col_types = FALSE)[
 #' 
 #' # Analysis and Results
 #' A great number of symmetric and asymmetric comparative and constrained analyses have been attempted
-#' with these data. The best and simplest is a partial db-RDA, executed with the custom function
-#' `dbrda_fun()`. The strategy is to use most of the soil abiotic data and precipitation as 
-#' covariables to remove site-dependent affects on the microbial community. These covariables are numerous,
-#' so they are simplified by being normalized and then transformed into two PCA axes. Then, variables 
-#' of experimental interest are forward selected. These are the variables that we expect to change 
+#' with these data. The best and simplest is a db-RDA, executed with the custom function
+#' `dbrda_fun()`. The strategy is to forward select variables 
+#' of experimental interest. These are the variables that we expect to change 
 #' as a result of the restoration, or affect the microbial community directly. 
 #' Agricultural nutrients, soil organic matter, and plant community/traits data are in this group. 
 #' 
-#' As before, the plant data aren't consistent across all regions, so the analysis is adjusted accordingly as described 
-#' below. Restricting this analysis to Blue Mounds only is probably the most defensible approach,
-#' but with the covariables, other regions can be included too. It's also possible that a precise 
-#' approach of the permutation scheme (with `how()` from package `permute`) would properly handle the 
-#' design of blocks and replicates used here.  
-#' 
 #' ## Plant community axes
-#' In this analysis, both plant community and traits data can be used. To analyze all regions, community
-#' data based on presence/absence is the only possibility. Let's use `pcoa_fun()` to produce 
-#' community axes for the abundance and presence/absence plant data. 
+#' In this analysis, both plant community and traits data can be used. Let's use `pcoa_fun()` to produce 
+#' community axes for the abundance-based plant data. 
 #+ plant_pcoa_ab
-(pspe_pcoa_ab <- pcoa_fun(pspe$ab, rg = c("BM", "FG", "LP")))
-#+ plant_pcoa_pr
-(pspe_pcoa_pr <- pcoa_fun(pspe$pr, rg = c("BM", "FG", "LP", "FL"), method = "jaccard", binary = TRUE))
+(pspe_pcoa_ab <- pcoa_fun(pspe$ab))
 #' 
-#' ## Microbial communities with explanatory and covariables
-#' Partial db-RDA
+#' ## Microbial communities with constraints
+#' db-RDA in function `dbrda-fun()`
 #' 
-#' ### General fungal community (ITS sequence abundance)
+#' ### Fungal community (ITS sequence abundance)
 #' #### Blue Mounds with plant traits data
 #+ dbrda_bm_tr_its,message=FALSE,warning=FALSE
-dbrda_fun(
-    s = fspe$its,
-    pspe_pcoa = "none",
-    ft = c("restored"),
-    rg = c("BM")
-)[c(3, 4, 5, 2)]
-#' No explanatory variables were selected, and the set of permutations was less than the 1999 selected, suggesting
-#' that this is a pretty small dataset.
-#'
-#' #### Wisconsin sites with plant traits
-#+ dbrda_wi_tr_its
-(dbrda_wi_tr_its <-
-        dbrda_fun(
-            s = fspe$its,
-            pspe_pcoa = "none",
-            ft = c("restored"),
-            rg = c("BM", "LP", "FG")
-        ))[c(3, 4, 5, 2)]
-#' Global and individual axis test for axis 1 were significant.
-#' Years since restoration was selected, and it explains 17% of the variation. Forb and C4 grass are
-#' runners-up but appear highly correlated with years (not shown). Let's view a plot and include
-#' forb and C4 grass for visualization purposes:
-#+ plot_wi_tr_its,fig.align='center'
-plot_dbrda(site_sc = dbrda_wi_tr_its$plot_data$sites,
-           site_bp = dbrda_wi_tr_its$plot_data$biplot)
-write_csv(as_tibble(dbrda_wi_tr_its$plot_data$sites, rownames = "field_name"), "tgr_constrained_files/wi_tr_its_sitelocs.csv")
-write_csv(as_tibble(dbrda_wi_tr_its$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/wi_tr_its_bp.csv")
-#'
-#' #### Wisconsin sites with plant community axes
-#+ dbrda_wi_ab_its
-(
-    dbrda_wi_ab_its <-
-        dbrda_fun(
-            s = fspe$its,
-            pspe_pcoa = pspe_pcoa_ab$site_vectors,
-            ft = c("restored"),
-            rg = c("BM", "LP", "FG")
-        )
-)[c(3, 4, 5, 2)]
-#' Global and individual axis test for axis 1 were significant.
-#' Years since restoration was selected, and it explains 17% of the variation. Since the plant community axes
-#' failed to contribute explanatory power, the result of the test is identical to the previous one.
-#'
-#' #### All regions with plant community axes
-#+ dbrda_all_pr_its
-(
-    dbrda_all_pr_its <-
-        dbrda_fun(
-            s = fspe$its,
-            pspe_pcoa = pspe_pcoa_pr$site_vectors,
-            ft = c("restored"),
-            rg = c("BM", "LP", "FG", "FL")
-        )
-)[c(3, 4, 5, 2)]
-#' Global and individual axis test for axis 1 were significant and strong. Years since restoration was selected
-#' and it explains 16% of the variation here. Potassium and plant axis 1 were runners up. It's nice to see that
-#' the addition of a very different plant community didn't make much of a difference, and that the conditional
-#' variation was 18%. I expected more with how different Fermi soils are. Let's view a plot and add
-#' SOM, plant axis 1, and potassium for visualization purposes.
-#+ plot_all_pr_its,fig.align='center'
-plot_dbrda(site_sc = dbrda_all_pr_its$plot_data$sites,
-           site_bp = dbrda_all_pr_its$plot_data$biplot)
-write_csv(as_tibble(dbrda_all_pr_its$plot_data$sites, rownames = "field_name"), "tgr_constrained_files/all_its_sitelocs.csv")
-write_csv(as_tibble(dbrda_all_pr_its$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/all_its_bp.csv")
-
+(dbrda_bm_tr_its <- dbrda_fun(s = fspe$its, pspe_pcoa = "none"))[c(3, 4, 5, 2)]
+#' The number of sites limits the permutation design, but forb was selected. We know that this variable 
+#' is inversely related to C4 grass and years since restoration.  
+#+ plot_bm_tr_its,fig.align='center'
+plot_dbrda(site_sc = dbrda_bm_tr_its$plot_data$sites,
+           site_bp = dbrda_bm_tr_its$plot_data$biplot)
+write_csv(as_tibble(dbrda_bm_tr_its$plot_data$sites, rownames = "field_name"), "tgr_constrained_files/bm_tr_its_sitelocs.csv")
+write_csv(as_tibble(dbrda_bm_tr_its$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/bm_tr_its_bp.csv")
+#' 
+#' #### Blue Mounds with plant community data
+#+ dbrda_bm_ab_its,message=FALSE,warning=FALSE
+(dbrda_bm_ab_its <- dbrda_fun(s = fspe$its, pspe_pcoa = pspe_pcoa_ab$site_vectors))[c(3, 4, 5, 2)]
+#' The number of sites limits the permutation design, but years since was selected. 
+#+ plot_bm_ab_its,fig.align='center'
+plot_dbrda(site_sc = dbrda_bm_ab_its$plot_data$sites,
+           site_bp = dbrda_bm_ab_its$plot_data$biplot)
+write_csv(as_tibble(dbrda_bm_ab_its$plot_data$sites, rownames = "field_name"), "tgr_constrained_files/bm_ab_its_sitelocs.csv")
+write_csv(as_tibble(dbrda_bm_ab_its$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/bm_ab_its_bp.csv")
 #'
 #' ### AMF community (18S sequence abundance)
 #' #### Blue Mounds with plant traits data
 #+ dbrda_bm_tr_amf,message=FALSE,warning=FALSE
-dbrda_fun(
-    s = fspe$amf,
-    pspe_pcoa = "none",
-    ft = c("restored"),
-    rg = c("BM")
-)[c(3, 4, 5, 2)]
-#' No explanatory variables were selected. Blue Mounds has too few sites for the number of conditional and
-#' explanatory variables used, perhaps.
-#'
-#' #### Wisconsin sites with plant traits data
-#+ dbrda_wi_tr_amf
-(dbrda_wi_tr_amf <-
-        dbrda_fun(
-            s = fspe$amf,
-            pspe_pcoa = "none",
-            ft = c("restored"),
-            rg = c("BM", "LP", "FG")
-        ))[c(3, 4, 5, 2)]
-#' Global and individual axis test for axis 1 were significant in site rank at p<0.01. Years since restoration was the selected
-#' explanatory variable, explaining 23% of the variation in communities. Forb and C4 grass were runners up and
-#' appear highly correlated with years since restoration. Let's view a plot and include
-#' forb and C4 grass for visualization purposes:
-#+ plot_wi_tr_amf,fig.align='center'
-plot_dbrda(site_sc = dbrda_wi_tr_amf$plot_data$sites,
-           site_bp = dbrda_wi_tr_amf$plot_data$biplot)
-#'
-#' #### Wisconsin sites with plant community axes
-#+ dbrda_wi_ab_amf
-(
-    dbrda_wi_ab_amf <-
-        dbrda_fun(
-            s = fspe$amf,
-            pspe_pcoa = pspe_pcoa_ab$site_vectors,
-            ft = c("restored"),
-            rg = c("BM", "LP", "FG")
-        )
-)[c(3, 4, 5, 2)]
-#' Global and individual axis test for axis 1 were significant. Years since restoration was selected with the same
-#' strength as the previous test.
-#'
-#' #### All regions with plant community axes
-#+ dbrda_all_pr_amf
-(
-    dbrda_all_pr_amf <-
-        dbrda_fun(
-            s = fspe$amf,
-            pspe_pcoa = pspe_pcoa_pr$site_vectors,
-            ft = c("restored"),
-            rg = c("BM", "LP", "FG", "FL")
-        )
-)[c(3, 4, 5, 2)]
-#' Global and individual axis test for axis 1 were significant in site rank. Years since restoration explained 21%
-#' of the variation and potassium was a runner up. Let's view a plot and add
-#' SOM, plant axis 1, and potassium for visualization purposes.
-#+ plot_all_pr_amf,fig.align='center'
-plot_dbrda(site_sc = dbrda_all_pr_amf$plot_data$sites,
-           site_bp = dbrda_all_pr_amf$plot_data$biplot)
+(dbrda_bm_tr_amf <- dbrda_fun(s = fspe$amf, pspe_pcoa = "none"))[c(3, 4, 5, 2)]
+#' The number of sites limits the permutation design, but C4 grass was selected. 
+#+ plot_bm_tr_amf,fig.align='center'
+plot_dbrda(site_sc = dbrda_bm_tr_amf$plot_data$sites,
+           site_bp = dbrda_bm_tr_amf$plot_data$biplot)
+write_csv(as_tibble(dbrda_bm_tr_amf$plot_data$sites, rownames = "field_name"), "tgr_constrained_files/bm_tr_amf_sitelocs.csv")
+write_csv(as_tibble(dbrda_bm_tr_amf$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/bm_tr_amf_bp.csv")
+#+ dbrda_bm_ab_amf,message=FALSE,warning=FALSE
+(dbrda_bm_ab_amf <- dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_ab$site_vectors))[c(3, 4, 5, 2)]
+#' The number of sites limits the permutation design, but years since was selected. 
+#+ plot_bm_ab_amf,fig.align='center'
+plot_dbrda(site_sc = dbrda_bm_ab_amf$plot_data$sites,
+           site_bp = dbrda_bm_ab_amf$plot_data$biplot)
+write_csv(as_tibble(dbrda_bm_ab_amf$plot_data$sites, rownames = "field_name"), "tgr_constrained_files/bm_ab_amf_sitelocs.csv")
+write_csv(as_tibble(dbrda_bm_ab_amf$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/bm_ab_amf_bp.csv")
 #'
 #' Microbial communities align with years since restoration across regions and types (general fungi and amf).
 #' 
@@ -465,12 +190,14 @@ plot_dbrda(site_sc = dbrda_all_pr_amf$plot_data$sites,
 #' 
 #' With so many explanatory axes, the analysis failed with raw data, so explanatory data 
 #' will first be transformed into PCoA axes. 
-soil_pcoa <- pcoa_fun(soil, rg = c("BM"), corr = "lingoes")
+#' 
+#' ### Soil fungi variation partitioning
+soil_pcoa <- pcoa_fun(soil, method = "euclidean", corr = "lingoes")
 vpdat_its <- list(
     Y = fspe$its %>% filter(region == "BM", field_type == "restored") %>% 
         select(-field_type, -region) %>% 
         data.frame(., row.names = 1),
-    X1 = pspe_pcoa_ab$site_vectors[-c(3,5,6), ],
+    X1 = pspe_pcoa_ab$site_vectors,
     X2 = soil_pcoa$site_vectors
 )
 vpdat_its_zcols <- vpdat_its %>% map(\(df) which(apply(df, 2, sum) == 0))
@@ -478,8 +205,36 @@ vpdat_its_zcols <- vpdat_its %>% map(\(df) which(apply(df, 2, sum) == 0))
 (vp_its <- varpart(vpdat_its$Y %>% select(-vpdat_its_zcols$Y), vpdat_its$X1, vpdat_its$X2))
 #+ varpart_its_plot,fig.align='center'
 plot(vp_its, digits = 2, bg = c("tan", "palegreen"))
-#' With soil axes accounted for, plant axes explain 9% of the ITS fungal community variation in Blue Mounds. 
-#' The unique explanation made by soil variables is about one-third as much. Neither is a powerful explanation. 
+#' Testing significance of A and B fractions with `rda()`
+anova(rda(vpdat_its$Y %>% select(-vpdat_its_zcols$Y) ~ Axis.1 + Axis.2 + Condition(as.matrix(vpdat_its$X2)), data = vpdat_its$X1))
+#' Plant data not significant
+anova(rda(vpdat_its$Y %>% select(-vpdat_its_zcols$Y) ~ Axis.1 + Axis.2 + Condition(as.matrix(vpdat_its$X1)), data = vpdat_its$X2))
+#' Soil data not significant
+#' 
+#' With other axes accounted for, plant or soil axes explain ~23% of the ITS fungal community variation in Blue Mounds. 
+#' Neither is significant. 
+#' 
+#' ### AMF variation partitioning
+vpdat_amf <- list(
+    Y = fspe$amf %>% filter(region == "BM", field_type == "restored") %>% 
+        select(-field_type, -region) %>% 
+        data.frame(., row.names = 1),
+    X1 = pspe_pcoa_ab$site_vectors,
+    X2 = soil_pcoa$site_vectors
+)
+vpdat_amf_zcols <- vpdat_amf %>% map(\(df) which(apply(df, 2, sum) == 0))
+#+ varpart_amf
+(vp_amf <- varpart(vpdat_amf$Y %>% select(-vpdat_amf_zcols$Y), vpdat_amf$X1, vpdat_amf$X2))
+#+ varpart_amf_plot,fig.align='center'
+plot(vp_amf, digits = 2, bg = c("tan", "palegreen"))
+#' Testing significance of A and B fractions with `rda()`
+anova(rda(vpdat_amf$Y %>% select(-vpdat_amf_zcols$Y) ~ Axis.1 + Axis.2 + Condition(as.matrix(vpdat_amf$X2)), data = vpdat_amf$X1))
+#' Plant data not significant
+anova(rda(vpdat_amf$Y %>% select(-vpdat_amf_zcols$Y) ~ Axis.1 + Axis.2 + Condition(as.matrix(vpdat_amf$X1)), data = vpdat_amf$X2))
+#' Soil data not significant
+#' 
+#' With soil axes accounted for, plant axes explain 31% of the ITS fungal community variation in Blue Mounds. 
+#' The unique explanation made by soil variables is about half as much. Neither is significant. 
 #'
 #' ## Response correlations
 #' Fungal communities varied with years since restoration, C4 grass, and forbs. How do these predictors affect
@@ -522,12 +277,10 @@ ggpairs(
 #+ axis_correlations
 axis_corr <- 
     list(
-        wi_tr_its = dbrda_wi_tr_its$plot_data$sites,
-        wi_ab_its = dbrda_wi_ab_its$plot_data$sites,
-        all_pr_its = dbrda_all_pr_its$plot_data$sites,
-        wi_tr_amf = dbrda_wi_tr_amf$plot_data$sites,
-        wi_ab_amf = dbrda_wi_ab_amf$plot_data$sites,
-        all_pr_amf = dbrda_all_pr_amf$plot_data$sites
+        bm_tr_its = dbrda_bm_tr_its$plot_data$sites,
+        bm_ab_its = dbrda_bm_ab_its$plot_data$sites,
+        bm_tr_amf = dbrda_bm_tr_amf$plot_data$sites,
+        bm_ab_amf = dbrda_bm_ab_amf$plot_data$sites
     ) %>% 
     map( ~ .x %>%
              data.frame() %>% 
@@ -545,11 +298,12 @@ axis_corr_plot <-
             ggpairs(columns = 2:6) +
             theme_bw())
 #' 
-#' Pairs panels were investigated (not shown), and only fungal biomass stood out, as before. Results of 
-#' simple linear models might help interpret the importance of fungal biomass. Unfortunately, the only 
-#' tests of this that showed significance were those that included Fermi, which returns us to the confounded
-#' design and inability statistically to handle this problem due to lack of reps. 
-#' 
-#' This isn't a satisfying analysis. The most defensible chronosequence, the sites from Blue Mounds, 
-#' failed to significantly relate to any constraints, and no functional responses showed any meaningful 
-#' relationship here. 
+#' Pairs panels were investigated (not shown), and nothing new shows up.
+
+
+
+
+
+
+
+
