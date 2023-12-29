@@ -38,7 +38,8 @@ packages_needed = c("tidyverse",
                     "multcomp",
                     "indicspecies",
                     "GUniFrac",
-                    "vegan")
+                    "vegan",
+                    "GGally")
 packages_installed = packages_needed %in% rownames(installed.packages())
 #+ packages,message=FALSE
 if (any(!packages_installed)) {
@@ -137,6 +138,10 @@ spe_meta <- list(
         write_csv(paste0( getwd(), "/clean_data/speTaxa_18S_rfy.csv" ))
 )
 #' 
+#' ## Plant traits data
+#' Used for correlations with guild abundances
+#+ plant_traits_guilds
+ptr_gld <- read_csv("microbial_guild_taxonomy_files/plant_traits_fungal_guilds.csv", show_col_types = FALSE) 
 #' # Analysis and Results
 #' ## ITS sequences
 #' Recall the number of OTUs recovered in each dataset. The effect of rarefying did not change
@@ -487,6 +492,54 @@ lsap_inspan %>%
     )) %>%
     arrange(field_type, -stat) %>% 
     kable(format = "pandoc", caption = "Indicator species of litter saprotrophs")
+#' 
+#' ### Plant traits and guilds
+#' Soil saprotrophs and pathogens are the most abundant guilds, and they vary with years since restoration.
+#' Do they track plant traits? What are the most important plant traits to look at? C4_grass, forb, and let's 
+#' look at baresoil and litter because they track C4 grass pretty well.
+#+ traits_guilds_pairs
+ptr_gld %>% 
+    filter(field_type == "restored", region == "BM") %>% 
+    select(plant_pathogen, soil_saprotroph, C4_grass, forb, BARESOIL, LITTER) %>% 
+    ggpairs()
+#' Litter relationship are driven entirely by Karla Ott's property. Let's zoom in on just the guilds with C4_grasses and forbs.
+#' Let's look at just the relevant relationships: guilds with C4 grasses and forbs.
+by_patho <- 
+    ptr_gld %>% 
+    filter(field_type == "restored", region == "BM") %>% 
+    select(plant_pathogen, C4_grass, forb) %>% 
+    pivot_longer(cols = C4_grass:forb, names_to = "fgrp", values_to = "pct_cvr") %>% 
+    mutate(guild = "plant_pathogen")
+spl_patho <- by_patho %>%  split(by_patho$fgrp)
+mod_patho <- spl_patho %>% map(\(df) summary(lm(pct_cvr ~ plant_pathogen, data = df)))
+#+ patho_results
+mod_patho %>% map(\(x) x$coefficients)
+mod_patho %>% map(\(x) x$adj.r.squared)
+by_sapro <- 
+    ptr_gld %>% 
+    filter(field_type == "restored", region == "BM") %>% 
+    select(soil_saprotroph, C4_grass, forb) %>% 
+    pivot_longer(cols = C4_grass:forb, names_to = "fgrp", values_to = "pct_cvr") %>% 
+    mutate(guild = "soil_saprotroph")
+spl_sapro <- by_sapro %>%  split(by_sapro$fgrp)
+mod_sapro <- spl_sapro %>% map(\(df) summary(lm(pct_cvr ~ soil_saprotroph, data = df)))
+#+ sapro_results
+mod_sapro %>% map(\(x) x$coefficients)
+mod_sapro %>% map(\(x) x$adj.r.squared)
+#+ fgrp_guild_corr_plot
+bind_rows(
+    by_patho %>% rename(seq_abund = plant_pathogen),
+    by_sapro %>% rename(seq_abund = soil_saprotroph)
+) %>% 
+    mutate(sig = case_when(fgrp %in% "forb" & guild %in% "soil_saprotroph" ~ "2", .default = "1")) %>% 
+    ggplot(aes(x = pct_cvr, y = seq_abund)) +
+    facet_grid(cols = vars(fgrp), rows = vars(guild), scales = "free") +
+    geom_smooth(aes(linetype = sig), color = "black", linewidth = 0.6, method = "lm", se = FALSE) +
+    geom_point(fill = "#5CBD92", size = 3, shape = 21) +
+    labs(x = "Percent cover", y = "Sequence abundance") +
+    scale_linetype_manual(values = c("solid", "blank")) +
+    theme_bw() +
+    theme(legend.position = "none")
 #' 
 #' ## AMF
 #' Recall the number of OTUs recovered in each dataset. The effect of rarefying did not change
