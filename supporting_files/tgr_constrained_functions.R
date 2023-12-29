@@ -50,15 +50,15 @@ pcoa_fun <- function(s, ft=c("restored"), rg=c("BM"), method="bray", binary=FALS
 #' This function performs a db-RDA on microbial data with soil/site covariables and 
 #' forward selects on plant communities, agricultural nutrients, and soil carbon.
 #+ dbrda_function
-dbrda_fun <- function(s, pspe_pcoa="none", ft=c("restored"), rg=c("BM")) {
-    fspe_bray <- vegdist(
+dbrda_fun <- function(s, pspe_pcoa="none", ft=c("restored"), rg=c("BM"), method="bray") {
+    fspe_dist <- vegdist(
         data.frame(
             s %>% 
                 filter(field_type %in% ft, region %in% rg) %>% 
                 select(-field_type, -region) %>% 
                 select(field_name, where(~ is.numeric(.) && sum(.) > 0)),
             row.names = 1),
-        method = "bray")
+        method = method)
     if(is.data.frame(pspe_pcoa) == TRUE) {
         pspe_ax <- pspe_pcoa %>% 
             rownames_to_column("field_name") %>% 
@@ -114,28 +114,44 @@ dbrda_fun <- function(s, pspe_pcoa="none", ft=c("restored"), rg=c("BM")) {
             column_to_rownames("field_name") %>% 
             drop_na()
     }
-    # Forward select on explanatory data with covariables
-    mod_null <- dbrda(fspe_bray ~ 1, data = env, sqrt.dist = TRUE)
-    mod_full <- dbrda(fspe_bray ~ ., data = env, sqrt.dist = TRUE)
-    set.seed <- 395
-    mod_step <- ordistep(mod_null, 
-                         scope = formula(mod_full), 
-                         direction = "forward", 
-                         permutations = how(nperm = 1999), 
-                         trace = FALSE)
-    mod_r2   <- RsquareAdj(mod_step, permutations = 1999)
-    mod_glax <- anova(mod_step, permutations = how(nperm = 1999))
-    mod_inax <- anova(mod_step, by = "axis", permutations = how(nperm = 1999))
+    regions <- pspe$pr %>% filter(field_type %in% ft, region %in% rg)
+    # Forward select on explanatory data with covariables or conditions, if applicable
+    if(length(rg) > 1) {
+        ctrl <- how(within = Within(type = "free"), blocks = with(regions, region), nperm = 1999)
+        mod_null <- dbrda(fspe_dist ~ 1 + Condition(regions$region), data = env, sqrt.dist = TRUE)
+        mod_full <- dbrda(fspe_dist ~ . + Condition(regions$region), data = env, sqrt.dist = TRUE)
+        set.seed <- 395
+        mod_step <- ordistep(mod_null, 
+                             scope = formula(mod_full), 
+                             direction = "forward", 
+                             permutations = ctrl, 
+                             trace = FALSE)
+        mod_r2   <- RsquareAdj(mod_step, permutations = 1999)
+        mod_glax <- anova(mod_step, permutations = ctrl)
+        mod_inax <- anova(mod_step, by = "axis", permutations = ctrl)
+    } else {
+        mod_null <- dbrda(fspe_dist ~ 1, data = env, sqrt.dist = TRUE)
+        mod_full <- dbrda(fspe_dist ~ ., data = env, sqrt.dist = TRUE)
+        set.seed <- 395
+        mod_step <- ordistep(mod_null, 
+                             scope = formula(mod_full), 
+                             direction = "forward", 
+                             permutations = how(nperm = 1999), 
+                             trace = FALSE)
+        mod_r2   <- RsquareAdj(mod_step, permutations = 1999)
+        mod_glax <- anova(mod_step, permutations = how(nperm = 1999))
+        mod_inax <- anova(mod_step, by = "axis", permutations = how(nperm = 1999))
+    }
     # Produce plot data including borderline vars if possible
     mod_scor <- if(is.data.frame(pspe_pcoa) == FALSE) {
         scores(
-            dbrda(fspe_bray ~ yr_since + forb + C4_grass, data = env, sqrt.dist = TRUE),
+            dbrda(fspe_dist ~ yr_since + forb + C4_grass, data = env, sqrt.dist = TRUE),
             choices = c(1,2),
             display = c("bp", "sites"), tidy = FALSE
         )
     } else {
         scores(
-            dbrda(fspe_bray ~ yr_since + plant1 + OM, data = env, sqrt.dist = TRUE),
+            dbrda(fspe_dist ~ yr_since + plant1 + OM + K, data = env, sqrt.dist = TRUE),
             choices = c(1,2),
             display = c("bp", "sites"), tidy = FALSE
         )

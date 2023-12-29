@@ -2,7 +2,7 @@ Constrained and summary analysis
 ================
 Beau Larkin
 
-Last updated: 22 December, 2023
+Last updated: 29 December, 2023
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -263,7 +263,7 @@ db-RDA in function `dbrda-fun()`
     ## Permutation: free
     ## Number of permutations: 5039
     ## 
-    ## Model: dbrda(formula = fspe_bray ~ forb, data = env, sqrt.dist = TRUE)
+    ## Model: dbrda(formula = fspe_dist ~ forb, data = env, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)    
     ## Model     1  0.50352 1.5272  5e-04 ***
     ## Residual  5  1.64845                  
@@ -276,15 +276,15 @@ db-RDA in function `dbrda-fun()`
     ## Permutation: free
     ## Number of permutations: 5039
     ## 
-    ## Model: dbrda(formula = fspe_bray ~ forb, data = env, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.50352 1.5272 0.0015 **
-    ## Residual  5  1.64845                 
+    ## Model: dbrda(formula = fspe_dist ~ forb, data = env, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)    
+    ## dbRDA1    1  0.50352 1.5272  0.001 ***
+    ## Residual  5  1.64845                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $select_mod
-    ## Call: dbrda(formula = fspe_bray ~ forb, data = env, sqrt.dist = TRUE)
+    ## Call: dbrda(formula = fspe_dist ~ forb, data = env, sqrt.dist = TRUE)
     ## 
     ##               Inertia Proportion Rank
     ## Total          2.1520     1.0000     
@@ -335,9 +335,9 @@ write_csv(as_tibble(dbrda_bm_tr_its$plot_data$biplot, rownames = "envvar"), "tgr
     ## Permutation: free
     ## Number of permutations: 5039
     ## 
-    ## Model: dbrda(formula = fspe_bray ~ yr_since, data = env, sqrt.dist = TRUE)
+    ## Model: dbrda(formula = fspe_dist ~ yr_since, data = env, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.49733 1.5029 0.0055 **
+    ## Model     1  0.49733 1.5029 0.0025 **
     ## Residual  5  1.65463                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -348,15 +348,15 @@ write_csv(as_tibble(dbrda_bm_tr_its$plot_data$biplot, rownames = "envvar"), "tgr
     ## Permutation: free
     ## Number of permutations: 5039
     ## 
-    ## Model: dbrda(formula = fspe_bray ~ yr_since, data = env, sqrt.dist = TRUE)
+    ## Model: dbrda(formula = fspe_dist ~ yr_since, data = env, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.49733 1.5029 0.0035 **
+    ## dbRDA1    1  0.49733 1.5029 0.0055 **
     ## Residual  5  1.65463                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $select_mod
-    ## Call: dbrda(formula = fspe_bray ~ yr_since, data = env, sqrt.dist =
+    ## Call: dbrda(formula = fspe_dist ~ yr_since, data = env, sqrt.dist =
     ## TRUE)
     ## 
     ##               Inertia Proportion Rank
@@ -388,6 +388,81 @@ write_csv(as_tibble(dbrda_bm_ab_its$plot_data$sites, rownames = "field_name"), "
 write_csv(as_tibble(dbrda_bm_ab_its$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/bm_ab_its_bp.csv")
 ```
 
+#### Blue Mounds and Fermi with plant community data
+
+``` r
+(dbrda_bmf_pr_its <- dbrda_fun(s = fspe$its, pspe_pcoa = pcoa_fun(pspe$pr, rg = c("BM", "FL"), method = "jaccard")$site_vectors, rg = c("BM", "FL")))[c(3, 4, 5, 2)]
+```
+
+    ## $R2
+    ## $R2$r.squared
+    ## [1] 0.15
+    ## 
+    ## $R2$adj.r.squared
+    ## [1] 0.06
+    ## 
+    ## 
+    ## $global_axis_test
+    ## Permutation test for dbrda under reduced model
+    ## Blocks:  with(regions, region) 
+    ## Permutation: free
+    ## Number of permutations: 1999
+    ## 
+    ## Model: dbrda(formula = fspe_dist ~ Condition(regions$region) + yr_since, data = env, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## Model     1   0.4904 1.5682 0.0035 **
+    ## Residual  7   2.1890                 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $individual_axis_test
+    ## Permutation test for dbrda under reduced model
+    ## Forward tests for axes
+    ## Blocks:  with(regions, region) 
+    ## Permutation: free
+    ## Number of permutations: 1999
+    ## 
+    ## Model: dbrda(formula = fspe_dist ~ Condition(regions$region) + yr_since, data = env, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## dbRDA1    1   0.4904 1.5682  0.005 **
+    ## Residual  7   2.1890                 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $select_mod
+    ## Call: dbrda(formula = fspe_dist ~ Condition(regions$region) + yr_since,
+    ## data = env, sqrt.dist = TRUE)
+    ## 
+    ##               Inertia Proportion Rank
+    ## Total          3.2439     1.0000     
+    ## Conditional    0.5645     0.1740    1
+    ## Constrained    0.4904     0.1512    1
+    ## Unconstrained  2.1889     0.6748    7
+    ## Inertia is Bray distance 
+    ## 
+    ## Eigenvalues for constrained axes:
+    ## dbRDA1 
+    ## 0.4904 
+    ## 
+    ## Eigenvalues for unconstrained axes:
+    ##   MDS1   MDS2   MDS3   MDS4   MDS5   MDS6   MDS7 
+    ## 0.4162 0.3693 0.3342 0.3149 0.2673 0.2474 0.2397
+
+Years since still holds, but I’m not convinced that this is correct.
+With only three sites in Fermi?
+
+``` r
+plot_dbrda(site_sc = dbrda_bmf_pr_its$plot_data$sites,
+           site_bp = dbrda_bmf_pr_its$plot_data$biplot)
+```
+
+<img src="tgr_constrained_files/figure-gfm/plot_bmf_pr_its-1.png" style="display: block; margin: auto;" />
+
+``` r
+write_csv(as_tibble(dbrda_bmf_pr_its$plot_data$sites, rownames = "field_name"), "tgr_constrained_files/bmf_pr_its_sitelocs.csv")
+write_csv(as_tibble(dbrda_bmf_pr_its$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/bmf_pr_its_bp.csv")
+```
+
 ### AMF community (18S sequence abundance)
 
 #### Blue Mounds with plant traits data
@@ -409,9 +484,9 @@ write_csv(as_tibble(dbrda_bm_ab_its$plot_data$biplot, rownames = "envvar"), "tgr
     ## Permutation: free
     ## Number of permutations: 5039
     ## 
-    ## Model: dbrda(formula = fspe_bray ~ C4_grass, data = env, sqrt.dist = TRUE)
+    ## Model: dbrda(formula = fspe_dist ~ C4_grass, data = env, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)    
-    ## Model     1  0.49118 2.0384  0.001 ***
+    ## Model     1  0.49118 2.0384  5e-04 ***
     ## Residual  5  1.20483                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -422,7 +497,7 @@ write_csv(as_tibble(dbrda_bm_ab_its$plot_data$biplot, rownames = "envvar"), "tgr
     ## Permutation: free
     ## Number of permutations: 5039
     ## 
-    ## Model: dbrda(formula = fspe_bray ~ C4_grass, data = env, sqrt.dist = TRUE)
+    ## Model: dbrda(formula = fspe_dist ~ C4_grass, data = env, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)    
     ## dbRDA1    1  0.49118 2.0384  5e-04 ***
     ## Residual  5  1.20483                  
@@ -430,7 +505,7 @@ write_csv(as_tibble(dbrda_bm_ab_its$plot_data$biplot, rownames = "envvar"), "tgr
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $select_mod
-    ## Call: dbrda(formula = fspe_bray ~ C4_grass, data = env, sqrt.dist =
+    ## Call: dbrda(formula = fspe_dist ~ C4_grass, data = env, sqrt.dist =
     ## TRUE)
     ## 
     ##               Inertia Proportion Rank
@@ -462,6 +537,8 @@ write_csv(as_tibble(dbrda_bm_tr_amf$plot_data$sites, rownames = "field_name"), "
 write_csv(as_tibble(dbrda_bm_tr_amf$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/bm_tr_amf_bp.csv")
 ```
 
+#### Blue Mounds with plant community data
+
 ``` r
 (dbrda_bm_ab_amf <- dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_ab$site_vectors))[c(3, 4, 5, 2)]
 ```
@@ -479,9 +556,9 @@ write_csv(as_tibble(dbrda_bm_tr_amf$plot_data$biplot, rownames = "envvar"), "tgr
     ## Permutation: free
     ## Number of permutations: 5039
     ## 
-    ## Model: dbrda(formula = fspe_bray ~ yr_since, data = env, sqrt.dist = TRUE)
+    ## Model: dbrda(formula = fspe_dist ~ yr_since, data = env, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.46481 1.8876  0.012 *
+    ## Model     1  0.46481 1.8876 0.0145 *
     ## Residual  5  1.23121                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -492,15 +569,15 @@ write_csv(as_tibble(dbrda_bm_tr_amf$plot_data$biplot, rownames = "envvar"), "tgr
     ## Permutation: free
     ## Number of permutations: 5039
     ## 
-    ## Model: dbrda(formula = fspe_bray ~ yr_since, data = env, sqrt.dist = TRUE)
+    ## Model: dbrda(formula = fspe_dist ~ yr_since, data = env, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## dbRDA1    1  0.46481 1.8876  0.015 *
+    ## dbRDA1    1  0.46481 1.8876 0.0155 *
     ## Residual  5  1.23121                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $select_mod
-    ## Call: dbrda(formula = fspe_bray ~ yr_since, data = env, sqrt.dist =
+    ## Call: dbrda(formula = fspe_dist ~ yr_since, data = env, sqrt.dist =
     ## TRUE)
     ## 
     ##               Inertia Proportion Rank
@@ -530,6 +607,81 @@ plot_dbrda(site_sc = dbrda_bm_ab_amf$plot_data$sites,
 ``` r
 write_csv(as_tibble(dbrda_bm_ab_amf$plot_data$sites, rownames = "field_name"), "tgr_constrained_files/bm_ab_amf_sitelocs.csv")
 write_csv(as_tibble(dbrda_bm_ab_amf$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/bm_ab_amf_bp.csv")
+```
+
+#### Blue Mounds and Fermi with plant community data
+
+``` r
+(dbrda_bmf_pr_amf <- dbrda_fun(s = fspe$amf, pspe_pcoa = pcoa_fun(pspe$pr, rg = c("BM", "FL"), method = "jaccard")$site_vectors, rg = c("BM", "FL")))[c(3, 4, 5, 2)]
+```
+
+    ## $R2
+    ## $R2$r.squared
+    ## [1] 0.19
+    ## 
+    ## $R2$adj.r.squared
+    ## [1] 0.12
+    ## 
+    ## 
+    ## $global_axis_test
+    ## Permutation test for dbrda under reduced model
+    ## Blocks:  with(regions, region) 
+    ## Permutation: free
+    ## Number of permutations: 1999
+    ## 
+    ## Model: dbrda(formula = fspe_dist ~ Condition(regions$region) + yr_since, data = env, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## Model     1  0.46705 2.1407  0.008 **
+    ## Residual  7  1.52723                 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $individual_axis_test
+    ## Permutation test for dbrda under reduced model
+    ## Forward tests for axes
+    ## Blocks:  with(regions, region) 
+    ## Permutation: free
+    ## Number of permutations: 1999
+    ## 
+    ## Model: dbrda(formula = fspe_dist ~ Condition(regions$region) + yr_since, data = env, sqrt.dist = TRUE)
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## dbRDA1    1  0.46705 2.1407  0.009 **
+    ## Residual  7  1.52723                 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## $select_mod
+    ## Call: dbrda(formula = fspe_dist ~ Condition(regions$region) + yr_since,
+    ## data = env, sqrt.dist = TRUE)
+    ## 
+    ##               Inertia Proportion Rank
+    ## Total          2.4146     1.0000     
+    ## Conditional    0.4203     0.1741    1
+    ## Constrained    0.4671     0.1934    1
+    ## Unconstrained  1.5272     0.6325    7
+    ## Inertia is Bray distance 
+    ## 
+    ## Eigenvalues for constrained axes:
+    ## dbRDA1 
+    ## 0.4671 
+    ## 
+    ## Eigenvalues for unconstrained axes:
+    ##   MDS1   MDS2   MDS3   MDS4   MDS5   MDS6   MDS7 
+    ## 0.3973 0.2826 0.2548 0.1896 0.1621 0.1233 0.1174
+
+Years since still holds, but I’m not convinced that this is correct.
+With only three sites in Fermi?
+
+``` r
+plot_dbrda(site_sc = dbrda_bmf_pr_amf$plot_data$sites,
+           site_bp = dbrda_bmf_pr_amf$plot_data$biplot)
+```
+
+<img src="tgr_constrained_files/figure-gfm/plot_bmf_pr_amf-1.png" style="display: block; margin: auto;" />
+
+``` r
+write_csv(as_tibble(dbrda_bmf_pr_amf$plot_data$sites, rownames = "field_name"), "tgr_constrained_files/bmf_pr_amf_sitelocs.csv")
+write_csv(as_tibble(dbrda_bmf_pr_amf$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/bmf_pr_amf_bp.csv")
 ```
 
 Microbial communities align with years since restoration across regions
@@ -613,7 +765,7 @@ anova(rda(vpdat_its$Y %>% select(-vpdat_its_zcols$Y) ~ Axis.1 + Axis.2 + Conditi
 <div data-pagedtable="false">
 
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"16723865","3":"1.683776","4":"0.174","_rn_":"Model"},{"1":"2","2":"9932358","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"16723865","3":"1.683776","4":"0.149","_rn_":"Model"},{"1":"2","2":"9932358","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 
 </div>
@@ -629,7 +781,7 @@ anova(rda(vpdat_its$Y %>% select(-vpdat_its_zcols$Y) ~ Axis.1 + Axis.2 + Conditi
 <div data-pagedtable="false">
 
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"16961980","3":"1.70775","4":"0.115","_rn_":"Model"},{"1":"2","2":"9932358","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"16961980","3":"1.70775","4":"0.124","_rn_":"Model"},{"1":"2","2":"9932358","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 
 </div>
@@ -701,7 +853,7 @@ anova(rda(vpdat_amf$Y %>% select(-vpdat_amf_zcols$Y) ~ Axis.1 + Axis.2 + Conditi
 <div data-pagedtable="false">
 
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"6051491","3":"1.906792","4":"0.167","_rn_":"Model"},{"1":"2","2":"3173651","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"6051491","3":"1.906792","4":"0.174","_rn_":"Model"},{"1":"2","2":"3173651","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 
 </div>
@@ -717,7 +869,7 @@ anova(rda(vpdat_amf$Y %>% select(-vpdat_amf_zcols$Y) ~ Axis.1 + Axis.2 + Conditi
 <div data-pagedtable="false">
 
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"4476907","3":"1.410649","4":"0.293","_rn_":"Model"},{"1":"2","2":"3173651","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"4476907","3":"1.410649","4":"0.267","_rn_":"Model"},{"1":"2","2":"3173651","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 
 </div>
@@ -780,11 +932,10 @@ sites from Fermi included, this relationship is fairly strong. Fermi
 sites, with abundant SOM, are probably influencing this result more than
 years are, though.
 
-\*\* What if we correlate the constrained axes with responses?\*\* This
-might help a little by reordering sites based on time since restoration
-*and* community differences, reducing the leverage of sites from Fermi.
-Let’s arrange the first axes from each dbRDA and join them with response
-data.
+**What if we correlate the constrained axes with responses?** This might
+help a little by reordering sites based on time since restoration *and*
+community differences, reducing the leverage of sites from Fermi. Let’s
+arrange the first axes from each dbRDA and join them with response data.
 
 ``` r
 axis_corr <- 

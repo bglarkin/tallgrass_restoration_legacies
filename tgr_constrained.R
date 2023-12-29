@@ -157,6 +157,15 @@ plot_dbrda(site_sc = dbrda_bm_ab_its$plot_data$sites,
            site_bp = dbrda_bm_ab_its$plot_data$biplot)
 write_csv(as_tibble(dbrda_bm_ab_its$plot_data$sites, rownames = "field_name"), "tgr_constrained_files/bm_ab_its_sitelocs.csv")
 write_csv(as_tibble(dbrda_bm_ab_its$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/bm_ab_its_bp.csv")
+#' #### Blue Mounds and Fermi with plant community data
+#+ dbrda_bmf_pr_its,message=FALSE,warning=FALSE
+(dbrda_bmf_pr_its <- dbrda_fun(s = fspe$its, pspe_pcoa = pcoa_fun(pspe$pr, rg = c("BM", "FL"), method = "jaccard")$site_vectors, rg = c("BM", "FL")))[c(3, 4, 5, 2)]
+#' Years since still holds, but I'm not convinced that this is correct. With only three sites in Fermi?  
+#+ plot_bmf_pr_its,fig.align='center'
+plot_dbrda(site_sc = dbrda_bmf_pr_its$plot_data$sites,
+           site_bp = dbrda_bmf_pr_its$plot_data$biplot)
+write_csv(as_tibble(dbrda_bmf_pr_its$plot_data$sites, rownames = "field_name"), "tgr_constrained_files/bmf_pr_its_sitelocs.csv")
+write_csv(as_tibble(dbrda_bmf_pr_its$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/bmf_pr_its_bp.csv")
 #'
 #' ### AMF community (18S sequence abundance)
 #' #### Blue Mounds with plant traits data
@@ -168,6 +177,7 @@ plot_dbrda(site_sc = dbrda_bm_tr_amf$plot_data$sites,
            site_bp = dbrda_bm_tr_amf$plot_data$biplot)
 write_csv(as_tibble(dbrda_bm_tr_amf$plot_data$sites, rownames = "field_name"), "tgr_constrained_files/bm_tr_amf_sitelocs.csv")
 write_csv(as_tibble(dbrda_bm_tr_amf$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/bm_tr_amf_bp.csv")
+#' #### Blue Mounds with plant community data
 #+ dbrda_bm_ab_amf,message=FALSE,warning=FALSE
 (dbrda_bm_ab_amf <- dbrda_fun(s = fspe$amf, pspe_pcoa = pspe_pcoa_ab$site_vectors))[c(3, 4, 5, 2)]
 #' The number of sites limits the permutation design, but years since was selected. 
@@ -176,6 +186,15 @@ plot_dbrda(site_sc = dbrda_bm_ab_amf$plot_data$sites,
            site_bp = dbrda_bm_ab_amf$plot_data$biplot)
 write_csv(as_tibble(dbrda_bm_ab_amf$plot_data$sites, rownames = "field_name"), "tgr_constrained_files/bm_ab_amf_sitelocs.csv")
 write_csv(as_tibble(dbrda_bm_ab_amf$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/bm_ab_amf_bp.csv")
+#' #### Blue Mounds and Fermi with plant community data
+#+ dbrda_bmf_pr_amf,message=FALSE,warning=FALSE
+(dbrda_bmf_pr_amf <- dbrda_fun(s = fspe$amf, pspe_pcoa = pcoa_fun(pspe$pr, rg = c("BM", "FL"), method = "jaccard")$site_vectors, rg = c("BM", "FL")))[c(3, 4, 5, 2)]
+#' Years since still holds, but I'm not convinced that this is correct. With only three sites in Fermi?  
+#+ plot_bmf_pr_amf,fig.align='center'
+plot_dbrda(site_sc = dbrda_bmf_pr_amf$plot_data$sites,
+           site_bp = dbrda_bmf_pr_amf$plot_data$biplot)
+write_csv(as_tibble(dbrda_bmf_pr_amf$plot_data$sites, rownames = "field_name"), "tgr_constrained_files/bmf_pr_amf_sitelocs.csv")
+write_csv(as_tibble(dbrda_bmf_pr_amf$plot_data$biplot, rownames = "envvar"), "tgr_constrained_files/bmf_pr_amf_bp.csv")
 #'
 #' Microbial communities align with years since restoration across regions and types (general fungi and amf).
 #' 
@@ -271,7 +290,7 @@ ggpairs(
 #' positively with fungal biomass, and with sites from Fermi included, this relationship is fairly strong.
 #' Fermi sites, with abundant SOM, are probably influencing this result more than years are, though. 
 #' 
-#' ** What if we correlate the constrained axes with responses?** This might help a little by 
+#' **What if we correlate the constrained axes with responses?** This might help a little by 
 #' reordering sites based on time since restoration *and* community differences, reducing the leverage of
 #' sites from Fermi. Let's arrange the first axes from each dbRDA and join them with response data. 
 #+ axis_correlations
