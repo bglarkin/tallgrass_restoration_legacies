@@ -284,9 +284,9 @@ Given the suitability of Blue Mounds restored fields for chronosequence methodol
 The soil data used as covariables in this analysis explained 24% of the variation among sites. Explanatory variables were weaker at 17%, and 59% of the variation remains unexplained by these data. Years since restoration was the only variable that significantly correlated with turnover in soil fungal communities, and the relationship was weak ($R^2_{Adj}=0.09,~p=0.018$). The abundance of C4 grasses increased, and the abundance of forbs decreased, with years since restoration. Because these variables were highly collinear with years since restoration, they were eliminated in forward selection, but they likely help explain a change over time that's associated with fungal community turnover (Fig \@ref(fig:dbRDA-wi)). 
 
 ```{r dbRDA-wi,fig.width=4.5,fig.height=3.5,fig.cap="Results of a distance-based redundancy analysis of soil fungal community composition in restored fields in Wisconsin regions. Icons represent the constrained locations of fields. Solid blue arrows show the direction and strength of associations between communities and explanatory variables. Dotted blue arrows show correlations with strong, but non-significant explanatory variables. Axis 1 is significant based on 1999 permutations at p=0.011."}
-wi_sc <- read_csv("tgr_constrained_files/wi_tr_its_sitelocs.csv", show_col_types = FALSE) %>% 
+bm_sc <- read_csv("tgr_constrained_files/bm_ab_its_sitelocs.csv", show_col_types = FALSE) %>% 
         left_join(sites, by = join_by(field_name))
-wi_bp <- read_csv("tgr_constrained_files/wi_tr_its_bp.csv", show_col_types = FALSE) %>% 
+bm_bp <- read_csv("tgr_constrained_files/bm_ab_its_bp.csv", show_col_types = FALSE) %>% 
         mutate(
             origin = 0,
             m = dbRDA2 / dbRDA1, 
@@ -294,20 +294,20 @@ wi_bp <- read_csv("tgr_constrained_files/wi_tr_its_bp.csv", show_col_types = FAL
             dadd = sqrt((max(dbRDA1)-min(dbRDA2))^2 + (max(dbRDA2)-min(dbRDA2))^2)*0.1,
             labx = ((d+dadd)*cos(atan(m)))*(dbRDA1/abs(dbRDA1)), 
             laby = ((d+dadd)*sin(atan(m)))*(dbRDA1/abs(dbRDA1)))
-ggplot(wi_sc, aes(x = dbRDA1, y = dbRDA2)) + 
+ggplot(bm_sc, aes(x = dbRDA1, y = dbRDA2)) + 
     geom_vline(xintercept = 0, linewidth = 0.1) +
     geom_hline(yintercept = 0, linewidth = 0.1) +
-    geom_segment(data = wi_bp, 
+    geom_segment(data = bm_bp, 
                  aes(x = origin, xend = dbRDA1, y = origin, yend = dbRDA2), 
                  arrow = arrow(angle = 20, length = unit(3, "mm"), type = "closed"),
-                 color = "blue", linetype = c(1,3,3)) +
-    geom_point(aes(shape = region), fill = "#5CBD92", size = 3) +
-    geom_text(data = wi_bp, 
+                 color = "blue", linetype = c(1,3,3,3)) +
+    geom_point(shape = 21, fill = "#5CBD92", size = 3) +
+    geom_text(data = bm_bp, 
               aes(x = labx, y = laby, label = envvar),
-              nudge_x = c(0.2, 0, 0.2),
+              nudge_y = c(-0.08, 0.15, 0, 0),
+              nudge_x = c(0.2, 0.1, 0, 0),
               color = "blue") +
-    scale_shape_manual(name = "Region", values = c(21, 22, 24)) +
-    labs(x = "dbRDA axis 1 (17%)", y = "MDS axis 1 (23%)", ) +
+    labs(x = "dbRDA axis 1 (XX%)", y = "MDS axis 1 (XX%)", ) +
     theme_bw()
 
 ```
