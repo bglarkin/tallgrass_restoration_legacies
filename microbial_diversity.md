@@ -2,7 +2,7 @@ Microbial data: overview of data, diversity statistics
 ================
 Beau Larkin
 
-Last updated: 12 December, 2023
+Last updated: 02 January, 2024
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)

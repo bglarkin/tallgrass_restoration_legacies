@@ -560,22 +560,22 @@ pldiv_gld_pfc <-
     select(field_name, N0) %>% 
     left_join(ptr_gld, by = join_by(field_name)) %>% 
     select(field_name, region, C4_grass, forb, plant_pathogen, soil_saprotroph, N0)
-#= pldiv_gld_pfc_plot
+#+ pldiv_gld_pfc_plot,fig.width=9,fig.height=9
 ggpairs(pldiv_gld_pfc, columns = 3:7)
 #' Plant species richness is negatively related to saprotrophs, but not to pathogens. Since these 
 #' variables are all related, let's see which ones are stronger against the redsiduals of the others.
-mod_patho <- lm(plant_pathogen ~ N0 + C4_grass + forb, data = pldiv_gld_pfc)
-summary(mod_patho)
+mod_div_patho <- lm(plant_pathogen ~ N0 + C4_grass + forb, data = pldiv_gld_pfc)
+summary(mod_div_patho)
 #' No individual variable is significant with pathogens. Looking back at the pairs plot, C4 grasses and forbs, 
 #' as direct effects, are the most valuable. The AV Plots, below, reveal that forbs have the strongest relationship. 
 #+ mod_patho_avplot
-avPlots(mod_patho)
-mod_sapro <- lm(soil_saprotroph ~ N0 + C4_grass + forb, data = pldiv_gld_pfc)
-summary(mod_sapro)
+avPlots(mod_div_patho)
+mod_div_sapro <- lm(soil_saprotroph ~ N0 + C4_grass + forb, data = pldiv_gld_pfc)
+summary(mod_div_sapro)
 #' Plant species richness and forbs are heavily related to saprotrophs. As richness increases, saprotrophs plummet.
 #' But this is likely still mediated by C4 grasses (or forbs), despite how the numbers here work out. 
 #+ mod_sapro_avplot
-avPlots(mod_sapro)
+avPlots(mod_div_sapro)
 #' 
 #' ## AMF
 #' Recall the number of OTUs recovered in each dataset. The effect of rarefying did not change

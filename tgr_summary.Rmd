@@ -27,7 +27,9 @@ packages_needed = c("tidyverse",
                     "png",
                     "knitr",
                     "conflicted",
-                    "formatR")
+                    "formatR",
+                    "car",
+                    "GGally")
 packages_installed = packages_needed %in% rownames(installed.packages())
 if (any(!packages_installed)) {
     install.packages(packages_needed[!packages_installed])
@@ -275,6 +277,8 @@ We want to understand how environmental/explanatory variables, such as soil chem
 
 Initial attempts used soil covariables as site controls in a partial db-RDA while N, P, K, OM, plant composition data, and years since restoration were tested. Due to inadequate replication within regions in Wisconsin, this test failed, and it also failed within Blue Mounds, likely due to a combination of low replication and a large amount of variation explained by covariables. 
 
+\ 
+
 Returning to our chronosequence in Blue Mounds, all soil variables, plant composition data, and years since restoration were included in a simple forward selection process in db-RDA. 
 
 Finally, a similar analysis was attempted with Blue Mounds and Fermilab regions because these are the only two with enough replication to possibly test years since restoration and account for the blocked design. Plant community data was restricted to presence/absence in this case[^4].
@@ -358,21 +362,69 @@ include_graphics("plant_files/figure-gfm/pcoa_ab_samps_wi_fig-1.png")
 
 \  
 
-The observation that years since restoration stands out as the most influential explanatory variable for community change in restored fields is intriguing. This suggests that the dynamics governing community change post-restoration might exhibit general patterns across different regions. However, a significant challenge arises with our compromised chronosequence. Upon revisiting ordinations based on plant communities, it became evident that years since restoration also strongly correlates with plant communities (Fig \@ref(fig:plant-yr)), showing strong collinearity with forbs and C4 grasses. The complication arises from the fact that this shift in plant communities is not entirely natural. Historical restoration practices predominantly involved planting grasses, and we know that this was the case at the oldest restored site in the Blue Mounds. The current trend in restoration leans toward the near-exclusive planting of forbs because C4 grasses are seen as too competitive. Forb-heavy seeding was indeed done on the youngest field in the Blue Mounds. This prompts the question: Is the observed change in soil microbial communities a result of a natural process over time or simply a consequence of the chosen suite of plant species? The likely answer lies in a combination of both factors. C4 grasses are documented to naturally increase in restored fields over time, yet the issue lies in the challenge of disentangling these confounding explanations without a clear means to do so. It's encouraging that, other then the oldest and youngest fields, plant functional group composition is relatively consistent across years (Fig \@ref(fig:plant-fg)). 
+The observation that years since restoration stands out as the most influential explanatory variable for community change in restored fields is intriguing. This suggests that the dynamics governing community change post-restoration might exhibit general patterns across different regions. However, a significant challenge arises with our compromised chronosequence. Upon revisiting ordinations based on plant communities, it became evident that years since restoration also strongly correlates with plant communities (Fig \@ref(fig:plant-yr)), showing strong collinearity with forbs and C4 grasses. 
 
 ```{r plant-fg,out.width="90%",fig.cap="Columns show composition of plant percent cover in functional trait (left), life history (center), and native status (right) groups. Only data from fields in Wisconsin is shown. Field names on the x axis are ordered by years since restortation, youngest to oldest from left to right."}
 include_graphics("plant_files/figure-gfm/plant_fg-1.png")
 ```
+The complication arises from the fact that this shift in plant communities is not entirely natural. Historical restoration practices predominantly involved planting grasses, and we know that this was the case at the oldest restored site in the Blue Mounds. The current trend in restoration leans toward the near-exclusive planting of forbs because C4 grasses are seen as too competitive. Forb-heavy seeding was indeed done on the youngest field in the Blue Mounds. This prompts the question: Is the observed change in soil microbial communities a result of a natural process over time or simply a consequence of the chosen suite of plant species? The likely answer lies in a combination of both factors. C4 grasses are documented to naturally increase in restored fields over time, yet the issue lies in the challenge of disentangling these confounding explanations without a clear means to do so. It's encouraging that, other then the oldest and youngest fields, plant functional group composition is relatively consistent across years (Fig \@ref(fig:plant-fg)). 
 
-\  
-
-The oldest restored field has much higher proportional cover of C4 grasses, but much lower total cover. That's a consequence of having too much *Andropogon gerardii* because this grass produces a tremendous amount of litter (Fig \@ref(fig:plant-abio)). Baresoil seems to increase through the chronosequence, which would be consistent with increasingly developed competition belowground. 
-
-```{r plant-abio,out.width="60%",fig.cap="Columns show composition of ground cover. Only data from fields in Wisconsin is shown. Field names on the x axis are ordered by years since restortation, youngest to oldest from left to right."}
+```{r plant-abio,out.width="50%",fig.cap="Columns show composition of ground cover. Only data from fields in Wisconsin is shown. Field names on the x axis are ordered by years since restortation, youngest to oldest from left to right."}
 include_graphics("plant_files/figure-gfm/plant_abio-1.png")
 ```
 
-Finally, why are conditions in remnants even or worse then cornfields? We expected remnants to provide compelling reference conditions. Instead, remnants were often on slopes or within railroad rights-of-way where they escaped the plow, but had been grazed and neglected, small fragments with substantial cover of exotics or woodland invasion due to lack of fire. The Faville Grove remnant was the only example of a true reference condition, in my opinion. The Blue Mounds remnant is ok other than it's a bit invaded with woody species. But the remnants at Fermilab and Lake Petite were substandard. 
+The oldest restored field has much higher proportional cover of C4 grasses, but much lower total cover. That's a consequence of having too much *Andropogon gerardii* because this grass produces a tremendous amount of litter (Fig \@ref(fig:plant-abio)). Baresoil seems to increase through the chronosequence, which would be consistent with increasingly developed competition belowground. 
+
+## Correlations with plant functional groups
+
+As we saw in the constrained analysis, cover of C4 grasses and forbs was collinear with years since restoration. Phil noticed that these plant functional groups might directly correlate with pathogens and saprotrophs as we saw in the results earlier. In the Blue Mounds, we do see that pathogens decline with C4 grasses ($R^2_{Adj}=0.51,~p=0.042$) and increase with forbs ($R^2_{Adj}=0.85,~p=0.002$), and that saprotrophs increase wtih C4 grasses ($R^2_{Adj}=0.73,~p=0.009$). With AMF, the abundance of *Gigasporaceae* increased with C4 grass cover ($R^2_{Adj}=0.73,~p=0.009$) and declined with forb cover ($R^2_{Adj}=0.53,~p=0.038$), but this result isn't shown here because these AMF were relatively rare.
+
+```{r fgrp-gld,out.width="60%",fig.cap="Points show summed sequence abundance in pathogen and saprotroph guilds as they respond to C4 grass and forb cover in restored fields from the Blue Mounds region. Solid lines, when present, show significnt correlations. See text for statistics."}
+include_graphics("microbial_guild_taxonomy_files/figure-gfm/fgrp_guild_corr_plot-1.png")
+```
+
+\  
+
+Since heavy planting of C4 grasses limits plant community richness, we'd expect to see more pathogens with increased C4 grass cover because pathogens and plant species richness are thought to be inversely related. That isn't what we see. Increased saprotroph abundance with C4 grasses makes sense, though, because of the increase in litter (Fig \@ref(fig:plant-abio)). So what's the relationship between plant species richness, plant functional groups, and guilds? A simple approach with regressions and added-variable plots will help. 
+
+C4 grasses' strongest direct correlation is with saprotrophs. Forbs are more tightly correlated with pathogens. Plant species richness (NO, Fig \@ref(fig:pfc-div-gld)) is most related to saprotrophs. These variables are entangled, so we create a multiple linear regression where C4 grasses, forbs, and plant species richness predict fungal sequence abundance, and then regress each predictor against the model residuals. 
+
+```{r}
+ptr_gld <- read_csv("microbial_guild_taxonomy_files/plant_traits_fungal_guilds.csv", show_col_types = FALSE) 
+pl_ab <- read_csv(paste0(getwd(), "/clean_data/spe_plant_abund.csv"), show_col_types = FALSE) %>% 
+    rename(field_name = SITE) %>% select(-BARESOIL, -LITTER) %>% 
+    left_join(sites %>% select(field_name, region, field_type), by = join_by(field_name)) %>% 
+    select(field_name, region, field_type, everything())
+pldiv_gld_pfc <-
+    pl_ab %>% 
+    filter(region == "BM", field_type == "restored") %>% 
+    rowwise() %>% 
+    mutate(N0 = sum(c_across(-c(1:3)) > 0)) %>% 
+    select(field_name, N0) %>% 
+    left_join(ptr_gld, by = join_by(field_name)) %>% 
+    select(field_name, region, C4_grass, forb, plant_pathogen, soil_saprotroph, N0)
+```
+
+```{r pfc-div-gld,fig.width=7,fig.height=5,fig.cap="Pairs panels show correlations between plant species richness (N0), C4 grass or forb percent cover, and pathogen or saprotroph sequence abundance. The upper right panels show Pearson's R with stars indicating significance with . < 0.10, * < 0.05, and ** < 0.01."}
+ggpairs(pldiv_gld_pfc, columns = 3:7)
+```
+
+```{r avplots,out.width="70%",fig.show="hold",fig.cap="(Top) Controlled relationships between plant species richness (N0), C4 grass cover, or forb cover, and the residuals of a multiple linear regression predicting pathogen sequence abundance. (Bottom) Controlled relationships between plant species richness (N0), C4 grass cover, or forb cover, and the residuals of a multiple linear regression predicting saprotroph sequence abundance."}
+mod_div_patho <- lm(plant_pathogen ~ N0 + C4_grass + forb, data = pldiv_gld_pfc)
+summary(mod_div_patho)
+avPlots(mod_div_patho)
+mod_div_sapro <- lm(soil_saprotroph ~ N0 + C4_grass + forb, data = pldiv_gld_pfc)
+summary(mod_div_sapro)
+avPlots(mod_div_sapro)
+```
+
+With pathogens, forbs seem to matter more than plant species richness or C4 grass cover (Fig \@ref(fig:avplots), left). This is surprising since we tend to think of C4 grasses as the keystone species of tallgrass prairie. With saprotrophs, no single variables stand out, but C4 grasses are again less important (see model output and Fig \@ref(fig:avplots), right). In this case, theory would suggest that plant species richness is less supported as an explanation for saprotroph abundance. C4 grasses should produce saprotrophs because their root and litter production is tremendous. 
+
+In any case, what we have here is a little evidence that the current fad in tallgrass prairie restoration, which is to sow forbs at the expense of C4 grasses, is creating soil with lots of pathogens and fewer saprotrophs. Maybe the applied value here is to suggest that C4 grasses aren't as bad as some think. Maybe there's a way to get more C4 grasses, fewer pathogens, and higher fungal biomass with more attention to the plant species mix and possibly soil carbon amendments. 
+
+## A concluding remark
+
+Finally, why are conditions in remnants even or worse than cornfields? We expected remnants to provide compelling reference conditions. Instead, remnants were often on slopes or within railroad rights-of-way where they escaped the plow, but had been grazed and neglected, small fragments with substantial cover of exotics or woodland invasion due to lack of fire. The Faville Grove remnant was the only example of a true reference condition, in my opinion. The Blue Mounds remnant is ok other than it's a bit invaded with woody species. But the remnants at Fermilab and Lake Petite were substandard. 
 
 I'll leave this there. It's been a tremendous effort to deal with these data, and I think I've developed some nifty tools for analysis. Right now, I don't see what the story is here, but I'm hoping that you do. 
 
