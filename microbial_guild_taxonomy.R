@@ -39,7 +39,8 @@ packages_needed = c("tidyverse",
                     "indicspecies",
                     "GUniFrac",
                     "vegan",
-                    "GGally")
+                    "GGally",
+                    "car")
 packages_installed = packages_needed %in% rownames(installed.packages())
 #+ packages,message=FALSE
 if (any(!packages_installed)) {
@@ -142,6 +143,14 @@ spe_meta <- list(
 #' Used for correlations with guild abundances
 #+ plant_traits_guilds
 ptr_gld <- read_csv("microbial_guild_taxonomy_files/plant_traits_fungal_guilds.csv", show_col_types = FALSE) 
+#' 
+#' ## Plant species data
+#' Used for comparisons of plant diversity with guild abundances
+#+ plant_spe
+pl_ab <- read_csv(paste0(getwd(), "/clean_data/spe_plant_abund.csv"), show_col_types = FALSE) %>% 
+    rename(field_name = SITE) %>% select(-BARESOIL, -LITTER) %>% 
+    left_join(sites %>% select(field_name, region, field_type), by = join_by(field_name)) %>% 
+    select(field_name, region, field_type, everything())
 #' # Analysis and Results
 #' ## ITS sequences
 #' Recall the number of OTUs recovered in each dataset. The effect of rarefying did not change
@@ -511,7 +520,7 @@ by_patho <-
     pivot_longer(cols = C4_grass:forb, names_to = "fgrp", values_to = "pct_cvr") %>% 
     mutate(guild = "plant_pathogen")
 spl_patho <- by_patho %>%  split(by_patho$fgrp)
-mod_patho <- spl_patho %>% map(\(df) summary(lm(pct_cvr ~ plant_pathogen, data = df)))
+mod_patho <- spl_patho %>% map(\(df) summary(lm(plant_pathogen ~ pct_cvr, data = df)))
 #+ patho_results
 mod_patho %>% map(\(x) x$coefficients)
 mod_patho %>% map(\(x) x$adj.r.squared)
@@ -522,7 +531,7 @@ by_sapro <-
     pivot_longer(cols = C4_grass:forb, names_to = "fgrp", values_to = "pct_cvr") %>% 
     mutate(guild = "soil_saprotroph")
 spl_sapro <- by_sapro %>%  split(by_sapro$fgrp)
-mod_sapro <- spl_sapro %>% map(\(df) summary(lm(pct_cvr ~ soil_saprotroph, data = df)))
+mod_sapro <- spl_sapro %>% map(\(df) summary(lm(soil_saprotroph ~ pct_cvr, data = df)))
 #+ sapro_results
 mod_sapro %>% map(\(x) x$coefficients)
 mod_sapro %>% map(\(x) x$adj.r.squared)
@@ -540,6 +549,33 @@ bind_rows(
     scale_linetype_manual(values = c("solid", "blank")) +
     theme_bw() +
     theme(legend.position = "none")
+#' We see the strong relationships. Theory would predict that plant diversity has something to 
+#' do with this, particularly with pathogens, so let's have a look at that.
+#+ pldiv_gld_pfc
+pldiv_gld_pfc <-
+    pl_ab %>% 
+    filter(region == "BM", field_type == "restored") %>% 
+    rowwise() %>% 
+    mutate(N0 = sum(c_across(-c(1:3)) > 0)) %>% 
+    select(field_name, N0) %>% 
+    left_join(ptr_gld, by = join_by(field_name)) %>% 
+    select(field_name, region, C4_grass, forb, plant_pathogen, soil_saprotroph, N0)
+#= pldiv_gld_pfc_plot
+ggpairs(pldiv_gld_pfc, columns = 3:7)
+#' Plant species richness is negatively related to saprotrophs, but not to pathogens. Since these 
+#' variables are all related, let's see which ones are stronger against the redsiduals of the others.
+mod_patho <- lm(plant_pathogen ~ N0 + C4_grass + forb, data = pldiv_gld_pfc)
+summary(mod_patho)
+#' No individual variable is significant with pathogens. Looking back at the pairs plot, C4 grasses and forbs, 
+#' as direct effects, are the most valuable. The AV Plots, below, reveal that forbs have the strongest relationship. 
+#+ mod_patho_avplot
+avPlots(mod_patho)
+mod_sapro <- lm(soil_saprotroph ~ N0 + C4_grass + forb, data = pldiv_gld_pfc)
+summary(mod_sapro)
+#' Plant species richness and forbs are heavily related to saprotrophs. As richness increases, saprotrophs plummet.
+#' But this is likely still mediated by C4 grasses (or forbs), despite how the numbers here work out. 
+#+ mod_sapro_avplot
+avPlots(mod_sapro)
 #' 
 #' ## AMF
 #' Recall the number of OTUs recovered in each dataset. The effect of rarefying did not change
@@ -690,7 +726,7 @@ by_giga <-
     select(Gigasporaceae, C4_grass, forb) %>% 
     pivot_longer(cols = C4_grass:forb, names_to = "fgrp", values_to = "pct_cvr")
 spl_giga <- by_giga %>% split(by_giga$fgrp)
-mod_giga <- spl_giga %>% map(\(df) summary(lm(pct_cvr ~ Gigasporaceae, data = df)))
+mod_giga <- spl_giga %>% map(\(df) summary(lm(Gigasporaceae ~ pct_cvr, data = df)))
 #+ giga_results
 mod_giga %>% map(\(x) x$coefficients)
 mod_giga %>% map(\(x) x$adj.r.squared)
