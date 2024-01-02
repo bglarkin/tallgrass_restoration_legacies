@@ -581,3 +581,4 @@ p_ab_trait %>%
     select(yr_since, C4_grass, forb) %>% 
     ggpairs(title = "Trait correlations with time in Blue Mounds restored fields") +
     theme_bw()
+

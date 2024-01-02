@@ -493,7 +493,7 @@ lsap_inspan %>%
     arrange(field_type, -stat) %>% 
     kable(format = "pandoc", caption = "Indicator species of litter saprotrophs")
 #' 
-#' ### Plant traits and guilds
+#' ### Plant functional groups and guilds
 #' Soil saprotrophs and pathogens are the most abundant guilds, and they vary with years since restoration.
 #' Do they track plant traits? What are the most important plant traits to look at? C4_grass, forb, and let's 
 #' look at baresoil and litter because they track C4 grass pretty well.
@@ -526,7 +526,7 @@ mod_sapro <- spl_sapro %>% map(\(df) summary(lm(pct_cvr ~ soil_saprotroph, data 
 #+ sapro_results
 mod_sapro %>% map(\(x) x$coefficients)
 mod_sapro %>% map(\(x) x$adj.r.squared)
-#+ fgrp_guild_corr_plot
+#+ fgrp_guild_corr_plot,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
 bind_rows(
     by_patho %>% rename(seq_abund = plant_pathogen),
     by_sapro %>% rename(seq_abund = soil_saprotroph)
@@ -667,6 +667,41 @@ giga$filspeTaxa %>%
 #' Pity that there are so few of these AMF. It's a nice relationship. Maybe there is a natural 
 #' history angle here, like an interaction between Gigasporaceae and plant pathogens, but 
 #' it will be hard to argue that it matters much given the low abundance observed. 
+#' 
+#' ### Plant functional groups and AMF families
+#+ fgrp_amf_pairs
+fgrp_amf <- 
+    bind_rows(
+        claroid$filspeTaxa,
+        diver$filspeTaxa,
+        giga$filspeTaxa,
+        para$filspeTaxa,
+    ) %>% 
+    filter(region == "BM", field_type == "restored") %>% 
+    group_by(field_name, family) %>% 
+    summarize(seq_abund = sum(seq_abund), .groups = "drop") %>% 
+    pivot_wider(names_from = family, values_from = seq_abund) %>% 
+    left_join(ptr_gld %>% select(field_name, C4_grass, forb), by = join_by(field_name))
+fgrp_amf %>% 
+    ggpairs(columns = 2:7)
+#' Gigasporaceae is the only one with a relationship here
+by_giga <- 
+    fgrp_amf %>% 
+    select(Gigasporaceae, C4_grass, forb) %>% 
+    pivot_longer(cols = C4_grass:forb, names_to = "fgrp", values_to = "pct_cvr")
+spl_giga <- by_giga %>% split(by_giga$fgrp)
+mod_giga <- spl_giga %>% map(\(df) summary(lm(pct_cvr ~ Gigasporaceae, data = df)))
+#+ giga_results
+mod_giga %>% map(\(x) x$coefficients)
+mod_giga %>% map(\(x) x$adj.r.squared)
+#+ giga_amf_corr_plot,message=FALSE,fig.width=7,fig.height=3.5,fig.align='center'
+by_giga %>% 
+    ggplot(aes(x = pct_cvr, y = Gigasporaceae)) +
+    facet_grid(cols = vars(fgrp), scales = "free") +
+    geom_smooth(color = "black", linewidth = 0.6, method = "lm", se = FALSE) +
+    geom_point(fill = "#5CBD92", size = 3, shape = 21) +
+    labs(x = "Percent cover", y = "Sequence abundance") +
+    theme_bw()
 #' 
 #' # Conclusions: taxa and guilds
 #' 
