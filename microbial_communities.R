@@ -497,7 +497,7 @@ ggplot(pcoa_its_resto_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
                                   distab$its_samps, 
                                   corr="lingoes", 
                                   df_name = "ITS gene, 97% OTU"))
-write_delim(pcoa_its_samps$permanova %>% round(., 3), "microbial_communities_files/pcoa_its_samps_permanova.txt")
+write_delim(pcoa_its_samps$permanova, "microbial_communities_files/pcoa_its_samps_permanova.txt")
 write_delim(pcoa_its_samps$pairwise_contrasts %>% mutate(across(starts_with("p_value"), ~ round(.x, 3))), "microbial_communities_files/pcoa_its_samps_pairwise.txt")
 #' 
 #' Axis 1 explains `r pcoa_its_samps$eigenvalues[1]`% and axis 2 
