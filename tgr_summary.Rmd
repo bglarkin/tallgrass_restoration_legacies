@@ -144,7 +144,8 @@ include_graphics("microbial_communities_files/figure-gfm/its_samps_unified_fig-1
 
 ```{r its-pcoa-permanova}
 read_delim("microbial_communities_files/pcoa_its_samps_permanova.txt", show_col_types = FALSE) %>% 
-kable(format = "pandoc", caption = "Permutation test under reduced model for PCoA of soil fungi. Blocks: region, samples not permuted (not independent), number of permutations: 1999")
+    mutate(across(2:4, \(x) round(x, 3)), across(5, \(x) format(round(x, 4), scientific = FALSE))) %>% 
+    kable(format = "pandoc", caption = "Permutation test under reduced model for PCoA of soil fungi. Blocks: region, samples not permuted (not independent), number of permutations: 1999")
 ```
 
 
