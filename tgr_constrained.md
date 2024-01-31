@@ -2,7 +2,7 @@ Constrained and summary analysis
 ================
 Beau Larkin
 
-Last updated: 02 January, 2024
+Last updated: 12 January, 2024
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -252,10 +252,10 @@ db-RDA in function `dbrda-fun()`
 
     ## $R2
     ## $R2$r.squared
-    ## [1] 0.23
+    ## [1] 0.22
     ## 
     ## $R2$adj.r.squared
-    ## [1] 0.08
+    ## [1] 0.07
     ## 
     ## 
     ## $global_axis_test
@@ -263,10 +263,10 @@ db-RDA in function `dbrda-fun()`
     ## Permutation: free
     ## Number of permutations: 5039
     ## 
-    ## Model: dbrda(formula = fspe_dist ~ forb, data = env, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)    
-    ## Model     1  0.50352 1.5272  5e-04 ***
-    ## Residual  5  1.64845                  
+    ## Model: dbrda(formula = fspe_dist ~ C4_grass, data = env, sqrt.dist = TRUE)
+    ##          Df SumOfSqs     F Pr(>F)    
+    ## Model     1    0.483 1.447  5e-04 ***
+    ## Residual  5    1.669                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -276,29 +276,30 @@ db-RDA in function `dbrda-fun()`
     ## Permutation: free
     ## Number of permutations: 5039
     ## 
-    ## Model: dbrda(formula = fspe_dist ~ forb, data = env, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)    
-    ## dbRDA1    1  0.50352 1.5272  5e-04 ***
-    ## Residual  5  1.64845                  
+    ## Model: dbrda(formula = fspe_dist ~ C4_grass, data = env, sqrt.dist = TRUE)
+    ##          Df SumOfSqs     F Pr(>F)    
+    ## dbRDA1    1    0.483 1.447  5e-04 ***
+    ## Residual  5    1.669                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $select_mod
-    ## Call: dbrda(formula = fspe_dist ~ forb, data = env, sqrt.dist = TRUE)
+    ## Call: dbrda(formula = fspe_dist ~ C4_grass, data = env, sqrt.dist =
+    ## TRUE)
     ## 
     ##               Inertia Proportion Rank
     ## Total          2.1520     1.0000     
-    ## Constrained    0.5035     0.2340    1
-    ## Unconstrained  1.6484     0.7660    5
+    ## Constrained    0.4830     0.2244    1
+    ## Unconstrained  1.6690     0.7756    5
     ## Inertia is Bray distance 
     ## 
     ## Eigenvalues for constrained axes:
     ## dbRDA1 
-    ## 0.5035 
+    ##  0.483 
     ## 
     ## Eigenvalues for unconstrained axes:
     ##   MDS1   MDS2   MDS3   MDS4   MDS5 
-    ## 0.4060 0.3716 0.3257 0.2989 0.2463
+    ## 0.4337 0.3658 0.3280 0.2958 0.2456
 
 The number of sites limits the permutation design, but forb was
 selected. We know that this variable is inversely related to C4 grass
@@ -410,7 +411,7 @@ write_csv(as_tibble(dbrda_bm_ab_its$plot_data$biplot, rownames = "envvar"), "tgr
     ## 
     ## Model: dbrda(formula = fspe_dist ~ Condition(regions$region) + yr_since, data = env, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1   0.4904 1.5682  0.004 **
+    ## Model     1   0.4904 1.5682  0.005 **
     ## Residual  7   2.1890                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -499,7 +500,7 @@ write_csv(as_tibble(dbrda_bmf_pr_its$plot_data$biplot, rownames = "envvar"), "tg
     ## 
     ## Model: dbrda(formula = fspe_dist ~ C4_grass, data = env, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)    
-    ## dbRDA1    1  0.49118 2.0384  5e-04 ***
+    ## dbRDA1    1  0.49118 2.0384  0.001 ***
     ## Residual  5  1.20483                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -558,7 +559,7 @@ write_csv(as_tibble(dbrda_bm_tr_amf$plot_data$biplot, rownames = "envvar"), "tgr
     ## 
     ## Model: dbrda(formula = fspe_dist ~ yr_since, data = env, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.46481 1.8876 0.0145 *
+    ## Model     1  0.46481 1.8876 0.0155 *
     ## Residual  5  1.23121                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -570,9 +571,9 @@ write_csv(as_tibble(dbrda_bm_tr_amf$plot_data$biplot, rownames = "envvar"), "tgr
     ## Number of permutations: 5039
     ## 
     ## Model: dbrda(formula = fspe_dist ~ yr_since, data = env, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)  
-    ## dbRDA1    1  0.46481 1.8876 0.0155 *
-    ## Residual  5  1.23121                
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## dbRDA1    1  0.46481 1.8876   0.01 **
+    ## Residual  5  1.23121                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -630,9 +631,9 @@ write_csv(as_tibble(dbrda_bm_ab_amf$plot_data$biplot, rownames = "envvar"), "tgr
     ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_dist ~ Condition(regions$region) + yr_since, data = env, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.46705 2.1407 0.0105 *
-    ## Residual  7  1.52723                
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## Model     1  0.46705 2.1407  0.008 **
+    ## Residual  7  1.52723                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -644,9 +645,9 @@ write_csv(as_tibble(dbrda_bm_ab_amf$plot_data$biplot, rownames = "envvar"), "tgr
     ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_dist ~ Condition(regions$region) + yr_since, data = env, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.46705 2.1407   0.01 **
-    ## Residual  7  1.52723                 
+    ##          Df SumOfSqs      F Pr(>F)  
+    ## dbRDA1    1  0.46705 2.1407 0.0115 *
+    ## Residual  7  1.52723                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -765,7 +766,7 @@ anova(rda(vpdat_its$Y %>% select(-vpdat_its_zcols$Y) ~ Axis.1 + Axis.2 + Conditi
 <div data-pagedtable="false">
 
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"16723865","3":"1.683776","4":"0.162","_rn_":"Model"},{"1":"2","2":"9932358","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"16723865","3":"1.683776","4":"0.191","_rn_":"Model"},{"1":"2","2":"9932358","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 
 </div>
@@ -781,7 +782,7 @@ anova(rda(vpdat_its$Y %>% select(-vpdat_its_zcols$Y) ~ Axis.1 + Axis.2 + Conditi
 <div data-pagedtable="false">
 
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"16961980","3":"1.70775","4":"0.136","_rn_":"Model"},{"1":"2","2":"9932358","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"16961980","3":"1.70775","4":"0.15","_rn_":"Model"},{"1":"2","2":"9932358","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 
 </div>
@@ -853,7 +854,7 @@ anova(rda(vpdat_amf$Y %>% select(-vpdat_amf_zcols$Y) ~ Axis.1 + Axis.2 + Conditi
 <div data-pagedtable="false">
 
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"6051491","3":"1.906792","4":"0.129","_rn_":"Model"},{"1":"2","2":"3173651","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"6051491","3":"1.906792","4":"0.163","_rn_":"Model"},{"1":"2","2":"3173651","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 
 </div>
@@ -869,7 +870,7 @@ anova(rda(vpdat_amf$Y %>% select(-vpdat_amf_zcols$Y) ~ Axis.1 + Axis.2 + Conditi
 <div data-pagedtable="false">
 
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"4476907","3":"1.410649","4":"0.292","_rn_":"Model"},{"1":"2","2":"3173651","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"4476907","3":"1.410649","4":"0.277","_rn_":"Model"},{"1":"2","2":"3173651","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 
 </div>
