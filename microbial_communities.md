@@ -2,7 +2,7 @@ Microbial data: community differences
 ================
 Beau Larkin
 
-Last updated: 03 January, 2024
+Last updated: 01 February, 2024
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -14,8 +14,6 @@ Last updated: 03 January, 2024
   - [Distance tables](#distance-tables)
 - [Results](#results)
   - [ITS gene, OTU clustering](#its-gene-otu-clustering)
-    - [PCoA with abundances summed in
-      fields](#pcoa-with-abundances-summed-in-fields)
     - [PCoA with Blue Mounds restored fields, all
       subsamples](#pcoa-with-blue-mounds-restored-fields-all-subsamples)
     - [PCoA with all fields and regions, all
@@ -277,21 +275,22 @@ UNIFRAC distance for 18S.
   Samples in each field depend on the gene-based dataset, see above.
 
 ``` r
+index <- "bray"
 distab <- list(
-    its       = vegdist(data.frame(spe$its, row.names = 1), method = "bray"),
+    its       = vegdist(data.frame(spe$its, row.names = 1), method = index),
     its_samps = vegdist(
         data.frame(
             spe$its_samps %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
+        ) %>% select(where(~ sum(.) > 0)), method = index),
     its_resto_bm = vegdist(
         data.frame(
             spe$its %>% 
                 filter(field_key %in% sites_resto_bm$field_key), 
             row.names = 1
-        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
+        ) %>% select(where(~ sum(.) > 0)), method = index),
     its_resto_samps_bm = vegdist(
         data.frame(
             spe$its_samps %>% 
@@ -299,53 +298,49 @@ distab <- list(
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
+        ) %>% select(where(~ sum(.) > 0)), method = index),
     its_samps_bm = vegdist(
         data.frame(
             spe$its_samps_bm %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) # zero sum columns were already removed in the spe list
-    ),
+        ), method = index), # zero sum columns were already removed in the spe list
     its_samps_fg = vegdist(
         data.frame(
             spe$its_samps_fg %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) # zero sum columns were already removed in the spe list
-    ),
+        ), method = index), # zero sum columns were already removed in the spe list
     its_samps_fl = vegdist(
         data.frame(
             spe$its_samps_fl %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) # zero sum columns were already removed in the spe list
-    ),
+        ), method = index), # zero sum columns were already removed in the spe list
     its_samps_lp = vegdist(
         data.frame(
             spe$its_samps_lp %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) # zero sum columns were already removed in the spe list
-    ),
-    amf_bray  = vegdist(data.frame(spe$amf, row.names = 1), method = "bray"),
+        ), method = index), # zero sum columns were already removed in the spe list
+    amf_bray  = vegdist(data.frame(spe$amf, row.names = 1), method = index),
     amf_samps = vegdist(
         data.frame(
             spe$amf_samps %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
+        ) %>% select(where(~ sum(.) > 0)), method = index),
     amf_resto_bm = vegdist(
         data.frame(
             spe$amf %>% 
                 filter(field_key %in% sites_resto_bm$field_key), 
             row.names = 1
-        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
+        ) %>% select(where(~ sum(.) > 0)), method = index),
     amf_resto_samps_bm = vegdist(
         data.frame(
             spe$amf_samps %>% 
@@ -353,39 +348,35 @@ distab <- list(
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
+        ) %>% select(where(~ sum(.) > 0)), method = index),
     amf_samps_bm = vegdist(
         data.frame(
             spe$amf_samps_bm %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) # zero sum columns were already removed in the spe list
-    ),
+        ), method = index), # zero sum columns were already removed in the spe list
     amf_samps_fg = vegdist(
         data.frame(
             spe$amf_samps_fg %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) # zero sum columns were already removed in the spe list
-    ),
+        ), method = index), # zero sum columns were already removed in the spe list
     amf_samps_fl = vegdist(
         data.frame(
             spe$amf_samps_fl %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) # zero sum columns were already removed in the spe list
-    ),
+        ), method = index), # zero sum columns were already removed in the spe list
     amf_samps_lp = vegdist(
         data.frame(
             spe$amf_samps_lp %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) # zero sum columns were already removed in the spe list
-    ),
+        ), method = index), # zero sum columns were already removed in the spe list
     amf_uni   = sites %>%
         select(field_name, field_key) %>%
         left_join(
@@ -401,18 +392,17 @@ distab <- list(
 
 #### Ordinations
 
-Bray-Curtis or Ruzicka distance are both appropriate, but Bray-Curtis
-has produced axes with better explanatory power.
+Bray-Curtis, Morisita-Horn, or Ruzicka distance are appropriate, but
+Bray-Curtis has produced axes with better explanatory power.
 
 ## ITS gene, OTU clustering
 
-### PCoA with abundances summed in fields
-
 In trial runs, no negative eigenvalues were observed (not shown). No
-correction is needed for these ordinations.
+\### PCoA with abundances summed in fields correction is needed for
+these ordinations.
 
 ``` r
-(pcoa_its <- pcoa_fun(spe$its, distab$its, df_name = "ITS gene, 97% OTU"))
+(pcoa_its <- pcoa_fun(spe$its, distab$its, adonis_index = "bray", df_name = "ITS gene, 97% OTU"))
 ```
 
     ## 'nperm' >= set of all permutations: complete enumeration.
@@ -477,7 +467,7 @@ correction is needed for these ordinations.
     ## Permutation: free
     ## Number of permutations: 1999
     ## 
-    ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, add = if (corr == "none") FALSE else "lingoes", strata = region)
+    ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, method = adonis_index, add = if (corr == "none") FALSE else "lingoes", strata = region)
     ##            Df SumOfSqs      R2     F Pr(>F)    
     ## field_type  2   1.2182 0.17744 2.373  5e-04 ***
     ## Residual   22   5.6472 0.82256                 
@@ -490,8 +480,8 @@ correction is needed for these ordinations.
     ## 
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
-    ## restored   corn       0.156     3.518     1    19   0.0005000        0.0015
-    ## restored   remnant    0.055     1.057     1    18   0.1325000        0.1325
+    ## restored   corn       0.156     3.518     1    19   0.0015000        0.0045
+    ## restored   remnant    0.055     1.057     1    18   0.1110000        0.1110
     ## corn       remnant    0.289     2.846     1     7   0.0416667        0.0625
 
 Axis 1 explains 18.7% of the variation and is the only eigenvalue that
@@ -579,64 +569,6 @@ explanatory variables.
 Restoration age will be explored in-depth with the subset of restoration
 fields.
 
-Here we can also begin considering what an inset plot to display
-metadata might look like. Let’s plot and test the relationship between
-age and community axis scores with restored fields only.
-
-``` r
-its_resto_scores <-
-    pcoa_its$site_vectors %>%
-    filter(field_type == "restored") %>%
-    mutate(yr_since = as.numeric(yr_since))
-```
-
-``` r
-summary(lm(Axis.1 ~ yr_since,
-           data = its_resto_scores))
-```
-
-    ## 
-    ## Call:
-    ## lm(formula = Axis.1 ~ yr_since, data = its_resto_scores)
-    ## 
-    ## Residuals:
-    ##      Min       1Q   Median       3Q      Max 
-    ## -0.18232 -0.08971 -0.03239  0.10500  0.20698 
-    ## 
-    ## Coefficients:
-    ##              Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept) -0.108124   0.053362  -2.026 0.062234 .  
-    ## yr_since     0.011574   0.002705   4.278 0.000765 ***
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## Residual standard error: 0.1311 on 14 degrees of freedom
-    ## Multiple R-squared:  0.5666, Adjusted R-squared:  0.5357 
-    ## F-statistic:  18.3 on 1 and 14 DF,  p-value: 0.000765
-
-``` r
-its_resto_scores %>%
-    pivot_longer(Axis.1:Axis.2, names_to = "axis", values_to = "score") %>%
-    ggplot(aes(x = yr_since, y = score)) +
-    facet_wrap(vars(axis), scales = "free") +
-    geom_smooth(aes(linetype = axis), method = "lm", se = FALSE, linewidth = 0.5) +
-    geom_point(aes(shape = region), fill = "grey", size = 2) +
-    labs(x = "Years since restoration",
-         y = "PCoA axis score",
-         title = "Correlations, axis scores and years since restoration (ITS, 97% OTU)",
-         caption = "Blue lines show linear model fit; solid line is significant at p<0.05") +
-    scale_shape_manual(values = c(21, 22, 23, 24)) +
-    scale_linetype_manual(values = c('solid', 'dashed'), guide = "none") +
-    theme_bw()
-```
-
-<img src="microbial_communities_files/figure-gfm/its_resto_scores_fig-1.png" style="display: block; margin: auto;" />
-
-Indeed, Axis 1 does correlate well with age $(R^2_{Adj}=0.51,~p<0.005)$.
-But it isn’t appropriate to use these scores for the correlation because
-they were created with the corn and remnant fields in the ordination as
-well.
-
 The most appropriate way to look at communities vs. field age is with
 the Blue Mounds restored fields. The function `pcoa_its_samps_bm()` will
 take care of this. Field age will be fitted to the ordination and tested
@@ -651,6 +583,7 @@ correction is needed for these ordinations.
 (pcoa_its_resto_samps_bm <- pcoa_samps_bm_fun(spe$its_samps, 
                                         distab$its_resto_samps_bm, 
                                         sites_resto_bm, 
+                                        adonis_index = "bray", 
                                         df_name="BM restored, ITS gene, 97% OTU"))
 ```
 
@@ -702,9 +635,9 @@ correction is needed for these ordinations.
     ## Permutation: free
     ## Number of permutations: 1999
     ## 
-    ## adonis2(formula = d ~ field_key, data = env_w, permutations = nperm)
+    ## adonis2(formula = d ~ field_key, data = env_w, permutations = nperm, method = adonis_index)
     ##           Df SumOfSqs      R2      F Pr(>F)    
-    ## field_key  1   0.7818 0.04205 2.3706  0.001 ***
+    ## field_key  1   0.7818 0.04205 2.3706  5e-04 ***
     ## Residual  54  17.8084 0.95795                  
     ## Total     55  18.5902 1.00000                  
     ## ---
@@ -734,8 +667,8 @@ Indeed, the first four axes are borderline important. The relatively low
 percent variation explained is partly due to the high number of
 dimensions used when all samples from fields are included. The fidelity
 of samples to fields was significant based on a permutation test
-$(R^2=0.04,~p=0.001)$. In this case, the partial $R^2$ shows the
-proportion of sum of squares from the total. It is a low number here
+$(R^2=0.04,~p=5\times 10^{-4})$. In this case, the partial $R^2$ shows
+the proportion of sum of squares from the total. It is a low number here
 because so much unexplained variation exists, resulting in a high sum of
 squares that is outside the assignment of subsamples to fields.
 
@@ -797,6 +730,7 @@ correction was applied.
 (pcoa_its_samps <- pcoa_samps_fun(spe$its_samps, 
                                   distab$its_samps, 
                                   corr="lingoes", 
+                                  adonis_index = "bray", 
                                   df_name = "ITS gene, 97% OTU"))
 ```
 
@@ -861,7 +795,7 @@ correction was applied.
     ## Permutation: none
     ## Number of permutations: 1999
     ## 
-    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
     ##             Df SumOfSqs      R2      F Pr(>F)    
     ## field_type   2    5.758 0.08095 8.6764  5e-04 ***
     ## Residual   197   65.371 0.91905                  
@@ -871,8 +805,8 @@ correction was applied.
     ## 
     ## $pairwise_contrasts
     ##     group1  group2    R2 F_value df1 df2   p_value p_value_adj
-    ## 1 restored    corn 0.066  11.692   1 166 0.0020000   0.0060000
-    ## 2 restored remnant 0.018   2.827   1 158 0.2310000   0.2310000
+    ## 1 restored    corn 0.066  11.692   1 166 0.0010000   0.0030000
+    ## 2 restored remnant 0.018   2.827   1 158 0.2260000   0.2260000
     ## 3     corn remnant 0.134  10.854   1  70 0.1428571   0.2142857
     ## 
     ## $format
@@ -1016,9 +950,9 @@ replication.
     ## Permutation: none
     ## Number of permutations: 1999
     ## 
-    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
     ##            Df SumOfSqs      R2      F Pr(>F)  
-    ## field_type  2   3.0581 0.11959 4.6865 0.0265 *
+    ## field_type  2   3.0581 0.11959 4.6865  0.028 *
     ## Residual   69  22.5127 0.88041                
     ## Total      71  25.5708 1.00000                
     ## ---
@@ -1026,9 +960,9 @@ replication.
     ## 
     ## $pairwise_contrasts
     ##     group1  group2    R2 F_value df1 df2 p_value p_value_adj
-    ## 1 restored remnant 0.068   4.512   1  62   0.124       0.186
-    ## 2 restored    corn 0.069   4.586   1  62   0.122       0.186
-    ## 3  remnant    corn 0.301   6.023   1  14   1.000       1.000
+    ## 1 restored remnant 0.068   4.512   1  62  0.1215      0.1905
+    ## 2 restored    corn 0.069   4.586   1  62  0.1270      0.1905
+    ## 3  remnant    corn 0.301   6.023   1  14  1.0000      1.0000
     ## 
     ## $format
     ## [1] "pandoc"
@@ -1098,7 +1032,7 @@ replication.
     ## Permutation: none
     ## Number of permutations: 5
     ## 
-    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
     ##            Df SumOfSqs      R2      F Pr(>F)
     ## field_type  2   2.7117 0.37398 6.2728      1
     ## Residual   21   4.5392 0.62602              
@@ -1178,9 +1112,9 @@ replication.
     ## Permutation: none
     ## Number of permutations: 1999
     ## 
-    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
     ##            Df SumOfSqs      R2      F Pr(>F)  
-    ## field_type  2   4.1687 0.17621 7.3798  0.013 *
+    ## field_type  2   4.1687 0.17621 7.3798  0.017 *
     ## Residual   69  19.4884 0.82379                
     ## Total      71  23.6571 1.00000                
     ## ---
@@ -1189,8 +1123,8 @@ replication.
     ## $pairwise_contrasts
     ##    group1   group2    R2 F_value df1 df2   p_value p_value_adj
     ## 1    corn  remnant 0.245   7.121   1  22 0.3333333      0.5000
-    ## 2    corn restored 0.158  11.629   1  62 0.0405000      0.1215
-    ## 3 remnant restored 0.047   2.648   1  54 0.5630000      0.5630
+    ## 2    corn restored 0.158  11.629   1  62 0.0410000      0.1230
+    ## 3 remnant restored 0.047   2.648   1  54 0.5785000      0.5785
     ## 
     ## $format
     ## [1] "pandoc"
@@ -1262,7 +1196,7 @@ replication.
     ## Permutation: none
     ## Number of permutations: 23
     ## 
-    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
     ##            Df SumOfSqs      R2      F Pr(>F)
     ## field_type  2   1.9328 0.22523 4.2152 0.1667
     ## Residual   29   6.6488 0.77477              
@@ -1397,7 +1331,7 @@ spe_meta$its %>%
 No negative eigenvalues produced, no correction applied.
 
 ``` r
-(pcoa_amf_bray <- pcoa_fun(s = spe$amf, d = distab$amf_bray, df_name = "18S gene, 97% OTU, Bray-Curtis distance"))
+(pcoa_amf_bray <- pcoa_fun(s = spe$amf, d = distab$amf_bray, adonis_index = "bray", df_name = "18S gene, 97% OTU, Bray-Curtis distance"))
 ```
 
     ## 'nperm' >= set of all permutations: complete enumeration.
@@ -1496,11 +1430,11 @@ No negative eigenvalues produced, no correction applied.
     ## Permutation: free
     ## Number of permutations: 1999
     ## 
-    ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, add = if (corr == "none") FALSE else "lingoes", strata = region)
-    ##            Df SumOfSqs      R2      F Pr(>F)    
-    ## field_type  2   1.0920 0.24843 3.6361  0.001 ***
-    ## Residual   22   3.3036 0.75157                  
-    ## Total      24   4.3956 1.00000                  
+    ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, method = adonis_index, add = if (corr == "none") FALSE else "lingoes", strata = region)
+    ##            Df SumOfSqs      R2      F Pr(>F)   
+    ## field_type  2   1.0920 0.24843 3.6361 0.0015 **
+    ## Residual   22   3.3036 0.75157                 
+    ## Total      24   4.3956 1.00000                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -1510,7 +1444,7 @@ No negative eigenvalues produced, no correction applied.
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
     ## restored   corn       0.254     6.457     1    19   0.0015000        0.0045
-    ## restored   remnant    0.023     0.423     1    18   0.9725000        0.9725
+    ## restored   remnant    0.023     0.423     1    18   0.9770000        0.9770
     ## corn       remnant    0.383     4.347     1     7   0.0416667        0.0625
 
 Four axes are significant by a broken stick model, between them
@@ -1520,7 +1454,7 @@ substantial variation here is on the first axis (27.4%) with Axis 2
 explaining 17.9% of the variation in AMF abundances. Testing the design
 factor *field_type* (with *region* treated as a block using the `strata`
 argument of `adonis2`) revealed a significant clustering
-$(R^2=0.25,~p=0.001)$.
+$(R^2=0.25,~p=0.002)$.
 
 Let’s view a plot with abundances of community subgroups inset.
 
@@ -1587,86 +1521,6 @@ stronger with AMF than we had seen with general fungi.
 What’s becoming apparent here is that Axis 1 separates strongly on
 *field_type* and years since restoration, and Axis 2 further separates
 on years since restoration. A consistent signal of region isn’t obvious.
-
-Let’s test the relationship between age and community axis scores with
-restored fields only.
-
-``` r
-amf_resto_scores <-
-    pcoa_amf_bray$site_vectors %>%
-    filter(field_type == "restored") %>%
-    mutate(yr_since = as.numeric(yr_since))
-```
-
-``` r
-summary(lm(Axis.1 ~ yr_since,
-           data = amf_resto_scores))
-```
-
-    ## 
-    ## Call:
-    ## lm(formula = Axis.1 ~ yr_since, data = amf_resto_scores)
-    ## 
-    ## Residuals:
-    ##       Min        1Q    Median        3Q       Max 
-    ## -0.109339 -0.072783  0.005236  0.071478  0.134549 
-    ## 
-    ## Coefficients:
-    ##              Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept) -0.035672   0.035286  -1.011 0.329196    
-    ## yr_since     0.007957   0.001789   4.448 0.000552 ***
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## Residual standard error: 0.08672 on 14 degrees of freedom
-    ## Multiple R-squared:  0.5856, Adjusted R-squared:  0.556 
-    ## F-statistic: 19.78 on 1 and 14 DF,  p-value: 0.0005517
-
-``` r
-summary(lm(Axis.2 ~ yr_since,
-           data = amf_resto_scores))
-```
-
-    ## 
-    ## Call:
-    ## lm(formula = Axis.2 ~ yr_since, data = amf_resto_scores)
-    ## 
-    ## Residuals:
-    ##      Min       1Q   Median       3Q      Max 
-    ## -0.14757 -0.06139 -0.04028  0.06694  0.26422 
-    ## 
-    ## Coefficients:
-    ##              Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept) -0.234912   0.047062  -4.992 0.000198 ***
-    ## yr_since     0.012568   0.002386   5.268 0.000119 ***
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## Residual standard error: 0.1157 on 14 degrees of freedom
-    ## Multiple R-squared:  0.6646, Adjusted R-squared:  0.6407 
-    ## F-statistic: 27.75 on 1 and 14 DF,  p-value: 0.000119
-
-``` r
-amf_resto_scores %>%
-    pivot_longer(Axis.1:Axis.2, names_to = "axis", values_to = "score") %>%
-    ggplot(aes(x = yr_since, y = score)) +
-    facet_wrap(vars(axis), scales = "free") +
-    geom_smooth(method = "lm", se = FALSE, linewidth = 0.5) +
-    geom_point(aes(shape = region), fill = "grey", size = 2) +
-    labs(x = "Years since restoration",
-         y = "PCoA axis score",
-         title = "Correlations, axis scores and years since restoration (18S gene, 97% OTU, Bray-Curtis distance)",
-         caption = "Blue lines show linear model fit; solid line is significant at p<0.05") +
-    scale_shape_manual(values = c(21, 22, 23, 24)) +
-    theme_bw()
-```
-
-<img src="microbial_communities_files/figure-gfm/amf_yrs_scores_fig-1.png" style="display: block; margin: auto;" />
-
-Both axes correlate significantly and strongly with years since
-restoration. Axis 2 shows a stronger relationship
-$(R^2_{Adj}=0.64,~p<0.001)$, and Axis 1 shows a moderately strong
-relationship $(R^2_{Adj}=0.56,~p<0.005)$
 
 ### PCoA with abundances summed in fields, UNIFRAC distance
 
@@ -1742,9 +1596,9 @@ relationship $(R^2_{Adj}=0.56,~p<0.005)$
     ## Permutation: free
     ## Number of permutations: 1999
     ## 
-    ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, add = if (corr == "none") FALSE else "lingoes", strata = region)
+    ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, method = adonis_index, add = if (corr == "none") FALSE else "lingoes", strata = region)
     ##            Df SumOfSqs     R2      F Pr(>F)   
-    ## field_type  2  0.06937 0.1657 2.1847  0.004 **
+    ## field_type  2  0.06937 0.1657 2.1847 0.0035 **
     ## Residual   22  0.34929 0.8343                 
     ## Total      24  0.41866 1.0000                 
     ## ---
@@ -1755,8 +1609,8 @@ relationship $(R^2_{Adj}=0.56,~p<0.005)$
     ## 
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
-    ## restored   corn       0.239     5.965     1    19   0.0020000        0.0060
-    ## restored   remnant    0.026     0.477     1    18   0.9765000        0.9765
+    ## restored   corn       0.239     5.965     1    19   0.0015000        0.0045
+    ## restored   remnant    0.026     0.477     1    18   0.9735000        0.9735
     ## corn       remnant    0.383     4.347     1     7   0.0416667        0.0625
 
 Three axes are significant by a broken stick model, between them
@@ -1968,7 +1822,7 @@ negative eigenvalues.
     ## Permutation: free
     ## Number of permutations: 1999
     ## 
-    ## adonis2(formula = d ~ field_key, data = env_w, permutations = nperm)
+    ## adonis2(formula = d ~ field_key, data = env_w, permutations = nperm, method = adonis_index)
     ##           Df SumOfSqs      R2      F Pr(>F)    
     ## field_key  1   1.4113 0.11761 6.2643  5e-04 ***
     ## Residual  47  10.5886 0.88239                  
@@ -1981,7 +1835,7 @@ negative eigenvalues.
     ## ***VECTORS
     ## 
     ##            Axis.1   Axis.2   Axis.3   Axis.4   Axis.5     r2 Pr(>r)  
-    ## yr_since -0.85283  0.38420  0.13760  0.22685  0.23383 0.7792 0.0125 *
+    ## yr_since -0.85283  0.38420  0.13760  0.22685  0.23383 0.7792  0.016 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -2009,7 +1863,7 @@ fields.
 Years since restoration has a moderately strong correlation with
 communities and was significant with a permutation test where samples
 were constrained within fields to account for lack of independence
-$(R^2=0.78,~p=0.01)$.
+$(R^2=0.78,~p=0.02)$.
 
 Let’s view an ordination plot with hulls around subsamples and a fitted
 vector for field age overlaid.
@@ -2128,11 +1982,11 @@ correction was applied.
     ## Permutation: none
     ## Number of permutations: 1999
     ## 
-    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
-    ##             Df SumOfSqs      R2      F Pr(>F)   
-    ## field_type   2    5.400 0.10946 10.571  0.002 **
-    ## Residual   172   43.931 0.89054                 
-    ## Total      174   49.330 1.00000                 
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
+    ##             Df SumOfSqs      R2      F Pr(>F)    
+    ## field_type   2    5.400 0.10946 10.571  5e-04 ***
+    ## Residual   172   43.931 0.89054                  
+    ## Total      174   49.330 1.00000                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -2158,7 +2012,7 @@ variation explained on axes 1 and 2 is partly due to the high number of
 dimensions used when all samples from fields are included. The fidelity
 of samples to fields was strong based on a permutation test when
 restricting permutations to fields (=plots in `how()`) within regions
-(=blocks in `how()`) $(R^2=0.11,~p=0.002)$.
+(=blocks in `how()`) $(R^2=0.11,~p=5\times 10^{-4})$.
 
 Let’s view an ordination plot with hulls around subsamples.
 
@@ -2283,9 +2137,9 @@ replication.
     ## Permutation: none
     ## Number of permutations: 1999
     ## 
-    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
     ##            Df SumOfSqs      R2     F Pr(>F)  
-    ## field_type  2   2.8239 0.17056 6.169  0.085 .
+    ## field_type  2   2.8239 0.17056 6.169 0.0935 .
     ## Residual   60  13.7325 0.82944               
     ## Total      62  16.5564 1.00000               
     ## ---
@@ -2293,9 +2147,9 @@ replication.
     ## 
     ## $pairwise_contrasts
     ##     group1  group2    R2 F_value df1 df2 p_value p_value_adj
-    ## 1 restored remnant 0.053   3.041   1  54  0.3615     0.54225
-    ## 2 restored    corn 0.084   4.930   1  54  0.1445     0.43350
-    ## 3  remnant    corn 0.477  10.929   1  12  1.0000     1.00000
+    ## 1 restored remnant 0.053   3.041   1  54  0.3690      0.5535
+    ## 2 restored    corn 0.084   4.930   1  54  0.1225      0.3675
+    ## 3  remnant    corn 0.477  10.929   1  12  1.0000      1.0000
     ## 
     ## $format
     ## [1] "pandoc"
@@ -2365,7 +2219,7 @@ replication.
     ## Permutation: none
     ## Number of permutations: 5
     ## 
-    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
     ##            Df SumOfSqs      R2      F Pr(>F)
     ## field_type  2   2.5359 0.47642 8.1892      1
     ## Residual   18   2.7870 0.52358              
@@ -2449,9 +2303,9 @@ replication.
     ## Permutation: none
     ## Number of permutations: 1999
     ## 
-    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
     ##            Df SumOfSqs      R2      F Pr(>F)  
-    ## field_type  2    2.840 0.16429 5.8975 0.0485 *
+    ## field_type  2    2.840 0.16429 5.8975 0.0465 *
     ## Residual   60   14.447 0.83571                
     ## Total      62   17.287 1.00000                
     ## ---
@@ -2534,7 +2388,7 @@ replication.
     ## Permutation: none
     ## Number of permutations: 23
     ## 
-    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design)
+    ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
     ##            Df SumOfSqs      R2      F Pr(>F)
     ## field_type  2   1.5637 0.26683 4.5493    0.5
     ## Residual   25   4.2965 0.73317              

@@ -16,7 +16,7 @@
 #' 
 #' ## PCoA function
 #+ pcoa_function
-pcoa_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
+pcoa_fun <- function(s, d, env=sites, corr="none", adonis_index="bray", df_name, nperm=1999) {
     set.seed <- 397
     # Multivariate analysis
     p <- pcoa(d, correction = corr)
@@ -33,6 +33,7 @@ pcoa_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
                  d ~ field_type,
                  data = env,
                  permutations = nperm,
+                 method = adonis_index,
                  add = if (corr == "none") FALSE else "lingoes",
                  strata = region
              ))
@@ -49,20 +50,19 @@ pcoa_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
         p_value = NA
     )
     for (i in seq(nrow(contrasts))) {
-        group_subset <-
-            group_var == contrasts$group1[i] |
-            group_var == contrasts$group2[i]
+        group_subset <- group_var == contrasts$group1[i] | group_var == contrasts$group2[i]
         contrast_matrix <- data.frame(s[group_subset, ], row.names = 1)
         fit <- with(env[group_subset, ],
                     adonis2(
                         contrast_matrix ~ group_var[group_subset],
                         permutations = nperm,
+                        method = adonis_index,
                         add = if (corr == "none") FALSE else "lingoes",
                         strata = region
                     ))
         
         contrasts$R2[i] <- round(fit$R2[1], digits = 3)
-        contrasts$F_value[i] <- round(fit[["F"]][1], digits = 3)
+        contrasts$F_value[i] <- round(fit$F[1], digits = 3)
         contrasts$df1[i] <- fit$Df[1]
         contrasts$df2[i] <- fit$Df[2]
         contrasts$p_value[i] <- fit$`Pr(>F)`[1]
@@ -114,7 +114,7 @@ pcoa_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
 #' ## PCoA function with subsamples
 #' Subsamples from fields are included here. 
 #+ pcoa_samps_function
-pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
+pcoa_samps_fun <- function(s, d, env=sites, corr="none", adonis_index="bray", df_name, nperm=1999) {
     set.seed <- 438
     # Multivariate analysis
     p <- pcoa(d, correction = corr)
@@ -140,7 +140,8 @@ pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
     gl_permtest <- adonis2(
         d ~ field_type,
         data = env_w,
-        permutations = gl_perm_design)
+        permutations = gl_perm_design,
+        method = adonis_index)
     # Pairwise post-hoc test
     group_var <- as.character(env_w$field_type)
     groups <- as.data.frame(t(combn(unique(group_var), m = 2)))
@@ -168,11 +169,12 @@ pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
         fit <- adonis2(
             contrast_matrix ~ group_var[group_subset],
             add = if (corr == "none") FALSE else "lingoes",
-            permutations = pw_perm_design
+            permutations = pw_perm_design,
+            method = adonis_index
         )
         
         contrasts$R2[i] <- round(fit$R2[1], digits = 3)
-        contrasts$F_value[i] <- round(fit[["F"]][1], digits = 3)
+        contrasts$F_value[i] <- round(fit$F[1], digits = 3)
         contrasts$df1[i] <- fit$Df[1]
         contrasts$df2[i] <- fit$Df[2]
         contrasts$p_value[i] <- fit$`Pr(>F)`[1]
@@ -223,7 +225,7 @@ pcoa_samps_fun <- function(s, d, env=sites, corr="none", df_name, nperm=1999) {
 #' 
 #' ## PCoA function with subsamples, Blue Mounds only
 #+ pcoa_samps_bm_function
-pcoa_samps_bm_fun <- function(s, d, env=sites_resto_bm, corr="none", df_name, nperm=1999) {
+pcoa_samps_bm_fun <- function(s, d, env=sites_resto_bm, corr="none", adonis_index="bray", df_name, nperm=1999) {
     set.seed <- 845
     # Multivariate analysis
     p <- pcoa(d, correction = corr)
@@ -237,7 +239,7 @@ pcoa_samps_bm_fun <- function(s, d, env=sites_resto_bm, corr="none", df_name, np
         mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
         column_to_rownames(var = "field_sample")
     # Permutation test (PERMANOVA)
-    p_permtest <- adonis2(d ~ field_key, data = env_w, permutations = nperm)
+    p_permtest <- adonis2(d ~ field_key, data = env_w, permutations = nperm, method = adonis_index)
     # Diagnostic plots
     if(corr == "none" | ncol(p_vals) == 6) {
         p_bstick <- ggplot(p_vals, aes(x = factor(Dim), y = Relative_eig)) + 

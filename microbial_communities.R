@@ -194,21 +194,22 @@ spe_meta <- list(
 #' columns removed. Samples in each field depend on the gene-based dataset, see above. 
 #' 
 #+ distab_list
+index <- "bray"
 distab <- list(
-    its       = vegdist(data.frame(spe$its, row.names = 1), method = "bray"),
+    its       = vegdist(data.frame(spe$its, row.names = 1), method = index),
     its_samps = vegdist(
         data.frame(
             spe$its_samps %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
+        ) %>% select(where(~ sum(.) > 0)), method = index),
     its_resto_bm = vegdist(
         data.frame(
             spe$its %>% 
                 filter(field_key %in% sites_resto_bm$field_key), 
             row.names = 1
-        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
+        ) %>% select(where(~ sum(.) > 0)), method = index),
     its_resto_samps_bm = vegdist(
         data.frame(
             spe$its_samps %>% 
@@ -216,53 +217,49 @@ distab <- list(
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
+        ) %>% select(where(~ sum(.) > 0)), method = index),
     its_samps_bm = vegdist(
         data.frame(
             spe$its_samps_bm %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) # zero sum columns were already removed in the spe list
-    ),
+        ), method = index), # zero sum columns were already removed in the spe list
     its_samps_fg = vegdist(
         data.frame(
             spe$its_samps_fg %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) # zero sum columns were already removed in the spe list
-    ),
+        ), method = index), # zero sum columns were already removed in the spe list
     its_samps_fl = vegdist(
         data.frame(
             spe$its_samps_fl %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) # zero sum columns were already removed in the spe list
-    ),
+        ), method = index), # zero sum columns were already removed in the spe list
     its_samps_lp = vegdist(
         data.frame(
             spe$its_samps_lp %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) # zero sum columns were already removed in the spe list
-    ),
-    amf_bray  = vegdist(data.frame(spe$amf, row.names = 1), method = "bray"),
+        ), method = index), # zero sum columns were already removed in the spe list
+    amf_bray  = vegdist(data.frame(spe$amf, row.names = 1), method = index),
     amf_samps = vegdist(
         data.frame(
             spe$amf_samps %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
+        ) %>% select(where(~ sum(.) > 0)), method = index),
     amf_resto_bm = vegdist(
         data.frame(
             spe$amf %>% 
                 filter(field_key %in% sites_resto_bm$field_key), 
             row.names = 1
-        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
+        ) %>% select(where(~ sum(.) > 0)), method = index),
     amf_resto_samps_bm = vegdist(
         data.frame(
             spe$amf_samps %>% 
@@ -270,39 +267,35 @@ distab <- list(
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) %>% select(where(~ sum(.) > 0)), method = "bray"),
+        ) %>% select(where(~ sum(.) > 0)), method = index),
     amf_samps_bm = vegdist(
         data.frame(
             spe$amf_samps_bm %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) # zero sum columns were already removed in the spe list
-    ),
+        ), method = index), # zero sum columns were already removed in the spe list
     amf_samps_fg = vegdist(
         data.frame(
             spe$amf_samps_fg %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) # zero sum columns were already removed in the spe list
-    ),
+        ), method = index), # zero sum columns were already removed in the spe list
     amf_samps_fl = vegdist(
         data.frame(
             spe$amf_samps_fl %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) # zero sum columns were already removed in the spe list
-    ),
+        ), method = index), # zero sum columns were already removed in the spe list
     amf_samps_lp = vegdist(
         data.frame(
             spe$amf_samps_lp %>% 
                 mutate(field_sample = paste(field_key, sample, sep = "_")) %>% 
                 column_to_rownames(var = "field_sample") %>% 
                 select(-field_key, -sample)
-        ) # zero sum columns were already removed in the spe list
-    ),
+        ), method = index), # zero sum columns were already removed in the spe list
     amf_uni   = sites %>%
         select(field_name, field_key) %>%
         left_join(
@@ -315,15 +308,15 @@ distab <- list(
 #' 
 #' # Results
 #' #### Ordinations
-#' Bray-Curtis or Ruzicka distance are both appropriate, but Bray-Curtis has 
+#' Bray-Curtis, Morisita-Horn, or Ruzicka distance are appropriate, but Bray-Curtis has 
 #' produced axes with better explanatory power.
 #' 
 #' ## ITS gene, OTU clustering
-#' ### PCoA with abundances summed in fields
 #' In trial runs, no negative eigenvalues were observed (not shown). No 
+#' ### PCoA with abundances summed in fields
 #' correction is needed for these ordinations.
 #+ pcoa_its_otu,fig.align='center'
-(pcoa_its <- pcoa_fun(spe$its, distab$its, df_name = "ITS gene, 97% OTU"))
+(pcoa_its <- pcoa_fun(spe$its, distab$its, adonis_index = "bray", df_name = "ITS gene, 97% OTU"))
 #' 
 #' Axis 1 explains `r pcoa_its$eigenvalues[1]`% of the variation and is the only eigenvalue that exceeds a 
 #' broken stick model. The most substantial variation here will be on the first axis,
@@ -395,36 +388,6 @@ pcoa_its$ord +
 #' 
 #' Restoration age will be explored in-depth with the subset of restoration fields. 
 #' 
-#' Here we can also begin considering what an inset plot to display metadata might look like. 
-#' Let's plot and test the relationship between age and community axis scores with restored fields 
-#' only.
-#+ its_resto_scores_data
-its_resto_scores <-
-    pcoa_its$site_vectors %>%
-    filter(field_type == "restored") %>%
-    mutate(yr_since = as.numeric(yr_since))
-#+ its_resto_scores_lm
-summary(lm(Axis.1 ~ yr_since,
-           data = its_resto_scores))
-#+ its_resto_scores_fig,fig.align='center',message=FALSE
-its_resto_scores %>%
-    pivot_longer(Axis.1:Axis.2, names_to = "axis", values_to = "score") %>%
-    ggplot(aes(x = yr_since, y = score)) +
-    facet_wrap(vars(axis), scales = "free") +
-    geom_smooth(aes(linetype = axis), method = "lm", se = FALSE, linewidth = 0.5) +
-    geom_point(aes(shape = region), fill = "grey", size = 2) +
-    labs(x = "Years since restoration",
-         y = "PCoA axis score",
-         title = "Correlations, axis scores and years since restoration (ITS, 97% OTU)",
-         caption = "Blue lines show linear model fit; solid line is significant at p<0.05") +
-    scale_shape_manual(values = c(21, 22, 23, 24)) +
-    scale_linetype_manual(values = c('solid', 'dashed'), guide = "none") +
-    theme_bw()
-#' 
-#' Indeed, Axis 1 does correlate well with age $(R^2_{Adj}=0.51,~p<0.005)$. But it isn't appropriate
-#' to use these scores for the correlation because they were created with the corn and remnant fields
-#' in the ordination as well. 
-#' 
 #' The most appropriate way to look at communities vs. field age is with the Blue Mounds restored
 #' fields. The function `pcoa_its_samps_bm()` will take care of this. Field age will be fitted 
 #' to the ordination and tested using `envfit()`.  
@@ -436,6 +399,7 @@ its_resto_scores %>%
 (pcoa_its_resto_samps_bm <- pcoa_samps_bm_fun(spe$its_samps, 
                                         distab$its_resto_samps_bm, 
                                         sites_resto_bm, 
+                                        adonis_index = "bray", 
                                         df_name="BM restored, ITS gene, 97% OTU"))
 #' 
 #' Axis 1 explains `r pcoa_its_resto_samps_bm$eigenvalues[1]`% and axis 2 
@@ -496,6 +460,7 @@ ggplot(pcoa_its_resto_samps_bm$site_vectors, aes(x = Axis.1, y = Axis.2)) +
 (pcoa_its_samps <- pcoa_samps_fun(spe$its_samps, 
                                   distab$its_samps, 
                                   corr="lingoes", 
+                                  adonis_index = "bray", 
                                   df_name = "ITS gene, 97% OTU"))
 write_delim(pcoa_its_samps$permanova, "microbial_communities_files/pcoa_its_samps_permanova.txt")
 write_delim(pcoa_its_samps$pairwise_contrasts %>% mutate(across(starts_with("p_value"), ~ round(.x, 3))), "microbial_communities_files/pcoa_its_samps_pairwise.txt")
@@ -694,7 +659,7 @@ spe_meta$its %>%
 #' No negative eigenvalues produced, no correction applied. 
 #' 
 #+ pcoa_amf_otu,fig.align='center'
-(pcoa_amf_bray <- pcoa_fun(s = spe$amf, d = distab$amf_bray, df_name = "18S gene, 97% OTU, Bray-Curtis distance"))
+(pcoa_amf_bray <- pcoa_fun(s = spe$amf, d = distab$amf_bray, adonis_index = "bray", df_name = "18S gene, 97% OTU, Bray-Curtis distance"))
 #' 
 #' Four axes are significant by a broken stick model, between them explaining
 #' `r round(sum(pcoa_amf_bray$values$Relative_eig[1:4])*100, 1)`% of the 
@@ -760,38 +725,6 @@ pcoa_amf_bray$inset <-
 #' What's becoming apparent here is that Axis 1 separates strongly on *field_type* and years 
 #' since restoration, and Axis 2 further separates on years since restoration. A consistent signal
 #' of region isn't obvious. 
-#' 
-#' Let's test the relationship between age and community axis scores with restored fields 
-#' only.
-#+ amf_yrs_scores_data
-amf_resto_scores <-
-    pcoa_amf_bray$site_vectors %>%
-    filter(field_type == "restored") %>%
-    mutate(yr_since = as.numeric(yr_since))
-#+ amf_yrs_scores_lm_1
-summary(lm(Axis.1 ~ yr_since,
-           data = amf_resto_scores))
-#+ amf_yrs_scores_lm_2
-summary(lm(Axis.2 ~ yr_since,
-           data = amf_resto_scores))
-#+ amf_yrs_scores_fig,fig.align='center',message=FALSE
-amf_resto_scores %>%
-    pivot_longer(Axis.1:Axis.2, names_to = "axis", values_to = "score") %>%
-    ggplot(aes(x = yr_since, y = score)) +
-    facet_wrap(vars(axis), scales = "free") +
-    geom_smooth(method = "lm", se = FALSE, linewidth = 0.5) +
-    geom_point(aes(shape = region), fill = "grey", size = 2) +
-    labs(x = "Years since restoration",
-         y = "PCoA axis score",
-         title = "Correlations, axis scores and years since restoration (18S gene, 97% OTU, Bray-Curtis distance)",
-         caption = "Blue lines show linear model fit; solid line is significant at p<0.05") +
-    scale_shape_manual(values = c(21, 22, 23, 24)) +
-    theme_bw()
-#' 
-#' Both axes correlate significantly and strongly with years since restoration. 
-#' Axis 2 shows a stronger relationship $(R^2_{Adj}=0.64,~p<0.001)$, and Axis 1 
-#' shows a moderately strong relationship $(R^2_{Adj}=0.56,~p<0.005)$ 
-#' 
 #' 
 #' ### PCoA with abundances summed in fields, UNIFRAC distance
 #' 
