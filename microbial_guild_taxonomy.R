@@ -28,13 +28,19 @@
 #' but for now, the analysis uses data from the entire rarefied tables for ITS and 18S sequences.
 #' 
 #' # Packages and libraries
+#' First, deal with the trouble caused by package Matrix. Calls to package dependencies and installation should
+#' not be run unless package Matrix gets overwritten somehow. Installing lme4 from source will require R 
+#' to be restarted. 
+# tools::package_dependencies("Matrix", which = "LinkingTo", reverse = TRUE)[[1L]]
+# install.packages("lme4", type = "source")
+library("lme4")
+#' Other packages
 packages_needed = c("tidyverse",
                     "knitr",
                     "conflicted",
                     "ggbeeswarm",
                     "colorspace",
                     "rsq",
-                    "lme4",
                     "multcomp",
                     "indicspecies",
                     "GUniFrac",
@@ -516,41 +522,47 @@ ptr_gld %>%
 by_patho <- 
     ptr_gld %>% 
     filter(field_type == "restored", region == "BM") %>% 
-    select(plant_pathogen, C4_grass, forb) %>% 
+    select(field_name, plant_pathogen, C4_grass, forb) %>% 
     pivot_longer(cols = C4_grass:forb, names_to = "fgrp", values_to = "pct_cvr") %>% 
+    left_join(sites %>% select(field_name, yr_since), by = join_by(field_name)) %>% 
     mutate(guild = "plant_pathogen")
 spl_patho <- by_patho %>%  split(by_patho$fgrp)
 mod_patho <- spl_patho %>% map(\(df) summary(lm(plant_pathogen ~ pct_cvr, data = df)))
 #+ patho_results
 mod_patho %>% map(\(x) x$coefficients)
 mod_patho %>% map(\(x) x$adj.r.squared)
+#' Saprotrophs
 by_sapro <- 
     ptr_gld %>% 
     filter(field_type == "restored", region == "BM") %>% 
-    select(soil_saprotroph, C4_grass, forb) %>% 
+    select(field_name, soil_saprotroph, C4_grass, forb) %>% 
     pivot_longer(cols = C4_grass:forb, names_to = "fgrp", values_to = "pct_cvr") %>% 
+    left_join(sites %>% select(field_name, yr_since), by = join_by(field_name)) %>% 
     mutate(guild = "soil_saprotroph")
 spl_sapro <- by_sapro %>%  split(by_sapro$fgrp)
 mod_sapro <- spl_sapro %>% map(\(df) summary(lm(soil_saprotroph ~ pct_cvr, data = df)))
 #+ sapro_results
 mod_sapro %>% map(\(x) x$coefficients)
 mod_sapro %>% map(\(x) x$adj.r.squared)
-#+ fgrp_guild_corr_plot,message=FALSE,fig.width=7,fig.height=7,fig.align='center'
-bind_rows(
-    by_patho %>% rename(seq_abund = plant_pathogen),
-    by_sapro %>% rename(seq_abund = soil_saprotroph)
-) %>% 
+#+ fgrp_guild_corr_plot,message=FALSE,fig.width=7,fig.height=5,fig.align='center'
+(fgrp_guild_corr_plot <-
+        bind_rows(
+            by_patho %>% rename(seq_abund = plant_pathogen),
+            by_sapro %>% rename(seq_abund = soil_saprotroph)
+        ) %>% 
     mutate(sig = case_when(fgrp %in% "forb" & guild %in% "soil_saprotroph" ~ "2", .default = "1")) %>% 
     ggplot(aes(x = pct_cvr, y = seq_abund)) +
     facet_grid(cols = vars(fgrp), rows = vars(guild), scales = "free") +
     geom_smooth(aes(linetype = sig), color = "black", linewidth = 0.6, method = "lm", se = FALSE) +
-    geom_point(fill = "#5CBD92", size = 3, shape = 21) +
+    # geom_point(fill = "#5CBD92", size = 3, shape = 21) +
+    geom_point(aes(fill = yr_since), size = 3, shape = 21) +
     labs(x = "Percent cover", y = "Sequence abundance") +
-    scale_linetype_manual(values = c("solid", "blank")) +
-    theme_bw() +
-    theme(legend.position = "none")
+    scale_linetype_manual(values = c("solid", "blank"), guide = "none") +
+    scale_fill_continuous_sequential(name = "Years since\nrestoration", palette = "Greens") +
+    theme_bw())
 #' We see the strong relationships. Theory would predict that plant diversity has something to 
-#' do with this, particularly with pathogens, so let's have a look at that.
+#' do with this, particularly with pathogens, so let's have a look at that. Years since restoration appears 
+#' to be a strong confounding element, so we will also check that out. 
 #+ pldiv_gld_pfc
 pldiv_gld_pfc <-
     pl_ab %>% 
@@ -559,11 +571,12 @@ pldiv_gld_pfc <-
     mutate(N0 = sum(c_across(-c(1:3)) > 0)) %>% 
     select(field_name, N0) %>% 
     left_join(ptr_gld, by = join_by(field_name)) %>% 
-    select(field_name, region, C4_grass, forb, plant_pathogen, soil_saprotroph, N0)
+    left_join(sites %>% select(field_name, yr_since), by = join_by(field_name)) %>% 
+    select(field_name, region, yr_since, C4_grass, forb, plant_pathogen, soil_saprotroph, N0)
 #+ pldiv_gld_pfc_plot,fig.width=9,fig.height=9
-ggpairs(pldiv_gld_pfc, columns = 3:7)
+ggpairs(pldiv_gld_pfc, columns = 3:8)
 #' Plant species richness is negatively related to saprotrophs, but not to pathogens. Since these 
-#' variables are all related, let's see which ones are stronger against the redsiduals of the others.
+#' variables are all related, let's see which ones are stronger against the residuals of the others.
 mod_div_patho <- lm(plant_pathogen ~ N0 + C4_grass + forb, data = pldiv_gld_pfc)
 summary(mod_div_patho)
 #' No individual variable is significant with pathogens. Looking back at the pairs plot, C4 grasses and forbs, 
@@ -576,6 +589,30 @@ summary(mod_div_sapro)
 #' But this is likely still mediated by C4 grasses (or forbs), despite how the numbers here work out. 
 #+ mod_sapro_avplot
 avPlots(mod_div_sapro)
+#' Plant richness and forb cover are better predictors of saprotrophs than C4 grasses are.
+#' 
+#' #### Years since restoration in multiple regression
+#' It was perhaps hasty to test plant species richness before isolating the effect of years since restoration. Let's
+#' do that here. 
+mod_time_patho <- lm(plant_pathogen ~ yr_since + C4_grass + forb, data = pldiv_gld_pfc)
+summary(mod_time_patho)
+#+ mod_pathotime_avplot
+avPlots(mod_time_patho)
+#' No individual variable is significant with pathogens. These variables are so highly collinear that they 
+#' negate each other in the model. Statistically speaking, this model is overfitted with predictors that cancel each 
+#' other out. Let's still compare their individual strengths with AV plots. 
+#'  
+#' None of these fits are good, but years since restoration is the weakest signal in explaining total model residuals.
+#' I also ran this without yr_since in the model mod_time_patho, and in the AVplots it was clear that after 
+#' years since restoration was partialled out from C4 grasses, they no longer had any explanatory power over 
+#' pathogen abundance. **The take home message is that forb cover is the strongest predictor of pathogens,** but 
+#' there's little statistical support for that statement. 
+mod_time_sapro <- lm(soil_saprotroph ~ yr_since + C4_grass + forb, data = pldiv_gld_pfc)
+summary(mod_time_sapro)
+#+ mod_saprotime_avplot
+avPlots(mod_time_sapro)
+#' Again, these variables tend to cancel each other out and each have a slightly different rank order of sites. 
+#' **C4 grass cover is the strongest predictor of saprotrophs,** but again, support is weak in a multiple linear regression.
 #' 
 #' ## AMF
 #' Recall the number of OTUs recovered in each dataset. The effect of rarefying did not change
@@ -879,9 +916,34 @@ spe_meta$its_rfy %>%
     geom_point(fill = "#5CBD92", shape = 21, size = 2.5) +
     labs(x = "Years since restoration", y = "Sum of ITS sequences") +
     theme_bw()
-
-
-
+#' 
+#' Comparisons of PFG, guilds, and time. See section **Plant Functional Groups and Guilds** above. 
+#' Pathogen model results
+mod_patho %>% map(\(x) x$coefficients)
+mod_patho %>% map(\(x) x$adj.r.squared)
+#' Saprotroph model results
+mod_sapro %>% map(\(x) x$coefficients)
+mod_sapro %>% map(\(x) x$adj.r.squared)
+#' Combined plot
+#+ combined_plot
+fgrp_guild_corr_plot
+#' Models
+#' Pathogens and plant richness
+mod_div_patho <- lm(plant_pathogen ~ N0 + C4_grass + forb, data = pldiv_gld_pfc)
+summary(mod_div_patho)
+avPlots(mod_div_patho)
+#' Saprotrophs and plant richness
+mod_div_sapro <- lm(soil_saprotroph ~ N0 + C4_grass + forb, data = pldiv_gld_pfc)
+summary(mod_div_sapro)
+avPlots(mod_div_sapro)
+#' Pathogens and time
+mod_time_patho <- lm(plant_pathogen ~ yr_since + C4_grass + forb, data = pldiv_gld_pfc)
+summary(mod_time_patho)
+avPlots(mod_time_patho)
+#' Saprotrophs and time
+mod_time_sapro <- lm(soil_saprotroph ~ yr_since + C4_grass + forb, data = pldiv_gld_pfc)
+summary(mod_time_sapro)
+avPlots(mod_time_sapro)
 
 
 

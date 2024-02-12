@@ -380,7 +380,7 @@ The oldest restored field has much higher proportional cover of C4 grasses, but 
 
 As we saw in the constrained analysis, cover of C4 grasses and forbs was collinear with years since restoration. Phil noticed that these plant functional groups might directly correlate with pathogens and saprotrophs as we saw in the results earlier. In the Blue Mounds, we do see that pathogens decline with C4 grasses ($R^2_{Adj}=0.51,~p=0.042$) and increase with forbs ($R^2_{Adj}=0.85,~p=0.002$), and that saprotrophs increase wtih C4 grasses ($R^2_{Adj}=0.73,~p=0.009$). With AMF, the abundance of *Gigasporaceae* increased with C4 grass cover ($R^2_{Adj}=0.73,~p=0.009$) and declined with forb cover ($R^2_{Adj}=0.53,~p=0.038$), but this result isn't shown here because these AMF were relatively rare.
 
-```{r fgrp-gld,out.width="60%",fig.cap="Points show summed sequence abundance in pathogen and saprotroph guilds as they respond to C4 grass and forb cover in restored fields from the Blue Mounds region. Solid lines, when present, show significnt correlations. See text for statistics."}
+```{r fgrp-gld,out.width="80%",fig.cap="Points show summed sequence abundance in pathogen and saprotroph guilds as they respond to C4 grass and forb cover in restored fields from the Blue Mounds region. Shading indicates years since restoration, a clear confounding element. Solid lines, when present, show significnt correlations. See text for statistics."}
 include_graphics("microbial_guild_taxonomy_files/figure-gfm/fgrp_guild_corr_plot-1.png")
 ```
 
