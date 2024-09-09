@@ -17,9 +17,10 @@
 #' 
 #' ## Workflow
 #' 1. The script `process_data.R` is run first. A few samples failed to amplify, resulting in
-#' some fields characterized by 9 samples and others by 10. To balance sampling effort
+#' some fields characterized by 9 samples and others by 10. Also, one field had an ambiguously assigned
+#' sample, which was removed. To balance sampling effort
 #' across fields, the top 9 samples by sequence abundance are chosen from each field. 
-#' **Assign "pre" to the argument `process_step` in the etl function so that files are created in the /clean_data/pre/ directory.**
+#' **Assign "pre" to the argument `process_step` in the etl function so that files are created in the /clean_data/pre/... directory.**
 #' 1. Next, `microbial_diagnostics_pre.R` is run to investigate sequencing depth in samples 
 #' and species accumulation in fields. A few samples are known to have low sequence abundance 
 #' (an order of magnitude lower than the maximum), and the consequence of rarefying to this 
@@ -31,7 +32,7 @@
 #' **7 from the 18S dataset.**
 #'    - If downstream analyses have been completed, then it's likely that the `process_data.R`
 #'    script has been left at this step. 
-#'    - **Assign "post" to the argument `process_step` in the etl function so that files are created in the /clean_data/ directory.**
+#'    - **Assign "post" to the argument `process_step` in the etl function so that files are created in the /clean_data/... directory.**
 #' 1. Finally, `microbial_diagnostics_post.R` is run. It is very similar to the "_pre" script,
 #' but a different file is used so that the two may be compared. 
 #' 
@@ -114,6 +115,7 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     #                   name is desired, use "".
     #                 = logical toggle to indicate whether this is the pre or post step in 
     #                   data processing. 
+    #                 = string toggle indicates whether pre-processing or post-processing steps are desired.
     
     set.seed <- 397
     
