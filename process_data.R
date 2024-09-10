@@ -333,14 +333,14 @@ its <-
     etl(
         spe = its_otu,
         taxa = its_taxa,
-        samps = 9,
+        samps = 8,
         traits = traits,
         varname = otu_num,
         gene = "ITS",
         cluster_type = "otu",
         colname_prefix = "ITS_TGP_",
         folder = "/clean_data",
-        process_step = "pre"
+        process_step = "post"
     )
 its
 #+ otu_18S,message=FALSE,warning=FALSE
@@ -348,13 +348,13 @@ amf <-
     etl(
         spe = amf_otu,
         taxa = amf_taxa,
-        samps = 9,
+        samps = 7,
         varname = otu_num,
         gene = "18S",
         cluster_type = "otu",
         colname_prefix = "X18S_TGP_",
         folder = "/clean_data",
-        process_step = "pre"
+        process_step = "post"
     )
 amf
 #' 
