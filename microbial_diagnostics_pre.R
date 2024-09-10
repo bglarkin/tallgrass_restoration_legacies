@@ -98,8 +98,7 @@ spe_accum <- function(data) {
 #' Species accumulation is performed using the "exact" method (Kindt, R., unpublished) to 
 #' examine the adequacy of field sampling. Raw ITS and 18S data with all samples is used and compared
 #' with the "topN" data sets. Some samples didn't amplify, so samples were dropped from some 
-#' fields to equalize sampling effort. As of 2023-03-13, six samples were retained from each 
-#' field, but nine would be possible to keep.
+#' fields to equalize sampling effort.
 #' 
 #' ### ITS
 #' 
@@ -154,7 +153,7 @@ its_rc_pre %>%
     arrange(seq_abund) %>% 
     slice_head(n = 20) %>%
     kable(format = "pandoc", caption = "ITS samples sorted by sequence abundance, lowest 20 shown")
-#' Six samples would be removed if we cut off the sequence depth at 5000. 
+#' Seven samples would be removed if we cut off the sequence depth at 5000. 
 #' 
 #' Sequence abundance jumps from 4948 to 5221, which is a big jump compared with the rest of
 #' the table. This makes 5000 look good as a cutoff. No two samples below 5000 come from the 
@@ -162,6 +161,7 @@ its_rc_pre %>%
 #' 
 #' Looking back at `process_data.R`, we can compare the fields where we'd lose a sample to the
 #' maximum number of samples available. 
+#' - FLREM1 already had only 9 samples
 #' - FLRP1 already had only 9 samples
 #' - FLRSP3 already had only 9 samples
 #' - FLRSP1 had 10
@@ -193,7 +193,7 @@ ggplot(its_seqot_pre, aes(x = seqs, y = otus)) +
     theme_classic()
 #+ its_seqs_otus_reg
 summary(lm(otus ~ seqs, data = its_seqot_pre))
-#' The relationship is poor and not significant. Richness is not related to recovered sequence depth, 
+#' The relationship is poor, driven by one high-leverage point, and not significant. Richness is not related to recovered sequence depth, 
 #' suggesting that our methods are on track.
 #' 
 #' We have a choice to make. Limit samples per field to 8 or try to justify keeping them. My call is to 
@@ -362,3 +362,4 @@ ggplot(amf_accum_pre, aes(x = samples, y = richness, group = field_name)) +
 #' It's also good news that they all add species at about the same rate. But this plot is evidence of undersampling...
 #' With only six samples retained per field, many OTUs are lost, but the curves look a little flatter (not shown).
 #' We will see how 7 looks in a separate analysis. 
+

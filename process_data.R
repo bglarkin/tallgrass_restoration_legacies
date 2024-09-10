@@ -113,9 +113,8 @@ etl <- function(spe, taxa, samps, traits=NULL, varname, gene, cluster_type, coln
     #                   default. To use a subfolder, use this variable. Quoted. 
     #                   Include the "/" before the folder name. If no folder 
     #                   name is desired, use "".
-    #                 = logical toggle to indicate whether this is the pre or post step in 
+    # process_step    = logical toggle to indicate whether this is the pre or post step in 
     #                   data processing. 
-    #                 = string toggle indicates whether pre-processing or post-processing steps are desired.
     
     set.seed <- 397
     
