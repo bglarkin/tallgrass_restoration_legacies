@@ -2,7 +2,7 @@ Microbial data: diagnostics of sequence data
 ================
 Beau Larkin
 
-Last updated: 06 December, 2023
+Last updated: 10 September, 2024
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -256,18 +256,18 @@ summary(lm(otus ~ seqs, data = its_seqot))
     ## 
     ## Residuals:
     ##      Min       1Q   Median       3Q      Max 
-    ## -130.258  -32.622    4.095   45.126   90.832 
+    ## -129.498  -31.676    6.921   38.306   94.182 
     ## 
     ## Coefficients:
     ##              Estimate Std. Error t value Pr(>|t|)  
-    ## (Intercept) 2.469e+02  1.168e+02   2.115   0.0455 *
-    ## seqs        2.843e-03  1.630e-03   1.744   0.0945 .
+    ## (Intercept) 2.383e+02  1.131e+02   2.106   0.0463 *
+    ## seqs        2.936e-03  1.583e-03   1.854   0.0766 .
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 59.91 on 23 degrees of freedom
-    ## Multiple R-squared:  0.1168, Adjusted R-squared:  0.07841 
-    ## F-statistic: 3.042 on 1 and 23 DF,  p-value: 0.0945
+    ## Residual standard error: 59.21 on 23 degrees of freedom
+    ## Multiple R-squared:   0.13,  Adjusted R-squared:  0.09222 
+    ## F-statistic: 3.438 on 1 and 23 DF,  p-value: 0.07658
 
 The relationship is poor and not significant. Richness is not related to
 recovered sequence depth, suggesting that our methods are on track.
@@ -305,7 +305,7 @@ its_otus_depth <-
 
 ``` r
 ggplot(its_rcurve_data, aes(x = seq_abund, y = otus, group = field_sample)) +
-    facet_grid(rows = vars(process_step), cols = vars(field_type), as.table = FALSE, scales = "free") +
+    facet_grid(rows = vars(process_step), cols = vars(field_type), as.table = TRUE, scales = "free") +
     geom_vline(data = its_rcurve_depth, aes(xintercept = depth), linewidth = 0.2) +
     geom_hline(data = its_otus_depth, aes(yintercept = otus), linewidth = 0.2) +
     geom_line(aes(color = field_type), linewidth = 0.4) +
