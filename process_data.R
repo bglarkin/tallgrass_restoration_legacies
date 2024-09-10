@@ -17,8 +17,8 @@
 #' 
 #' ## Workflow
 #' 1. The script `process_data.R` is run first. A few samples failed to amplify, resulting in
-#' some fields characterized by 9 samples and others by 10. Also, one field had an ambiguously assigned
-#' sample, which was removed. To balance sampling effort
+#' some fields characterized by 9 samples and others by 10. Also, one ITS sample was ambiguously assigned
+#' to site and was removed. To balance sampling effort
 #' across fields, the top 9 samples by sequence abundance are chosen from each field. 
 #' **Assign "pre" to the argument `process_step` in the etl function so that files are created in the /clean_data/pre/... directory.**
 #' 1. Next, `microbial_diagnostics_pre.R` is run to investigate sequencing depth in samples 
@@ -334,14 +334,14 @@ its <-
     etl(
         spe = its_otu,
         taxa = its_taxa,
-        samps = 8,
+        samps = 9,
         traits = traits,
         varname = otu_num,
         gene = "ITS",
         cluster_type = "otu",
         colname_prefix = "ITS_TGP_",
         folder = "/clean_data",
-        process_step = "post"
+        process_step = "pre"
     )
 its
 #+ otu_18S,message=FALSE,warning=FALSE
@@ -349,13 +349,13 @@ amf <-
     etl(
         spe = amf_otu,
         taxa = amf_taxa,
-        samps = 7,
+        samps = 9,
         varname = otu_num,
         gene = "18S",
         cluster_type = "otu",
         colname_prefix = "X18S_TGP_",
         folder = "/clean_data",
-        process_step = "post"
+        process_step = "pre"
     )
 amf
 #' 
