@@ -2,7 +2,7 @@ Microbial data: diagnostics of sequence data
 ================
 Beau Larkin
 
-Last updated: 10 September, 2024
+Last updated: 11 September, 2024
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -191,7 +191,7 @@ ggplot(its_rc_pre, aes(x = seq_abund, y = otus, group = field_sample)) +
 
 <img src="microbial_diagnostics_pre_files/figure-gfm/its_rarefaction_curve_fig-1.png" style="display: block; margin: auto;" />
 
-Minimum sequencing depth reached is 1052. Rarefying the data to this
+Minimum sequencing depth reached is 1628. Rarefying the data to this
 depth would remove a great number of OTUs and leave nearly all samples
 poorly characterized in richness and composition. It looks like
 somewhere around 5000 sequences would be more appropriate. How many
@@ -210,7 +210,6 @@ its_rc_pre %>%
 
 | field_key | sample_key | field_sample | seq_abund | otus | field_name | region | field_type | yr_since |
 |:----------|:-----------|:-------------|----------:|-----:|:-----------|:-------|:-----------|---------:|
-| 8         | 8          | 8_8          |      1054 |   48 | FLREM1     | FL     | remnant    |       NA |
 | 9         | 8          | 9_8          |      1629 |   51 | FLRP1      | FL     | restored   |       40 |
 | 14        | 4          | 14_4         |      3666 |   71 | FLRSP3     | FL     | restored   |       10 |
 | 12        | 7          | 12_7         |      4198 |  108 | FLRSP1     | FL     | restored   |       10 |
@@ -230,6 +229,7 @@ its_rc_pre %>%
 | 22        | 7          | 22_7         |      5853 |  134 | MHRP1      | BM     | restored   |        7 |
 | 20        | 10         | 20_10        |      5858 |  131 | MBREM1     | BM     | remnant    |       NA |
 | 1         | 3          | 1_3          |      5940 |   71 | BBRP1      | BM     | restored   |       16 |
+| 5         | 4          | 5_4          |      5951 |  113 | FGRP1      | FG     | restored   |       15 |
 
 ITS samples sorted by sequence abundance, lowest 20 shown
 
@@ -241,10 +241,9 @@ two samples below 5000 come from the same field, so the lost data
 shouldn’t affect the overall analysis too much.
 
 Looking back at `process_data.R`, we can compare the fields where we’d
-lose a sample to the maximum number of samples available. - FLREM1
-already had only 9 samples - FLRP1 already had only 9 samples - FLRSP3
-already had only 9 samples - FLRSP1 had 10 - LPRP2 had 10 - MHRP2 had
-10 - LPRP1 had 10
+lose a sample to the maximum number of samples available. - FLRP1
+already had only 9 samples - FLRSP3 already had only 9 samples - FLRSP1
+had 10 - LPRP2 had 10 - MHRP2 had 10 - LPRP1 had 10
 
 If we cut these samples with fewer than 5000 sequences, we will have to
 take the number of samples selected from each field down to 8. This
@@ -288,19 +287,19 @@ summary(lm(otus ~ seqs, data = its_seqot_pre))
     ## lm(formula = otus ~ seqs, data = its_seqot_pre)
     ## 
     ## Residuals:
-    ##      Min       1Q   Median       3Q      Max 
-    ## -141.273  -32.915    6.863   43.360  104.723 
+    ##     Min      1Q  Median      3Q     Max 
+    ## -143.47  -34.73   11.87   57.84  102.09 
     ## 
     ## Coefficients:
     ##              Estimate Std. Error t value Pr(>|t|)  
-    ## (Intercept) 2.428e+02  1.274e+02   1.905   0.0693 .
-    ## seqs        2.947e-03  1.654e-03   1.781   0.0881 .
+    ## (Intercept) 2.510e+02  1.363e+02   1.841   0.0785 .
+    ## seqs        2.871e-03  1.762e-03   1.629   0.1169  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 63.9 on 23 degrees of freedom
-    ## Multiple R-squared:  0.1212, Adjusted R-squared:  0.08304 
-    ## F-statistic: 3.173 on 1 and 23 DF,  p-value: 0.08806
+    ## Residual standard error: 64.95 on 23 degrees of freedom
+    ## Multiple R-squared:  0.1035, Adjusted R-squared:  0.06448 
+    ## F-statistic: 2.654 on 1 and 23 DF,  p-value: 0.1169
 
 The relationship is poor, driven by one high-leverage point, and not
 significant. Richness is not related to recovered sequence depth,

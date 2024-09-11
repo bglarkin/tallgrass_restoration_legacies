@@ -161,7 +161,6 @@ its_rc_pre %>%
 #' 
 #' Looking back at `process_data.R`, we can compare the fields where we'd lose a sample to the
 #' maximum number of samples available. 
-#' - FLREM1 already had only 9 samples
 #' - FLRP1 already had only 9 samples
 #' - FLRSP3 already had only 9 samples
 #' - FLRSP1 had 10
