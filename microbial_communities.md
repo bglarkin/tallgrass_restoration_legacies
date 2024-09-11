@@ -2,7 +2,7 @@ Microbial data: community differences
 ================
 Beau Larkin
 
-Last updated: 10 September, 2024
+Last updated: 11 September, 2024
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -420,40 +420,40 @@ these ordinations.
     ## 
     ## $values
     ##   Dim Eigenvalues Relative_eig Broken_stick Cumul_eig Cumul_br_stick
-    ## 1   1    1.296359   0.18839901   0.15733159 0.1883990      0.1573316
-    ## 2   2    0.791862   0.11508078   0.11566492 0.3034798      0.2729965
-    ## 3   3    0.591334   0.08593818   0.09483159 0.3894180      0.3678281
+    ## 1   1   1.2802276   0.18661535   0.15733159 0.1866154      0.1573316
+    ## 2   2   0.7864201   0.11463436   0.11566492 0.3012497      0.2729965
+    ## 3   3   0.5929217   0.08642861   0.09483159 0.3876783      0.3678281
     ## 
     ## $eigenvalues
-    ## [1] 18.8 11.5
+    ## [1] 18.7 11.5
     ## 
     ## $site_vectors
     ##    field_key      Axis.1       Axis.2 region field_type yr_since
-    ## 1          1  0.22586722 -0.052356698     BM   restored       16
-    ## 2          2 -0.10660664  0.012741658     BM   restored        3
-    ## 3          3 -0.33278089  0.004021646     FG       corn       NA
-    ## 4          4  0.10685336 -0.302955832     FG    remnant       NA
-    ## 5          5 -0.05350523 -0.292028919     FG   restored       15
-    ## 6          6 -0.29754073  0.116424095     FL       corn       NA
-    ## 7          7 -0.32889451  0.012010862     FL       corn       NA
-    ## 8          8  0.15570034 -0.225578056     FL    remnant       NA
-    ## 9          9  0.25001099 -0.188920864     FL   restored       40
-    ## 10        10  0.32102356 -0.072299858     FL   restored       36
-    ## 11        11  0.21968673 -0.165329590     FL   restored       35
-    ## 12        12  0.20801552  0.242040565     FL   restored       10
-    ## 13        13  0.18036935  0.124368237     FL   restored       10
-    ## 14        14  0.18886639  0.256707526     FL   restored       10
-    ## 15        15  0.24405130 -0.050732509     BM   restored       28
-    ## 16        16 -0.38142478  0.111641388     LP       corn       NA
-    ## 17        17  0.06697260  0.187011960     LP    remnant       NA
-    ## 18        18 -0.24900969  0.072302073     LP   restored        4
-    ## 19        19 -0.14762866  0.092191002     LP   restored        4
-    ## 20        20  0.23557693  0.314408550     BM    remnant       NA
-    ## 21        21  0.18422378  0.286002819     BM   restored       18
-    ## 22        22 -0.11000262 -0.210284192     BM   restored        7
-    ## 23        23 -0.22255414 -0.084904366     BM   restored        2
-    ## 24        24 -0.34370145  0.020532440     BM       corn       NA
-    ## 25        25 -0.01356873 -0.207013936     BM   restored       11
+    ## 1          1  0.22567685 -0.053150223     BM   restored       16
+    ## 2          2 -0.10332809  0.007845206     BM   restored        3
+    ## 3          3 -0.33074971  0.025086045     FG       corn       NA
+    ## 4          4  0.10090403 -0.301897155     FG    remnant       NA
+    ## 5          5 -0.05949033 -0.285299292     FG   restored       15
+    ## 6          6 -0.29465345  0.130140919     FL       corn       NA
+    ## 7          7 -0.32606680  0.027555097     FL       corn       NA
+    ## 8          8  0.09372057 -0.222121172     FL    remnant       NA
+    ## 9          9  0.24857486 -0.192591329     FL   restored       40
+    ## 10        10  0.32222241 -0.081876654     FL   restored       36
+    ## 11        11  0.22000364 -0.168616366     FL   restored       35
+    ## 12        12  0.21559326  0.238376330     FL   restored       10
+    ## 13        13  0.18477609  0.115943948     FL   restored       10
+    ## 14        14  0.19591933  0.254293029     FL   restored       10
+    ## 15        15  0.24591083 -0.054154050     BM   restored       28
+    ## 16        16 -0.37640561  0.120798839     LP       corn       NA
+    ## 17        17  0.07471032  0.182194215     LP    remnant       NA
+    ## 18        18 -0.24345537  0.065408981     LP   restored        4
+    ## 19        19 -0.14663486  0.091447342     LP   restored        4
+    ## 20        20  0.24492434  0.308576799     BM    remnant       NA
+    ## 21        21  0.19239945  0.278486280     BM   restored       18
+    ## 22        22 -0.11048797 -0.215563334     BM   restored        7
+    ## 23        23 -0.22011657 -0.089520293     BM   restored        2
+    ## 24        24 -0.33782242  0.029967438     BM       corn       NA
+    ## 25        25 -0.01612480 -0.211330601     BM   restored       11
     ## 
     ## $broken_stick_plot
 
@@ -468,9 +468,9 @@ these ordinations.
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, method = adonis_index, add = if (corr == "none") FALSE else "lingoes", strata = region)
     ##          Df SumOfSqs      R2      F Pr(>F)    
-    ## Model     2   1.2362 0.17966 2.4091  5e-04 ***
-    ## Residual 22   5.6447 0.82034                  
-    ## Total    24   6.8809 1.00000                  
+    ## Model     2   1.2184 0.17761 2.3756  5e-04 ***
+    ## Residual 22   5.6418 0.82239                  
+    ## Total    24   6.8602 1.00000                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -479,11 +479,11 @@ these ordinations.
     ## 
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
-    ## restored   corn       0.157     3.532     1    19   0.0010000        0.0030
-    ## restored   remnant    0.057     1.090     1    18   0.1000000        0.1000
-    ## corn       remnant    0.296     2.940     1     7   0.0416667        0.0625
+    ## restored   corn       0.156     3.523     1    19   0.0015000        0.0045
+    ## restored   remnant    0.055     1.056     1    18   0.1455000        0.1455
+    ## corn       remnant    0.289     2.850     1     7   0.0416667        0.0625
 
-Axis 1 explains 18.8% of the variation and is the only eigenvalue that
+Axis 1 explains 18.7% of the variation and is the only eigenvalue that
 exceeds a broken stick model. The most substantial variation here will
 be on the first axis, although axis 2 explains 11.5% of the variation
 and was very close to the broken stick value. Testing the design factor
@@ -601,9 +601,9 @@ correction is needed for these ordinations.
     ## 
     ## $values
     ##   Dim Eigenvalues Relative_eig Broken_stick Cumul_eig Cumul_br_stick
-    ## 1   1    2.141085   0.11526197   0.08352022 0.1152620     0.08352022
-    ## 2   2    1.427693   0.07685761   0.06533840 0.1921196     0.14885863
-    ## 3   3    1.029600   0.05542691   0.05624749 0.2475465     0.20510612
+    ## 1   1    2.143437   0.11526409   0.08352022 0.1152641     0.08352022
+    ## 2   2    1.424838   0.07662119   0.06533840 0.1918853     0.14885863
+    ## 3   3    1.036238   0.05572406   0.05624749 0.2476093     0.20510612
     ## 
     ## $eigenvalues
     ## [1] 11.5  7.7
@@ -612,16 +612,16 @@ correction is needed for these ordinations.
     ## # A tibble: 56 × 5
     ##    field_key sample_key  Axis.1  Axis.2 yr_since
     ##        <dbl> <chr>        <dbl>   <dbl>    <dbl>
-    ##  1         1 1          -0.192  -0.195        16
-    ##  2         1 2          -0.214  -0.0466       16
-    ##  3         1 4          -0.184  -0.0670       16
-    ##  4         1 5          -0.278  -0.141        16
-    ##  5         1 6          -0.324  -0.163        16
-    ##  6         1 7          -0.100  -0.0791       16
-    ##  7         1 9          -0.211  -0.152        16
-    ##  8         1 10         -0.245  -0.0307       16
-    ##  9         2 1           0.244   0.221         3
-    ## 10         2 2           0.0916  0.0800        3
+    ##  1         1 1          -0.188  -0.200        16
+    ##  2         1 2          -0.212  -0.0549       16
+    ##  3         1 4          -0.182  -0.0656       16
+    ##  4         1 5          -0.281  -0.146        16
+    ##  5         1 6          -0.328  -0.162        16
+    ##  6         1 7          -0.108  -0.0827       16
+    ##  7         1 9          -0.209  -0.150        16
+    ##  8         1 10         -0.241  -0.0307       16
+    ##  9         2 1           0.248   0.216         3
+    ## 10         2 2           0.0876  0.0830        3
     ## # ℹ 46 more rows
     ## 
     ## $broken_stick_plot
@@ -636,9 +636,9 @@ correction is needed for these ordinations.
     ## 
     ## adonis2(formula = d ~ field_key, data = env_w, permutations = nperm, method = adonis_index)
     ##          Df SumOfSqs      R2      F Pr(>F)    
-    ## Model     1   0.7814 0.04207 2.3714  5e-04 ***
-    ## Residual 54  17.7944 0.95793                  
-    ## Total    55  18.5758 1.00000                  
+    ## Model     1   0.7819 0.04205 2.3702  5e-04 ***
+    ## Residual 54  17.8140 0.95795                  
+    ## Total    55  18.5959 1.00000                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -647,7 +647,7 @@ correction is needed for these ordinations.
     ## ***VECTORS
     ## 
     ##             Axis.1    Axis.2     r2 Pr(>r)  
-    ## yr_since -0.997500  0.070667 0.7273  0.024 *
+    ## yr_since -0.996470  0.083919 0.7272  0.022 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -658,7 +658,7 @@ correction is needed for these ordinations.
     ## 
     ## $vector_fit_scores
     ##              Axis.1     Axis.2
-    ## yr_since -0.8506727 0.06026507
+    ## yr_since -0.8497566 0.07156277
 
 Axis 1 explains 11.5% and axis 2 explains 7.7% of the variation in the
 community data. Both axes are important based on the broken stick model.
@@ -745,45 +745,47 @@ correction was applied.
     ## [1] "ITS gene, 97% OTU"
     ## 
     ## $components_exceed_broken_stick
-    ## [1] 10
+    ## [1] 11
     ## 
     ## $correction_note
-    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.0586364536544847 , except diagonal elements"
+    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.0582972612582258 , except diagonal elements"
     ## 
     ## $values
     ##    Dim Eigenvalues Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig Cum_br_stick
-    ## 1    1    6.650014 6.708650   0.08109678   0.02963639   0.08109678   0.02963639
-    ## 2    2    4.129312 4.187948   0.05062556   0.02458589   0.13172234   0.05422228
-    ## 3    3    3.328468 3.387105   0.04094464   0.02206064   0.17266698   0.07628292
-    ## 4    4    2.646543 2.705180   0.03270127   0.02037713   0.20536825   0.09666005
-    ## 5    5    2.154798 2.213435   0.02675686   0.01911451   0.23212511   0.11577456
-    ## 6    6    2.024480 2.083117   0.02518153   0.01810441   0.25730664   0.13387896
-    ## 7    7    1.695887 1.754523   0.02120936   0.01726266   0.27851600   0.15114162
-    ## 8    8    1.478246 1.536883   0.01857844   0.01654115   0.29709444   0.16768277
-    ## 9    9    1.332238 1.390874   0.01681343   0.01590984   0.31390787   0.18359262
-    ## 10  10    1.304042 1.362678   0.01647259   0.01534867   0.33038046   0.19894129
-    ## 11  11    1.162318 1.220955   0.01475937   0.01484362   0.34513984   0.21378492
+    ## 1    1    6.695143 6.753440   0.08163976   0.02963639   0.08163976   0.02963639
+    ## 2    2    4.127910 4.186207   0.05060547   0.02458589   0.13224523   0.05422228
+    ## 3    3    3.319685 3.377982   0.04083514   0.02206064   0.17308037   0.07628292
+    ## 4    4    2.624358 2.682656   0.03242960   0.02037713   0.20550998   0.09666005
+    ## 5    5    2.134346 2.192643   0.02650603   0.01911451   0.23201601   0.11577456
+    ## 6    6    2.040445 2.098743   0.02537090   0.01810441   0.25738691   0.13387896
+    ## 7    7    1.695953 1.754250   0.02120646   0.01726266   0.27859337   0.15114162
+    ## 8    8    1.482016 1.540313   0.01862026   0.01654115   0.29721364   0.16768277
+    ## 9    9    1.342005 1.400302   0.01692772   0.01590984   0.31414136   0.18359262
+    ## 10  10    1.298941 1.357238   0.01640714   0.01534867   0.33054850   0.19894129
+    ## 11  11    1.170003 1.228301   0.01484846   0.01484362   0.34539696   0.21378492
+    ## 12  12    1.106225 1.164522   0.01407747   0.01438449   0.35947442   0.22816940
     ## 
     ## $eigenvalues
-    ## [1] 8.1 5.1
+    ## [1] 8.2 5.1
     ## 
     ## $site_vectors
-    ## # A tibble: 200 × 16
-    ##    field_key sample_key  Axis.1   Axis.2  Axis.3  Axis.4  Axis.5  Axis.6  Axis.7
-    ##        <dbl> <chr>        <dbl>    <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
-    ##  1         1 1           0.178  -0.125   -0.0387 -0.0709  0.0742 -0.109  -0.154 
-    ##  2         1 2           0.219   0.0781  -0.0188 -0.0121  0.0119 -0.217  -0.0249
-    ##  3         1 4           0.189  -0.0433  -0.0129  0.0214 -0.0201 -0.123  -0.0628
-    ##  4         1 5           0.175  -0.0120  -0.126  -0.202  -0.0190  0.0235 -0.107 
-    ##  5         1 6           0.205   0.0126  -0.118  -0.169   0.0227 -0.177  -0.268 
-    ##  6         1 7           0.0467 -0.0510   0.0236 -0.109  -0.0366  0.0205 -0.125 
-    ##  7         1 9           0.117  -0.0848  -0.0643 -0.0979  0.0631 -0.0364 -0.130 
-    ##  8         1 10          0.186   0.0157  -0.0734 -0.0480 -0.0242 -0.0235 -0.0929
-    ##  9         2 1          -0.0528 -0.00984  0.329   0.0503 -0.0784  0.0143  0.0496
-    ## 10         2 2          -0.0460  0.0476   0.0864  0.0210 -0.134  -0.136  -0.0177
+    ## # A tibble: 200 × 17
+    ##    field_key sample_key  Axis.1   Axis.2   Axis.3  Axis.4  Axis.5   Axis.6
+    ##        <dbl> <chr>        <dbl>    <dbl>    <dbl>   <dbl>   <dbl>    <dbl>
+    ##  1         1 1          -0.181  -0.129   -0.0310  -0.0711  0.0695 -0.102  
+    ##  2         1 2          -0.222   0.0710  -0.0228  -0.0157  0.0133 -0.217  
+    ##  3         1 4          -0.192  -0.0437  -0.00762  0.0210 -0.0157 -0.124  
+    ##  4         1 5          -0.182  -0.0190  -0.128   -0.207  -0.0270  0.0333 
+    ##  5         1 6          -0.207   0.00685 -0.120   -0.174   0.0201 -0.167  
+    ##  6         1 7          -0.0507 -0.0490   0.0194  -0.107  -0.0310  0.0261 
+    ##  7         1 9          -0.121  -0.0848  -0.0596  -0.0955  0.0630 -0.0284 
+    ##  8         1 10         -0.187   0.0149  -0.0701  -0.0417 -0.0225 -0.0223 
+    ##  9         2 1           0.0564 -0.00475  0.331    0.0520 -0.0671  0.00535
+    ## 10         2 2           0.0429  0.0510   0.0898   0.0130 -0.123  -0.130  
     ## # ℹ 190 more rows
-    ## # ℹ 7 more variables: Axis.8 <dbl>, Axis.9 <dbl>, Axis.10 <dbl>,
-    ## #   field_name <chr>, region <chr>, field_type <ord>, yr_since <dbl>
+    ## # ℹ 9 more variables: Axis.7 <dbl>, Axis.8 <dbl>, Axis.9 <dbl>, Axis.10 <dbl>,
+    ## #   Axis.11 <dbl>, field_name <chr>, region <chr>, field_type <ord>,
+    ## #   yr_since <dbl>
     ## 
     ## $broken_stick_plot
 
@@ -798,18 +800,18 @@ correction was applied.
     ## Number of permutations: 1999
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
-    ##           Df SumOfSqs      R2     F Pr(>F)    
-    ## Model      2    5.863 0.08251 8.858  5e-04 ***
-    ## Residual 197   65.193 0.91749                 
-    ## Total    199   71.055 1.00000                 
+    ##           Df SumOfSqs      R2      F Pr(>F)    
+    ## Model      2    5.750 0.08084 8.6636  0.001 ***
+    ## Residual 197   65.372 0.91916                  
+    ## Total    199   71.121 1.00000                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $pairwise_contrasts
     ##     group1  group2    R2 F_value df1 df2   p_value p_value_adj
-    ## 1 restored    corn 0.067  11.831   1 166 0.0005000      0.0015
-    ## 2 restored remnant 0.018   2.942   1 158 0.1715000      0.1715
-    ## 3     corn remnant 0.139  11.338   1  70 0.1428571      0.1715
+    ## 1 restored    corn 0.066  11.742   1 166 0.0015000   0.0045000
+    ## 2 restored remnant 0.017   2.795   1 158 0.2620000   0.2620000
+    ## 3     corn remnant 0.134  10.850   1  70 0.1428571   0.2142857
     ## 
     ## $format
     ## [1] "pandoc"
@@ -819,15 +821,15 @@ write_delim(pcoa_its_samps$permanova, "microbial_communities_files/pcoa_its_samp
 write_delim(pcoa_its_samps$pairwise_contrasts %>% mutate(across(starts_with("p_value"), ~ round(.x, 3))), "microbial_communities_files/pcoa_its_samps_pairwise.txt")
 ```
 
-Axis 1 explains 8.1% and axis 2 explains 5.1% of the variation in the
+Axis 1 explains 8.2% and axis 2 explains 5.1% of the variation in the
 community data. Both axes are important based on the broken stick model,
-in fact, the broken stick model shows that 10 axes are important in
+in fact, the broken stick model shows that 11 axes are important in
 explaining variation with this dataset. The relatively low percent
 variation explained on axes 1 and 2 is partly due to the high number of
 dimensions used when all samples from fields are included. The fidelity
 of samples to fields was strong based on a permutation test when
 restricting permutations to fields (=plots in `how()`) within regions
-(=blocks in `how()`) $(R^2=0.08,~p=5\times 10^{-4})$.
+(=blocks in `how()`) $(R^2=0.08,~p=0.001)$.
 
 Let’s view an ordination plot with hulls around subsamples.
 
@@ -841,7 +843,7 @@ hull_its <- pcoa_its_samps$site_vectors %>%
 
 ``` r
 its_samps_fig <- 
-    ggplot(pcoa_its_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    ggplot(pcoa_its_samps$site_vectors, aes(x = -1 * (Axis.1), y = Axis.2)) +
     geom_vline(xintercept = 0, linewidth = 0.1) +
     geom_hline(yintercept = 0, linewidth = 0.1) +
     geom_point(aes(fill = field_type), shape = 21, alpha = 0.8, color = "gray10") +
@@ -914,29 +916,29 @@ replication.
     ## 
     ## $values
     ##   Dim Eigenvalues Relative_eig Broken_stick Cumul_eig Cumul_br_stick
-    ## 1   1   2.9643344   0.11598498   0.06826650 0.1159850      0.0682665
-    ## 2   2   1.8319853   0.07167976   0.05418199 0.1876647      0.1224485
-    ## 3   3   1.6118996   0.06306851   0.04713974 0.2507332      0.1695882
-    ## 4   4   1.1131856   0.04355541   0.04244490 0.2942887      0.2120331
-    ## 5   5   0.9934423   0.03887024   0.03892377 0.3331589      0.2509569
+    ## 1   1   2.9575981   0.11566017   0.06826650 0.1156602      0.0682665
+    ## 2   2   1.8106716   0.07080833   0.05418199 0.1864685      0.1224485
+    ## 3   3   1.6165316   0.06321627   0.04713974 0.2496848      0.1695882
+    ## 4   4   1.1148355   0.04359688   0.04244490 0.2932817      0.2120331
+    ## 5   5   0.9949093   0.03890704   0.03892377 0.3321887      0.2509569
     ## 
     ## $eigenvalues
-    ## [1] 11.6  7.2
+    ## [1] 11.6  7.1
     ## 
     ## $site_vectors
     ## # A tibble: 72 × 10
     ##    field_key sample_key  Axis.1   Axis.2  Axis.3  Axis.4 field_name region
     ##        <dbl> <chr>        <dbl>    <dbl>   <dbl>   <dbl> <chr>      <chr> 
-    ##  1         1 1          -0.0849  0.131   -0.290   0.0297 BBRP1      BM    
-    ##  2         1 2          -0.159   0.0973  -0.154  -0.0364 BBRP1      BM    
-    ##  3         1 4          -0.0893  0.132   -0.200  -0.0937 BBRP1      BM    
-    ##  4         1 5          -0.207  -0.00291 -0.219   0.220  BBRP1      BM    
-    ##  5         1 6          -0.193   0.0393  -0.307   0.0346 BBRP1      BM    
-    ##  6         1 7          -0.0286  0.0602  -0.139   0.142  BBRP1      BM    
-    ##  7         1 9          -0.103   0.0615  -0.253   0.0722 BBRP1      BM    
-    ##  8         1 10         -0.167   0.0759  -0.162   0.0434 BBRP1      BM    
-    ##  9         2 1           0.189   0.232    0.223  -0.0882 ERRP1      BM    
-    ## 10         2 2           0.112   0.0186   0.0634 -0.0607 ERRP1      BM    
+    ##  1         1 1           0.0796  0.127   -0.294  -0.0408 BBRP1      BM    
+    ##  2         1 2           0.157   0.0948  -0.161   0.0207 BBRP1      BM    
+    ##  3         1 4           0.0879  0.131   -0.201   0.0850 BBRP1      BM    
+    ##  4         1 5           0.212  -0.00571 -0.220  -0.238  BBRP1      BM    
+    ##  5         1 6           0.194   0.0325  -0.310  -0.0374 BBRP1      BM    
+    ##  6         1 7           0.0343  0.0566  -0.146  -0.151  BBRP1      BM    
+    ##  7         1 9           0.101   0.0611  -0.252  -0.0863 BBRP1      BM    
+    ##  8         1 10          0.165   0.0729  -0.162  -0.0572 BBRP1      BM    
+    ##  9         2 1          -0.191   0.243    0.215   0.0802 ERRP1      BM    
+    ## 10         2 2          -0.106   0.0241   0.0643  0.0464 ERRP1      BM    
     ## # ℹ 62 more rows
     ## # ℹ 2 more variables: field_type <ord>, yr_since <dbl>
     ## 
@@ -953,18 +955,18 @@ replication.
     ## Number of permutations: 1999
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
-    ##          Df SumOfSqs      R2      F Pr(>F)  
-    ## Model     2   3.0705 0.12014 4.7107 0.0265 *
-    ## Residual 69  22.4875 0.87986                
-    ## Total    71  25.5579 1.00000                
+    ##          Df SumOfSqs     R2      F Pr(>F)  
+    ## Model     2   3.0456 0.1191 4.6645  0.033 *
+    ## Residual 69  22.5259 0.8809                
+    ## Total    71  25.5714 1.0000                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $pairwise_contrasts
     ##     group1  group2    R2 F_value df1 df2 p_value p_value_adj
-    ## 1 restored remnant 0.068   4.537   1  62  0.1245     0.18675
-    ## 2 restored    corn 0.069   4.609   1  62  0.1125     0.18675
-    ## 3  remnant    corn 0.302   6.049   1  14  1.0000     1.00000
+    ## 1 restored remnant 0.068   4.509   1  62   0.135      0.2025
+    ## 2 restored    corn 0.068   4.550   1  62   0.124      0.2025
+    ## 3  remnant    corn 0.299   5.978   1  14   1.000      1.0000
     ## 
     ## $format
     ## [1] "pandoc"
@@ -998,27 +1000,27 @@ replication.
     ## 
     ## $values
     ##   Dim Eigenvalues Relative_eig Broken_stick Cumul_eig Cumul_br_stick
-    ## 1   1   1.9261547   0.26589636   0.16236050 0.2658964      0.1623605
-    ## 2   2   0.8595206   0.11865267   0.11888224 0.3845490      0.2812427
-    ## 3   3   0.4437595   0.06125886   0.09714311 0.4458079      0.3783858
+    ## 1   1   1.9224683   0.26517808   0.16236050 0.2651781      0.1623605
+    ## 2   2   0.8536510   0.11774943   0.11888224 0.3829275      0.2812427
+    ## 3   3   0.4475412   0.06173215   0.09714311 0.4446597      0.3783858
     ## 
     ## $eigenvalues
-    ## [1] 26.6 11.9
+    ## [1] 26.5 11.8
     ## 
     ## $site_vectors
     ## # A tibble: 24 × 8
     ##    field_key sample_key Axis.1   Axis.2 field_name region field_type yr_since
     ##        <dbl> <chr>       <dbl>    <dbl> <chr>      <chr>  <ord>         <dbl>
-    ##  1         3 1          -0.367 -0.00792 FGC1       FG     corn             NA
-    ##  2         3 2          -0.407 -0.0850  FGC1       FG     corn             NA
-    ##  3         3 3          -0.429 -0.0579  FGC1       FG     corn             NA
-    ##  4         3 5          -0.331 -0.00673 FGC1       FG     corn             NA
-    ##  5         3 6          -0.409 -0.0442  FGC1       FG     corn             NA
-    ##  6         3 7          -0.420  0.00875 FGC1       FG     corn             NA
-    ##  7         3 9          -0.414 -0.0761  FGC1       FG     corn             NA
-    ##  8         3 10         -0.382  0.0102  FGC1       FG     corn             NA
-    ##  9         4 1           0.261 -0.268   FGREM1     FG     remnant          NA
-    ## 10         4 2           0.294 -0.248   FGREM1     FG     remnant          NA
+    ##  1         3 1          -0.367  0.00593 FGC1       FG     corn             NA
+    ##  2         3 2          -0.413  0.0783  FGC1       FG     corn             NA
+    ##  3         3 3          -0.430  0.0551  FGC1       FG     corn             NA
+    ##  4         3 5          -0.330  0.0109  FGC1       FG     corn             NA
+    ##  5         3 6          -0.410  0.0383  FGC1       FG     corn             NA
+    ##  6         3 7          -0.414 -0.00224 FGC1       FG     corn             NA
+    ##  7         3 9          -0.414  0.0689  FGC1       FG     corn             NA
+    ##  8         3 10         -0.381 -0.00980 FGC1       FG     corn             NA
+    ##  9         4 1           0.260  0.260   FGREM1     FG     remnant          NA
+    ## 10         4 2           0.290  0.247   FGREM1     FG     remnant          NA
     ## # ℹ 14 more rows
     ## 
     ## $broken_stick_plot
@@ -1035,15 +1037,15 @@ replication.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
     ##          Df SumOfSqs      R2      F Pr(>F)
-    ## Model     2   2.7135 0.37458 6.2887      1
-    ## Residual 21   4.5305 0.62542              
-    ## Total    23   7.2440 1.00000              
+    ## Model     2   2.7090 0.37367 6.2644      1
+    ## Residual 21   4.5407 0.62633              
+    ## Total    23   7.2497 1.00000              
     ## 
     ## $pairwise_contrasts
     ##    group1   group2    R2 F_value df1 df2 p_value p_value_adj
-    ## 1    corn  remnant 0.343   7.298   1  14       1           1
-    ## 2    corn restored 0.341   7.246   1  14       1           1
-    ## 3 remnant restored 0.227   4.106   1  14       1           1
+    ## 1    corn  remnant 0.341   7.247   1  14       1           1
+    ## 2    corn restored 0.341   7.232   1  14       1           1
+    ## 3 remnant restored 0.226   4.093   1  14       1           1
     ## 
     ## $format
     ## [1] "pandoc"
@@ -1073,31 +1075,31 @@ replication.
     ## [1] 2
     ## 
     ## $correction_note
-    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.0178526765158346 , except diagonal elements"
+    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.0150971138378135 , except diagonal elements"
     ## 
     ## $values
     ##   Dim Eigenvalues Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig Cum_br_stick
-    ## 1   1    3.553783 3.571636   0.14403460   0.06904053    0.1440346   0.06904053
-    ## 2   2    2.544772 2.562624   0.10334384   0.05475481    0.2473784   0.12379534
-    ## 3   3    1.073956 1.091809   0.04402976   0.04761195    0.2914082   0.17140729
+    ## 1   1    3.583733 3.598830   0.14566937   0.06904053    0.1456694   0.06904053
+    ## 2   2    2.543095 2.558192   0.10354759   0.05475481    0.2492170   0.12379534
+    ## 3   3    1.069182 1.084279   0.04388821   0.04761195    0.2931052   0.17140729
     ## 
     ## $eigenvalues
-    ## [1] 14.4 10.3
+    ## [1] 14.6 10.4
     ## 
     ## $site_vectors
     ## # A tibble: 72 × 8
     ##    field_key sample_key Axis.1  Axis.2 field_name region field_type yr_since
     ##        <dbl> <chr>       <dbl>   <dbl> <chr>      <chr>  <ord>         <dbl>
-    ##  1         6 1          -0.435  0.0237 FLC1       FL     corn             NA
-    ##  2         6 2          -0.400 -0.0113 FLC1       FL     corn             NA
-    ##  3         6 4          -0.430  0.0373 FLC1       FL     corn             NA
-    ##  4         6 5          -0.422  0.0325 FLC1       FL     corn             NA
-    ##  5         6 6          -0.298 -0.0221 FLC1       FL     corn             NA
-    ##  6         6 7          -0.384  0.0401 FLC1       FL     corn             NA
-    ##  7         6 9          -0.345  0.0574 FLC1       FL     corn             NA
-    ##  8         6 10         -0.345 -0.0209 FLC1       FL     corn             NA
-    ##  9         7 1          -0.432  0.106  FLC2       FL     corn             NA
-    ## 10         7 3          -0.404  0.119  FLC2       FL     corn             NA
+    ##  1         6 1          -0.424  0.0237 FLC1       FL     corn             NA
+    ##  2         6 2          -0.398 -0.0106 FLC1       FL     corn             NA
+    ##  3         6 4          -0.427  0.0382 FLC1       FL     corn             NA
+    ##  4         6 5          -0.421  0.0356 FLC1       FL     corn             NA
+    ##  5         6 6          -0.304 -0.0238 FLC1       FL     corn             NA
+    ##  6         6 7          -0.383  0.0397 FLC1       FL     corn             NA
+    ##  7         6 9          -0.338  0.0550 FLC1       FL     corn             NA
+    ##  8         6 10         -0.344 -0.0191 FLC1       FL     corn             NA
+    ##  9         7 1          -0.425  0.105  FLC2       FL     corn             NA
+    ## 10         7 3          -0.401  0.108  FLC2       FL     corn             NA
     ## # ℹ 62 more rows
     ## 
     ## $broken_stick_plot
@@ -1114,17 +1116,17 @@ replication.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
     ##          Df SumOfSqs      R2      F Pr(>F)  
-    ## Model     2   4.2493 0.18059 7.6036 0.0105 *
-    ## Residual 69  19.2803 0.81941                
-    ## Total    71  23.5295 1.00000                
+    ## Model     2   4.1615 0.17609 7.3733 0.0155 *
+    ## Residual 69  19.4720 0.82391                
+    ## Total    71  23.6336 1.00000                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $pairwise_contrasts
     ##    group1   group2    R2 F_value df1 df2   p_value p_value_adj
-    ## 1    corn  remnant 0.268   8.063   1  22 0.3333333       0.426
-    ## 2    corn restored 0.157  11.565   1  62 0.0420000       0.126
-    ## 3 remnant restored 0.049   2.787   1  54 0.4260000       0.426
+    ## 1    corn  remnant 0.244   7.102   1  22 0.3333333       0.500
+    ## 2    corn restored 0.159  11.688   1  62 0.0380000       0.114
+    ## 3 remnant restored 0.046   2.601   1  54 0.5820000       0.582
     ## 
     ## $format
     ## [1] "pandoc"
@@ -1158,28 +1160,28 @@ replication.
     ## 
     ## $values
     ##   Dim Eigenvalues Relative_eig Broken_stick Cumul_eig Cumul_br_stick
-    ## 1   1   1.3451849   0.15690313   0.12991114 0.1569031      0.1299111
-    ## 2   2   0.9382020   0.10943241   0.09765307 0.2663355      0.2275642
-    ## 3   3   0.7176612   0.08370841   0.08152404 0.3500440      0.3090882
-    ## 4   4   0.4858044   0.05666450   0.07077135 0.4067085      0.3798596
+    ## 1   1   1.3420307   0.15635442   0.12991114 0.1563544      0.1299111
+    ## 2   2   0.9397633   0.10948791   0.09765307 0.2658423      0.2275642
+    ## 3   3   0.7198034   0.08386131   0.08152404 0.3497036      0.3090882
+    ## 4   4   0.4956706   0.05774852   0.07077135 0.4074522      0.3798596
     ## 
     ## $eigenvalues
-    ## [1] 15.7 10.9
+    ## [1] 15.6 10.9
     ## 
     ## $site_vectors
     ## # A tibble: 32 × 9
     ##    field_key sample_key Axis.1 Axis.2  Axis.3 field_name region field_type
     ##        <dbl> <chr>       <dbl>  <dbl>   <dbl> <chr>      <chr>  <ord>     
-    ##  1        16 1          -0.236 0.0935 -0.184  LPC1       LP     corn      
-    ##  2        16 3          -0.225 0.122  -0.171  LPC1       LP     corn      
-    ##  3        16 5          -0.259 0.0900 -0.177  LPC1       LP     corn      
-    ##  4        16 6          -0.266 0.102  -0.141  LPC1       LP     corn      
-    ##  5        16 7          -0.248 0.0775 -0.143  LPC1       LP     corn      
-    ##  6        16 8          -0.200 0.0340 -0.220  LPC1       LP     corn      
-    ##  7        16 9          -0.249 0.0783 -0.119  LPC1       LP     corn      
-    ##  8        16 10         -0.185 0.0531 -0.136  LPC1       LP     corn      
-    ##  9        17 1           0.246 0.144   0.0949 LPREM1     LP     remnant   
-    ## 10        17 2           0.291 0.204   0.0188 LPREM1     LP     remnant   
+    ##  1        16 1          -0.240 0.0836 -0.170  LPC1       LP     corn      
+    ##  2        16 3          -0.230 0.117  -0.170  LPC1       LP     corn      
+    ##  3        16 5          -0.262 0.0883 -0.174  LPC1       LP     corn      
+    ##  4        16 6          -0.269 0.0936 -0.137  LPC1       LP     corn      
+    ##  5        16 7          -0.250 0.0691 -0.140  LPC1       LP     corn      
+    ##  6        16 8          -0.204 0.0322 -0.228  LPC1       LP     corn      
+    ##  7        16 9          -0.255 0.0797 -0.117  LPC1       LP     corn      
+    ##  8        16 10         -0.191 0.0510 -0.136  LPC1       LP     corn      
+    ##  9        17 1           0.238 0.145   0.101  LPREM1     LP     remnant   
+    ## 10        17 2           0.286 0.205   0.0277 LPREM1     LP     remnant   
     ## # ℹ 22 more rows
     ## # ℹ 1 more variable: yr_since <dbl>
     ## 
@@ -1197,15 +1199,15 @@ replication.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
     ##          Df SumOfSqs      R2      F Pr(>F)
-    ## Model     2   1.9325 0.22541 4.2195 0.1667
-    ## Residual 29   6.6409 0.77459              
-    ## Total    31   8.5733 1.00000              
+    ## Model     2   1.9352 0.22546 4.2207 0.1667
+    ## Residual 29   6.6481 0.77454              
+    ## Total    31   8.5833 1.00000              
     ## 
     ## $pairwise_contrasts
     ##    group1   group2    R2 F_value df1 df2   p_value p_value_adj
-    ## 1    corn  remnant 0.265   5.044   1  14 1.0000000         1.0
-    ## 2    corn restored 0.160   4.195   1  22 0.3333333         0.5
-    ## 3 remnant restored 0.146   3.747   1  22 0.3333333         0.5
+    ## 1    corn  remnant 0.265   5.035   1  14 1.0000000         1.0
+    ## 2    corn restored 0.162   4.251   1  22 0.3333333         0.5
+    ## 3 remnant restored 0.144   3.714   1  22 0.3333333         0.5
     ## 
     ## $format
     ## [1] "pandoc"
@@ -1277,10 +1279,10 @@ kable(pcoa_its_eigenvalues, format = "pandoc")
 
 | place         | axis_1 | axis_2 |
 |:--------------|-------:|-------:|
-| Blue Mounds   |   11.6 |    7.2 |
-| Faville Grove |   26.6 |   11.9 |
-| Fermilab      |   14.4 |   10.3 |
-| Lake Petite   |   15.7 |   10.9 |
+| Blue Mounds   |   11.6 |    7.1 |
+| Faville Grove |   26.5 |   11.8 |
+| Fermilab      |   14.6 |   10.4 |
+| Lake Petite   |   15.6 |   10.9 |
 
 ``` r
 write_csv(pcoa_its_eigenvalues, file = "microbial_communities_files/pcoa_its_eig.csv")
@@ -1341,81 +1343,83 @@ No negative eigenvalues produced, no correction applied.
     ## [1] "18S gene, 97% OTU, Bray-Curtis distance"
     ## 
     ## $components_exceed_broken_stick
-    ## [1] 4
+    ## [1] 5
     ## 
     ## $correction_note
     ## [1] "No correction was applied to the negative eigenvalues"
     ## 
     ## $values
     ##   Dim Eigenvalues Relative_eig Rel_corr_eig Broken_stick Cum_corr_eig
-    ## 1   1   1.2051279   0.27393921   0.25251062   0.16236050    0.2525106
-    ## 2   2   0.7864744   0.17877454   0.16612548   0.11888224    0.4186361
-    ## 3   3   0.6176689   0.14040314   0.13129409   0.09714311    0.5499302
-    ## 4   4   0.4131360   0.09391049   0.08909067   0.08265036    0.6390208
-    ## 5   5   0.3148359   0.07156577   0.06880739   0.07178079    0.7078282
+    ## 1   1   1.2083007   0.27452361   0.25081040   0.16236050    0.2508104
+    ## 2   2   0.7848755   0.17832223   0.16440577   0.11888224    0.4152162
+    ## 3   3   0.6169072   0.14016014   0.13012996   0.09714311    0.5453461
+    ## 4   4   0.4105128   0.09326774   0.08801289   0.08265036    0.6333590
+    ## 5   5   0.3160729   0.07181116   0.06874137   0.07178079    0.7021004
+    ## 6   6   0.2172378   0.04935602   0.04857297   0.06308514    0.7506734
     ##   Cumul_br_stick
     ## 1      0.1623605
     ## 2      0.2812427
     ## 3      0.3783858
     ## 4      0.4610362
     ## 5      0.5328170
+    ## 6      0.5959021
     ## 
     ## $eigenvalues
-    ## [1] 27.4 17.9
+    ## [1] 27.5 17.8
     ## 
     ## $site_vectors
-    ##    field_key       Axis.1      Axis.2      Axis.3       Axis.4 region
-    ## 1          1  0.199672424  0.23294856 -0.19435525  0.101605877     BM
-    ## 2          2 -0.006972709 -0.27311674 -0.21225603  0.222666251     BM
-    ## 3          3 -0.409557123  0.22782817  0.14309643 -0.017079209     FG
-    ## 4          4  0.061067854 -0.03577972  0.26966828  0.166220414     FG
-    ## 5          5 -0.015576502 -0.07462533  0.15848369  0.362307735     FG
-    ## 6          6 -0.193624666  0.02690118 -0.12686722 -0.063421371     FL
-    ## 7          7 -0.417659472  0.25561762 -0.18022720  0.232188041     FL
-    ## 8          8  0.117713688 -0.02366959  0.13386643  0.051013897     FL
-    ## 9          9  0.215731740  0.23400233  0.20182423 -0.054448210     FL
-    ## 10        10  0.252574926  0.16138609  0.08836220 -0.166339112     FL
-    ## 11        11  0.142663499  0.11252861  0.16308489 -0.113195823     FL
-    ## 12        12  0.112122513 -0.09486125 -0.15492559 -0.074325476     FL
-    ## 13        13  0.159474041  0.03725657 -0.13819717 -0.093736838     FL
-    ## 14        14  0.065325625 -0.03703295 -0.26243051 -0.060578968     FL
-    ## 15        15  0.323952309  0.25547118  0.10569566  0.043329383     BM
-    ## 16        16 -0.410562025  0.09338195 -0.07190035 -0.113509999     LP
-    ## 17        17  0.022585426 -0.19164738 -0.07475391 -0.092801325     LP
-    ## 18        18 -0.105238210 -0.23766850  0.04831640 -0.155537215     LP
-    ## 19        19  0.034199005 -0.29972627 -0.06664255 -0.050421780     LP
-    ## 20        20  0.260512117  0.17085475 -0.20274993  0.034477037     BM
-    ## 21        21  0.183288132 -0.06359058 -0.13695878  0.006401245     BM
-    ## 22        22 -0.040023707 -0.20371269  0.14146691 -0.038384195     BM
-    ## 23        23 -0.131375912 -0.14191328  0.15001266 -0.006479241     BM
-    ## 24        24 -0.433585515  0.11699196  0.04599047 -0.137543457     BM
-    ## 25        25  0.013292544 -0.24782468  0.17239626  0.017592336     BM
-    ##    field_type yr_since
-    ## 1    restored       16
-    ## 2    restored        3
-    ## 3        corn       NA
-    ## 4     remnant       NA
-    ## 5    restored       15
-    ## 6        corn       NA
-    ## 7        corn       NA
-    ## 8     remnant       NA
-    ## 9    restored       40
-    ## 10   restored       36
-    ## 11   restored       35
-    ## 12   restored       10
-    ## 13   restored       10
-    ## 14   restored       10
-    ## 15   restored       28
-    ## 16       corn       NA
-    ## 17    remnant       NA
-    ## 18   restored        4
-    ## 19   restored        4
-    ## 20    remnant       NA
-    ## 21   restored       18
-    ## 22   restored        7
-    ## 23   restored        2
-    ## 24       corn       NA
-    ## 25   restored       11
+    ##    field_key       Axis.1      Axis.2      Axis.3       Axis.4       Axis.5
+    ## 1          1  0.201278427  0.23072057 -0.19719994  0.097269137  0.037999587
+    ## 2          2 -0.004545958 -0.27676224 -0.20820926  0.222988195 -0.126619060
+    ## 3          3 -0.408632815  0.22940385  0.14063974 -0.014968305 -0.024042782
+    ## 4          4  0.061297074 -0.02901905  0.27182252  0.168233793  0.044593735
+    ## 5          5 -0.013670972 -0.07529477  0.16303671  0.355419689  0.024264322
+    ## 6          6 -0.197333247  0.02461424 -0.12738083 -0.052601613 -0.379110692
+    ## 7          7 -0.417892984  0.25283387 -0.18515725  0.237554856  0.019913563
+    ## 8          8  0.124573031 -0.02002805  0.13544871  0.055883949 -0.066914540
+    ## 9          9  0.215002820  0.23523651  0.19953453 -0.052826500 -0.070689478
+    ## 10        10  0.250784693  0.16257541  0.08704855 -0.169570802 -0.046771518
+    ## 11        11  0.144346094  0.10953107  0.15761634 -0.111349517 -0.106150078
+    ## 12        12  0.107749457 -0.09685873 -0.15563029 -0.071331704 -0.041140249
+    ## 13        13  0.154957066  0.04276735 -0.13583811 -0.094210977 -0.004730908
+    ## 14        14  0.067303808 -0.04551409 -0.25994362 -0.060938126  0.010641690
+    ## 15        15  0.323952864  0.25819324  0.10189862  0.046253376 -0.027746545
+    ## 16        16 -0.411897333  0.09279246 -0.06816752 -0.117768671  0.053929245
+    ## 17        17  0.023716745 -0.19198574 -0.07857517 -0.087265530  0.163438882
+    ## 18        18 -0.105709183 -0.23176808  0.05583277 -0.157707698  0.027491130
+    ## 19        19  0.036509898 -0.30154080 -0.06430800 -0.048186493 -0.103969506
+    ## 20        20  0.261020753  0.16750376 -0.20426953  0.027949293  0.193624545
+    ## 21        21  0.183771133 -0.06518390 -0.13553273  0.003577215  0.115712859
+    ## 22        22 -0.039411148 -0.20148357  0.13675957 -0.036617485  0.105101657
+    ## 23        23 -0.129270093 -0.13982768  0.15487600 -0.016050167  0.020909240
+    ## 24        24 -0.435592254  0.11638846  0.04234255 -0.138252863  0.144879218
+    ## 25        25  0.007692123 -0.24729409  0.17335564  0.014516947  0.035385683
+    ##    region field_type yr_since
+    ## 1      BM   restored       16
+    ## 2      BM   restored        3
+    ## 3      FG       corn       NA
+    ## 4      FG    remnant       NA
+    ## 5      FG   restored       15
+    ## 6      FL       corn       NA
+    ## 7      FL       corn       NA
+    ## 8      FL    remnant       NA
+    ## 9      FL   restored       40
+    ## 10     FL   restored       36
+    ## 11     FL   restored       35
+    ## 12     FL   restored       10
+    ## 13     FL   restored       10
+    ## 14     FL   restored       10
+    ## 15     BM   restored       28
+    ## 16     LP       corn       NA
+    ## 17     LP    remnant       NA
+    ## 18     LP   restored        4
+    ## 19     LP   restored        4
+    ## 20     BM    remnant       NA
+    ## 21     BM   restored       18
+    ## 22     BM   restored        7
+    ## 23     BM   restored        2
+    ## 24     BM       corn       NA
+    ## 25     BM   restored       11
     ## 
     ## $broken_stick_plot
 
@@ -1429,10 +1433,10 @@ No negative eigenvalues produced, no correction applied.
     ## Number of permutations: 1999
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, method = adonis_index, add = if (corr == "none") FALSE else "lingoes", strata = region)
-    ##          Df SumOfSqs     R2      F Pr(>F)   
-    ## Model     2   1.0853 0.2467 3.6024  0.003 **
-    ## Residual 22   3.3140 0.7533                 
-    ## Total    24   4.3993 1.0000                 
+    ##          Df SumOfSqs    R2      F Pr(>F)   
+    ## Model     2   1.0916 0.248 3.6276 0.0015 **
+    ## Residual 22   3.3099 0.752                 
+    ## Total    24   4.4014 1.000                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -1441,18 +1445,18 @@ No negative eigenvalues produced, no correction applied.
     ## 
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
-    ## restored   corn       0.252     6.410     1    19   0.0010000        0.0030
-    ## restored   remnant    0.022     0.409     1    18   0.9755000        0.9755
-    ## corn       remnant    0.381     4.307     1     7   0.0416667        0.0625
+    ## restored   corn       0.253     6.432     1    19   0.0015000        0.0045
+    ## restored   remnant    0.023     0.423     1    18   0.9650000        0.9650
+    ## corn       remnant    0.383     4.339     1     7   0.0416667        0.0625
 
 Four axes are significant by a broken stick model, between them
-explaining 68.7% of the variation in AMF among fields. It may be
+explaining 68.6% of the variation in AMF among fields. It may be
 worthwhile to examine structure on Axes 3 and 4 sometime. The most
-substantial variation here is on the first axis (27.4%) with Axis 2
-explaining 17.9% of the variation in AMF abundances. Testing the design
+substantial variation here is on the first axis (27.5%) with Axis 2
+explaining 17.8% of the variation in AMF abundances. Testing the design
 factor *field_type* (with *region* treated as a block using the `strata`
 argument of `adonis2`) revealed a significant clustering
-$(R^2=0.25,~p=0.003)$.
+$(R^2=0.25,~p=0.002)$.
 
 Let’s view a plot with abundances of community subgroups inset.
 
@@ -1596,7 +1600,7 @@ on years since restoration. A consistent signal of region isn’t obvious.
     ## 
     ## adonis2(formula = d ~ field_type, data = env, permutations = nperm, method = adonis_index, add = if (corr == "none") FALSE else "lingoes", strata = region)
     ##          Df SumOfSqs     R2      F Pr(>F)   
-    ## Model     2  0.06937 0.1657 2.1847 0.0025 **
+    ## Model     2  0.06937 0.1657 2.1847  0.006 **
     ## Residual 22  0.34929 0.8343                 
     ## Total    24  0.41866 1.0000                 
     ## ---
@@ -1607,9 +1611,9 @@ on years since restoration. A consistent signal of region isn’t obvious.
     ## 
     ## group1     group2        R2   F_value   df1   df2     p_value   p_value_adj
     ## ---------  --------  ------  --------  ----  ----  ----------  ------------
-    ## restored   corn       0.239     5.961     1    19   0.0010000        0.0030
-    ## restored   remnant    0.025     0.459     1    18   0.9725000        0.9725
-    ## corn       remnant    0.381     4.307     1     7   0.0416667        0.0625
+    ## restored   corn       0.237     5.892     1    19   0.0010000        0.0030
+    ## restored   remnant    0.026     0.476     1    18   0.9680000        0.9680
+    ## corn       remnant    0.383     4.339     1     7   0.0416667        0.0625
 
 Three axes are significant by a broken stick model, between them
 explaining 48.8% of the variation in AMF among fields. The most
@@ -1617,7 +1621,7 @@ substantial variation here is on the first axis (23%) with Axis 2
 explaining 15% of the variation in AMF abundances. Testing the design
 factor *field_type* (with *region* treated as a block using the `strata`
 argument of `adonis2`) revealed a significant clustering
-$(R^2=0.17,~p=0.002)$.
+$(R^2=0.17,~p=0.006)$.
 
 Let’s view a plot with abundances of community subgroups inset.
 
@@ -1780,34 +1784,34 @@ negative eigenvalues.
     ## [1] 5
     ## 
     ## $correction_note
-    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.113202541256844 , except diagonal elements"
+    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.119261876193705 , except diagonal elements"
     ## 
     ## $values
-    ##   Dim Eigenvalues Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig Cum_br_stick
-    ## 1   1   2.7063211 2.819524   0.16208229   0.09442476    0.1620823   0.09442476
-    ## 2   2   2.0640256 2.177228   0.12515948   0.07314817    0.2872418   0.16757293
-    ## 3   3   0.9798528 1.093055   0.06283505   0.06250987    0.3500768   0.23008280
-    ## 4   4   0.8946780 1.007881   0.05793872   0.05541767    0.4080155   0.28550047
-    ## 5   5   0.8284124 0.941615   0.05412939   0.05009852    0.4621449   0.33559899
-    ## 6   6   0.6123964 0.725599   0.04171156   0.04584320    0.5038565   0.38144219
+    ##   Dim Eigenvalues  Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig Cum_br_stick
+    ## 1   1   2.7073026 2.8265645   0.15970588   0.09442476    0.1597059   0.09442476
+    ## 2   2   2.0569441 2.1762060   0.12295948   0.07314817    0.2826654   0.16757293
+    ## 3   3   1.0088495 1.1281114   0.06374028   0.06250987    0.3464056   0.23008280
+    ## 4   4   0.9040475 1.0233094   0.05781879   0.05541767    0.4042244   0.28550047
+    ## 5   5   0.8490533 0.9683152   0.05471152   0.05009852    0.4589359   0.33559899
+    ## 6   6   0.6152107 0.7344726   0.04149900   0.04584320    0.5004349   0.38144219
     ## 
     ## $eigenvalues
-    ## [1] 16.2 12.5
+    ## [1] 16.0 12.3
     ## 
     ## $site_vectors
     ## # A tibble: 49 × 8
-    ##    field_key sample_key  Axis.1  Axis.2  Axis.3  Axis.4   Axis.5 yr_since
-    ##        <dbl> <chr>        <dbl>   <dbl>   <dbl>   <dbl>    <dbl>    <dbl>
-    ##  1         1 1          -0.125  -0.0631 -0.126  -0.103  -0.0672        16
-    ##  2         1 2          -0.160  -0.308  -0.0892 -0.192  -0.0538        16
-    ##  3         1 4          -0.471   0.192  -0.0884 -0.133   0.134         16
-    ##  4         1 5          -0.0809 -0.332  -0.292  -0.0513  0.210         16
-    ##  5         1 7          -0.263  -0.342  -0.0794 -0.159  -0.0236        16
-    ##  6         1 8          -0.357   0.0900 -0.0588  0.104  -0.190         16
-    ##  7         1 10         -0.390  -0.169  -0.0453 -0.141  -0.00111       16
-    ##  8         2 1           0.0595 -0.302   0.330   0.155   0.0356         3
-    ##  9         2 3           0.165  -0.138   0.0779  0.127  -0.0976         3
-    ## 10         2 5           0.0289 -0.420   0.196  -0.0360  0.0851         3
+    ##    field_key sample_key  Axis.1  Axis.2  Axis.3  Axis.4  Axis.5 yr_since
+    ##        <dbl> <chr>        <dbl>   <dbl>   <dbl>   <dbl>   <dbl>    <dbl>
+    ##  1         1 1          -0.132  -0.0584 -0.134  -0.0808 -0.128        16
+    ##  2         1 2          -0.160  -0.295  -0.102  -0.157  -0.140        16
+    ##  3         1 4          -0.453   0.191  -0.121  -0.154   0.0811       16
+    ##  4         1 5          -0.0740 -0.338  -0.300  -0.126   0.136        16
+    ##  5         1 7          -0.272  -0.332  -0.0561 -0.147  -0.0969       16
+    ##  6         1 8          -0.356   0.0832 -0.0336  0.163  -0.140        16
+    ##  7         1 10         -0.376  -0.193  -0.0231 -0.124  -0.0660       16
+    ##  8         2 1           0.0679 -0.293   0.317   0.122   0.109         3
+    ##  9         2 3           0.147  -0.158   0.0775  0.162  -0.0474        3
+    ## 10         2 5           0.0251 -0.416   0.205  -0.0773  0.106         3
     ## # ℹ 39 more rows
     ## 
     ## $broken_stick_plot
@@ -1822,9 +1826,9 @@ negative eigenvalues.
     ## 
     ## adonis2(formula = d ~ field_key, data = env_w, permutations = nperm, method = adonis_index)
     ##          Df SumOfSqs      R2      F Pr(>F)    
-    ## Model     1   1.4272 0.11932 6.3676  5e-04 ***
-    ## Residual 47  10.5347 0.88068                  
-    ## Total    48  11.9619 1.00000                  
+    ## Model     1    1.413 0.11801 6.2883  5e-04 ***
+    ## Residual 47   10.561 0.88199                  
+    ## Total    48   11.974 1.00000                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -1833,7 +1837,7 @@ negative eigenvalues.
     ## ***VECTORS
     ## 
     ##            Axis.1   Axis.2   Axis.3   Axis.4   Axis.5     r2 Pr(>r)  
-    ## yr_since -0.85611  0.39339 -0.17736  0.25939  0.11654 0.7686  0.018 *
+    ## yr_since -0.85500  0.39634 -0.18249  0.18450  0.21108 0.7779 0.0205 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Plots: field_key, plot permutation: free
@@ -1843,10 +1847,10 @@ negative eigenvalues.
     ## 
     ## 
     ## $vector_fit_scores
-    ##              Axis.1    Axis.2     Axis.3    Axis.4    Axis.5
-    ## yr_since -0.7505256 0.3448762 -0.1554887 0.2274027 0.1021696
+    ##             Axis.1    Axis.2     Axis.3    Axis.4    Axis.5
+    ## yr_since -0.754091 0.3495607 -0.1609538 0.1627285 0.1861653
 
-Axis 1 explains 16.2% and axis 2 explains 12.5% of the variation in the
+Axis 1 explains 16% and axis 2 explains 12.3% of the variation in the
 community data. Both axes are important based on the broken stick model
 (5 relative corrected eigenvalues exceed the broken stick model). The
 relatively low percent variation explained is partly due to the high
@@ -1861,7 +1865,7 @@ fields.
 Years since restoration has a moderately strong correlation with
 communities and was significant with a permutation test where samples
 were constrained within fields to account for lack of independence
-$(R^2=0.77,~p=0.02)$.
+$(R^2=0.78,~p=0.02)$.
 
 Let’s view an ordination plot with hulls around subsamples and a fitted
 vector for field age overlaid.
@@ -1934,39 +1938,39 @@ correction was applied.
     ## [1] 10
     ## 
     ## $correction_note
-    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.359448791519202 , except diagonal elements"
+    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.364033325702051 , except diagonal elements"
     ## 
     ## $values
     ##    Dim Eigenvalues Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig Cum_br_stick
-    ## 1    1    7.684857 8.044306   0.07189480   0.03314101    0.0718948   0.03314101
-    ## 2    2    5.400271 5.759720   0.05147664   0.02736066    0.1233714   0.06050167
-    ## 3    3    5.246161 5.605610   0.05009931   0.02447049    0.1734707   0.08497216
-    ## 4    4    4.219016 4.578465   0.04091936   0.02254371    0.2143901   0.10751587
-    ## 5    5    3.127413 3.486862   0.03116331   0.02109862    0.2455534   0.12861449
-    ## 6    6    2.470697 2.830146   0.02529401   0.01994255    0.2708474   0.14855704
-    ## 7    7    2.233959 2.593407   0.02317820   0.01897916    0.2940256   0.16753620
-    ## 8    8    2.056173 2.415622   0.02158926   0.01815340    0.3156149   0.18568960
-    ## 9    9    1.761203 2.120652   0.01895301   0.01743085    0.3345679   0.20312045
-    ## 10  10    1.608313 1.967761   0.01758658   0.01678859    0.3521545   0.21990904
-    ## 11  11    1.395898 1.755347   0.01568815   0.01621056    0.3678426   0.23611960
+    ## 1    1    7.676267 8.040301   0.07133171   0.03314101   0.07133171   0.03314101
+    ## 2    2    5.335630 5.699663   0.05056611   0.02736066   0.12189782   0.06050167
+    ## 3    3    5.273113 5.637146   0.05001148   0.02447049   0.17190930   0.08497216
+    ## 4    4    4.262246 4.626279   0.04104329   0.02254371   0.21295259   0.10751587
+    ## 5    5    3.074543 3.438577   0.03050627   0.02109862   0.24345886   0.12861449
+    ## 6    6    2.473389 2.837422   0.02517296   0.01994255   0.26863182   0.14855704
+    ## 7    7    2.286809 2.650843   0.02351767   0.01897916   0.29214949   0.16753620
+    ## 8    8    2.072857 2.436891   0.02161954   0.01815340   0.31376903   0.18568960
+    ## 9    9    1.761787 2.125820   0.01885979   0.01743085   0.33262882   0.20312045
+    ## 10  10    1.607071 1.971104   0.01748719   0.01678859   0.35011601   0.21990904
+    ## 11  11    1.406162 1.770195   0.01570477   0.01621056   0.36582078   0.23611960
     ## 
     ## $eigenvalues
-    ## [1] 7.2 5.1
+    ## [1] 7.1 5.1
     ## 
     ## $site_vectors
     ## # A tibble: 175 × 16
-    ##    field_key sample_key  Axis.1   Axis.2  Axis.3   Axis.4  Axis.5   Axis.6
-    ##        <dbl> <chr>        <dbl>    <dbl>   <dbl>    <dbl>   <dbl>    <dbl>
-    ##  1         1 1          -0.0987 -0.0415   0.0210 -0.0715   0.195  -0.0407 
-    ##  2         1 2          -0.101  -0.336    0.0285  0.0428   0.0839 -0.136  
-    ##  3         1 4          -0.363  -0.0130   0.278  -0.149    0.139   0.0579 
-    ##  4         1 5           0.0849 -0.338   -0.0842 -0.230    0.0925 -0.0926 
-    ##  5         1 7          -0.180  -0.358    0.0462  0.0252   0.115  -0.00544
-    ##  6         1 8          -0.350   0.00496  0.117  -0.111    0.0157  0.0251 
-    ##  7         1 10         -0.335  -0.226    0.0989  0.00318  0.189   0.00736
-    ##  8         2 1          -0.0339 -0.210   -0.278   0.141   -0.237   0.204  
-    ##  9         2 3          -0.0152 -0.00195 -0.266   0.190    0.0256  0.0396 
-    ## 10         2 5          -0.0474 -0.376   -0.251   0.182   -0.0182  0.106  
+    ##    field_key sample_key  Axis.1  Axis.2   Axis.3   Axis.4   Axis.5   Axis.6
+    ##        <dbl> <chr>        <dbl>   <dbl>    <dbl>    <dbl>    <dbl>    <dbl>
+    ##  1         1 1          -0.0904 -0.0316  0.0467  -0.0900  -0.178   -0.0274 
+    ##  2         1 2          -0.0936 -0.297   0.115    0.0144  -0.119   -0.150  
+    ##  3         1 4          -0.336   0.0638  0.274   -0.168   -0.128    0.0594 
+    ##  4         1 5           0.0945 -0.341   0.00930 -0.245   -0.0715  -0.0994 
+    ##  5         1 7          -0.177  -0.322   0.146    0.00950 -0.116   -0.00601
+    ##  6         1 8          -0.353   0.0356  0.117   -0.0988  -0.0266   0.0307 
+    ##  7         1 10         -0.318  -0.222   0.151   -0.00647 -0.176    0.00379
+    ##  8         2 1          -0.0394 -0.281  -0.221    0.154    0.219    0.178  
+    ##  9         2 3          -0.0273 -0.0965 -0.248    0.172   -0.0396   0.0450 
+    ## 10         2 5          -0.0450 -0.440  -0.144    0.180    0.00349  0.0903 
     ## # ℹ 165 more rows
     ## # ℹ 8 more variables: Axis.7 <dbl>, Axis.8 <dbl>, Axis.9 <dbl>, Axis.10 <dbl>,
     ## #   field_name <chr>, region <chr>, field_type <ord>, yr_since <dbl>
@@ -1984,18 +1988,18 @@ correction was applied.
     ## Number of permutations: 1999
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
-    ##           Df SumOfSqs     R2      F Pr(>F)    
-    ## Model      2    5.393 0.1093 10.553  5e-04 ***
-    ## Residual 172   43.953 0.8907                  
-    ## Total    174   49.346 1.0000                  
+    ##           Df SumOfSqs      R2      F Pr(>F)    
+    ## Model      2    5.437 0.11012 10.642  0.001 ***
+    ## Residual 172   43.938 0.88988                  
+    ## Total    174   49.375 1.00000                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $pairwise_contrasts
     ##     group1  group2    R2 F_value df1 df2   p_value p_value_adj
-    ## 1 restored    corn 0.057   8.800   1 145 0.0030000   0.0090000
-    ## 2 restored remnant 0.008   1.060   1 138 0.9975000   0.9975000
-    ## 3     corn remnant 0.110   7.528   1  61 0.1020408   0.1530612
+    ## 1 restored    corn 0.057   8.781   1 145 0.0010000   0.0030000
+    ## 2 restored remnant 0.008   1.087   1 138 0.9960000   0.9960000
+    ## 3     corn remnant 0.113   7.771   1  61 0.1020408   0.1530612
     ## 
     ## $format
     ## [1] "pandoc"
@@ -2005,7 +2009,7 @@ write_delim(pcoa_amf_samps$permanova %>% round(., 3), "microbial_communities_fil
 write_delim(pcoa_amf_samps$pairwise_contrasts %>% mutate(across(starts_with("p_value"), ~ round(.x, 3))), "microbial_communities_files/pcoa_amf_samps_pairwise.txt")
 ```
 
-Axis 1 explains 7.2% and axis 2 explains 5.1% of the variation in the
+Axis 1 explains 7.1% and axis 2 explains 5.1% of the variation in the
 community data. Both axes are important based on the broken stick model,
 in fact, the broken stick model shows that 10 axes are important in
 explaining variation with this dataset. The relatively low percent
@@ -2013,7 +2017,7 @@ variation explained on axes 1 and 2 is partly due to the high number of
 dimensions used when all samples from fields are included. The fidelity
 of samples to fields was strong based on a permutation test when
 restricting permutations to fields (=plots in `how()`) within regions
-(=blocks in `how()`) $(R^2=0.11,~p=5\times 10^{-4})$.
+(=blocks in `how()`) $(R^2=0.11,~p=0.001)$.
 
 Let’s view an ordination plot with hulls around subsamples.
 
@@ -2096,34 +2100,34 @@ replication.
     ## [1] 5
     ## 
     ## $correction_note
-    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.156410552447331 , except diagonal elements"
+    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.150085589665598 , except diagonal elements"
     ## 
     ## $values
     ##   Dim Eigenvalues  Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig Cum_br_stick
-    ## 1   1   3.8237409 3.9801515   0.15170440   0.07698793    0.1517044   0.07698793
-    ## 2   2   2.3505034 2.5069139   0.09555161   0.06059449    0.2472560   0.13758242
-    ## 3   3   1.8578334 2.0142439   0.07677338   0.05239777    0.3240294   0.18998019
-    ## 4   4   1.1653433 1.3217539   0.05037896   0.04693329    0.3744083   0.23691348
-    ## 5   5   0.9699419 1.1263525   0.04293119   0.04283493    0.4173395   0.27974840
-    ## 6   6   0.7828558 0.9392663   0.03580035   0.03955624    0.4531399   0.31930464
+    ## 1   1   3.8108399 3.9609255   0.15319463   0.07698793    0.1531946   0.07698793
+    ## 2   2   2.3572107 2.5072963   0.09697338   0.06059449    0.2501680   0.13758242
+    ## 3   3   1.8924637 2.0425493   0.07899861   0.05239777    0.3291666   0.18998019
+    ## 4   4   1.1684699 1.3185555   0.05099708   0.04693329    0.3801637   0.23691348
+    ## 5   5   0.9657084 1.1157940   0.04315498   0.04283493    0.4233187   0.27974840
+    ## 6   6   0.7690392 0.9191248   0.03554851   0.03955624    0.4588672   0.31930464
     ## 
     ## $eigenvalues
-    ## [1] 15.2  9.6
+    ## [1] 15.3  9.7
     ## 
     ## $site_vectors
     ## # A tibble: 63 × 11
-    ##    field_key sample_key  Axis.1  Axis.2   Axis.3  Axis.4    Axis.5 field_name
-    ##        <dbl> <chr>        <dbl>   <dbl>    <dbl>   <dbl>     <dbl> <chr>     
-    ##  1         1 1          -0.111  -0.0179 -0.0915  -0.0420  0.0837   BBRP1     
-    ##  2         1 2          -0.192  -0.207  -0.235   -0.137   0.0887   BBRP1     
-    ##  3         1 4          -0.383   0.279   0.00243 -0.146  -0.0774   BBRP1     
-    ##  4         1 5          -0.0880 -0.128  -0.425    0.0990 -0.132    BBRP1     
-    ##  5         1 7          -0.285  -0.217  -0.235   -0.131   0.0233   BBRP1     
-    ##  6         1 8          -0.337   0.127   0.0975   0.0506  0.0975   BBRP1     
-    ##  7         1 10         -0.389  -0.0837 -0.0889  -0.154  -0.000683 BBRP1     
-    ##  8         2 1           0.0218 -0.385   0.115   -0.0473 -0.225    ERRP1     
-    ##  9         2 3           0.0983 -0.257   0.121    0.101   0.0225   ERRP1     
-    ## 10         2 5          -0.0450 -0.463  -0.0524  -0.123  -0.139    ERRP1     
+    ##    field_key sample_key  Axis.1   Axis.2   Axis.3  Axis.4    Axis.5 field_name
+    ##        <dbl> <chr>        <dbl>    <dbl>    <dbl>   <dbl>     <dbl> <chr>     
+    ##  1         1 1          -0.115   0.00421 -0.0978  -0.0433  0.100    BBRP1     
+    ##  2         1 2          -0.196  -0.173   -0.247   -0.119   0.107    BBRP1     
+    ##  3         1 4          -0.363   0.287    0.00732 -0.130  -0.0930   BBRP1     
+    ##  4         1 5          -0.0857 -0.107   -0.429    0.0821 -0.131    BBRP1     
+    ##  5         1 7          -0.289  -0.189   -0.233   -0.148   0.0302   BBRP1     
+    ##  6         1 8          -0.340   0.112    0.110    0.0592  0.112    BBRP1     
+    ##  7         1 10         -0.380  -0.0993  -0.0970  -0.157   0.000142 BBRP1     
+    ##  8         2 1           0.0234 -0.396    0.0981  -0.0453 -0.176    ERRP1     
+    ##  9         2 3           0.0771 -0.273    0.0835   0.105   0.0428   ERRP1     
+    ## 10         2 5          -0.0476 -0.460   -0.0759  -0.142  -0.158    ERRP1     
     ## # ℹ 53 more rows
     ## # ℹ 3 more variables: region <chr>, field_type <ord>, yr_since <dbl>
     ## 
@@ -2140,18 +2144,18 @@ replication.
     ## Number of permutations: 1999
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
-    ##          Df SumOfSqs      R2      F Pr(>F)  
-    ## Model     2   2.8326 0.17127 6.2001 0.0935 .
-    ## Residual 60  13.7061 0.82873                
-    ## Total    62  16.5388 1.00000                
+    ##          Df SumOfSqs     R2      F Pr(>F)  
+    ## Model     2   2.8251 0.1707 6.1751 0.0925 .
+    ## Residual 60  13.7251 0.8293                
+    ## Total    62  16.5502 1.0000                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $pairwise_contrasts
     ##     group1  group2    R2 F_value df1 df2 p_value p_value_adj
-    ## 1 restored remnant 0.053   3.011   1  54  0.3675     0.55125
-    ## 2 restored    corn 0.085   5.044   1  54  0.1085     0.32550
-    ## 3  remnant    corn 0.479  11.011   1  12  1.0000     1.00000
+    ## 1 restored remnant 0.053   3.021   1  54   0.389      0.5835
+    ## 2 restored    corn 0.085   5.037   1  54   0.123      0.3690
+    ## 3  remnant    corn 0.469  10.617   1  12   1.000      1.0000
     ## 
     ## $format
     ## [1] "pandoc"
@@ -2181,32 +2185,32 @@ replication.
     ## [1] 3
     ## 
     ## $correction_note
-    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.0743328751373954 , except diagonal elements"
+    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.0667727147236192 , except diagonal elements"
     ## 
     ## $values
     ##   Dim Eigenvalues  Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig Cum_br_stick
-    ## 1   1   1.8298566 1.9041895   0.28142752   0.18672314    0.2814275    0.1867231
-    ## 2   2   0.9680232 1.0423561   0.15405383   0.13409156    0.4354814    0.3208147
-    ## 3   3   0.6689469 0.7432798   0.10985219   0.10777577    0.5453336    0.4285905
-    ## 4   4   0.4340836 0.5084165   0.07514084   0.09023191    0.6204744    0.5188224
+    ## 1   1   1.8546304 1.9214032   0.28640834   0.18672314    0.2864083    0.1867231
+    ## 2   2   0.9966864 1.0634591   0.15852142   0.13409156    0.4449298    0.3208147
+    ## 3   3   0.6888312 0.7556039   0.11263189   0.10777577    0.5575616    0.4285905
+    ## 4   4   0.4456716 0.5124443   0.07638601   0.09023191    0.6339477    0.5188224
     ## 
     ## $eigenvalues
-    ## [1] 28.1 15.4
+    ## [1] 28.6 15.9
     ## 
     ## $site_vectors
     ## # A tibble: 21 × 9
-    ##    field_key sample_key  Axis.1  Axis.2    Axis.3 field_name region field_type
-    ##        <dbl> <chr>        <dbl>   <dbl>     <dbl> <chr>      <chr>  <ord>     
-    ##  1         3 1          -0.317  -0.0804  0.235    FGC1       FG     corn      
-    ##  2         3 2          -0.427   0.0424  0.196    FGC1       FG     corn      
-    ##  3         3 4          -0.387  -0.134   0.0197   FGC1       FG     corn      
-    ##  4         3 6          -0.362  -0.137  -0.131    FGC1       FG     corn      
-    ##  5         3 7          -0.415  -0.0523 -0.000978 FGC1       FG     corn      
-    ##  6         3 8          -0.321  -0.141  -0.0691   FGC1       FG     corn      
-    ##  7         3 9          -0.388  -0.105  -0.0529   FGC1       FG     corn      
-    ##  8         4 1          -0.146   0.153  -0.284    FGREM1     FG     remnant   
-    ##  9         4 2           0.0797  0.414   0.0829   FGREM1     FG     remnant   
-    ## 10         4 3           0.246   0.356   0.230    FGREM1     FG     remnant   
+    ##    field_key sample_key  Axis.1  Axis.2   Axis.3 field_name region field_type
+    ##        <dbl> <chr>        <dbl>   <dbl>    <dbl> <chr>      <chr>  <ord>     
+    ##  1         3 1          -0.319  -0.0878  0.246   FGC1       FG     corn      
+    ##  2         3 2          -0.420   0.0464  0.201   FGC1       FG     corn      
+    ##  3         3 4          -0.395  -0.138   0.0322  FGC1       FG     corn      
+    ##  4         3 6          -0.375  -0.129  -0.145   FGC1       FG     corn      
+    ##  5         3 7          -0.406  -0.0791 -0.00955 FGC1       FG     corn      
+    ##  6         3 8          -0.317  -0.119  -0.0741  FGC1       FG     corn      
+    ##  7         3 9          -0.402  -0.0936 -0.0739  FGC1       FG     corn      
+    ##  8         4 1          -0.153   0.177  -0.275   FGREM1     FG     remnant   
+    ##  9         4 2           0.0963  0.422   0.0928  FGREM1     FG     remnant   
+    ## 10         4 3           0.239   0.338   0.251   FGREM1     FG     remnant   
     ## # ℹ 11 more rows
     ## # ℹ 1 more variable: yr_since <dbl>
     ## 
@@ -2224,15 +2228,15 @@ replication.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
     ##          Df SumOfSqs      R2      F Pr(>F)
-    ## Model     2   2.5246 0.47819 8.2476      1
-    ## Residual 18   2.7549 0.52181              
-    ## Total    20   5.2795 1.00000              
+    ## Model     2   2.5767 0.47955 8.2929      1
+    ## Residual 18   2.7964 0.52045              
+    ## Total    20   5.3732 1.00000              
     ## 
     ## $pairwise_contrasts
     ##    group1   group2    R2 F_value df1 df2 p_value p_value_adj
-    ## 1    corn  remnant 0.347   6.372   1  12       1           1
-    ## 2    corn restored 0.446   9.645   1  12       1           1
-    ## 3 remnant restored 0.325   5.781   1  12       1           1
+    ## 1    corn  remnant 0.347   6.374   1  12       1           1
+    ## 2    corn restored 0.451   9.857   1  12       1           1
+    ## 3 remnant restored 0.328   5.863   1  12       1           1
     ## 
     ## $format
     ## [1] "pandoc"
@@ -2262,35 +2266,35 @@ replication.
     ## [1] 6
     ## 
     ## $correction_note
-    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.172590559881542 , except diagonal elements"
+    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.17165314762112 , except diagonal elements"
     ## 
     ## $values
     ##   Dim Eigenvalues  Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig Cum_br_stick
-    ## 1   1   3.2451623 3.4177529   0.12198989   0.07698793    0.1219899   0.07698793
-    ## 2   2   2.2888502 2.4614408   0.08785623   0.06059449    0.2098461   0.13758242
-    ## 3   3   1.7087876 1.8813782   0.06715205   0.05239777    0.2769982   0.18998019
-    ## 4   4   1.3684528 1.5410434   0.05500448   0.04693329    0.3320027   0.23691348
-    ## 5   5   1.1391586 1.3117492   0.04682028   0.04283493    0.3788229   0.27974840
-    ## 6   6   0.9516749 1.1242654   0.04012842   0.03955624    0.4189514   0.31930464
-    ## 7   7   0.7767970 0.9493875   0.03388650   0.03682400    0.4528379   0.35612864
+    ## 1   1   3.2625003 3.4341535   0.12298932   0.07698793    0.1229893   0.07698793
+    ## 2   2   2.2829425 2.4545957   0.08790785   0.06059449    0.2108972   0.13758242
+    ## 3   3   1.7309910 1.9026442   0.06814049   0.05239777    0.2790377   0.18998019
+    ## 4   4   1.3529051 1.5245582   0.05459988   0.04693329    0.3336376   0.23691348
+    ## 5   5   1.1886826 1.3603358   0.04871849   0.04283493    0.3823560   0.27974840
+    ## 6   6   0.9394285 1.1110816   0.03979181   0.03955624    0.4221478   0.31930464
+    ## 7   7   0.8120811 0.9837343   0.03523104   0.03682400    0.4573789   0.35612864
     ## 
     ## $eigenvalues
-    ## [1] 12.2  8.8
+    ## [1] 12.3  8.8
     ## 
     ## $site_vectors
     ## # A tibble: 63 × 12
-    ##    field_key sample_key Axis.1  Axis.2   Axis.3  Axis.4   Axis.5  Axis.6
-    ##        <dbl> <chr>       <dbl>   <dbl>    <dbl>   <dbl>    <dbl>   <dbl>
-    ##  1         6 2          -0.368  0.0266 -0.171    0.191   0.363    0.0205
-    ##  2         6 4          -0.311 -0.104   0.153    0.295   0.165    0.0232
-    ##  3         6 5          -0.262  0.115   0.342    0.320  -0.0550  -0.0843
-    ##  4         6 6          -0.205 -0.126   0.00526  0.197   0.293    0.0804
-    ##  5         6 7          -0.277  0.129   0.245    0.355   0.0968  -0.0958
-    ##  6         6 8          -0.249 -0.0271  0.0196  -0.121  -0.00904 -0.0457
-    ##  7         6 9          -0.420  0.108  -0.107   -0.0196  0.110   -0.0299
-    ##  8         7 2          -0.267  0.416   0.249   -0.107  -0.110    0.0839
-    ##  9         7 3          -0.315  0.349   0.105   -0.213  -0.111    0.246 
-    ## 10         7 4          -0.378  0.194  -0.104   -0.0811 -0.108   -0.170 
+    ##    field_key sample_key Axis.1  Axis.2   Axis.3   Axis.4  Axis.5   Axis.6
+    ##        <dbl> <chr>       <dbl>   <dbl>    <dbl>    <dbl>   <dbl>    <dbl>
+    ##  1         6 2          -0.360 -0.0408  0.159    0.172    0.362   0.00206
+    ##  2         6 4          -0.296  0.120  -0.176    0.280    0.181   0.0518 
+    ##  3         6 5          -0.247 -0.0736 -0.383    0.298   -0.0463 -0.0424 
+    ##  4         6 6          -0.208  0.108   0.00242  0.189    0.314   0.100  
+    ##  5         6 7          -0.266 -0.119  -0.284    0.336    0.0996 -0.0770 
+    ##  6         6 8          -0.267  0.0156  0.0106  -0.113   -0.0266 -0.0589 
+    ##  7         6 9          -0.418 -0.117   0.0802  -0.00529  0.117  -0.00970
+    ##  8         7 2          -0.271 -0.401  -0.256   -0.121   -0.108   0.0959 
+    ##  9         7 3          -0.332 -0.325  -0.0808  -0.238   -0.122   0.229  
+    ## 10         7 4          -0.379 -0.199   0.0903  -0.0298  -0.103  -0.175  
     ## # ℹ 53 more rows
     ## # ℹ 4 more variables: field_name <chr>, region <chr>, field_type <ord>,
     ## #   yr_since <dbl>
@@ -2309,17 +2313,17 @@ replication.
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
     ##          Df SumOfSqs      R2      F Pr(>F)  
-    ## Model     2   2.8426 0.16416 5.8921  0.044 *
-    ## Residual 60  14.4734 0.83584                
-    ## Total    62  17.3161 1.00000                
+    ## Model     2   2.8438 0.16458 5.9099  0.045 *
+    ## Residual 60  14.4360 0.83542                
+    ## Total    62  17.2799 1.00000                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $pairwise_contrasts
     ##    group1   group2    R2 F_value df1 df2   p_value p_value_adj
-    ## 1    corn  remnant 0.189   4.418   1  19 0.3333333       0.500
-    ## 2    corn restored 0.103   6.212   1  54 0.0370000       0.111
-    ## 3 remnant restored 0.034   1.648   1  47 0.7180000       0.718
+    ## 1    corn  remnant 0.194   4.574   1  19 0.3333333      0.5000
+    ## 2    corn restored 0.103   6.222   1  54 0.0390000      0.1170
+    ## 3 remnant restored 0.033   1.607   1  47 0.7095000      0.7095
     ## 
     ## $format
     ## [1] "pandoc"
@@ -2350,32 +2354,32 @@ replication.
     ## [1] 3
     ## 
     ## $correction_note
-    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.0745347378374308 , except diagonal elements"
+    ## [1] "Lingoes correction applied to negative eigenvalues: D' = -0.5*D^2 - 0.0749881482986054 , except diagonal elements"
     ## 
     ## $values
     ##   Dim Eigenvalues  Corr_eig Rel_corr_eig Broken_stick Cum_corr_eig Cum_br_stick
-    ## 1   1   1.5763205 1.6508552   0.20834650   0.14824691    0.2083465    0.1482469
-    ## 2   2   1.1341999 1.2087346   0.15254859   0.10978537    0.3608951    0.2580323
-    ## 3   3   0.6917901 0.7663248   0.09671417   0.09055460    0.4576093    0.3485869
-    ## 4   4   0.5127171 0.5872518   0.07411423   0.07773409    0.5317235    0.4263210
+    ## 1   1   1.5851379 1.6601261   0.20920798   0.14824691    0.2092080    0.1482469
+    ## 2   2   1.0792307 1.1542189   0.14545389   0.10978537    0.3546619    0.2580323
+    ## 3   3   0.6889139 0.7639021   0.09626643   0.09055460    0.4509283    0.3485869
+    ## 4   4   0.5418262 0.6168143   0.07773053   0.07773409    0.5286588    0.4263210
     ## 
     ## $eigenvalues
-    ## [1] 20.8 15.3
+    ## [1] 20.9 14.5
     ## 
     ## $site_vectors
     ## # A tibble: 28 × 9
-    ##    field_key sample_key  Axis.1 Axis.2  Axis.3 field_name region field_type
-    ##        <dbl> <chr>        <dbl>  <dbl>   <dbl> <chr>      <chr>  <ord>     
-    ##  1        16 1          -0.356   0.152  0.0142 LPC1       LP     corn      
-    ##  2        16 2          -0.121   0.224  0.100  LPC1       LP     corn      
-    ##  3        16 4          -0.372   0.145  0.0278 LPC1       LP     corn      
-    ##  4        16 5          -0.263   0.116 -0.0308 LPC1       LP     corn      
-    ##  5        16 6          -0.354   0.193  0.0585 LPC1       LP     corn      
-    ##  6        16 7          -0.291   0.224  0.0458 LPC1       LP     corn      
-    ##  7        16 8          -0.308   0.188  0.0312 LPC1       LP     corn      
-    ##  8        17 1          -0.0831 -0.104  0.125  LPREM1     LP     remnant   
-    ##  9        17 2           0.233   0.468 -0.178  LPREM1     LP     remnant   
-    ## 10        17 4           0.0281 -0.210  0.0128 LPREM1     LP     remnant   
+    ##    field_key sample_key  Axis.1  Axis.2  Axis.3 field_name region field_type
+    ##        <dbl> <chr>        <dbl>   <dbl>   <dbl> <chr>      <chr>  <ord>     
+    ##  1        16 1          -0.363   0.138   0.0318 LPC1       LP     corn      
+    ##  2        16 2          -0.139   0.222   0.0813 LPC1       LP     corn      
+    ##  3        16 4          -0.379   0.131   0.0340 LPC1       LP     corn      
+    ##  4        16 5          -0.275   0.105  -0.0396 LPC1       LP     corn      
+    ##  5        16 6          -0.347   0.174   0.0623 LPC1       LP     corn      
+    ##  6        16 7          -0.298   0.188   0.0541 LPC1       LP     corn      
+    ##  7        16 8          -0.323   0.168   0.0336 LPC1       LP     corn      
+    ##  8        17 1          -0.0821 -0.0824  0.138  LPREM1     LP     remnant   
+    ##  9        17 2           0.216   0.472  -0.164  LPREM1     LP     remnant   
+    ## 10        17 4           0.0223 -0.179  -0.0203 LPREM1     LP     remnant   
     ## # ℹ 18 more rows
     ## # ℹ 1 more variable: yr_since <dbl>
     ## 
@@ -2392,16 +2396,16 @@ replication.
     ## Number of permutations: 23
     ## 
     ## adonis2(formula = d ~ field_type, data = env_w, permutations = gl_perm_design, method = adonis_index)
-    ##          Df SumOfSqs      R2      F Pr(>F)
-    ## Model     2   1.5381 0.26021 4.3966    0.5
-    ## Residual 25   4.3730 0.73979              
-    ## Total    27   5.9112 1.00000              
+    ##          Df SumOfSqs     R2      F Pr(>F)
+    ## Model     2   1.5634 0.2645 4.4953    0.5
+    ## Residual 25   4.3472 0.7355              
+    ## Total    27   5.9106 1.0000              
     ## 
     ## $pairwise_contrasts
     ##    group1   group2    R2 F_value df1 df2   p_value p_value_adj
-    ## 1    corn  remnant 0.286   4.814   1  12 1.0000000           1
-    ## 2    corn restored 0.256   6.541   1  19 0.3333333           1
-    ## 3 remnant restored 0.079   1.634   1  19 1.0000000           1
+    ## 1    corn  remnant 0.292   4.941   1  12 1.0000000           1
+    ## 2    corn restored 0.255   6.510   1  19 0.3333333           1
+    ## 3 remnant restored 0.082   1.708   1  19 1.0000000           1
     ## 
     ## $format
     ## [1] "pandoc"
@@ -2475,10 +2479,10 @@ kable(pcoa_amf_eigenvalues, format = "pandoc")
 
 | place         | axis_1 | axis_2 |
 |:--------------|-------:|-------:|
-| Blue Mounds   |   15.2 |    9.6 |
-| Faville Grove |   28.1 |   15.4 |
-| Fermilab      |   12.2 |    8.8 |
-| Lake Petite   |   20.8 |   15.3 |
+| Blue Mounds   |   15.3 |    9.7 |
+| Faville Grove |   28.6 |   15.9 |
+| Fermilab      |   12.3 |    8.8 |
+| Lake Petite   |   20.9 |   14.5 |
 
 ``` r
 write_csv(pcoa_amf_eigenvalues, file = "microbial_communities_files/pcoa_amf_eig.csv")

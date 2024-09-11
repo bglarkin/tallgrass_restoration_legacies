@@ -484,7 +484,7 @@ hull_its <- pcoa_its_samps$site_vectors %>%
     slice(chull(Axis.1, Axis.2))
 #+ its_samps_fig,fig.align='center',message=FALSE
 its_samps_fig <- 
-    ggplot(pcoa_its_samps$site_vectors, aes(x = Axis.1, y = Axis.2)) +
+    ggplot(pcoa_its_samps$site_vectors, aes(x = -1 * (Axis.1), y = Axis.2)) +
     geom_vline(xintercept = 0, linewidth = 0.1) +
     geom_hline(yintercept = 0, linewidth = 0.1) +
     geom_point(aes(fill = field_type), shape = 21, alpha = 0.8, color = "gray10") +
