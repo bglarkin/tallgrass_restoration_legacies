@@ -28,6 +28,7 @@ high-throughput sequencing of ITS and 18S genes and clustering into 97%
 similar OTUs. This report presents basic statistics and visualizations
 of species richness, Shannon’s diversity/evenness, and Simpson’s
 diversity/evenness in the microbial species data across field types.
+Diversity measures are reported as Hill’s Numbers.
 
 - Diversity and evenness of microbial communities
 - Interpretation of differences in diversity among regions and field
