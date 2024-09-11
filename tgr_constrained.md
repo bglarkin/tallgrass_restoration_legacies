@@ -2,7 +2,7 @@ Constrained and summary analysis
 ================
 Beau Larkin
 
-Last updated: 12 January, 2024
+Last updated: 11 September, 2024
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -264,9 +264,9 @@ db-RDA in function `dbrda-fun()`
     ## Number of permutations: 5039
     ## 
     ## Model: dbrda(formula = fspe_dist ~ C4_grass, data = env, sqrt.dist = TRUE)
-    ##          Df SumOfSqs     F Pr(>F)    
-    ## Model     1    0.483 1.447  5e-04 ***
-    ## Residual  5    1.669                 
+    ##          Df SumOfSqs      F Pr(>F)    
+    ## Model     1  0.48277 1.4465  5e-04 ***
+    ## Residual  5  1.66877                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -277,29 +277,33 @@ db-RDA in function `dbrda-fun()`
     ## Number of permutations: 5039
     ## 
     ## Model: dbrda(formula = fspe_dist ~ C4_grass, data = env, sqrt.dist = TRUE)
-    ##          Df SumOfSqs     F Pr(>F)    
-    ## dbRDA1    1    0.483 1.447  5e-04 ***
-    ## Residual  5    1.669                 
+    ##          Df SumOfSqs      F Pr(>F)    
+    ## dbRDA1    1  0.48277 1.4465  5e-04 ***
+    ## Residual  5  1.66877                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $select_mod
-    ## Call: dbrda(formula = fspe_dist ~ C4_grass, data = env, sqrt.dist =
-    ## TRUE)
+    ## Call: dbrda(formula = fspe_dist ~ C4_grass, data = env, sqrt.dist = TRUE)
+    ## 
+    ## -- Model Summary --
     ## 
     ##               Inertia Proportion Rank
-    ## Total          2.1520     1.0000     
-    ## Constrained    0.4830     0.2244    1
-    ## Unconstrained  1.6690     0.7756    5
-    ## Inertia is Bray distance 
+    ## Total          2.1515     1.0000     
+    ## Constrained    0.4828     0.2244    1
+    ## Unconstrained  1.6688     0.7756    5
+    ## 
+    ## Inertia is Bray distance
+    ## 
+    ## -- Eigenvalues --
     ## 
     ## Eigenvalues for constrained axes:
     ## dbRDA1 
-    ##  0.483 
+    ## 0.4828 
     ## 
     ## Eigenvalues for unconstrained axes:
     ##   MDS1   MDS2   MDS3   MDS4   MDS5 
-    ## 0.4337 0.3658 0.3280 0.2958 0.2456
+    ## 0.4336 0.3655 0.3283 0.2960 0.2454
 
 The number of sites limits the permutation design, but forb was
 selected. We know that this variable is inversely related to C4 grass
@@ -338,8 +342,8 @@ write_csv(as_tibble(dbrda_bm_tr_its$plot_data$biplot, rownames = "envvar"), "tgr
     ## 
     ## Model: dbrda(formula = fspe_dist ~ yr_since, data = env, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.49733 1.5029 0.0035 **
-    ## Residual  5  1.65463                 
+    ## Model     1  0.49758 1.5042  0.005 **
+    ## Residual  5  1.65396                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -351,28 +355,32 @@ write_csv(as_tibble(dbrda_bm_tr_its$plot_data$biplot, rownames = "envvar"), "tgr
     ## 
     ## Model: dbrda(formula = fspe_dist ~ yr_since, data = env, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.49733 1.5029 0.0045 **
-    ## Residual  5  1.65463                 
+    ## dbRDA1    1  0.49758 1.5042  0.003 **
+    ## Residual  5  1.65396                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $select_mod
-    ## Call: dbrda(formula = fspe_dist ~ yr_since, data = env, sqrt.dist =
-    ## TRUE)
+    ## Call: dbrda(formula = fspe_dist ~ yr_since, data = env, sqrt.dist = TRUE)
+    ## 
+    ## -- Model Summary --
     ## 
     ##               Inertia Proportion Rank
-    ## Total          2.1520     1.0000     
-    ## Constrained    0.4973     0.2311    1
-    ## Unconstrained  1.6546     0.7689    5
-    ## Inertia is Bray distance 
+    ## Total          2.1515     1.0000     
+    ## Constrained    0.4976     0.2313    1
+    ## Unconstrained  1.6540     0.7687    5
+    ## 
+    ## Inertia is Bray distance
+    ## 
+    ## -- Eigenvalues --
     ## 
     ## Eigenvalues for constrained axes:
     ## dbRDA1 
-    ## 0.4973 
+    ## 0.4976 
     ## 
     ## Eigenvalues for unconstrained axes:
     ##   MDS1   MDS2   MDS3   MDS4   MDS5 
-    ## 0.4112 0.3686 0.3294 0.3057 0.2397
+    ## 0.4107 0.3684 0.3291 0.3063 0.2395
 
 The number of sites limits the permutation design, but years since was
 selected.
@@ -410,9 +418,9 @@ write_csv(as_tibble(dbrda_bm_ab_its$plot_data$biplot, rownames = "envvar"), "tgr
     ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_dist ~ Condition(regions$region) + yr_since, data = env, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1   0.4904 1.5682  0.005 **
-    ## Residual  7   2.1890                 
+    ##          Df SumOfSqs    F Pr(>F)   
+    ## Model     1  0.49073 1.57 0.0055 **
+    ## Residual  7  2.18794               
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -424,9 +432,9 @@ write_csv(as_tibble(dbrda_bm_ab_its$plot_data$biplot, rownames = "envvar"), "tgr
     ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_dist ~ Condition(regions$region) + yr_since, data = env, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1   0.4904 1.5682  0.006 **
-    ## Residual  7   2.1890                 
+    ##          Df SumOfSqs    F Pr(>F)   
+    ## dbRDA1    1  0.49073 1.57 0.0085 **
+    ## Residual  7  2.18794               
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -434,20 +442,25 @@ write_csv(as_tibble(dbrda_bm_ab_its$plot_data$biplot, rownames = "envvar"), "tgr
     ## Call: dbrda(formula = fspe_dist ~ Condition(regions$region) + yr_since,
     ## data = env, sqrt.dist = TRUE)
     ## 
+    ## -- Model Summary --
+    ## 
     ##               Inertia Proportion Rank
-    ## Total          3.2439     1.0000     
-    ## Conditional    0.5645     0.1740    1
-    ## Constrained    0.4904     0.1512    1
-    ## Unconstrained  2.1889     0.6748    7
-    ## Inertia is Bray distance 
+    ## Total          3.2442     1.0000     
+    ## Conditional    0.5655     0.1743    1
+    ## Constrained    0.4907     0.1513    1
+    ## Unconstrained  2.1879     0.6744    7
+    ## 
+    ## Inertia is Bray distance
+    ## 
+    ## -- Eigenvalues --
     ## 
     ## Eigenvalues for constrained axes:
     ## dbRDA1 
-    ## 0.4904 
+    ## 0.4907 
     ## 
     ## Eigenvalues for unconstrained axes:
     ##   MDS1   MDS2   MDS3   MDS4   MDS5   MDS6   MDS7 
-    ## 0.4162 0.3693 0.3342 0.3149 0.2673 0.2474 0.2397
+    ## 0.4153 0.3692 0.3341 0.3155 0.2680 0.2465 0.2393
 
 Years since still holds, but I’m not convinced that this is correct.
 With only three sites in Fermi?
@@ -487,8 +500,8 @@ write_csv(as_tibble(dbrda_bmf_pr_its$plot_data$biplot, rownames = "envvar"), "tg
     ## 
     ## Model: dbrda(formula = fspe_dist ~ C4_grass, data = env, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)    
-    ## Model     1  0.49118 2.0384  0.001 ***
-    ## Residual  5  1.20483                  
+    ## Model     1  0.49392 2.0522  0.001 ***
+    ## Residual  5  1.20337                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -500,28 +513,32 @@ write_csv(as_tibble(dbrda_bmf_pr_its$plot_data$biplot, rownames = "envvar"), "tg
     ## 
     ## Model: dbrda(formula = fspe_dist ~ C4_grass, data = env, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)    
-    ## dbRDA1    1  0.49118 2.0384  0.001 ***
-    ## Residual  5  1.20483                  
+    ## dbRDA1    1  0.49392 2.0522  0.001 ***
+    ## Residual  5  1.20337                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $select_mod
-    ## Call: dbrda(formula = fspe_dist ~ C4_grass, data = env, sqrt.dist =
-    ## TRUE)
+    ## Call: dbrda(formula = fspe_dist ~ C4_grass, data = env, sqrt.dist = TRUE)
+    ## 
+    ## -- Model Summary --
     ## 
     ##               Inertia Proportion Rank
-    ## Total          1.6960     1.0000     
-    ## Constrained    0.4912     0.2896    1
-    ## Unconstrained  1.2048     0.7104    5
-    ## Inertia is Bray distance 
+    ## Total          1.6973     1.0000     
+    ## Constrained    0.4939     0.2910    1
+    ## Unconstrained  1.2034     0.7090    5
+    ## 
+    ## Inertia is Bray distance
+    ## 
+    ## -- Eigenvalues --
     ## 
     ## Eigenvalues for constrained axes:
     ## dbRDA1 
-    ## 0.4912 
+    ## 0.4939 
     ## 
     ## Eigenvalues for unconstrained axes:
     ##   MDS1   MDS2   MDS3   MDS4   MDS5 
-    ## 0.3693 0.2953 0.2270 0.1868 0.1264
+    ## 0.3695 0.2944 0.2272 0.1852 0.1271
 
 The number of sites limits the permutation design, but C4 grass was
 selected.
@@ -546,7 +563,7 @@ write_csv(as_tibble(dbrda_bm_tr_amf$plot_data$biplot, rownames = "envvar"), "tgr
 
     ## $R2
     ## $R2$r.squared
-    ## [1] 0.27
+    ## [1] 0.28
     ## 
     ## $R2$adj.r.squared
     ## [1] 0.13
@@ -558,9 +575,9 @@ write_csv(as_tibble(dbrda_bm_tr_amf$plot_data$biplot, rownames = "envvar"), "tgr
     ## Number of permutations: 5039
     ## 
     ## Model: dbrda(formula = fspe_dist ~ yr_since, data = env, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)  
-    ## Model     1  0.46481 1.8876 0.0155 *
-    ## Residual  5  1.23121                
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## Model     1   0.4669 1.8974   0.01 **
+    ## Residual  5   1.2304                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -571,29 +588,33 @@ write_csv(as_tibble(dbrda_bm_tr_amf$plot_data$biplot, rownames = "envvar"), "tgr
     ## Number of permutations: 5039
     ## 
     ## Model: dbrda(formula = fspe_dist ~ yr_since, data = env, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)   
-    ## dbRDA1    1  0.46481 1.8876   0.01 **
-    ## Residual  5  1.23121                 
+    ##          Df SumOfSqs      F Pr(>F)  
+    ## dbRDA1    1   0.4669 1.8974 0.0125 *
+    ## Residual  5   1.2304                
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## $select_mod
-    ## Call: dbrda(formula = fspe_dist ~ yr_since, data = env, sqrt.dist =
-    ## TRUE)
+    ## Call: dbrda(formula = fspe_dist ~ yr_since, data = env, sqrt.dist = TRUE)
+    ## 
+    ## -- Model Summary --
     ## 
     ##               Inertia Proportion Rank
-    ## Total          1.6960     1.0000     
-    ## Constrained    0.4648     0.2741    1
-    ## Unconstrained  1.2312     0.7259    5
-    ## Inertia is Bray distance 
+    ## Total          1.6973     1.0000     
+    ## Constrained    0.4669     0.2751    1
+    ## Unconstrained  1.2304     0.7249    5
+    ## 
+    ## Inertia is Bray distance
+    ## 
+    ## -- Eigenvalues --
     ## 
     ## Eigenvalues for constrained axes:
     ## dbRDA1 
-    ## 0.4648 
+    ## 0.4669 
     ## 
     ## Eigenvalues for unconstrained axes:
     ##   MDS1   MDS2   MDS3   MDS4   MDS5 
-    ## 0.3938 0.2815 0.2540 0.1832 0.1188
+    ## 0.3953 0.2811 0.2535 0.1815 0.1189
 
 The number of sites limits the permutation design, but years since was
 selected.
@@ -632,8 +653,8 @@ write_csv(as_tibble(dbrda_bm_ab_amf$plot_data$biplot, rownames = "envvar"), "tgr
     ## 
     ## Model: dbrda(formula = fspe_dist ~ Condition(regions$region) + yr_since, data = env, sqrt.dist = TRUE)
     ##          Df SumOfSqs      F Pr(>F)   
-    ## Model     1  0.46705 2.1407  0.008 **
-    ## Residual  7  1.52723                 
+    ## Model     1  0.46848 2.1516   0.01 **
+    ## Residual  7  1.52411                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -645,9 +666,9 @@ write_csv(as_tibble(dbrda_bm_ab_amf$plot_data$biplot, rownames = "envvar"), "tgr
     ## Number of permutations: 1999
     ## 
     ## Model: dbrda(formula = fspe_dist ~ Condition(regions$region) + yr_since, data = env, sqrt.dist = TRUE)
-    ##          Df SumOfSqs      F Pr(>F)  
-    ## dbRDA1    1  0.46705 2.1407 0.0115 *
-    ## Residual  7  1.52723                
+    ##          Df SumOfSqs      F Pr(>F)   
+    ## dbRDA1    1  0.46848 2.1516   0.01 **
+    ## Residual  7  1.52411                 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -655,20 +676,25 @@ write_csv(as_tibble(dbrda_bm_ab_amf$plot_data$biplot, rownames = "envvar"), "tgr
     ## Call: dbrda(formula = fspe_dist ~ Condition(regions$region) + yr_since,
     ## data = env, sqrt.dist = TRUE)
     ## 
+    ## -- Model Summary --
+    ## 
     ##               Inertia Proportion Rank
-    ## Total          2.4146     1.0000     
-    ## Conditional    0.4203     0.1741    1
-    ## Constrained    0.4671     0.1934    1
-    ## Unconstrained  1.5272     0.6325    7
-    ## Inertia is Bray distance 
+    ## Total          2.4154     1.0000     
+    ## Conditional    0.4228     0.1751    1
+    ## Constrained    0.4685     0.1940    1
+    ## Unconstrained  1.5241     0.6310    7
+    ## 
+    ## Inertia is Bray distance
+    ## 
+    ## -- Eigenvalues --
     ## 
     ## Eigenvalues for constrained axes:
     ## dbRDA1 
-    ## 0.4671 
+    ## 0.4685 
     ## 
     ## Eigenvalues for unconstrained axes:
     ##   MDS1   MDS2   MDS3   MDS4   MDS5   MDS6   MDS7 
-    ## 0.3973 0.2826 0.2548 0.1896 0.1621 0.1233 0.1174
+    ## 0.3986 0.2819 0.2543 0.1878 0.1649 0.1202 0.1165
 
 Years since still holds, but I’m not convinced that this is correct.
 With only three sites in Fermi?
@@ -732,20 +758,20 @@ vpdat_its_zcols <- vpdat_its %>% map(\(df) which(apply(df, 2, sum) == 0))
     ## X2:  vpdat_its$X2 
     ## 
     ## No. of explanatory tables: 2 
-    ## Total variation (SS): 264796663 
-    ##             Variance: 44132777 
+    ## Total variation (SS): 265361819 
+    ##             Variance: 44226970 
     ## No. of observations: 7 
     ## 
     ## Partition table:
     ##                      Df R.squared Adj.R.squared Testable
-    ## [a+c] = X1            2   0.39060       0.08591     TRUE
-    ## [b+c] = X2            2   0.39600       0.09400     TRUE
-    ## [a+b+c] = X1+X2       4   0.77494       0.32483     TRUE
+    ## [a+c] = X1            2   0.39263       0.08894     TRUE
+    ## [b+c] = X2            2   0.39540       0.09310     TRUE
+    ## [a+b+c] = X1+X2       4   0.77553       0.32658     TRUE
     ## Individual fractions                                    
-    ## [a] = X1|X2           2                 0.23083     TRUE
-    ## [b] = X2|X1           2                 0.23893     TRUE
-    ## [c]                   0                -0.14493    FALSE
-    ## [d] = Residuals                         0.67517    FALSE
+    ## [a] = X1|X2           2                 0.23348     TRUE
+    ## [b] = X2|X1           2                 0.23764     TRUE
+    ## [c]                   0                -0.14454    FALSE
+    ## [d] = Residuals                         0.67342    FALSE
     ## ---
     ## Use function 'rda' to test significance of fractions of interest
 
@@ -766,7 +792,7 @@ anova(rda(vpdat_its$Y %>% select(-vpdat_its_zcols$Y) ~ Axis.1 + Axis.2 + Conditi
 <div data-pagedtable="false">
 
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"16723865","3":"1.683776","4":"0.191","_rn_":"Model"},{"1":"2","2":"9932358","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"16811950","3":"1.693423","4":"0.157","_rn_":"Model"},{"1":"2","2":"9927791","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 
 </div>
@@ -782,7 +808,7 @@ anova(rda(vpdat_its$Y %>% select(-vpdat_its_zcols$Y) ~ Axis.1 + Axis.2 + Conditi
 <div data-pagedtable="false">
 
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"16961980","3":"1.70775","4":"0.15","_rn_":"Model"},{"1":"2","2":"9932358","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"16934398","3":"1.705757","4":"0.13","_rn_":"Model"},{"1":"2","2":"9927791","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 
 </div>
@@ -820,20 +846,20 @@ vpdat_amf_zcols <- vpdat_amf %>% map(\(df) which(apply(df, 2, sum) == 0))
     ## X2:  vpdat_amf$X2 
     ## 
     ## No. of explanatory tables: 2 
-    ## Total variation (SS): 84017025 
-    ##             Variance: 14002837 
+    ## Total variation (SS): 83605391 
+    ##             Variance: 13934232 
     ## No. of observations: 7 
     ## 
     ## Partition table:
     ##                      Df R.squared Adj.R.squared Testable
-    ## [a+c] = X1            2   0.45364       0.18046     TRUE
-    ## [b+c] = X2            2   0.34119       0.01179     TRUE
-    ## [a+b+c] = X1+X2       4   0.77336       0.32007     TRUE
+    ## [a+c] = X1            2   0.45695       0.18543     TRUE
+    ## [b+c] = X2            2   0.33956       0.00934     TRUE
+    ## [a+b+c] = X1+X2       4   0.77448       0.32344     TRUE
     ## Individual fractions                                    
-    ## [a] = X1|X2           2                 0.30828     TRUE
-    ## [b] = X2|X1           2                 0.13961     TRUE
-    ## [c]                   0                -0.12781    FALSE
-    ## [d] = Residuals                         0.67993    FALSE
+    ## [a] = X1|X2           2                 0.31410     TRUE
+    ## [b] = X2|X1           2                 0.13801     TRUE
+    ## [c]                   0                -0.12867    FALSE
+    ## [d] = Residuals                         0.67656    FALSE
     ## ---
     ## Use function 'rda' to test significance of fractions of interest
 
@@ -854,7 +880,7 @@ anova(rda(vpdat_amf$Y %>% select(-vpdat_amf_zcols$Y) ~ Axis.1 + Axis.2 + Conditi
 <div data-pagedtable="false">
 
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"6051491","3":"1.906792","4":"0.163","_rn_":"Model"},{"1":"2","2":"3173651","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"6060293","3":"1.928522","4":"0.175","_rn_":"Model"},{"1":"2","2":"3142454","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 
 </div>
@@ -870,7 +896,7 @@ anova(rda(vpdat_amf$Y %>% select(-vpdat_amf_zcols$Y) ~ Axis.1 + Axis.2 + Conditi
 <div data-pagedtable="false">
 
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"4476907","3":"1.410649","4":"0.277","_rn_":"Model"},{"1":"2","2":"3173651","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Variance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"4424483","3":"1.407971","4":"0.291","_rn_":"Model"},{"1":"2","2":"3142454","3":"NA","4":"NA","_rn_":"Residual"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 
 </div>
