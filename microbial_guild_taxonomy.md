@@ -2,7 +2,7 @@ Microbial data: microbial guilds and taxonomy
 ================
 Beau Larkin
 
-Last updated: 10 September, 2024
+Last updated: 11 September, 2024
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -252,10 +252,10 @@ Map(function(x) ncol(x)-1, spe[1:2])
 ```
 
     ## $its_raw
-    ## [1] 2889
+    ## [1] 2895
     ## 
     ## $its_rfy
-    ## [1] 2885
+    ## [1] 2892
 
 ### Unassigned taxa
 
@@ -294,126 +294,128 @@ its_taxaGuild(spe_meta$its_rfy)
     ## 
     ## Table: Distribution of ITS OTUs in classes; mean sequence abundance by field type
     ## 
-    ## phylum                   order                                        corn   restored   remnant
-    ## -----------------------  --------------------------------------  ---------  ---------  --------
-    ## Ascomycota               Hypocreales                               8983.60    7907.81   8470.00
-    ## Ascomycota               Pleosporales                              8069.60    8115.06   6847.25
-    ## Ascomycota               Chaetothyriales                            760.00    7128.31   6503.50
-    ## Basidiomycota            Agaricales                                3726.80    2726.25   5881.75
-    ## Ascomycota               Helotiales                                3322.40    4070.88   4456.00
-    ## Ascomycota               unidentified                              1578.40    3900.00   4400.50
-    ## Ascomycota               Sordariales                              13462.80    5478.12   4051.50
-    ## unidentified             unidentified                              1417.80    2437.00   3141.00
-    ## Ascomycota               Onygenales                                  80.60    1611.38   2653.25
-    ## Mortierellomycota        Mortierellales                            4414.60    3557.44   2167.75
-    ## Basidiomycota            Geastrales                                 918.00      55.67   1807.50
-    ## Ascomycota               Geoglossales                                 4.25    1915.25   1805.50
-    ## Basidiomycota            Thelephorales                                4.50      23.90    930.75
-    ## Ascomycota               Glomerellales                             2320.20    1302.25    718.75
-    ## Basidiomycota            Cantharellales                             511.00     962.56    661.50
-    ## Ascomycota               GS34                                         0.00     113.00    487.00
-    ## Glomeromycota            Glomerales                                 108.00     543.06    468.25
-    ## Ascomycota               Xylariales                                  72.00     359.44    379.50
-    ## Ascomycota               Coniochaetales                             881.60     214.50    352.25
-    ## Ascomycota               Sordariomycetes_ord_Incertae_sedis          48.00     156.44    300.00
-    ## Basidiomycota            Russulales                                   3.00       7.75    271.50
-    ## Ascomycota               Magnaporthales                             101.00     197.00    262.00
-    ## Ascomycota               Pezizales                                 1218.60     431.69    226.00
-    ## Basidiomycota            unidentified                               104.40     685.12    192.50
-    ## Ascomycota               Capnodiales                                673.80     660.38    189.50
-    ## Basidiomycota            Boletales                                    5.00       7.00    150.00
-    ## Glomeromycota            unidentified                                 9.25     188.29    140.00
-    ## Ascomycota               Chaetosphaeriales                          317.50     283.69    139.33
-    ## Ascomycota               Branch06                                    15.50     177.57    135.00
-    ## Basidiomycota            Sebacinales                                 30.00     788.50    131.75
-    ## Ascomycota               Minutisphaerales                             0.00      56.00    116.50
-    ## Basidiomycota            Auriculariales                             122.50     324.44    111.25
-    ## Ascomycota               Thelebolales                               115.75      43.57    109.00
-    ## Basidiomycota            Tremellales                                 16.60     109.31    104.75
-    ## Mucoromycota             unidentified                                 0.00      17.33     92.00
-    ## Chytridiomycota          Spizellomycetales                          174.80     125.60     82.50
-    ## Basidiomycota            Cystofilobasidiales                       2783.40      94.07     79.50
-    ## Ascomycota               Mytilinidales                                0.00       0.00     79.00
-    ## Basidiomycota            Trichosporonales                            64.50      37.09     75.25
-    ## Ascomycota               Venturiales                                 31.67      92.15     72.67
-    ## Basidiomycota            Trechisporales                             147.40     507.00     72.67
-    ## Chytridiomycota          Rhizophlyctidales                          268.60     137.33     68.50
-    ## Mucoromycota             Umbelopsidales                               0.00       2.00     59.00
-    ## Basidiomycota            Phallales                                  239.75      43.78     50.67
-    ## Basidiomycota            Filobasidiales                            1112.25     360.36     50.00
-    ## Basidiomycota            Tremellodendropsidales                       8.00      48.54     47.00
-    ## Basidiomycota            Hymenochaetales                             16.60     192.86     46.67
-    ## Ascomycota               Orbiliales                                  17.00      87.57     46.33
-    ## Ascomycota               Verrucariales                                0.00      62.00     46.00
-    ## Ascomycota               Mytilinidiales                               0.00      15.67     44.33
-    ## Ascomycota               Tubeufiales                                 69.40     215.94     36.50
-    ## Basidiomycota            Ustilaginales                                3.00     141.67     35.67
-    ## Basidiomycota            Polyporales                                 19.80      31.27     35.25
-    ## Basidiomycota            Geminibasidiales                            65.00      59.67     33.50
-    ## Ascomycota               Saccharomycetales                          273.25      43.75     29.00
-    ## Basidiomycota            Atheliales                                   0.00     152.50     29.00
-    ## Chytridiomycota          Chytridiales                                 0.00      92.50     26.00
-    ## Basidiomycota            Erythrobasidiales                            0.00       5.00     22.00
-    ## Ascomycota               Myrmecridiales                               0.00      77.00     20.50
-    ## Ascomycota               GS32                                         0.00       0.00     20.00
-    ## Ascomycota               Microascales                               132.80      86.00     17.67
-    ## Ascomycota               Ostropales                                   0.00      48.00     16.00
-    ## Chytridiomycota          Rhizophydiales                              26.25      24.50     16.00
-    ## Rozellomycota            GS11                                         0.00       4.00     15.50
-    ## Ascomycota               Trichosphaeriales                            5.00      25.27     15.00
-    ## Basidiomycota            Leucosporidiales                            37.67       9.43     14.00
-    ## Ascomycota               Diaporthales                               213.00      15.14     13.00
-    ## Ascomycota               Savoryellales                               13.50      14.40     12.33
-    ## Glomeromycota            Archaeosporales                              3.00      13.00     11.00
-    ## Ascomycota               Eurotiales                                 113.20      40.62     10.25
-    ## Ascomycota               Acrospermales                                0.00       6.00     10.00
-    ## Ascomycota               Archaeorhizomycetales                        0.00      34.71     10.00
-    ## Mortierellomycota        unidentified                                 0.00       4.50     10.00
-    ## Basidiobolomycota        Basidiobolales                               0.00      15.67      7.00
-    ## Chlorophyta              Chaetopeltidales                            13.00       7.30      7.00
-    ## Ascomycota               Rhytismatales                                0.00       3.00      6.00
-    ## Basidiomycota            Microbotryomycetes_ord_Incertae_sedis       10.00      18.33      6.00
-    ## Glomeromycota            Diversisporales                              0.00       7.00      5.50
-    ## Ascomycota               Dothideales                                  0.00      31.56      5.00
-    ## Chlorophyta              unidentified                                 8.00       9.67      5.00
-    ## Ascomycota               Candelariales                                0.00       6.00      3.00
-    ## Basidiomycota            Atractiellales                              16.50      11.00      3.00
-    ## Mucoromycota             GS22                                         0.00       3.00      2.00
-    ## Entorrhizomycota         Entorrhizales                                0.00       0.00      1.00
-    ## Mucoromycota             Mucorales                                    0.00       5.83      1.00
-    ## Anthophyta               Asterales                                    0.00       6.00      0.00
-    ## Anthophyta               Brassicales                                 10.00       4.50      0.00
-    ## Anthophyta               Commelinales                                 3.00     236.00      0.00
-    ## Anthophyta               Fabales                                      0.00      11.33      0.00
-    ## Anthophyta               Poales                                       4.50       3.00      0.00
-    ## Ascomycota               Boliniales                                  42.67      52.00      0.00
-    ## Ascomycota               Botryosphaeriales                           21.00      20.50      0.00
-    ## Ascomycota               Jahnulales                                  10.00       0.00      0.00
-    ## Ascomycota               Lichenostigmatales                           0.00       3.00      0.00
-    ## Ascomycota               Microthyriales                               0.00      13.00      0.00
-    ## Ascomycota               Pezizomycotina_ord_Incertae_sedis           32.00     517.00      0.00
-    ## Ascomycota               Phacidiales                                  0.00       5.50      0.00
-    ## Ascomycota               Phomatosporales                            700.00      10.00      0.00
-    ## Basidiomycota            Agaricostilbales                             2.00       1.00      0.00
-    ## Basidiomycota            Corticiales                                  0.00      70.57      0.00
-    ## Basidiomycota            Cystobasidiales                             42.50      12.00      0.00
-    ## Basidiomycota            Entylomatales                                0.00      10.80      0.00
-    ## Basidiomycota            Holtermanniales                              5.00      15.00      0.00
-    ## Basidiomycota            Kriegeriales                                 3.00      11.00      0.00
-    ## Basidiomycota            Platygloeales                                0.00      81.20      0.00
-    ## Basidiomycota            Pucciniales                                  0.00       5.00      0.00
-    ## Basidiomycota            Sporidiobolales                             49.00       6.75      0.00
-    ## Basidiomycota            Tilletiales                                 11.00      25.00      0.00
-    ## Basidiomycota            Urocystidales                               84.00       5.83      0.00
-    ## Calcarisporiellomycota   Calcarisporiellales                          0.00       5.00      0.00
-    ## Cercozoa                 unidentified                                 4.00       3.00      0.00
-    ## Chlorophyta              Chaetophorales                               0.00      25.33      0.00
-    ## Chlorophyta              Chlorellales                                 0.00       6.00      0.00
-    ## Chlorophyta              Sphaeropleales                               0.00       5.00      0.00
-    ## Chytridiomycota          unidentified                                25.00       8.00      0.00
-    ## Glomeromycota            Paraglomerales                               4.00      12.60      0.00
-    ## Haplosporidia            Haplosporidia_ord_Incertae_sedis             3.33      11.00      0.00
-    ## Monoblepharomycota       Monoblepharidales                            1.00       0.00      0.00
+    ## phylum                             order                                        corn   restored   remnant
+    ## ---------------------------------  --------------------------------------  ---------  ---------  --------
+    ## Ascomycota                         Hypocreales                               8979.00    7904.19   8448.25
+    ## Ascomycota                         Pleosporales                              8083.40    8117.06   6741.50
+    ## Ascomycota                         Chaetothyriales                            756.80    7136.44   6412.25
+    ## Basidiomycota                      Agaricales                                3740.00    2717.88   5772.00
+    ## Ascomycota                         Helotiales                                3300.00    4090.38   4621.50
+    ## Ascomycota                         unidentified                              1580.40    3890.94   4421.00
+    ## Ascomycota                         Sordariales                              13452.20    5462.88   4095.75
+    ## unidentified                       unidentified                              1418.20    2433.62   3171.00
+    ## Ascomycota                         Onygenales                                  80.20    1611.25   2503.75
+    ## Mortierellomycota                  Mortierellales                            4412.60    3574.56   2056.25
+    ## Basidiomycota                      Geastrales                                 907.00      52.83   1838.00
+    ## Ascomycota                         Geoglossales                                 5.50    1920.75   1782.25
+    ## Basidiomycota                      Thelephorales                                4.00      23.60   1046.50
+    ## Ascomycota                         Glomerellales                             2329.00    1308.38    850.25
+    ## Basidiomycota                      Cantharellales                             505.80     958.69    746.75
+    ## Ascomycota                         GS34                                         0.00     115.67    497.50
+    ## Glomeromycota                      Glomerales                                 113.40     541.44    493.00
+    ## Ascomycota                         Xylariales                                  72.00     353.25    381.00
+    ## Ascomycota                         Coniochaetales                             871.00     216.19    355.25
+    ## Ascomycota                         Sordariomycetes_ord_Incertae_sedis          46.20     157.75    276.75
+    ## Ascomycota                         Magnaporthales                              98.80     196.75    238.25
+    ## Ascomycota                         Capnodiales                                680.00     661.12    193.00
+    ## Ascomycota                         Pezizales                                 1222.80     427.75    192.50
+    ## Basidiomycota                      unidentified                               102.60     684.25    188.25
+    ## Basidiomycota                      Russulales                                   4.00       8.50    183.00
+    ## Basidiomycota                      Sebacinales                                 29.80     790.94    169.50
+    ## Glomeromycota                      unidentified                                 9.00     188.71    151.00
+    ## Basidiomycota                      Boletales                                    3.00       8.00    149.00
+    ## Ascomycota                         Chaetosphaeriales                          314.75     283.25    141.00
+    ## Ascomycota                         Branch06                                    15.25     175.86    120.00
+    ## Ascomycota                         Minutisphaerales                             0.00      47.00    115.00
+    ## Ascomycota                         Thelebolales                               110.75      43.57    109.00
+    ## Basidiomycota                      Auriculariales                             120.25     326.75    106.50
+    ## Basidiomycota                      Tremellales                                 16.60     107.75    100.25
+    ## Mucoromycota                       unidentified                                 0.00      14.00     91.50
+    ## Chytridiomycota                    Spizellomycetales                          191.80     125.07     82.50
+    ## Basidiomycota                      Trichosporonales                            69.50      36.55     80.75
+    ## Ascomycota                         Mytilinidales                                0.00       0.00     76.00
+    ## Basidiomycota                      Filobasidiales                            1111.25     359.14     75.00
+    ## Basidiomycota                      Cystofilobasidiales                       2769.60      93.07     70.00
+    ## Basidiomycota                      Trechisporales                             151.60     511.69     68.00
+    ## Chytridiomycota                    Rhizophlyctidales                          268.00     137.87     67.25
+    ## Ascomycota                         Venturiales                                 32.33      91.08     63.33
+    ## Mucoromycota                       Umbelopsidales                               0.00       2.00     58.00
+    ## Basidiomycota                      Ustilaginales                                3.00     148.00     53.33
+    ## Basidiomycota                      Tremellodendropsidales                       9.00      48.92     51.00
+    ## Ascomycota                         Mytilinidiales                               0.00      14.33     45.00
+    ## Ascomycota                         Orbiliales                                  20.00      88.43     44.33
+    ## Ascomycota                         Verrucariales                                0.00      73.00     42.00
+    ## Basidiomycota                      Hymenochaetales                             16.40     193.93     42.00
+    ## Basidiomycota                      Polyporales                                 20.40      32.40     39.00
+    ## Ascomycota                         Tubeufiales                                 72.20     212.94     33.00
+    ## Basidiomycota                      Geminibasidiales                            33.50      58.83     29.00
+    ## Ascomycota                         Saccharomycetales                          280.50      43.00     28.67
+    ## Basidiomycota                      Atheliales                                   0.00     155.00     28.50
+    ## Chytridiomycota                    Chytridiales                                 0.00      90.00     25.50
+    ## Basidiomycota                      Phallales                                  236.50      42.67     24.67
+    ## Ascomycota                         Microascales                               135.00      86.00     23.67
+    ## Basidiomycota                      Erythrobasidiales                            0.00       5.20     23.50
+    ## Ascomycota                         Myrmecridiales                               0.00      73.62     20.50
+    ## Ascomycota                         GS32                                         0.00       0.00     20.00
+    ## Rozellomycota                      GS11                                         0.00       2.00     20.00
+    ## Ascomycota                         Diaporthales                               217.00      15.14     17.00
+    ## Ascomycota                         Eurotiales                                 113.20      41.06     16.75
+    ## Ascomycota                         Ostropales                                   0.00      49.00     15.00
+    ## Basidiomycota                      Leucosporidiales                            38.33      10.00     14.50
+    ## Chytridiomycota                    Rhizophydiales                              30.67      24.40     13.50
+    ## Ascomycota                         Savoryellales                               14.00      13.80     13.33
+    ## Ascomycota                         Acrospermales                                0.00       6.50     12.00
+    ## Ascomycota                         Archaeorhizomycetales                        0.00      34.57     10.00
+    ## Glomeromycota                      Archaeosporales                              1.00      13.33     10.00
+    ## Mortierellomycota                  unidentified                                 0.00       5.00     10.00
+    ## Basidiobolomycota                  Basidiobolales                               0.00      15.33      8.00
+    ## Chlorophyta                        Chaetopeltidales                            12.00       7.90      7.50
+    ## Basidiomycota                      Microbotryomycetes_ord_Incertae_sedis       11.33      17.50      7.00
+    ## Ascomycota                         Dothideales                                  0.00      31.67      6.00
+    ## Basidiomycota                      Agaricomycetes_ord_Incertae_sedis            0.00       0.00      6.00
+    ## Ascomycota                         Rhytismatales                                0.00       3.00      5.00
+    ## Chlorophyta                        unidentified                                 8.00       9.67      5.00
+    ## Glomeromycota                      Diversisporales                              0.00       7.40      5.00
+    ## Ascomycota                         Candelariales                                0.00       4.00      3.00
+    ## Basidiomycota                      Atractiellales                              15.25      11.00      3.00
+    ## Mucoromycota                       GS22                                         0.00       0.00      3.00
+    ## Entorrhizomycota                   Entorrhizales                                0.00       0.00      2.00
+    ## Mucoromycota                       Mucorales                                    0.00       5.67      2.00
+    ## Ichthyosporia_phy_Incertae_sedis   unidentified                                 0.00       0.00      1.00
+    ## Anthophyta                         Asterales                                    0.00       4.00      0.00
+    ## Anthophyta                         Brassicales                                  8.00       4.50      0.00
+    ## Anthophyta                         Commelinales                                 5.00     209.00      0.00
+    ## Anthophyta                         Fabales                                      0.00      11.00      0.00
+    ## Anthophyta                         Poales                                       4.00       3.50      0.00
+    ## Ascomycota                         Boliniales                                  44.67      51.75      0.00
+    ## Ascomycota                         Botryosphaeriales                           20.50      19.83      0.00
+    ## Ascomycota                         Jahnulales                                  12.00       0.00      0.00
+    ## Ascomycota                         Lichenostigmatales                           0.00       3.00      0.00
+    ## Ascomycota                         Microthyriales                               0.00      12.00      0.00
+    ## Ascomycota                         Pezizomycotina_ord_Incertae_sedis           35.00     496.00      0.00
+    ## Ascomycota                         Phacidiales                                  0.00       5.50      0.00
+    ## Ascomycota                         Phomatosporales                            728.00       8.50      0.00
+    ## Ascomycota                         Trichosphaeriales                            5.00      24.73      0.00
+    ## Basidiomycota                      Agaricostilbales                             2.00       1.00      0.00
+    ## Basidiomycota                      Corticiales                                  0.00      70.86      0.00
+    ## Basidiomycota                      Cystobasidiales                             42.50      10.33      0.00
+    ## Basidiomycota                      Entylomatales                                0.00      10.60      0.00
+    ## Basidiomycota                      Holtermanniales                              4.25      15.67      0.00
+    ## Basidiomycota                      Kriegeriales                                 2.50      12.00      0.00
+    ## Basidiomycota                      Platygloeales                                0.00      82.40      0.00
+    ## Basidiomycota                      Pucciniales                                  0.00       4.00      0.00
+    ## Basidiomycota                      Sporidiobolales                             46.00       7.75      0.00
+    ## Basidiomycota                      Tilletiales                                 11.00      26.50      0.00
+    ## Basidiomycota                      Urocystidales                               75.00       5.33      0.00
+    ## Calcarisporiellomycota             Calcarisporiellales                          0.00       3.00      0.00
+    ## Cercozoa                           unidentified                                 5.00       4.00      0.00
+    ## Chlorophyta                        Chaetophorales                               0.00      23.67      0.00
+    ## Chlorophyta                        Chlorellales                                 0.00       5.00      0.00
+    ## Chlorophyta                        Sphaeropleales                               0.00       4.00      0.00
+    ## Chytridiomycota                    unidentified                                23.00       9.00      0.00
+    ## Glomeromycota                      Paraglomerales                               3.00      12.00      0.00
+    ## Haplosporidia                      Haplosporidia_ord_Incertae_sedis             3.00      12.00      0.00
+    ## Monoblepharomycota                 Monoblepharidales                            2.00       0.00      0.00
     ## [[1]]
     ## 
     ## 
@@ -421,26 +423,26 @@ its_taxaGuild(spe_meta$its_rfy)
     ## 
     ## primary_lifestyle            corn   restored   remnant     total
     ## -----------------------  --------  ---------  --------  --------
-    ## unidentified              26007.4    31591.7   34871.2   92470.3
-    ## plant_pathogen             9199.0     9096.4    6967.0   25262.4
-    ## soil_saprotroph            9163.0     7628.2    7976.5   24767.7
-    ## wood_saprotroph            3690.2     2874.1    1834.0    8398.3
-    ## dung_saprotroph            3444.0     1991.9    1047.5    6483.4
-    ## litter_saprotroph          2502.8     1765.9    1261.0    5529.7
-    ## mycoparasite               2167.2      725.8     346.8    3239.8
-    ## animal_parasite             791.6     1338.2     887.0    3016.8
-    ## ectomycorrhizal              11.0      150.2    2196.0    2357.2
-    ## unspecified_saprotroph      933.2      211.2     208.2    1352.6
-    ## root_endophyte               17.0      482.8     248.0     747.8
-    ## arbuscular_mycorrhizal       74.8      243.9     188.0     506.7
-    ## pollen_saprotroph           157.4      113.4      63.8     334.6
-    ## lichenized                    0.0       92.0      16.0     108.0
-    ## nectar/tap_saprotroph        36.0       42.0      29.0     107.0
-    ## lichen_parasite              16.0       46.4      39.0     101.4
-    ## foliar_endophyte              4.3       33.0       6.0      43.3
-    ## epiphyte                      0.0        8.0      24.0      32.0
-    ## unspecified_pathotroph        0.0       14.8      11.0      25.8
-    ## algal_parasite                2.0        3.8       0.0       5.8
+    ## unidentified              25958.2    31570.9   34910.8   92439.9
+    ## plant_pathogen             9220.8     9105.1    7168.5   25494.4
+    ## soil_saprotroph            9162.0     7645.1    7780.8   24587.9
+    ## wood_saprotroph            3726.4     2868.6    1768.8    8363.8
+    ## dung_saprotroph            3440.6     1997.2    1124.8    6562.6
+    ## litter_saprotroph          2512.6     1760.4    1310.0    5583.0
+    ## mycoparasite               2147.2      726.6     343.5    3217.3
+    ## animal_parasite             790.0     1339.4     851.8    2981.2
+    ## ectomycorrhizal               9.0      148.2    2149.2    2306.4
+    ## unspecified_saprotroph      922.4      210.8     204.8    1338.0
+    ## root_endophyte               16.3      485.6     228.2     730.1
+    ## arbuscular_mycorrhizal       76.6      240.4     185.0     502.0
+    ## pollen_saprotroph           172.8      112.4      62.5     347.7
+    ## lichen_parasite              17.0       48.5      45.2     110.7
+    ## lichenized                    0.0       94.0      15.0     109.0
+    ## nectar/tap_saprotroph        38.5       41.2      28.7     108.4
+    ## foliar_endophyte              4.7       33.5       7.0      45.2
+    ## epiphyte                      0.0       10.0      28.0      38.0
+    ## unspecified_pathotroph        0.0       15.8       9.0      24.8
+    ## algal_parasite                2.0        3.6       0.0       5.6
     ## 
     ## [[2]]
 
@@ -475,61 +477,62 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## 
     ## field_type   region   field_name    yr_since  primary_lifestyle    seq_sum
     ## -----------  -------  -----------  ---------  ------------------  --------
-    ## corn         FL       FLC2                 0  soil_saprotroph        15618
-    ## restored     BM       KORP1               28  soil_saprotroph        14109
-    ## remnant      LP       LPREM1              NA  soil_saprotroph        12358
-    ## restored     FL       FLRSP1              10  soil_saprotroph        11640
-    ## corn         LP       LPC1                 0  soil_saprotroph        10259
-    ## remnant      BM       MBREM1              NA  soil_saprotroph        10113
-    ## restored     FL       FLRP5               35  soil_saprotroph        10103
-    ## restored     FL       FLRSP3              10  soil_saprotroph        10068
-    ## corn         FL       FLC1                 0  soil_saprotroph         9596
+    ## corn         FL       FLC2                 0  soil_saprotroph        15651
+    ## restored     BM       KORP1               28  soil_saprotroph        14080
+    ## remnant      LP       LPREM1              NA  soil_saprotroph        12417
+    ## restored     FL       FLRSP1              10  soil_saprotroph        11644
+    ## corn         LP       LPC1                 0  soil_saprotroph        10255
+    ## restored     FL       FLRSP3              10  soil_saprotroph        10088
+    ## restored     FL       FLRP5               35  soil_saprotroph        10055
+    ## remnant      BM       MBREM1              NA  soil_saprotroph        10030
+    ## corn         FL       FLC1                 0  soil_saprotroph         9599
     ## restored     BM       BBRP1               16  soil_saprotroph         8987
-    ## restored     FL       FLRP1               40  soil_saprotroph         8789
-    ## restored     BM       PHRP1               11  soil_saprotroph         8390
-    ## restored     FL       FLRSP2              10  soil_saprotroph         7678
-    ## restored     BM       ERRP1                3  soil_saprotroph         7290
-    ## corn         BM       PHC1                 0  soil_saprotroph         6025
-    ## restored     BM       MBRP1               18  soil_saprotroph         5891
-    ## restored     FL       FLRP4               36  soil_saprotroph         5546
-    ## restored     LP       LPRP1                4  soil_saprotroph         5401
-    ## restored     BM       MHRP2                2  soil_saprotroph         5211
-    ## remnant      FG       FGREM1              NA  soil_saprotroph         4865
-    ## remnant      FL       FLREM1              NA  soil_saprotroph         4570
-    ## restored     BM       MHRP1                7  soil_saprotroph         4531
-    ## restored     LP       LPRP2                4  soil_saprotroph         4471
-    ## corn         FG       FGC1                 0  soil_saprotroph         4317
-    ## restored     FG       FGRP1               15  soil_saprotroph         3947
+    ## restored     FL       FLRP1               40  soil_saprotroph         8902
+    ## restored     BM       PHRP1               11  soil_saprotroph         8346
+    ## restored     FL       FLRSP2              10  soil_saprotroph         7755
+    ## restored     BM       ERRP1                3  soil_saprotroph         7419
+    ## restored     BM       MBRP1               18  soil_saprotroph         6009
+    ## corn         BM       PHC1                 0  soil_saprotroph         5975
+    ## restored     FL       FLRP4               36  soil_saprotroph         5581
+    ## restored     LP       LPRP1                4  soil_saprotroph         5400
+    ## restored     BM       MHRP2                2  soil_saprotroph         5155
+    ## remnant      FG       FGREM1              NA  soil_saprotroph         4880
+    ## restored     LP       LPRP2                4  soil_saprotroph         4491
+    ## restored     BM       MHRP1                7  soil_saprotroph         4488
+    ## corn         FG       FGC1                 0  soil_saprotroph         4330
+    ## restored     FG       FGRP1               15  soil_saprotroph         3922
+    ## remnant      FL       FLREM1              NA  soil_saprotroph         3796
     ## ----------------------------------------------------
     ## 
     ## Linear mixed model fit by maximum likelihood  ['lmerMod']
     ## Formula: seq_sum ~ field_type + (1 | region)
     ##    Data: mod_data
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  483.5205  489.6149 -236.7602  473.5205        20 
+    ##  484.1883  490.2827 -237.0941  474.1883        20 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept)  727.8  
-    ##  Residual             3065.2  
+    ##  region   (Intercept)  197.8  
+    ##  Residual             3174.5  
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ##  (Intercept)  field_type.L  field_type.Q  
-    ##       8168.0        -771.6         867.3  
+    ##       8188.7        -970.8         682.1  
     ## ----------------------------------------------------
     ## 
     ## Linear mixed model fit by maximum likelihood  ['lmerMod']
     ## Formula: seq_sum ~ 1 + (1 | region)
     ##    Data: mod_data
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  480.4669  484.1235 -237.2334  474.4669        22 
+    ##  481.0567  484.7133 -237.5283  475.0567        22 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept)   97.44 
-    ##  Residual             3196.90 
+    ##  region   (Intercept)    0    
+    ##  Residual             3236    
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ## (Intercept)  
-    ##        7989  
+    ##        7970  
+    ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## ----------------------------------------------------
     ## 
     ## Data: mod_data
@@ -537,8 +540,8 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## mmod_null: seq_sum ~ 1 + (1 | region)
     ## mmod: seq_sum ~ field_type + (1 | region)
     ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)
-    ## mmod_null    3 480.47 484.12 -237.23   474.47                     
-    ## mmod         5 483.52 489.61 -236.76   473.52 0.9464  2      0.623
+    ## mmod_null    3 481.06 484.71 -237.53   475.06                     
+    ## mmod         5 484.19 490.28 -237.09   474.19 0.8684  2     0.6478
     ## ----------------------------------------------------
     ## 
     ## 
@@ -552,9 +555,9 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)
-    ## restored - corn == 0     -1607.9     1580.7  -1.017    0.561
-    ## remnant - corn == 0      -1091.2     2058.9  -0.530    0.855
-    ## remnant - restored == 0    516.6     1726.0   0.299    0.951
+    ## restored - corn == 0       -1522       1627  -0.935    0.613
+    ## remnant - corn == 0        -1373       2130  -0.645    0.792
+    ## remnant - restored == 0      149       1776   0.084    0.996
     ## (Adjusted p values reported -- single-step method)
     ## 
     ##     corn restored  remnant 
@@ -568,18 +571,18 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## 
     ## Residuals:
     ##       1       2       3       4       5       6       7 
-    ##   161.7  2012.3  2009.0 -3480.1 -1838.3   206.2   929.2 
+    ##   151.8  2128.7  1972.6 -3371.6 -1893.1   137.3   874.2 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)  
-    ## (Intercept)  4459.03    1450.50   3.074   0.0277 *
-    ## yr_since      272.89      97.57   2.797   0.0381 *
+    ## (Intercept)  4472.31    1440.77   3.104   0.0267 *
+    ## yr_since      272.68      96.92   2.814   0.0374 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 2214 on 5 degrees of freedom
-    ## Multiple R-squared:  0.6101, Adjusted R-squared:  0.5321 
-    ## F-statistic: 7.822 on 1 and 5 DF,  p-value: 0.03814
+    ## Residual standard error: 2199 on 5 degrees of freedom
+    ## Multiple R-squared:  0.6129, Adjusted R-squared:  0.5355 
+    ## F-statistic: 7.916 on 1 and 5 DF,  p-value: 0.03739
     ## 
     ## 
     ## 
@@ -591,61 +594,61 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## 
     ## field_type   region   field_name    yr_since  primary_lifestyle    seq_sum
     ## -----------  -------  -----------  ---------  ------------------  --------
-    ## restored     BM       MHRP2                2  plant_pathogen         16199
-    ## restored     BM       MHRP1                7  plant_pathogen         15457
-    ## restored     LP       LPRP1                4  plant_pathogen         15109
-    ## restored     BM       PHRP1               11  plant_pathogen         14485
-    ## corn         LP       LPC1                 0  plant_pathogen         14008
-    ## restored     BM       ERRP1                3  plant_pathogen         12260
-    ## restored     FG       FGRP1               15  plant_pathogen         12251
-    ## corn         FG       FGC1                 0  plant_pathogen          9743
-    ## remnant      LP       LPREM1              NA  plant_pathogen          9513
-    ## corn         FL       FLC2                 0  plant_pathogen          9073
-    ## remnant      FG       FGREM1              NA  plant_pathogen          8438
-    ## restored     LP       LPRP2                4  plant_pathogen          7677
+    ## restored     BM       MHRP2                2  plant_pathogen         16160
+    ## restored     BM       MHRP1                7  plant_pathogen         15502
+    ## restored     LP       LPRP1                4  plant_pathogen         15211
+    ## restored     BM       PHRP1               11  plant_pathogen         14491
+    ## corn         LP       LPC1                 0  plant_pathogen         13945
+    ## restored     BM       ERRP1                3  plant_pathogen         12277
+    ## restored     FG       FGRP1               15  plant_pathogen         12253
+    ## corn         FG       FGC1                 0  plant_pathogen          9826
+    ## remnant      LP       LPREM1              NA  plant_pathogen          9469
+    ## corn         FL       FLC2                 0  plant_pathogen          9057
+    ## remnant      FG       FGREM1              NA  plant_pathogen          8423
+    ## restored     LP       LPRP2                4  plant_pathogen          7764
     ## restored     BM       BBRP1               16  plant_pathogen          7654
-    ## corn         FL       FLC1                 0  plant_pathogen          7381
-    ## restored     FL       FLRP1               40  plant_pathogen          6754
-    ## remnant      FL       FLREM1              NA  plant_pathogen          6741
-    ## restored     FL       FLRSP2              10  plant_pathogen          6485
-    ## restored     FL       FLRSP1              10  plant_pathogen          6123
-    ## corn         BM       PHC1                 0  plant_pathogen          5790
-    ## restored     BM       MBRP1               18  plant_pathogen          5316
-    ## restored     BM       KORP1               28  plant_pathogen          5219
-    ## restored     FL       FLRP5               35  plant_pathogen          5014
-    ## restored     FL       FLRP4               36  plant_pathogen          4824
-    ## restored     FL       FLRSP3              10  plant_pathogen          4716
-    ## remnant      BM       MBREM1              NA  plant_pathogen          3176
+    ## remnant      FL       FLREM1              NA  plant_pathogen          7604
+    ## corn         FL       FLC1                 0  plant_pathogen          7388
+    ## restored     FL       FLRP1               40  plant_pathogen          6737
+    ## restored     FL       FLRSP2              10  plant_pathogen          6457
+    ## restored     FL       FLRSP1              10  plant_pathogen          6147
+    ## corn         BM       PHC1                 0  plant_pathogen          5888
+    ## restored     BM       MBRP1               18  plant_pathogen          5299
+    ## restored     BM       KORP1               28  plant_pathogen          5250
+    ## restored     FL       FLRP5               35  plant_pathogen          4982
+    ## restored     FL       FLRP4               36  plant_pathogen          4789
+    ## restored     FL       FLRSP3              10  plant_pathogen          4708
+    ## remnant      BM       MBREM1              NA  plant_pathogen          3178
     ## ----------------------------------------------------
     ## 
     ## Linear mixed model fit by maximum likelihood  ['lmerMod']
     ## Formula: seq_sum ~ field_type + (1 | region)
     ##    Data: mod_data
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  490.3089  496.4033 -240.1545  480.3089        20 
+    ##  490.5711  496.6655 -240.2855  480.5711        20 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept) 1642    
-    ##  Residual             3351    
+    ##  region   (Intercept) 1579    
+    ##  Residual             3383    
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ##  (Intercept)  field_type.L  field_type.Q  
-    ##         8723         -1865         -1071  
+    ##         8781         -1721          -969  
     ## ----------------------------------------------------
     ## 
     ## Linear mixed model fit by maximum likelihood  ['lmerMod']
     ## Formula: seq_sum ~ 1 + (1 | region)
     ##    Data: mod_data
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  488.1544  491.8110 -241.0772  482.1544        22 
+    ##  488.1070  491.7636 -241.0535  482.1070        22 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept) 1388    
-    ##  Residual             3541    
+    ##  region   (Intercept) 1347    
+    ##  Residual             3546    
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ## (Intercept)  
-    ##        9051  
+    ##        9081  
     ## ----------------------------------------------------
     ## 
     ## Data: mod_data
@@ -653,8 +656,8 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## mmod_null: seq_sum ~ 1 + (1 | region)
     ## mmod: seq_sum ~ field_type + (1 | region)
     ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)
-    ## mmod_null    3 488.15 491.81 -241.08   482.15                     
-    ## mmod         5 490.31 496.40 -240.15   480.31 1.8455  2     0.3974
+    ## mmod_null    3 488.11 491.76 -241.05   482.11                     
+    ## mmod         5 490.57 496.67 -240.29   480.57 1.5359  2      0.464
     ## ----------------------------------------------------
     ## 
     ## 
@@ -667,10 +670,10 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ##     REML = FALSE)
     ## 
     ## Linear Hypotheses:
-    ##                          Estimate Std. Error z value Pr(>|z|)
-    ## restored - corn == 0       -7.054   1743.661  -0.004    1.000
-    ## remnant - corn == 0     -2636.851   2254.172  -1.170    0.467
-    ## remnant - restored == 0 -2629.797   1908.137  -1.378    0.348
+    ##                         Estimate Std. Error z value Pr(>|z|)
+    ## restored - corn == 0      -30.23    1759.28  -0.017    1.000
+    ## remnant - corn == 0     -2434.08    2275.64  -1.070    0.529
+    ## remnant - restored == 0 -2403.85    1924.84  -1.249    0.420
     ## (Adjusted p values reported -- single-step method)
     ## 
     ##     corn restored  remnant 
@@ -684,18 +687,18 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## 
     ## Residuals:
     ##       1       2       3       4       5       6       7 
-    ## -1571.6 -2748.5  1331.4 -3020.0  2227.9   745.7  3035.2 
+    ## -1580.7 -2730.6  1344.1 -3047.6  2270.7   708.3  3035.9 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)  16343.0     1749.4   9.342 0.000237 ***
-    ## yr_since      -444.8      117.7  -3.780 0.012889 *  
+    ## (Intercept)  16339.8     1756.1   9.304 0.000241 ***
+    ## yr_since      -444.1      118.1  -3.759 0.013169 *  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 2670 on 5 degrees of freedom
-    ## Multiple R-squared:  0.7408, Adjusted R-squared:  0.6889 
-    ## F-statistic: 14.29 on 1 and 5 DF,  p-value: 0.01289
+    ## Residual standard error: 2680 on 5 degrees of freedom
+    ## Multiple R-squared:  0.7386, Adjusted R-squared:  0.6864 
+    ## F-statistic: 14.13 on 1 and 5 DF,  p-value: 0.01317
     ## 
     ## 
     ## 
@@ -707,30 +710,30 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## 
     ## field_type   region   field_name    yr_since  primary_lifestyle    seq_sum
     ## -----------  -------  -----------  ---------  ------------------  --------
-    ## remnant      FL       FLREM1              NA  ectomycorrhizal         3615
-    ## remnant      FG       FGREM1              NA  ectomycorrhizal         3498
-    ## remnant      BM       MBREM1              NA  ectomycorrhizal         1118
-    ## restored     BM       MBRP1               18  ectomycorrhizal          574
-    ## remnant      LP       LPREM1              NA  ectomycorrhizal          553
-    ## restored     FL       FLRP1               40  ectomycorrhizal           14
-    ## corn         LP       LPC1                 0  ectomycorrhizal           11
-    ## restored     BM       MHRP2                2  ectomycorrhizal            7
-    ## restored     FG       FGRP1               15  ectomycorrhizal            6
+    ## remnant      FG       FGREM1              NA  ectomycorrhizal         3471
+    ## remnant      FL       FLREM1              NA  ectomycorrhizal         3443
+    ## remnant      BM       MBREM1              NA  ectomycorrhizal         1136
+    ## restored     BM       MBRP1               18  ectomycorrhizal          568
+    ## remnant      LP       LPREM1              NA  ectomycorrhizal          547
+    ## restored     FL       FLRP1               40  ectomycorrhizal           13
+    ## corn         LP       LPC1                 0  ectomycorrhizal            9
+    ## restored     BM       MHRP2                2  ectomycorrhizal            8
+    ## restored     FG       FGRP1               15  ectomycorrhizal            4
     ## ----------------------------------------------------
     ## 
     ## Linear mixed model fit by maximum likelihood  ['lmerMod']
     ## Formula: seq_sum ~ field_type + (1 | region)
     ##    Data: mod_data
     ##      AIC      BIC   logLik deviance df.resid 
-    ## 158.6038 159.5900 -74.3019 148.6038        4 
+    ## 157.9341 158.9202 -73.9670 147.9341        4 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
     ##  region   (Intercept)   0.0   
-    ##  Residual             931.5   
+    ##  Residual             897.5   
     ## Number of obs: 9, groups:  region, 4
     ## Fixed Effects:
     ##  (Intercept)  field_type.L  field_type.Q  
-    ##        785.8        1545.0         778.3  
+    ##        768.8        1513.4         760.1  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## ----------------------------------------------------
     ## 
@@ -738,15 +741,15 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## Formula: seq_sum ~ 1 + (1 | region)
     ##    Data: mod_data
     ##      AIC      BIC   logLik deviance df.resid 
-    ## 161.8036 162.3952 -77.9018 155.8036        6 
+    ## 161.2878 161.8794 -77.6439 155.2878        6 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
     ##  region   (Intercept)    0    
-    ##  Residual             1390    
+    ##  Residual             1350    
     ## Number of obs: 9, groups:  region, 4
     ## Fixed Effects:
     ## (Intercept)  
-    ##        1044  
+    ##        1022  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## ----------------------------------------------------
     ## 
@@ -754,9 +757,9 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## Models:
     ## mmod_null: seq_sum ~ 1 + (1 | region)
     ## mmod: seq_sum ~ field_type + (1 | region)
-    ##           npar   AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)  
-    ## mmod_null    3 161.8 162.40 -77.902    155.8                       
-    ## mmod         5 158.6 159.59 -74.302    148.6 7.1997  2    0.02733 *
+    ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)  
+    ## mmod_null    3 161.29 161.88 -77.644   155.29                       
+    ## mmod         5 157.93 158.92 -73.967   147.93 7.3537  2     0.0253 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## ----------------------------------------------------
@@ -772,9 +775,9 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)   
-    ## restored - corn == 0       139.2     1041.5   0.134  0.98995   
-    ## remnant - corn == 0       2185.0     1041.5   2.098  0.08686 . 
-    ## remnant - restored == 0   2045.8      658.7   3.106  0.00517 **
+    ## restored - corn == 0       139.2     1003.4   0.139  0.98918   
+    ## remnant - corn == 0       2140.2     1003.4   2.133  0.08007 . 
+    ## remnant - restored == 0   2001.0      634.6   3.153  0.00437 **
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## (Adjusted p values reported -- single-step method)
@@ -793,8 +796,8 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)
-    ## (Intercept)   -63.88        NaN     NaN      NaN
-    ## yr_since       35.44        NaN     NaN      NaN
+    ## (Intercept)      -62        NaN     NaN      NaN
+    ## yr_since          35        NaN     NaN      NaN
     ## 
     ## Residual standard error: NaN on 0 degrees of freedom
     ## Multiple R-squared:      1,  Adjusted R-squared:    NaN 
@@ -810,30 +813,30 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## 
     ## field_type   region   field_name    yr_since  primary_lifestyle    seq_sum
     ## -----------  -------  -----------  ---------  ------------------  --------
-    ## restored     LP       LPRP2                4  wood_saprotroph         5870
-    ## corn         LP       LPC1                 0  wood_saprotroph         4671
-    ## corn         FG       FGC1                 0  wood_saprotroph         4572
-    ## restored     FL       FLRSP2              10  wood_saprotroph         4464
-    ## restored     FG       FGRP1               15  wood_saprotroph         4312
-    ## corn         FL       FLC1                 0  wood_saprotroph         4085
-    ## restored     BM       PHRP1               11  wood_saprotroph         3930
-    ## corn         BM       PHC1                 0  wood_saprotroph         3455
-    ## restored     BM       MHRP2                2  wood_saprotroph         3245
-    ## restored     LP       LPRP1                4  wood_saprotroph         3209
-    ## restored     BM       ERRP1                3  wood_saprotroph         3195
-    ## remnant      FL       FLREM1              NA  wood_saprotroph         3147
-    ## restored     BM       MHRP1                7  wood_saprotroph         2924
-    ## restored     FL       FLRP4               36  wood_saprotroph         2746
-    ## restored     BM       MBRP1               18  wood_saprotroph         2621
-    ## restored     FL       FLRSP1              10  wood_saprotroph         2300
-    ## restored     FL       FLRP5               35  wood_saprotroph         2024
-    ## restored     FL       FLRP1               40  wood_saprotroph         1775
-    ## corn         FL       FLC2                 0  wood_saprotroph         1668
-    ## remnant      LP       LPREM1              NA  wood_saprotroph         1604
-    ## remnant      FG       FGREM1              NA  wood_saprotroph         1563
-    ## restored     FL       FLRSP3              10  wood_saprotroph         1427
-    ## remnant      BM       MBREM1              NA  wood_saprotroph         1022
-    ## restored     BM       KORP1               28  wood_saprotroph          997
+    ## restored     LP       LPRP2                4  wood_saprotroph         5903
+    ## corn         LP       LPC1                 0  wood_saprotroph         4709
+    ## corn         FG       FGC1                 0  wood_saprotroph         4553
+    ## restored     FL       FLRSP2              10  wood_saprotroph         4468
+    ## restored     FG       FGRP1               15  wood_saprotroph         4326
+    ## corn         FL       FLC1                 0  wood_saprotroph         4173
+    ## restored     BM       PHRP1               11  wood_saprotroph         3898
+    ## corn         BM       PHC1                 0  wood_saprotroph         3520
+    ## restored     BM       MHRP2                2  wood_saprotroph         3255
+    ## restored     LP       LPRP1                4  wood_saprotroph         3222
+    ## restored     BM       ERRP1                3  wood_saprotroph         3141
+    ## restored     BM       MHRP1                7  wood_saprotroph         2991
+    ## remnant      FL       FLREM1              NA  wood_saprotroph         2858
+    ## restored     FL       FLRP4               36  wood_saprotroph         2727
+    ## restored     BM       MBRP1               18  wood_saprotroph         2569
+    ## restored     FL       FLRSP1              10  wood_saprotroph         2279
+    ## restored     FL       FLRP5               35  wood_saprotroph         2022
+    ## restored     FL       FLRP1               40  wood_saprotroph         1757
+    ## corn         FL       FLC2                 0  wood_saprotroph         1677
+    ## remnant      LP       LPREM1              NA  wood_saprotroph         1619
+    ## remnant      FG       FGREM1              NA  wood_saprotroph         1578
+    ## restored     FL       FLRSP3              10  wood_saprotroph         1411
+    ## remnant      BM       MBREM1              NA  wood_saprotroph         1020
+    ## restored     BM       KORP1               28  wood_saprotroph          982
     ## restored     BM       BBRP1               16  wood_saprotroph          946
     ## ----------------------------------------------------
     ## 
@@ -841,30 +844,30 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## Formula: seq_sum ~ field_type + (1 | region)
     ##    Data: mod_data
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  434.8302  440.9246 -212.4151  424.8302        20 
+    ##  434.5094  440.6037 -212.2547  424.5094        20 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept)  311    
-    ##  Residual             1151    
+    ##  region   (Intercept)  374.7  
+    ##  Residual             1130.9  
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ##  (Intercept)  field_type.L  field_type.Q  
-    ##       2843.5       -1334.3        -161.6  
+    ##       2848.7       -1415.3        -193.9  
     ## ----------------------------------------------------
     ## 
     ## Linear mixed model fit by maximum likelihood  ['lmerMod']
     ## Formula: seq_sum ~ 1 + (1 | region)
     ##    Data: mod_data
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  435.8483  439.5049 -214.9242  429.8483        22 
+    ##  436.1915  439.8481 -215.0958  430.1915        22 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
     ##  region   (Intercept)    0    
-    ##  Residual             1310    
+    ##  Residual             1319    
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ## (Intercept)  
-    ##        2871  
+    ##        2864  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## ----------------------------------------------------
     ## 
@@ -873,8 +876,8 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## mmod_null: seq_sum ~ 1 + (1 | region)
     ## mmod: seq_sum ~ field_type + (1 | region)
     ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)  
-    ## mmod_null    3 435.85 439.50 -214.92   429.85                       
-    ## mmod         5 434.83 440.92 -212.41   424.83 5.0181  2    0.08135 .
+    ## mmod_null    3 436.19 439.85 -215.10   430.19                       
+    ## mmod         5 434.51 440.60 -212.25   424.51 5.6821  2    0.05836 .
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## ----------------------------------------------------
@@ -890,9 +893,9 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)  
-    ## restored - corn == 0      -745.5      594.4  -1.254   0.4165  
-    ## remnant - corn == 0      -1887.0      773.3  -2.440   0.0382 *
-    ## remnant - restored == 0  -1141.5      649.2  -1.758   0.1805  
+    ## restored - corn == 0      -763.4      585.4  -1.304   0.3883  
+    ## remnant - corn == 0      -2001.6      760.2  -2.633   0.0224 *
+    ## remnant - restored == 0  -1238.2      639.7  -1.936   0.1263  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## (Adjusted p values reported -- single-step method)
@@ -908,18 +911,18 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## 
     ## Residuals:
     ##        1        2        3        4        5        6        7 
-    ## -1254.20  -188.00  -111.38   602.77   -95.06  -228.99  1274.87 
+    ## -1239.91  -239.28  -101.42   566.84   -21.78  -217.16  1252.71 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)   
-    ## (Intercept)  3655.96     561.37   6.513  0.00128 **
-    ## yr_since      -90.98      37.76  -2.409  0.06091 . 
+    ## (Intercept)  3655.91     551.52   6.629  0.00118 **
+    ## yr_since      -91.87      37.10  -2.476  0.05608 . 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 856.8 on 5 degrees of freedom
-    ## Multiple R-squared:  0.5373, Adjusted R-squared:  0.4447 
-    ## F-statistic: 5.805 on 1 and 5 DF,  p-value: 0.06091
+    ## Residual standard error: 841.8 on 5 degrees of freedom
+    ## Multiple R-squared:  0.5509, Adjusted R-squared:  0.4611 
+    ## F-statistic: 6.133 on 1 and 5 DF,  p-value: 0.05608
     ## 
     ## 
     ## 
@@ -931,61 +934,61 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## 
     ## field_type   region   field_name    yr_since  primary_lifestyle    seq_sum
     ## -----------  -------  -----------  ---------  ------------------  --------
-    ## corn         FG       FGC1                 0  litter_saprotroph       5688
-    ## restored     BM       ERRP1                3  litter_saprotroph       5125
-    ## restored     LP       LPRP1                4  litter_saprotroph       2961
-    ## restored     BM       MHRP1                7  litter_saprotroph       2865
-    ## corn         BM       PHC1                 0  litter_saprotroph       2862
-    ## restored     LP       LPRP2                4  litter_saprotroph       2570
-    ## remnant      FL       FLREM1              NA  litter_saprotroph       2449
+    ## corn         FG       FGC1                 0  litter_saprotroph       5663
+    ## restored     BM       ERRP1                3  litter_saprotroph       5110
+    ## restored     BM       MHRP1                7  litter_saprotroph       2930
+    ## restored     LP       LPRP1                4  litter_saprotroph       2923
+    ## corn         BM       PHC1                 0  litter_saprotroph       2881
+    ## remnant      FL       FLREM1              NA  litter_saprotroph       2690
+    ## restored     LP       LPRP2                4  litter_saprotroph       2551
     ## restored     BM       BBRP1               16  litter_saprotroph       2422
-    ## restored     BM       MBRP1               18  litter_saprotroph       2390
-    ## restored     BM       MHRP2                2  litter_saprotroph       2196
-    ## restored     FL       FLRSP2              10  litter_saprotroph       1885
+    ## restored     BM       MBRP1               18  litter_saprotroph       2332
+    ## restored     BM       MHRP2                2  litter_saprotroph       2183
+    ## restored     FL       FLRSP2              10  litter_saprotroph       1876
     ## restored     BM       PHRP1               11  litter_saprotroph       1471
-    ## corn         FL       FLC1                 0  litter_saprotroph       1378
-    ## corn         FL       FLC2                 0  litter_saprotroph       1356
-    ## corn         LP       LPC1                 0  litter_saprotroph       1230
-    ## restored     FL       FLRSP3              10  litter_saprotroph        997
-    ## remnant      LP       LPREM1              NA  litter_saprotroph        969
-    ## remnant      FG       FGREM1              NA  litter_saprotroph        931
-    ## restored     BM       KORP1               28  litter_saprotroph        908
-    ## remnant      BM       MBREM1              NA  litter_saprotroph        695
-    ## restored     FL       FLRP4               36  litter_saprotroph        574
-    ## restored     FG       FGRP1               15  litter_saprotroph        546
-    ## restored     FL       FLRP5               35  litter_saprotroph        539
-    ## restored     FL       FLRSP1              10  litter_saprotroph        469
-    ## restored     FL       FLRP1               40  litter_saprotroph        336
+    ## corn         FL       FLC1                 0  litter_saprotroph       1420
+    ## corn         FL       FLC2                 0  litter_saprotroph       1374
+    ## corn         LP       LPC1                 0  litter_saprotroph       1225
+    ## restored     FL       FLRSP3              10  litter_saprotroph        995
+    ## remnant      LP       LPREM1              NA  litter_saprotroph        931
+    ## remnant      FG       FGREM1              NA  litter_saprotroph        928
+    ## restored     BM       KORP1               28  litter_saprotroph        911
+    ## remnant      BM       MBREM1              NA  litter_saprotroph        691
+    ## restored     FL       FLRP4               36  litter_saprotroph        580
+    ## restored     FG       FGRP1               15  litter_saprotroph        542
+    ## restored     FL       FLRP5               35  litter_saprotroph        525
+    ## restored     FL       FLRSP1              10  litter_saprotroph        461
+    ## restored     FL       FLRP1               40  litter_saprotroph        355
     ## ----------------------------------------------------
     ## 
     ## Linear mixed model fit by maximum likelihood  ['lmerMod']
     ## Formula: seq_sum ~ field_type + (1 | region)
     ##    Data: mod_data
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  438.4093  444.5037 -214.2046  428.4093        20 
+    ##  438.6939  444.7883 -214.3470  428.6939        20 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept)  378    
-    ##  Residual             1228    
+    ##  region   (Intercept)  350.3  
+    ##  Residual             1240.8  
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ##  (Intercept)  field_type.L  field_type.Q  
-    ##       1876.4        -930.0         103.4  
+    ##       1888.6        -895.4         133.7  
     ## ----------------------------------------------------
     ## 
     ## Linear mixed model fit by maximum likelihood  ['lmerMod']
     ## Formula: seq_sum ~ 1 + (1 | region)
     ##    Data: mod_data
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  436.8932  440.5498 -215.4466  430.8932        22 
+    ##  437.0181  440.6747 -215.5090  431.0181        22 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept)  299.6  
-    ##  Residual             1308.6  
+    ##  region   (Intercept)  268.3  
+    ##  Residual             1317.3  
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ## (Intercept)  
-    ##        1853  
+    ##        1854  
     ## ----------------------------------------------------
     ## 
     ## Data: mod_data
@@ -993,8 +996,8 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## mmod_null: seq_sum ~ 1 + (1 | region)
     ## mmod: seq_sum ~ field_type + (1 | region)
     ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)
-    ## mmod_null    3 436.89 440.55 -215.45   430.89                     
-    ## mmod         5 438.41 444.50 -214.21   428.41 2.4839  2     0.2888
+    ## mmod_null    3 437.02 440.67 -215.51   431.02                     
+    ## mmod         5 438.69 444.79 -214.35   428.69 2.3242  2     0.3128
     ## ----------------------------------------------------
     ## 
     ## 
@@ -1008,9 +1011,9 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)
-    ## restored - corn == 0      -784.2      635.1  -1.235    0.428
-    ## remnant - corn == 0      -1315.3      825.3  -1.594    0.244
-    ## remnant - restored == 0   -531.0      693.9  -0.765    0.721
+    ## restored - corn == 0      -796.9      641.1  -1.243    0.423
+    ## remnant - corn == 0      -1266.3      833.7  -1.519    0.278
+    ## remnant - restored == 0   -469.4      700.2  -0.670    0.778
     ## (Adjusted p values reported -- single-step method)
     ## 
     ##     corn restored  remnant 
@@ -1024,18 +1027,18 @@ its_rfy_guilds <- its_test_taxaGuild(spe_meta$its_rfy)
     ## 
     ## Residuals:
     ##        1        2        3        4        5        6        7 
-    ##   297.73  1793.60  -102.00   451.44   -94.97 -1228.25 -1117.55 
+    ##   302.98  1774.83   -85.42   400.08   -30.97 -1245.72 -1115.77 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)   
-    ## (Intercept)  3609.96     734.63   4.914  0.00442 **
-    ## yr_since      -92.86      49.42  -1.879  0.11902   
+    ## (Intercept)  3615.82     729.97   4.953  0.00427 **
+    ## yr_since      -93.55      49.10  -1.905  0.11510   
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 1121 on 5 degrees of freedom
-    ## Multiple R-squared:  0.4139, Adjusted R-squared:  0.2967 
-    ## F-statistic: 3.531 on 1 and 5 DF,  p-value: 0.119
+    ## Residual standard error: 1114 on 5 degrees of freedom
+    ## Multiple R-squared:  0.4206, Adjusted R-squared:  0.3047 
+    ## F-statistic:  3.63 on 1 and 5 DF,  p-value: 0.1151
 
 Model tests on `field_type` are shaky due to unbalance, but are included
 here to point out trends that we may be able to present in some better
@@ -1099,9 +1102,9 @@ its_inspan %>%
 
 | field_type | n_otu |  stat_avg |   stat_sd |
 |:-----------|------:|----------:|----------:|
-| corn       |   102 | 0.8262682 | 0.0946821 |
-| restored   |    17 | 0.8016453 | 0.0366269 |
-| remnant    |    60 | 0.7463291 | 0.0732273 |
+| corn       |   115 | 0.8050982 | 0.1057870 |
+| restored   |    16 | 0.8025670 | 0.0414202 |
+| remnant    |    59 | 0.7460496 | 0.0719741 |
 
 Indicator species stats of entire rarefied ITS table
 
@@ -1126,38 +1129,38 @@ its_inspan %>%
     kable(format = "pandoc", caption = "Indicator species of ITS OTUs (top 10 per field type)")
 ```
 
-| otu_num  |         A |      B |      stat | p.value | field_type | primary_lifestyle | phylum            | class              | order               | family             | genus           | species                 |
-|:---------|----------:|-------:|----------:|--------:|:-----------|:------------------|:------------------|:-------------------|:--------------------|:-------------------|:----------------|:------------------------|
-| otu_537  | 1.0000000 | 1.0000 | 1.0000000 |  0.0005 | corn       | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Agaricales          | Bolbitiaceae       | Conocybe        | Conocybe_apala          |
-| otu_204  | 0.9904912 | 1.0000 | 0.9952342 |  0.0005 | corn       | unidentified      | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae    | unidentified    | unidentified            |
-| otu_172  | 0.9816733 | 1.0000 | 0.9907943 |  0.0005 | corn       | plant_pathogen    | Ascomycota        | Dothideomycetes    | Pleosporales        | Corynesporascaceae | Corynespora     | Corynespora_cassiicola  |
-| otu_9    | 0.9729171 | 1.0000 | 0.9863656 |  0.0025 | corn       | soil_saprotroph   | Basidiomycota     | Tremellomycetes    | Cystofilobasidiales | Mrakiaceae         | Tausonia        | Tausonia_pullulans      |
-| otu_59   | 0.9637155 | 1.0000 | 0.9816901 |  0.0005 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae    | Mortierella     | unidentified            |
-| otu_188  | 0.9634827 | 1.0000 | 0.9815716 |  0.0005 | corn       | unidentified      | unidentified      | unidentified       | unidentified        | unidentified       | unidentified    | unidentified            |
-| otu_200  | 0.9590302 | 1.0000 | 0.9793009 |  0.0005 | corn       | plant_pathogen    | Ascomycota        | Dothideomycetes    | Pleosporales        | Phaeosphaeriaceae  | Ophiosphaerella | unidentified            |
-| otu_694  | 0.9566517 | 1.0000 | 0.9780857 |  0.0005 | corn       | unidentified      | unidentified      | unidentified       | unidentified        | unidentified       | unidentified    | unidentified            |
-| otu_21   | 0.9202058 | 1.0000 | 0.9592736 |  0.0010 | corn       | plant_pathogen    | Ascomycota        | Dothideomycetes    | Pleosporales        | Phaeosphaeriaceae  | Setophoma       | Setophoma_terrestris    |
-| otu_364  | 0.9190042 | 1.0000 | 0.9586470 |  0.0005 | corn       | unidentified      | Ascomycota        | Sordariomycetes    | Sordariales         | Lasiosphaeriaceae  | Cladorrhinum    | unidentified            |
-| otu_461  | 0.8431743 | 0.8750 | 0.8589398 |  0.0130 | restored   | unidentified      | Ascomycota        | Dothideomycetes    | Pleosporales        | Phaeosphaeriaceae  | unidentified    | unidentified            |
-| otu_179  | 0.8910798 | 0.8125 | 0.8508833 |  0.0280 | restored   | plant_pathogen    | Basidiomycota     | Agaricomycetes     | Cantharellales      | Ceratobasidiaceae  | Rhizoctonia     | Rhizoctonia_fusispora   |
-| otu_229  | 0.8673755 | 0.8125 | 0.8394895 |  0.0305 | restored   | unidentified      | Ascomycota        | Dothideomycetes    | Tubeufiales         | Tubeufiaceae       | unidentified    | unidentified            |
-| otu_35   | 0.7007526 | 1.0000 | 0.8371097 |  0.0240 | restored   | animal_parasite   | Ascomycota        | Sordariomycetes    | Hypocreales         | Clavicipitaceae    | Metarhizium     | unidentified            |
-| otu_177  | 0.9339080 | 0.7500 | 0.8369176 |  0.0280 | restored   | unidentified      | Ascomycota        | Dothideomycetes    | Pleosporales        | unidentified       | unidentified    | unidentified            |
-| otu_267  | 1.0000000 | 0.6875 | 0.8291562 |  0.0290 | restored   | litter_saprotroph | Basidiomycota     | Agaricomycetes     | Sebacinales         | Sebacinaceae       | Efibulobasidium | unidentified            |
-| otu_32   | 0.6621711 | 1.0000 | 0.8137390 |  0.0495 | restored   | unidentified      | Ascomycota        | Sordariomycetes    | Sordariales         | Chaetomiaceae      | unidentified    | unidentified            |
-| otu_817  | 0.9547170 | 0.6875 | 0.8101654 |  0.0295 | restored   | unidentified      | Ascomycota        | unidentified       | unidentified        | unidentified       | unidentified    | unidentified            |
-| otu_318  | 0.8673469 | 0.7500 | 0.8065421 |  0.0460 | restored   | unidentified      | Ascomycota        | Dothideomycetes    | Tubeufiales         | unidentified       | unidentified    | unidentified            |
-| otu_114  | 0.6673274 | 0.9375 | 0.7909611 |  0.0105 | restored   | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae    | Mortierella     | unidentified            |
-| otu_772  | 0.8617363 | 1.0000 | 0.9282975 |  0.0040 | remnant    | unidentified      | Ascomycota        | Sordariomycetes    | unidentified        | unidentified       | unidentified    | unidentified            |
-| otu_504  | 0.8325817 | 1.0000 | 0.9124591 |  0.0130 | remnant    | plant_pathogen    | Ascomycota        | Dothideomycetes    | Pleosporales        | Massarinaceae      | Stagonospora    | unidentified            |
-| otu_629  | 0.8262911 | 1.0000 | 0.9090055 |  0.0025 | remnant    | unidentified      | Ascomycota        | Leotiomycetes      | Helotiales          | Hyaloscyphaceae    | Microscypha     | unidentified            |
-| otu_135  | 0.7932082 | 1.0000 | 0.8906224 |  0.0015 | remnant    | plant_pathogen    | Ascomycota        | Sordariomycetes    | Hypocreales         | Nectriaceae        | Ilyonectria     | unidentified            |
-| otu_854  | 1.0000000 | 0.7500 | 0.8660254 |  0.0020 | remnant    | unidentified      | Ascomycota        | unidentified       | unidentified        | unidentified       | unidentified    | unidentified            |
-| otu_235  | 0.7485389 | 1.0000 | 0.8651814 |  0.0390 | remnant    | unidentified      | Ascomycota        | Leotiomycetes      | Helotiales          | Hyaloscyphaceae    | unidentified    | unidentified            |
-| otu_1740 | 0.9371429 | 0.7500 | 0.8383658 |  0.0045 | remnant    | unidentified      | Glomeromycota     | Glomeromycetes     | Glomerales          | Glomeraceae        | unidentified    | unidentified            |
-| otu_1195 | 0.9275362 | 0.7500 | 0.8340577 |  0.0105 | remnant    | unidentified      | unidentified      | unidentified       | unidentified        | unidentified       | unidentified    | unidentified            |
-| otu_140  | 0.9242764 | 0.7500 | 0.8325907 |  0.0455 | remnant    | soil_saprotroph   | Ascomycota        | Sordariomycetes    | Hypocreales         | Stachybotryaceae   | Striaticonidium | Striaticonidium_cinctum |
-| otu_372  | 0.6902606 | 1.0000 | 0.8308193 |  0.0290 | remnant    | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Agaricales          | Clavariaceae       | Clavaria        | unidentified            |
+| otu_num  |         A |      B |      stat | p.value | field_type | primary_lifestyle | phylum            | class              | order               | family                            | genus                   | species                 |
+|:---------|----------:|-------:|----------:|--------:|:-----------|:------------------|:------------------|:-------------------|:--------------------|:----------------------------------|:------------------------|:------------------------|
+| otu_537  | 1.0000000 | 1.0000 | 1.0000000 |  0.0005 | corn       | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Agaricales          | Bolbitiaceae                      | Conocybe                | Conocybe_apala          |
+| otu_204  | 0.9918092 | 1.0000 | 0.9958962 |  0.0005 | corn       | unidentified      | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae                   | unidentified            | unidentified            |
+| otu_172  | 0.9822213 | 1.0000 | 0.9910708 |  0.0005 | corn       | plant_pathogen    | Ascomycota        | Dothideomycetes    | Pleosporales        | Corynesporascaceae                | Corynespora             | Corynespora_cassiicola  |
+| otu_9    | 0.9701880 | 1.0000 | 0.9849812 |  0.0055 | corn       | soil_saprotroph   | Basidiomycota     | Tremellomycetes    | Cystofilobasidiales | Mrakiaceae                        | Tausonia                | Tausonia_pullulans      |
+| otu_188  | 0.9663669 | 1.0000 | 0.9830396 |  0.0010 | corn       | unidentified      | unidentified      | unidentified       | unidentified        | unidentified                      | unidentified            | unidentified            |
+| otu_694  | 0.9600946 | 1.0000 | 0.9798442 |  0.0005 | corn       | unidentified      | unidentified      | unidentified       | unidentified        | unidentified                      | unidentified            | unidentified            |
+| otu_59   | 0.9588093 | 1.0000 | 0.9791881 |  0.0005 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae                   | Mortierella             | unidentified            |
+| otu_200  | 0.9558033 | 1.0000 | 0.9776520 |  0.0005 | corn       | plant_pathogen    | Ascomycota        | Dothideomycetes    | Pleosporales        | Phaeosphaeriaceae                 | Ophiosphaerella         | unidentified            |
+| otu_627  | 0.9212260 | 1.0000 | 0.9598052 |  0.0005 | corn       | unidentified      | unidentified      | unidentified       | unidentified        | unidentified                      | unidentified            | unidentified            |
+| otu_364  | 0.9201645 | 1.0000 | 0.9592520 |  0.0005 | corn       | unidentified      | Ascomycota        | Sordariomycetes    | Sordariales         | Lasiosphaeriaceae                 | Cladorrhinum            | unidentified            |
+| otu_461  | 0.8425348 | 0.8750 | 0.8586140 |  0.0125 | restored   | unidentified      | Ascomycota        | Dothideomycetes    | Pleosporales        | Phaeosphaeriaceae                 | unidentified            | unidentified            |
+| otu_177  | 0.9669670 | 0.7500 | 0.8516016 |  0.0255 | restored   | unidentified      | Ascomycota        | Dothideomycetes    | Pleosporales        | unidentified                      | unidentified            | unidentified            |
+| otu_229  | 0.8803516 | 0.8125 | 0.8457456 |  0.0250 | restored   | unidentified      | Ascomycota        | Dothideomycetes    | Tubeufiales         | Tubeufiaceae                      | unidentified            | unidentified            |
+| otu_32   | 0.7104110 | 1.0000 | 0.8428588 |  0.0425 | restored   | unidentified      | Ascomycota        | Sordariomycetes    | Sordariales         | Chaetomiaceae                     | unidentified            | unidentified            |
+| otu_193  | 0.8035833 | 0.8750 | 0.8385317 |  0.0435 | restored   | unidentified      | Basidiomycota     | Agaricomycetes     | Sebacinales         | unidentified                      | unidentified            | unidentified            |
+| otu_35   | 0.7029556 | 1.0000 | 0.8384245 |  0.0250 | restored   | animal_parasite   | Ascomycota        | Sordariomycetes    | Hypocreales         | Clavicipitaceae                   | Metarhizium             | unidentified            |
+| otu_114  | 0.7380867 | 0.9375 | 0.8318391 |  0.0025 | restored   | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae                   | Mortierella             | unidentified            |
+| otu_817  | 0.9560440 | 0.6875 | 0.8107282 |  0.0345 | restored   | unidentified      | Ascomycota        | unidentified       | unidentified        | unidentified                      | unidentified            | unidentified            |
+| otu_194  | 0.9107240 | 0.6875 | 0.7912792 |  0.0370 | restored   | unidentified      | Ascomycota        | Leotiomycetes      | Helotiales          | unidentified                      | unidentified            | unidentified            |
+| otu_218  | 0.7143620 | 0.8750 | 0.7906116 |  0.0290 | restored   | unidentified      | Basidiomycota     | Agaricomycetes     | Cantharellales      | Ceratobasidiaceae                 | unidentified            | unidentified            |
+| otu_772  | 0.8388106 | 1.0000 | 0.9158661 |  0.0015 | remnant    | unidentified      | Ascomycota        | Sordariomycetes    | unidentified        | unidentified                      | unidentified            | unidentified            |
+| otu_504  | 0.8355905 | 1.0000 | 0.9141064 |  0.0095 | remnant    | plant_pathogen    | Ascomycota        | Dothideomycetes    | Pleosporales        | Massarinaceae                     | Stagonospora            | unidentified            |
+| otu_629  | 0.8288622 | 1.0000 | 0.9104187 |  0.0030 | remnant    | unidentified      | Ascomycota        | Leotiomycetes      | Helotiales          | Hyaloscyphaceae                   | Microscypha             | unidentified            |
+| otu_135  | 0.7848658 | 1.0000 | 0.8859265 |  0.0025 | remnant    | plant_pathogen    | Ascomycota        | Sordariomycetes    | Hypocreales         | Nectriaceae                       | Ilyonectria             | unidentified            |
+| otu_854  | 1.0000000 | 0.7500 | 0.8660254 |  0.0030 | remnant    | unidentified      | Ascomycota        | unidentified       | unidentified        | unidentified                      | unidentified            | unidentified            |
+| otu_235  | 0.7413726 | 1.0000 | 0.8610300 |  0.0445 | remnant    | unidentified      | Ascomycota        | Leotiomycetes      | Helotiales          | Hyaloscyphaceae                   | unidentified            | unidentified            |
+| otu_1740 | 0.9361702 | 0.7500 | 0.8379306 |  0.0050 | remnant    | unidentified      | Glomeromycota     | Glomeromycetes     | Glomerales          | Glomeraceae                       | unidentified            | unidentified            |
+| otu_785  | 0.9262436 | 0.7500 | 0.8334763 |  0.0165 | remnant    | unidentified      | Ascomycota        | Dothideomycetes    | Mytilinidiales      | Mytilinidiales_fam_Incertae_sedis | Halokirschsteiniothelia | unidentified            |
+| otu_140  | 0.9234714 | 0.7500 | 0.8322281 |  0.0400 | remnant    | soil_saprotroph   | Ascomycota        | Sordariomycetes    | Hypocreales         | Stachybotryaceae                  | Striaticonidium         | Striaticonidium_cinctum |
+| otu_372  | 0.6865248 | 1.0000 | 0.8285679 |  0.0290 | remnant    | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Agaricales          | Clavariaceae                      | Clavaria                | unidentified            |
 
 Indicator species of ITS OTUs (top 10 per field type)
 
@@ -1177,18 +1180,18 @@ guiltime("soil_saprotroph")
     ## 
     ## Residuals:
     ##       1       2       3       4       5       6       7 
-    ##   161.7  2012.3  2009.0 -3480.1 -1838.3   206.2   929.2 
+    ##   151.8  2128.7  1972.6 -3371.6 -1893.1   137.3   874.2 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)  
-    ## (Intercept)  4459.03    1450.50   3.074   0.0277 *
-    ## yr_since      272.89      97.57   2.797   0.0381 *
+    ## (Intercept)  4472.31    1440.77   3.104   0.0267 *
+    ## yr_since      272.68      96.92   2.814   0.0374 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 2214 on 5 degrees of freedom
-    ## Multiple R-squared:  0.6101, Adjusted R-squared:  0.5321 
-    ## F-statistic: 7.822 on 1 and 5 DF,  p-value: 0.03814
+    ## Residual standard error: 2199 on 5 degrees of freedom
+    ## Multiple R-squared:  0.6129, Adjusted R-squared:  0.5355 
+    ## F-statistic: 7.916 on 1 and 5 DF,  p-value: 0.03739
     ## 
     ## 
     ## $fl_summary
@@ -1199,18 +1202,18 @@ guiltime("soil_saprotroph")
     ## 
     ## Residuals:
     ##       1       2       3       4       5       6 
-    ##   804.4 -2677.7  1819.6  1862.6 -2099.4   290.6 
+    ##   878.1 -2680.5  1734.0  1837.8 -2051.2   281.8 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)   
-    ## (Intercept) 10375.00    1781.86   5.823  0.00433 **
-    ## yr_since      -59.76      65.64  -0.910  0.41413   
+    ## (Intercept) 10400.30    1760.20   5.909  0.00411 **
+    ## yr_since      -59.41      64.85  -0.916  0.41141   
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 2185 on 4 degrees of freedom
-    ## Multiple R-squared:  0.1716, Adjusted R-squared:  -0.03546 
-    ## F-statistic: 0.8288 on 1 and 4 DF,  p-value: 0.4141
+    ## Residual standard error: 2158 on 4 degrees of freedom
+    ## Multiple R-squared:  0.1734, Adjusted R-squared:  -0.03319 
+    ## F-statistic: 0.8394 on 1 and 4 DF,  p-value: 0.4114
     ## 
     ## 
     ## $plot
@@ -1232,7 +1235,7 @@ ssap <- filgu(spe$its_rfy, meta$its, primary_lifestyle, "soil_saprotroph", sites
 ![](microbial_guild_taxonomy_files/figure-gfm/ssap_filgu-1.png)<!-- -->![](microbial_guild_taxonomy_files/figure-gfm/ssap_filgu-2.png)<!-- -->
 
     ## $OTUs_n
-    ## [1] 260
+    ## [1] 259
     ## 
     ## $Sites_n
     ## [1] 25
@@ -1317,9 +1320,9 @@ ssap_inspan %>%
 
 | field_type | n_otu |  stat_avg |   stat_sd |
 |:-----------|------:|----------:|----------:|
-| corn       |    10 | 0.8752506 | 0.1013151 |
-| restored   |     1 | 0.7909611 |        NA |
-| remnant    |     3 | 0.7901722 | 0.0719423 |
+| corn       |    12 | 0.8345625 | 0.1313044 |
+| restored   |     1 | 0.8318391 |        NA |
+| remnant    |     3 | 0.7893009 | 0.0712057 |
 
 Indicator species stats: soil saprotrophs
 
@@ -1338,22 +1341,24 @@ ssap_inspan %>%
     kable(format = "pandoc", caption = "Indicator species of soil saprotrophs")
 ```
 
-| otu_num  |         A |      B |      stat | p.value | field_type | primary_lifestyle | phylum            | class              | order               | family           | genus              | species                 |
-|:---------|----------:|-------:|----------:|--------:|:-----------|:------------------|:------------------|:-------------------|:--------------------|:-----------------|:-------------------|:------------------------|
-| otu_537  | 1.0000000 | 1.0000 | 1.0000000 |  0.0005 | corn       | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Agaricales          | Bolbitiaceae     | Conocybe           | Conocybe_apala          |
-| otu_9    | 0.9729171 | 1.0000 | 0.9863656 |  0.0035 | corn       | soil_saprotroph   | Basidiomycota     | Tremellomycetes    | Cystofilobasidiales | Mrakiaceae       | Tausonia           | Tausonia_pullulans      |
-| otu_59   | 0.9637155 | 1.0000 | 0.9816901 |  0.0005 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | unidentified            |
-| otu_134  | 0.9095799 | 1.0000 | 0.9537190 |  0.0025 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | unidentified            |
-| otu_89   | 0.9882438 | 0.8000 | 0.8891541 |  0.0075 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | unidentified            |
-| otu_61   | 0.9058386 | 0.8000 | 0.8512760 |  0.0285 | corn       | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Phallales           | Phallaceae       | Phallus            | Phallus_rugulosus       |
-| otu_41   | 0.6682923 | 1.0000 | 0.8174915 |  0.0075 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | Mortierella_minutissima |
-| otu_1053 | 0.7708264 | 0.8000 | 0.7852777 |  0.0165 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | unidentified            |
-| otu_346  | 0.7107290 | 0.8000 | 0.7540446 |  0.0380 | corn       | soil_saprotroph   | Ascomycota        | Pezizomycetes      | Pezizales           | Ascodesmidaceae  | Cephaliophora      | unidentified            |
-| otu_534  | 0.8966725 | 0.6000 | 0.7334872 |  0.0240 | corn       | soil_saprotroph   | Ascomycota        | Pezizomycetes      | Pezizales           | Pyronemataceae   | Pseudaleuria       | unidentified            |
-| otu_114  | 0.6673274 | 0.9375 | 0.7909611 |  0.0050 | restored   | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | unidentified            |
-| otu_140  | 0.9242764 | 0.7500 | 0.8325907 |  0.0465 | remnant    | soil_saprotroph   | Ascomycota        | Sordariomycetes    | Hypocreales         | Stachybotryaceae | Striaticonidium    | Striaticonidium_cinctum |
-| otu_372  | 0.6902606 | 1.0000 | 0.8308193 |  0.0245 | remnant    | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Agaricales          | Clavariaceae     | Clavaria           | unidentified            |
-| otu_2138 | 1.0000000 | 0.5000 | 0.7071068 |  0.0205 | remnant    | soil_saprotroph   | Ascomycota        | Leotiomycetes      | Thelebolales        | Pseudeurotiaceae | Gymnostellatospora | unidentified            |
+| otu_num  |         A |      B |      stat | p.value | field_type | primary_lifestyle | phylum            | class              | order               | family           | genus              | species                  |
+|:---------|----------:|-------:|----------:|--------:|:-----------|:------------------|:------------------|:-------------------|:--------------------|:-----------------|:-------------------|:-------------------------|
+| otu_537  | 1.0000000 | 1.0000 | 1.0000000 |  0.0005 | corn       | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Agaricales          | Bolbitiaceae     | Conocybe           | Conocybe_apala           |
+| otu_9    | 0.9701880 | 1.0000 | 0.9849812 |  0.0035 | corn       | soil_saprotroph   | Basidiomycota     | Tremellomycetes    | Cystofilobasidiales | Mrakiaceae       | Tausonia           | Tausonia_pullulans       |
+| otu_59   | 0.9588093 | 1.0000 | 0.9791881 |  0.0005 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | unidentified             |
+| otu_134  | 0.9098577 | 1.0000 | 0.9538646 |  0.0020 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | unidentified             |
+| otu_89   | 0.9905346 | 0.8000 | 0.8901841 |  0.0045 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | unidentified             |
+| otu_61   | 0.9008988 | 0.8000 | 0.8489517 |  0.0340 | corn       | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Phallales           | Phallaceae       | Phallus            | Phallus_rugulosus        |
+| otu_41   | 0.6732160 | 1.0000 | 0.8204974 |  0.0125 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | Mortierella_minutissima  |
+| otu_1053 | 0.7702958 | 0.8000 | 0.7850074 |  0.0130 | corn       | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | unidentified             |
+| otu_346  | 0.7141276 | 0.8000 | 0.7558453 |  0.0385 | corn       | soil_saprotroph   | Ascomycota        | Pezizomycetes      | Pezizales           | Ascodesmidaceae  | Cephaliophora      | unidentified             |
+| otu_534  | 0.8913805 | 0.6000 | 0.7313196 |  0.0230 | corn       | soil_saprotroph   | Ascomycota        | Pezizomycetes      | Pezizales           | Pyronemataceae   | Pseudaleuria       | unidentified             |
+| otu_1341 | 1.0000000 | 0.4000 | 0.6324555 |  0.0485 | corn       | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Agaricales          | Entolomataceae   | Entoloma           | unidentified             |
+| otu_2812 | 1.0000000 | 0.4000 | 0.6324555 |  0.0445 | corn       | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Agaricales          | Entolomataceae   | Entoloma           | Entoloma_brunneosericeum |
+| otu_114  | 0.7380867 | 0.9375 | 0.8318391 |  0.0030 | restored   | soil_saprotroph   | Mortierellomycota | Mortierellomycetes | Mortierellales      | Mortierellaceae  | Mortierella        | unidentified             |
+| otu_140  | 0.9234714 | 0.7500 | 0.8322281 |  0.0405 | remnant    | soil_saprotroph   | Ascomycota        | Sordariomycetes    | Hypocreales         | Stachybotryaceae | Striaticonidium    | Striaticonidium_cinctum  |
+| otu_372  | 0.6865248 | 1.0000 | 0.8285679 |  0.0260 | remnant    | soil_saprotroph   | Basidiomycota     | Agaricomycetes     | Agaricales          | Clavariaceae     | Clavaria           | unidentified             |
+| otu_2138 | 1.0000000 | 0.5000 | 0.7071068 |  0.0210 | remnant    | soil_saprotroph   | Ascomycota        | Leotiomycetes      | Thelebolales        | Pseudeurotiaceae | Gymnostellatospora | unidentified             |
 
 Indicator species of soil saprotrophs
 
@@ -1375,18 +1380,18 @@ guiltime("plant_pathogen")
     ## 
     ## Residuals:
     ##       1       2       3       4       5       6       7 
-    ## -1571.6 -2748.5  1331.4 -3020.0  2227.9   745.7  3035.2 
+    ## -1580.7 -2730.6  1344.1 -3047.6  2270.7   708.3  3035.9 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)  16343.0     1749.4   9.342 0.000237 ***
-    ## yr_since      -444.8      117.7  -3.780 0.012889 *  
+    ## (Intercept)  16339.8     1756.1   9.304 0.000241 ***
+    ## yr_since      -444.1      118.1  -3.759 0.013169 *  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 2670 on 5 degrees of freedom
-    ## Multiple R-squared:  0.7408, Adjusted R-squared:  0.6889 
-    ## F-statistic: 14.29 on 1 and 5 DF,  p-value: 0.01289
+    ## Residual standard error: 2680 on 5 degrees of freedom
+    ## Multiple R-squared:  0.7386, Adjusted R-squared:  0.6864 
+    ## F-statistic: 14.13 on 1 and 5 DF,  p-value: 0.01317
     ## 
     ## 
     ## $fl_summary
@@ -1397,18 +1402,18 @@ guiltime("plant_pathogen")
     ## 
     ## Residuals:
     ##      1      2      3      4      5      6 
-    ## 1168.0 -778.2 -592.2  415.8  777.8 -991.2 
+    ## 1180.7 -786.8 -598.6  444.6  754.6 -994.4 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)   
-    ## (Intercept) 5747.558    823.864   6.976  0.00222 **
-    ## yr_since      -4.038     30.351  -0.133  0.90059   
+    ## (Intercept) 5751.164    828.552   6.941  0.00226 **
+    ## yr_since      -4.872     30.524  -0.160  0.88091   
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 1010 on 4 degrees of freedom
-    ## Multiple R-squared:  0.004406,   Adjusted R-squared:  -0.2445 
-    ## F-statistic: 0.0177 on 1 and 4 DF,  p-value: 0.9006
+    ## Residual standard error: 1016 on 4 degrees of freedom
+    ## Multiple R-squared:  0.006329,   Adjusted R-squared:  -0.2421 
+    ## F-statistic: 0.02548 on 1 and 4 DF,  p-value: 0.8809
     ## 
     ## 
     ## $plot
@@ -1512,9 +1517,9 @@ ppat_inspan %>%
 
 | field_type | n_otu |  stat_avg |   stat_sd |
 |:-----------|------:|----------:|----------:|
-| corn       |    15 | 0.8523164 | 0.0905337 |
-| restored   |     3 | 0.7862083 | 0.0560551 |
-| remnant    |     4 | 0.7958380 | 0.1229716 |
+| corn       |    16 | 0.8428480 | 0.0913293 |
+| restored   |     2 | 0.7618684 | 0.0048924 |
+| remnant    |     4 | 0.7965721 | 0.1203824 |
 
 Indicator species stats: plant pathogens
 
@@ -1536,30 +1541,30 @@ ppat_inspan %>%
     kable(format = "pandoc", caption = "Indicator species of plant pathogens")
 ```
 
-| otu_num  |         A |      B |      stat | p.value | field_type | primary_lifestyle | phylum        | class           | order           | family               | genus            | species                       |
-|:---------|----------:|-------:|----------:|--------:|:-----------|:------------------|:--------------|:----------------|:----------------|:---------------------|:-----------------|:------------------------------|
-| otu_172  | 0.9816733 | 1.0000 | 0.9907943 |  0.0005 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes | Pleosporales    | Corynesporascaceae   | Corynespora      | Corynespora_cassiicola        |
-| otu_200  | 0.9590302 | 1.0000 | 0.9793009 |  0.0005 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes | Pleosporales    | Phaeosphaeriaceae    | Ophiosphaerella  | unidentified                  |
-| otu_21   | 0.9202058 | 1.0000 | 0.9592736 |  0.0005 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes | Pleosporales    | Phaeosphaeriaceae    | Setophoma        | Setophoma_terrestris          |
-| otu_553  | 0.8950276 | 1.0000 | 0.9460590 |  0.0045 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes | Magnaporthales  | Magnaporthaceae      | Gaeumannomyces   | unidentified                  |
-| otu_1841 | 1.0000000 | 0.8000 | 0.8944272 |  0.0010 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes | Pleosporales    | Pleosporaceae        | Curvularia       | unidentified                  |
-| otu_432  | 0.9907919 | 0.8000 | 0.8902997 |  0.0030 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes | Glomerellales   | Glomerellaceae       | Colletotrichum   | unidentified                  |
-| otu_391  | 0.7536733 | 1.0000 | 0.8681436 |  0.0175 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes | Pleosporales    | Torulaceae           | Dendryphion      | unidentified                  |
-| otu_13   | 0.7507560 | 1.0000 | 0.8664618 |  0.0065 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes | Glomerellales   | Plectosphaerellaceae | Plectosphaerella | Plectosphaerella_cucumerina   |
-| otu_796  | 0.8838410 | 0.8000 | 0.8408762 |  0.0090 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes | Capnodiales     | Mycosphaerellaceae   | Cercospora       | unidentified                  |
-| otu_325  | 1.0000000 | 0.6000 | 0.7745967 |  0.0065 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes | Diaporthales    | Diaporthaceae        | Diaporthe        | unidentified                  |
-| otu_758  | 1.0000000 | 0.6000 | 0.7745967 |  0.0060 | corn       | plant_pathogen    | Ascomycota    | Dothideomycetes | Pleosporales    | Dictyosporiaceae     | Pseudocoleophoma | Pseudocoleophoma_polygonicola |
-| otu_1159 | 1.0000000 | 0.6000 | 0.7745967 |  0.0065 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes | Glomerellales   | Plectosphaerellaceae | Plectosphaerella | unidentified                  |
-| otu_521  | 0.9640096 | 0.6000 | 0.7605299 |  0.0245 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes | Glomerellales   | Plectosphaerellaceae | Lectera          | unidentified                  |
-| otu_797  | 0.6844320 | 0.8000 | 0.7399632 |  0.0325 | corn       | plant_pathogen    | Ascomycota    | Eurotiomycetes  | Chaetothyriales | Herpotrichiellaceae  | Veronaea         | unidentified                  |
-| otu_1013 | 0.8756219 | 0.6000 | 0.7248263 |  0.0445 | corn       | plant_pathogen    | Ascomycota    | Sordariomycetes | Xylariales      | Microdochiaceae      | Microdochium     | Microdochium_colombiense      |
-| otu_179  | 0.8910798 | 0.8125 | 0.8508833 |  0.0270 | restored   | plant_pathogen    | Basidiomycota | Agaricomycetes  | Cantharellales  | Ceratobasidiaceae    | Rhizoctonia      | Rhizoctonia_fusispora         |
-| otu_607  | 0.8315789 | 0.6875 | 0.7561154 |  0.0275 | restored   | plant_pathogen    | Ascomycota    | Dothideomycetes | Pleosporales    | Didymosphaeriaceae   | Pseudopithomyces | unidentified                  |
-| otu_33   | 0.5649419 | 1.0000 | 0.7516262 |  0.0425 | restored   | plant_pathogen    | Ascomycota    | Sordariomycetes | Hypocreales     | Nectriaceae          | Fusarium         | unidentified                  |
-| otu_504  | 0.8325817 | 1.0000 | 0.9124591 |  0.0115 | remnant    | plant_pathogen    | Ascomycota    | Dothideomycetes | Pleosporales    | Massarinaceae        | Stagonospora     | unidentified                  |
-| otu_135  | 0.7932082 | 1.0000 | 0.8906224 |  0.0030 | remnant    | plant_pathogen    | Ascomycota    | Sordariomycetes | Hypocreales     | Nectriaceae          | Ilyonectria      | unidentified                  |
-| otu_942  | 0.9937370 | 0.5000 | 0.7048890 |  0.0225 | remnant    | plant_pathogen    | Ascomycota    | Dothideomycetes | Pleosporales    | Pleosporaceae        | Curvularia       | unidentified                  |
-| otu_2354 | 0.9122807 | 0.5000 | 0.6753816 |  0.0315 | remnant    | plant_pathogen    | Ascomycota    | Sordariomycetes | Xylariales      | Diatrypaceae         | Monosporascus    | Monosporascus_eutypoides      |
+| otu_num  |         A |      B |      stat | p.value | field_type | primary_lifestyle | phylum     | class           | order           | family               | genus            | species                       |
+|:---------|----------:|-------:|----------:|--------:|:-----------|:------------------|:-----------|:----------------|:----------------|:---------------------|:-----------------|:------------------------------|
+| otu_172  | 0.9822213 | 1.0000 | 0.9910708 |  0.0005 | corn       | plant_pathogen    | Ascomycota | Dothideomycetes | Pleosporales    | Corynesporascaceae   | Corynespora      | Corynespora_cassiicola        |
+| otu_200  | 0.9558033 | 1.0000 | 0.9776520 |  0.0005 | corn       | plant_pathogen    | Ascomycota | Dothideomycetes | Pleosporales    | Phaeosphaeriaceae    | Ophiosphaerella  | unidentified                  |
+| otu_21   | 0.9101645 | 1.0000 | 0.9540254 |  0.0005 | corn       | plant_pathogen    | Ascomycota | Dothideomycetes | Pleosporales    | Phaeosphaeriaceae    | Setophoma        | Setophoma_terrestris          |
+| otu_553  | 0.8832984 | 1.0000 | 0.9398396 |  0.0045 | corn       | plant_pathogen    | Ascomycota | Sordariomycetes | Magnaporthales  | Magnaporthaceae      | Gaeumannomyces   | unidentified                  |
+| otu_1841 | 1.0000000 | 0.8000 | 0.8944272 |  0.0015 | corn       | plant_pathogen    | Ascomycota | Dothideomycetes | Pleosporales    | Pleosporaceae        | Curvularia       | unidentified                  |
+| otu_432  | 0.9909256 | 0.8000 | 0.8903597 |  0.0030 | corn       | plant_pathogen    | Ascomycota | Sordariomycetes | Glomerellales   | Glomerellaceae       | Colletotrichum   | unidentified                  |
+| otu_13   | 0.7449969 | 1.0000 | 0.8631320 |  0.0070 | corn       | plant_pathogen    | Ascomycota | Sordariomycetes | Glomerellales   | Plectosphaerellaceae | Plectosphaerella | Plectosphaerella_cucumerina   |
+| otu_391  | 0.7252306 | 1.0000 | 0.8516047 |  0.0205 | corn       | plant_pathogen    | Ascomycota | Dothideomycetes | Pleosporales    | Torulaceae           | Dendryphion      | unidentified                  |
+| otu_796  | 0.8917641 | 0.8000 | 0.8446368 |  0.0070 | corn       | plant_pathogen    | Ascomycota | Dothideomycetes | Capnodiales     | Mycosphaerellaceae   | Cercospora       | unidentified                  |
+| otu_325  | 1.0000000 | 0.6000 | 0.7745967 |  0.0080 | corn       | plant_pathogen    | Ascomycota | Sordariomycetes | Diaporthales    | Diaporthaceae        | Diaporthe        | unidentified                  |
+| otu_758  | 1.0000000 | 0.6000 | 0.7745967 |  0.0065 | corn       | plant_pathogen    | Ascomycota | Dothideomycetes | Pleosporales    | Dictyosporiaceae     | Pseudocoleophoma | Pseudocoleophoma_polygonicola |
+| otu_1159 | 1.0000000 | 0.6000 | 0.7745967 |  0.0080 | corn       | plant_pathogen    | Ascomycota | Sordariomycetes | Glomerellales   | Plectosphaerellaceae | Plectosphaerella | unidentified                  |
+| otu_521  | 0.9566918 | 0.6000 | 0.7576378 |  0.0220 | corn       | plant_pathogen    | Ascomycota | Sordariomycetes | Glomerellales   | Plectosphaerellaceae | Lectera          | unidentified                  |
+| otu_797  | 0.6734398 | 0.8000 | 0.7339971 |  0.0375 | corn       | plant_pathogen    | Ascomycota | Eurotiomycetes  | Chaetothyriales | Herpotrichiellaceae  | Veronaea         | unidentified                  |
+| otu_740  | 0.6717918 | 0.8000 | 0.7330985 |  0.0375 | corn       | plant_pathogen    | Ascomycota | Sordariomycetes | Hypocreales     | Nectriaceae          | Fusarium         | unidentified                  |
+| otu_1013 | 0.8888889 | 0.6000 | 0.7302967 |  0.0340 | corn       | plant_pathogen    | Ascomycota | Sordariomycetes | Xylariales      | Microdochiaceae      | Microdochium     | Microdochium_colombiense      |
+| otu_607  | 0.8519661 | 0.6875 | 0.7653278 |  0.0350 | restored   | plant_pathogen    | Ascomycota | Dothideomycetes | Pleosporales    | Didymosphaeriaceae   | Pseudopithomyces | unidentified                  |
+| otu_33   | 0.5751841 | 1.0000 | 0.7584089 |  0.0400 | restored   | plant_pathogen    | Ascomycota | Sordariomycetes | Hypocreales     | Nectriaceae          | Fusarium         | unidentified                  |
+| otu_504  | 0.8355905 | 1.0000 | 0.9141064 |  0.0080 | remnant    | plant_pathogen    | Ascomycota | Dothideomycetes | Pleosporales    | Massarinaceae        | Stagonospora     | unidentified                  |
+| otu_135  | 0.7848658 | 1.0000 | 0.8859265 |  0.0040 | remnant    | plant_pathogen    | Ascomycota | Sordariomycetes | Hypocreales     | Nectriaceae          | Ilyonectria      | unidentified                  |
+| otu_942  | 0.9936842 | 0.5000 | 0.7048703 |  0.0125 | remnant    | plant_pathogen    | Ascomycota | Dothideomycetes | Pleosporales    | Pleosporaceae        | Curvularia       | unidentified                  |
+| otu_2354 | 0.9285714 | 0.5000 | 0.6813851 |  0.0315 | remnant    | plant_pathogen    | Ascomycota | Sordariomycetes | Xylariales      | Diatrypaceae         | Monosporascus    | Monosporascus_eutypoides      |
 
 Indicator species of plant pathogens
 
@@ -1579,18 +1584,18 @@ guiltime("wood_saprotroph")
     ## 
     ## Residuals:
     ##        1        2        3        4        5        6        7 
-    ## -1254.20  -188.00  -111.38   602.77   -95.06  -228.99  1274.87 
+    ## -1239.91  -239.28  -101.42   566.84   -21.78  -217.16  1252.71 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)   
-    ## (Intercept)  3655.96     561.37   6.513  0.00128 **
-    ## yr_since      -90.98      37.76  -2.409  0.06091 . 
+    ## (Intercept)  3655.91     551.52   6.629  0.00118 **
+    ## yr_since      -91.87      37.10  -2.476  0.05608 . 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 856.8 on 5 degrees of freedom
-    ## Multiple R-squared:  0.5373, Adjusted R-squared:  0.4447 
-    ## F-statistic: 5.805 on 1 and 5 DF,  p-value: 0.06091
+    ## Residual standard error: 841.8 on 5 degrees of freedom
+    ## Multiple R-squared:  0.5509, Adjusted R-squared:  0.4611 
+    ## F-statistic: 6.133 on 1 and 5 DF,  p-value: 0.05608
     ## 
     ## 
     ## $fl_summary
@@ -1601,18 +1606,18 @@ guiltime("wood_saprotroph")
     ## 
     ## Residuals:
     ##       1       2       3       4       5       6 
-    ##  -328.1   557.4  -186.0  -444.8  1719.2 -1317.8 
+    ##  -332.4   551.6  -174.8  -455.1  1733.9 -1323.1 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)  
-    ## (Intercept)  2958.68     942.70   3.139   0.0349 *
-    ## yr_since      -21.39      34.73  -0.616   0.5713  
+    ## (Intercept)  2949.05     948.55   3.109   0.0359 *
+    ## yr_since      -21.49      34.94  -0.615   0.5718  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 1156 on 4 degrees of freedom
-    ## Multiple R-squared:  0.08663,    Adjusted R-squared:  -0.1417 
-    ## F-statistic: 0.3794 on 1 and 4 DF,  p-value: 0.5713
+    ## Residual standard error: 1163 on 4 degrees of freedom
+    ## Multiple R-squared:  0.08639,    Adjusted R-squared:  -0.142 
+    ## F-statistic: 0.3783 on 1 and 4 DF,  p-value: 0.5718
     ## 
     ## 
     ## $plot
@@ -1707,9 +1712,9 @@ wsap_inspan %>%
 
 | field_type | n_otu |  stat_avg |   stat_sd |
 |:-----------|------:|----------:|----------:|
-| corn       |     4 | 0.8245759 | 0.0689698 |
+| corn       |     6 | 0.7591989 | 0.1120290 |
 | restored   |     1 | 0.7500000 |        NA |
-| remnant    |     2 | 0.6887082 | 0.0260195 |
+| remnant    |     2 | 0.6871339 | 0.0282459 |
 
 Indicator species stats: wood saprotrophs
 
@@ -1729,13 +1734,15 @@ wsap_inspan %>%
 
 | otu_num  |         A |      B |      stat | p.value | field_type | primary_lifestyle | phylum        | class           | order           | family              | genus           | species                   |
 |:---------|----------:|-------:|----------:|--------:|:-----------|:------------------|:--------------|:----------------|:----------------|:--------------------|:----------------|:--------------------------|
-| otu_11   | 0.7962093 | 1.0000 | 0.8923056 |  0.0065 | corn       | wood_saprotroph   | Ascomycota    | Sordariomycetes | Sordariales     | Chaetomiaceae       | Humicola        | Humicola_grisea           |
-| otu_589  | 0.9581872 | 0.8000 | 0.8755283 |  0.0040 | corn       | wood_saprotroph   | Ascomycota    | Sordariomycetes | Hypocreales     | Stachybotryaceae    | Stachybotrys    | Stachybotrys_limonispora  |
-| otu_20   | 0.5928148 | 1.0000 | 0.7699447 |  0.0270 | corn       | wood_saprotroph   | Ascomycota    | Sordariomycetes | Hypocreales     | Bionectriaceae      | Clonostachys    | unidentified              |
-| otu_341  | 0.9639976 | 0.6000 | 0.7605252 |  0.0150 | corn       | wood_saprotroph   | Basidiomycota | Agaricomycetes  | Agaricales      | Psathyrellaceae     | Psathyrella     | unidentified              |
-| otu_130  | 1.0000000 | 0.5625 | 0.7500000 |  0.0370 | restored   | wood_saprotroph   | Basidiomycota | Agaricomycetes  | Trechisporales  | Hydnodontaceae      | Subulicystidium | unidentified              |
-| otu_1978 | 1.0000000 | 0.5000 | 0.7071068 |  0.0170 | remnant    | wood_saprotroph   | Ascomycota    | Sordariomycetes | Savoryellales   | Savoryellaceae      | Savoryella      | Savoryella_paucispora     |
-| otu_881  | 0.8986301 | 0.5000 | 0.6703097 |  0.0315 | remnant    | wood_saprotroph   | Ascomycota    | Eurotiomycetes  | Chaetothyriales | Herpotrichiellaceae | Minimelanolocus | Minimelanolocus_asiaticus |
+| otu_11   | 0.7947914 | 1.0000 | 0.8915107 |  0.0050 | corn       | wood_saprotroph   | Ascomycota    | Sordariomycetes | Sordariales     | Chaetomiaceae       | Humicola        | Humicola_grisea           |
+| otu_589  | 0.9540320 | 0.8000 | 0.8736279 |  0.0030 | corn       | wood_saprotroph   | Ascomycota    | Sordariomycetes | Hypocreales     | Stachybotryaceae    | Stachybotrys    | Stachybotrys_limonispora  |
+| otu_20   | 0.5828713 | 1.0000 | 0.7634601 |  0.0310 | corn       | wood_saprotroph   | Ascomycota    | Sordariomycetes | Hypocreales     | Bionectriaceae      | Clonostachys    | unidentified              |
+| otu_341  | 0.9669367 | 0.6000 | 0.7616837 |  0.0110 | corn       | wood_saprotroph   | Basidiomycota | Agaricomycetes  | Agaricales      | Psathyrellaceae     | Psathyrella     | unidentified              |
+| otu_266  | 1.0000000 | 0.4000 | 0.6324555 |  0.0495 | corn       | wood_saprotroph   | Basidiomycota | Agaricomycetes  | Agaricales      | Psathyrellaceae     | Psathyrella     | unidentified              |
+| otu_1449 | 1.0000000 | 0.4000 | 0.6324555 |  0.0475 | corn       | wood_saprotroph   | Ascomycota    | Dothideomycetes | Tubeufiales     | Tubeufiaceae        | Helicosporium   | unidentified              |
+| otu_130  | 1.0000000 | 0.5625 | 0.7500000 |  0.0455 | restored   | wood_saprotroph   | Basidiomycota | Agaricomycetes  | Trechisporales  | Hydnodontaceae      | Subulicystidium | unidentified              |
+| otu_1978 | 1.0000000 | 0.5000 | 0.7071068 |  0.0215 | remnant    | wood_saprotroph   | Ascomycota    | Sordariomycetes | Savoryellales   | Savoryellaceae      | Savoryella      | Savoryella_paucispora     |
+| otu_881  | 0.8902077 | 0.5000 | 0.6671610 |  0.0350 | remnant    | wood_saprotroph   | Ascomycota    | Eurotiomycetes  | Chaetothyriales | Herpotrichiellaceae | Minimelanolocus | Minimelanolocus_asiaticus |
 
 Indicator species of wood saprotrophs
 
@@ -1755,18 +1762,18 @@ guiltime("litter_saprotroph")
     ## 
     ## Residuals:
     ##        1        2        3        4        5        6        7 
-    ##   297.73  1793.60  -102.00   451.44   -94.97 -1228.25 -1117.55 
+    ##   302.98  1774.83   -85.42   400.08   -30.97 -1245.72 -1115.77 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)   
-    ## (Intercept)  3609.96     734.63   4.914  0.00442 **
-    ## yr_since      -92.86      49.42  -1.879  0.11902   
+    ## (Intercept)  3615.82     729.97   4.953  0.00427 **
+    ## yr_since      -93.55      49.10  -1.905  0.11510   
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 1121 on 5 degrees of freedom
-    ## Multiple R-squared:  0.4139, Adjusted R-squared:  0.2967 
-    ## F-statistic: 3.531 on 1 and 5 DF,  p-value: 0.119
+    ## Residual standard error: 1114 on 5 degrees of freedom
+    ## Multiple R-squared:  0.4206, Adjusted R-squared:  0.3047 
+    ## F-statistic:  3.63 on 1 and 5 DF,  p-value: 0.1151
     ## 
     ## 
     ## $fl_summary
@@ -1776,19 +1783,19 @@ guiltime("litter_saprotroph")
     ##     "FL"))
     ## 
     ## Residuals:
-    ##       1       2       3       4       5       6 
-    ##  -71.86   71.08   12.31 -651.84  764.16 -123.84 
+    ##        1        2        3        4        5        6 
+    ##  -58.736   72.947   -5.382 -652.610  762.390 -118.610 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)  
-    ## (Intercept)  1358.50     414.82   3.275   0.0306 *
-    ## yr_since      -23.77      15.28  -1.555   0.1949  
+    ## (Intercept)  1346.90     413.91   3.254   0.0313 *
+    ## yr_since      -23.33      15.25  -1.530   0.2008  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 508.6 on 4 degrees of freedom
-    ## Multiple R-squared:  0.3768, Adjusted R-squared:  0.221 
-    ## F-statistic: 2.419 on 1 and 4 DF,  p-value: 0.1949
+    ## Residual standard error: 507.4 on 4 degrees of freedom
+    ## Multiple R-squared:  0.3692, Adjusted R-squared:  0.2115 
+    ## F-statistic: 2.341 on 1 and 4 DF,  p-value: 0.2008
     ## 
     ## 
     ## $plot
@@ -1804,7 +1811,7 @@ lsap <- filgu(spe$its_rfy, meta$its, primary_lifestyle, "litter_saprotroph", sit
 ![](microbial_guild_taxonomy_files/figure-gfm/lsap_filgu-1.png)<!-- -->![](microbial_guild_taxonomy_files/figure-gfm/lsap_filgu-2.png)<!-- -->
 
     ## $OTUs_n
-    ## [1] 140
+    ## [1] 141
     ## 
     ## $Sites_n
     ## [1] 25
@@ -1870,11 +1877,10 @@ lsap_inspan %>%
     kable(format = "pandoc", caption = "Indicator species stats: litter saprotrophs")
 ```
 
-| field_type | n_otu |  stat_avg |   stat_sd |
-|:-----------|------:|----------:|----------:|
-| corn       |     3 | 0.8172432 | 0.0912297 |
-| restored   |     1 | 0.8291562 |        NA |
-| remnant    |     1 | 0.6892024 |        NA |
+| field_type | n_otu |  stat_avg | stat_sd |
+|:-----------|------:|----------:|--------:|
+| corn       |     3 | 0.8166131 | 0.09052 |
+| remnant    |     1 | 0.6942101 |      NA |
 
 Indicator species stats: litter saprotrophs
 
@@ -1889,13 +1895,12 @@ lsap_inspan %>%
     kable(format = "pandoc", caption = "Indicator species of litter saprotrophs")
 ```
 
-| otu_num  |         A |      B |      stat | p.value | field_type | primary_lifestyle | phylum          | class                 | order             | family             | genus           | species                |
-|:---------|----------:|-------:|----------:|--------:|:-----------|:------------------|:----------------|:----------------------|:------------------|:-------------------|:----------------|:-----------------------|
-| otu_126  | 0.8509491 | 1.0000 | 0.9224690 |  0.0120 | corn       | litter_saprotroph | Ascomycota      | Sordariomycetes       | Sordariales       | Chaetomiaceae      | Chaetomium      | unidentified           |
-| otu_358  | 0.9854227 | 0.6000 | 0.7689302 |  0.0180 | corn       | litter_saprotroph | Ascomycota      | Eurotiomycetes        | Chaetothyriales   | Cyphellophoraceae  | Cyphellophora   | Cyphellophora_suttonii |
-| otu_1009 | 0.9635036 | 0.6000 | 0.7603303 |  0.0100 | corn       | litter_saprotroph | Ascomycota      | Pezizomycetes         | Pezizales         | Pyronemataceae     | Cheilymenia     | Cheilymenia_stercorea  |
-| otu_267  | 1.0000000 | 0.6875 | 0.8291562 |  0.0325 | restored   | litter_saprotroph | Basidiomycota   | Agaricomycetes        | Sebacinales       | Sebacinaceae       | Efibulobasidium | unidentified           |
-| otu_1302 | 0.9500000 | 0.5000 | 0.6892024 |  0.0350 | remnant    | litter_saprotroph | Chytridiomycota | Rhizophlyctidomycetes | Rhizophlyctidales | Rhizophlyctidaceae | Rhizophlyctis   | unidentified           |
+| otu_num  |         A |   B |      stat | p.value | field_type | primary_lifestyle | phylum          | class                 | order             | family             | genus         | species                |
+|:---------|----------:|----:|----------:|--------:|:-----------|:------------------|:----------------|:----------------------|:------------------|:-------------------|:--------------|:-----------------------|
+| otu_126  | 0.8481857 | 1.0 | 0.9209700 |  0.0110 | corn       | litter_saprotroph | Ascomycota      | Sordariomycetes       | Sordariales       | Chaetomiaceae      | Chaetomium    | unidentified           |
+| otu_358  | 0.9869937 | 0.6 | 0.7695429 |  0.0175 | corn       | litter_saprotroph | Ascomycota      | Eurotiomycetes        | Chaetothyriales   | Cyphellophoraceae  | Cyphellophora | Cyphellophora_suttonii |
+| otu_1009 | 0.9609610 | 0.6 | 0.7593264 |  0.0105 | corn       | litter_saprotroph | Ascomycota      | Pezizomycetes         | Pezizales         | Pyronemataceae     | Cheilymenia   | Cheilymenia_stercorea  |
+| otu_1302 | 0.9638554 | 0.5 | 0.6942101 |  0.0360 | remnant    | litter_saprotroph | Chytridiomycota | Rhizophlyctidomycetes | Rhizophlyctidales | Rhizophlyctidaceae | Rhizophlyctis | unidentified           |
 
 Indicator species of litter saprotrophs
 
@@ -2212,7 +2217,7 @@ Map(function(x) ncol(x)-1, spe[3:4])
     ## [1] 146
     ## 
     ## $amf_rfy
-    ## [1] 145
+    ## [1] 144
 
 Function output is verbose but retained as explained previously.
 
@@ -2227,13 +2232,13 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## 
     ## family                     corn   restored   remnant
     ## ---------------------  --------  ---------  --------
-    ## Glomeraceae             15037.0    14225.4   15258.8
-    ## Claroideoglomeraceae      707.2     2060.8    1876.0
-    ## Paraglomeraceae          1631.4     1070.2     440.2
-    ## Diversisporaceae          578.6      434.8     301.2
-    ## Gigasporaceae              33.3      110.7     106.5
-    ## Acaulosporaceae             4.0       23.3      75.0
-    ## Archaeosporaceae            0.0      132.2      15.5
+    ## Glomeraceae             15041.4    14239.5   15247.8
+    ## Claroideoglomeraceae      702.8     2036.2    1887.5
+    ## Paraglomeraceae          1628.6     1084.9     448.0
+    ## Diversisporaceae          582.8      435.4     289.2
+    ## Gigasporaceae              31.3      106.6     105.0
+    ## Acaulosporaceae             3.0       23.3      83.5
+    ## Archaeosporaceae            0.0      130.0      16.0
     ## Ambisporaceae               0.0        0.0       1.0
     ## 
     ## ---------------------------------
@@ -2247,15 +2252,15 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## Formula: seq_sum ~ field_type + (1 | region)
     ##    Data: amf_df %>% filter(family == test_families[i])
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  422.5122  428.6066 -206.2561  412.5122        20 
+    ##  421.6508  427.7451 -205.8254  411.6508        20 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
     ##  region   (Intercept)   0.0   
-    ##  Residual             926.4   
+    ##  Residual             910.6   
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ##  (Intercept)  field_type.L  field_type.Q  
-    ##       1548.0         826.5        -628.1  
+    ##       1542.2         837.7        -605.1  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## ----------------------------------------------------
     ## 
@@ -2263,15 +2268,15 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## Formula: seq_sum ~ 1 + (1 | region)
     ##    Data: amf_df %>% filter(family == test_families[i])
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  425.6095  429.2661 -209.8048  419.6095        22 
+    ##  424.8059  428.4625 -209.4029  418.8059        22 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
     ##  region   (Intercept)    0    
-    ##  Residual             1068    
+    ##  Residual             1051    
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ## (Intercept)  
-    ##        1761  
+    ##        1746  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## ----------------------------------------------------
     ## 
@@ -2280,8 +2285,8 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## mmod_null: seq_sum ~ 1 + (1 | region)
     ## mmod: seq_sum ~ field_type + (1 | region)
     ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)  
-    ## mmod_null    3 425.61 429.27 -209.81   419.61                       
-    ## mmod         5 422.51 428.61 -206.26   412.51 7.0973  2    0.02876 *
+    ## mmod_null    3 424.81 428.46 -209.40   418.81                       
+    ## mmod         5 421.65 427.75 -205.82   411.65 7.1551  2    0.02794 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## ----------------------------------------------------
@@ -2297,9 +2302,9 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)  
-    ## restored - corn == 0      1353.6      474.6   2.852   0.0118 *
-    ## remnant - corn == 0       1168.8      621.4   1.881   0.1414  
-    ## remnant - restored == 0   -184.8      517.9  -0.357   0.9311  
+    ## restored - corn == 0      1333.4      466.5   2.858   0.0116 *
+    ## remnant - corn == 0       1184.7      610.8   1.939   0.1251  
+    ## remnant - restored == 0   -148.7      509.0  -0.292   0.9533  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## (Adjusted p values reported -- single-step method)
@@ -2315,30 +2320,30 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## Formula: seq_sum ~ field_type + (1 | region)
     ##    Data: amf_df %>% filter(family == test_families[i])
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  386.9640  393.0583 -188.4820  376.9640        20 
+    ##  387.9549  394.0493 -188.9775  377.9549        20 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept) 116.8   
-    ##  Residual             442.4   
+    ##  region   (Intercept) 117.2   
+    ##  Residual             451.6   
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ##  (Intercept)  field_type.L  field_type.Q  
-    ##      428.071      -181.885         4.387  
+    ##     425.9768     -193.4895        0.2228  
     ## ----------------------------------------------------
     ## 
     ## Linear mixed model fit by maximum likelihood  ['lmerMod']
     ## Formula: seq_sum ~ 1 + (1 | region)
     ##    Data: amf_df %>% filter(family == test_families[i])
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  383.7112  387.3678 -188.8556  377.7112        22 
+    ##  384.7601  388.4167 -189.3800  378.7601        22 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept) 124.2   
-    ##  Residual             448.0   
+    ##  region   (Intercept) 125.1   
+    ##  Residual             457.8   
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ## (Intercept)  
-    ##       430.4  
+    ##       430.1  
     ## ----------------------------------------------------
     ## 
     ## Data: amf_df %>% filter(family == test_families[i])
@@ -2346,8 +2351,8 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## mmod_null: seq_sum ~ 1 + (1 | region)
     ## mmod: seq_sum ~ field_type + (1 | region)
     ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)
-    ## mmod_null    3 383.71 387.37 -188.86   377.71                     
-    ## mmod         5 386.96 393.06 -188.48   376.96 0.7472  2     0.6882
+    ## mmod_null    3 384.76 388.42 -189.38   378.76                     
+    ## mmod         5 387.95 394.05 -188.98   377.95 0.8052  2     0.6686
     ## ----------------------------------------------------
     ## 
     ## 
@@ -2361,9 +2366,9 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)
-    ## restored - corn == 0      -134.0      228.4  -0.587    0.825
-    ## remnant - corn == 0       -257.2      297.2  -0.865    0.658
-    ## remnant - restored == 0   -123.2      249.4  -0.494    0.872
+    ## restored - corn == 0      -137.1      233.1  -0.588    0.824
+    ## remnant - corn == 0       -273.6      303.4  -0.902    0.635
+    ## remnant - restored == 0   -136.5      254.6  -0.536    0.851
     ## (Adjusted p values reported -- single-step method)
     ## 
     ##     corn restored  remnant 
@@ -2377,15 +2382,15 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## Formula: seq_sum ~ field_type + (1 | region)
     ##    Data: amf_df %>% filter(family == test_families[i])
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  454.6942  460.7886 -222.3471  444.6942        20 
+    ##  454.8183  460.9127 -222.4092  444.8183        20 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
     ##  region   (Intercept)    0    
-    ##  Residual             1763    
+    ##  Residual             1768    
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ##  (Intercept)  field_type.L  field_type.Q  
-    ##      14840.4         156.8         753.2  
+    ##      14842.9         145.9         739.0  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## ----------------------------------------------------
     ## 
@@ -2393,15 +2398,15 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## Formula: seq_sum ~ 1 + (1 | region)
     ##    Data: amf_df %>% filter(family == test_families[i])
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  452.2167  455.8733 -223.1084  446.2167        22 
+    ##  452.2772  455.9338 -223.1386  446.2772        22 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
     ##  region   (Intercept)    0    
-    ##  Residual             1818    
+    ##  Residual             1820    
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ## (Intercept)  
-    ##       14553  
+    ##       14561  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## ----------------------------------------------------
     ## 
@@ -2410,8 +2415,8 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## mmod_null: seq_sum ~ 1 + (1 | region)
     ## mmod: seq_sum ~ field_type + (1 | region)
     ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)
-    ## mmod_null    3 452.22 455.87 -223.11   446.22                     
-    ## mmod         5 454.69 460.79 -222.35   444.69 1.5225  2     0.4671
+    ## mmod_null    3 452.28 455.93 -223.14   446.28                     
+    ## mmod         5 454.82 460.91 -222.41   444.82 1.4589  2     0.4822
     ## ----------------------------------------------------
     ## 
     ## 
@@ -2425,9 +2430,9 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)
-    ## restored - corn == 0      -811.6      903.4  -0.898    0.637
-    ## remnant - corn == 0        221.8     1182.9   0.187    0.980
-    ## remnant - restored == 0   1033.4      985.7   1.048    0.541
+    ## restored - corn == 0      -801.9      905.7  -0.885    0.645
+    ## remnant - corn == 0        206.4     1185.8   0.174    0.983
+    ## remnant - restored == 0   1008.3      988.2   1.020    0.559
     ## (Adjusted p values reported -- single-step method)
     ## 
     ##     corn restored  remnant 
@@ -2441,15 +2446,15 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## Formula: seq_sum ~ field_type + (1 | region)
     ##    Data: amf_df %>% filter(family == test_families[i])
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  433.9028  439.9972 -211.9514  423.9028        20 
+    ##  434.4644  440.5588 -212.2322  424.4644        20 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
     ##  region   (Intercept)    0    
-    ##  Residual             1163    
+    ##  Residual             1177    
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ##  (Intercept)  field_type.L  field_type.Q  
-    ##      1047.28       -842.27        -28.06  
+    ##      1053.85       -834.81        -38.08  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## ----------------------------------------------------
     ## 
@@ -2457,15 +2462,15 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## Formula: seq_sum ~ 1 + (1 | region)
     ##    Data: amf_df %>% filter(family == test_families[i])
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  432.1339  435.7906 -213.0670  426.1339        22 
+    ##  432.6088  436.2654 -213.3044  426.6088        22 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
     ##  region   (Intercept)    0    
-    ##  Residual             1217    
+    ##  Residual             1228    
     ## Number of obs: 25, groups:  region, 4
     ## Fixed Effects:
     ## (Intercept)  
-    ##        1082  
+    ##        1092  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## ----------------------------------------------------
     ## 
@@ -2474,8 +2479,8 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## mmod_null: seq_sum ~ 1 + (1 | region)
     ## mmod: seq_sum ~ field_type + (1 | region)
     ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)
-    ## mmod_null    3 432.13 435.79 -213.07   426.13                     
-    ## mmod         5 433.90 440.00 -211.95   423.90 2.2311  2     0.3277
+    ## mmod_null    3 432.61 436.27 -213.30   426.61                     
+    ## mmod         5 434.46 440.56 -212.23   424.46 2.1444  2     0.3423
     ## ----------------------------------------------------
     ## 
     ## 
@@ -2489,9 +2494,9 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)
-    ## restored - corn == 0      -561.2      596.1  -0.942    0.609
-    ## remnant - corn == 0      -1191.2      780.4  -1.526    0.274
-    ## remnant - restored == 0   -629.9      650.4  -0.969    0.592
+    ## restored - corn == 0      -543.7      602.8  -0.902    0.635
+    ## remnant - corn == 0      -1180.6      789.3  -1.496    0.288
+    ## remnant - restored == 0   -636.9      657.7  -0.968    0.592
     ## (Adjusted p values reported -- single-step method)
     ## 
     ##     corn restored  remnant 
@@ -2505,15 +2510,15 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## Formula: seq_sum ~ field_type + (1 | region)
     ##    Data: amf_df %>% filter(family == test_families[i])
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  244.4290  249.1512 -117.2145  234.4290        14 
+    ##  245.7973  250.5195 -117.8987  235.7973        14 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
     ##  region   (Intercept)   0.0   
-    ##  Residual             115.6   
+    ##  Residual             119.9   
     ## Number of obs: 19, groups:  region, 3
     ## Fixed Effects:
     ##  (Intercept)  field_type.L  field_type.Q  
-    ##        83.52         51.74        -33.31  
+    ##        80.99         52.09        -31.42  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## ----------------------------------------------------
     ## 
@@ -2521,15 +2526,15 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## Formula: seq_sum ~ 1 + (1 | region)
     ##    Data: amf_df %>% filter(family == test_families[i])
     ##       AIC       BIC    logLik  deviance  df.resid 
-    ##  241.5160  244.3494 -117.7580  235.5160        16 
+    ##  242.7647  245.5980 -118.3823  236.7647        16 
     ## Random effects:
     ##  Groups   Name        Std.Dev.
-    ##  region   (Intercept)   0     
-    ##  Residual             119     
+    ##  region   (Intercept)   0.0   
+    ##  Residual             122.9   
     ## Number of obs: 19, groups:  region, 3
     ## Fixed Effects:
     ## (Intercept)  
-    ##       98.05  
+    ##       94.58  
     ## optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
     ## ----------------------------------------------------
     ## 
@@ -2537,9 +2542,9 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## Models:
     ## mmod_null: seq_sum ~ 1 + (1 | region)
     ## mmod: seq_sum ~ field_type + (1 | region)
-    ##           npar    AIC    BIC  logLik deviance Chisq Df Pr(>Chisq)
-    ## mmod_null    3 241.52 244.35 -117.76   235.52                    
-    ## mmod         5 244.43 249.15 -117.22   234.43 1.087  2     0.5807
+    ##           npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)
+    ## mmod_null    3 242.76 245.60 -118.38   236.76                     
+    ## mmod         5 245.80 250.52 -117.90   235.80 0.9673  2     0.6165
     ## ----------------------------------------------------
     ## 
     ## 
@@ -2553,9 +2558,9 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## 
     ## Linear Hypotheses:
     ##                         Estimate Std. Error z value Pr(>|z|)
-    ## restored - corn == 0      77.381     73.554   1.052    0.536
-    ## remnant - corn == 0       73.167    105.540   0.693    0.762
-    ## remnant - restored == 0   -4.214     87.395  -0.048    0.999
+    ## restored - corn == 0      75.310     76.251   0.988    0.577
+    ## remnant - corn == 0       73.667    109.409   0.673    0.774
+    ## remnant - restored == 0   -1.643     90.599  -0.018    1.000
     ## (Adjusted p values reported -- single-step method)
     ## 
     ##     corn restored  remnant 
@@ -2573,18 +2578,18 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## 
     ## Residuals:
     ##       1       2       3       4       5       6       7 
-    ## -786.01   10.28 -248.81  287.03 -468.66 -484.24 1690.41 
+    ## -782.94  -20.99 -251.21  298.68 -443.74 -461.30 1661.50 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)   
-    ## (Intercept)  2672.27     591.38   4.519  0.00629 **
-    ## yr_since      -62.52      39.78  -1.572  0.17686   
+    ## (Intercept)  2620.92     581.30   4.509  0.00635 **
+    ## yr_since      -60.31      39.10  -1.542  0.18362   
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 902.6 on 5 degrees of freedom
-    ## Multiple R-squared:  0.3306, Adjusted R-squared:  0.1968 
-    ## F-statistic:  2.47 on 1 and 5 DF,  p-value: 0.1769
+    ## Residual standard error: 887.2 on 5 degrees of freedom
+    ## Multiple R-squared:  0.3224, Adjusted R-squared:  0.1869 
+    ## F-statistic: 2.379 on 1 and 5 DF,  p-value: 0.1836
     ## 
     ## [1] "Diversisporaceae"
     ## 
@@ -2594,18 +2599,18 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## 
     ## Residuals:
     ##       1       2       3       4       5       6       7 
-    ## -108.62 -180.87  -95.54  192.73   44.82   49.96   97.52 
+    ## -111.51 -182.17  -99.97  205.75   39.34   53.70   94.85 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)  
-    ## (Intercept)  198.392     94.851   2.092   0.0907 .
-    ## yr_since       7.827      6.380   1.227   0.2746  
+    ## (Intercept)  202.557     97.783   2.071   0.0931 .
+    ## yr_since       6.872      6.578   1.045   0.3440  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 144.8 on 5 degrees of freedom
-    ## Multiple R-squared:  0.2313, Adjusted R-squared:  0.07759 
-    ## F-statistic: 1.505 on 1 and 5 DF,  p-value: 0.2746
+    ## Residual standard error: 149.2 on 5 degrees of freedom
+    ## Multiple R-squared:  0.1792, Adjusted R-squared:  0.01501 
+    ## F-statistic: 1.091 on 1 and 5 DF,  p-value: 0.344
     ## 
     ## [1] "Gigasporaceae"
     ## 
@@ -2615,18 +2620,18 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## 
     ## Residuals:
     ##       1       2       3       4       5       6       7 
-    ##  97.569   7.875  -9.329 -38.248 -34.758  15.283 -38.391 
+    ## 106.972   6.881 -20.560 -27.783 -34.629   8.259 -39.140 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)  
-    ## (Intercept)  -22.099     34.726  -0.636   0.5525  
-    ## yr_since       8.408      2.336   3.599   0.0156 *
+    ## (Intercept)  -14.014     36.460  -0.384   0.7165  
+    ## yr_since       7.378      2.453   3.008   0.0298 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 53 on 5 degrees of freedom
-    ## Multiple R-squared:  0.7215, Adjusted R-squared:  0.6659 
-    ## F-statistic: 12.96 on 1 and 5 DF,  p-value: 0.01555
+    ## Residual standard error: 55.65 on 5 degrees of freedom
+    ## Multiple R-squared:  0.6441, Adjusted R-squared:  0.5729 
+    ## F-statistic: 9.049 on 1 and 5 DF,  p-value: 0.02982
     ## 
     ## [1] "Glomeraceae"
     ## 
@@ -2636,18 +2641,18 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## 
     ## Residuals:
     ##        1        2        3        4        5        6        7 
-    ##   353.19 -3320.96    66.32  -315.79  1714.08  2266.03  -762.87 
+    ##   329.76 -3276.07    92.92  -343.88  1669.65  2261.25  -733.63 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept) 13024.00    1307.47   9.961 0.000174 ***
-    ## yr_since      111.99      87.95   1.273 0.258889    
+    ## (Intercept) 13046.11    1290.78  10.107 0.000162 ***
+    ## yr_since      112.32      86.83   1.294 0.252334    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 1996 on 5 degrees of freedom
-    ## Multiple R-squared:  0.2449, Adjusted R-squared:  0.09384 
-    ## F-statistic: 1.621 on 1 and 5 DF,  p-value: 0.2589
+    ## Residual standard error: 1970 on 5 degrees of freedom
+    ## Multiple R-squared:  0.2508, Adjusted R-squared:  0.1009 
+    ## F-statistic: 1.673 on 1 and 5 DF,  p-value: 0.2523
     ## 
     ## [1] "Paraglomeraceae"
     ## 
@@ -2657,16 +2662,16 @@ amf_summary <- amf_tax(spe_meta$amf_rfy)
     ## 
     ## Residuals:
     ##        1        2        3        4        5        6        7 
-    ##   536.12  2737.39   137.48   -87.16 -1054.16 -1474.98  -794.70 
+    ##   548.57  2754.79   133.91   -94.54 -1050.43 -1497.66  -794.65 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)
-    ## (Intercept)  1682.70    1003.31   1.677    0.154
-    ## yr_since      -45.36      67.49  -0.672    0.531
+    ## (Intercept)  1709.55    1010.51   1.692    0.151
+    ## yr_since      -46.45      67.97  -0.683    0.525
     ## 
-    ## Residual standard error: 1531 on 5 degrees of freedom
-    ## Multiple R-squared:  0.08287,    Adjusted R-squared:  -0.1006 
-    ## F-statistic: 0.4518 on 1 and 5 DF,  p-value: 0.5313
+    ## Residual standard error: 1542 on 5 degrees of freedom
+    ## Multiple R-squared:  0.0854, Adjusted R-squared:  -0.09752 
+    ## F-statistic: 0.4669 on 1 and 5 DF,  p-value: 0.5248
 
 Let’s look at abundances across field types in four families:
 
@@ -2918,24 +2923,24 @@ mod_giga %>% map(\(x) x$coefficients)
 ```
 
     ## $C4_grass
-    ##               Estimate Std. Error   t value    Pr(>|t|)
-    ## (Intercept) -37.641002  31.040569 -1.212639 0.279431875
-    ## pct_cvr       5.508274   1.220488  4.513172 0.006322428
+    ##               Estimate Std. Error    t value   Pr(>|t|)
+    ## (Intercept) -29.655792   32.79955 -0.9041523 0.40736582
+    ## pct_cvr       4.927027    1.28965  3.8204371 0.01236762
     ## 
     ## $forb
-    ##              Estimate Std. Error   t value   Pr(>|t|)
-    ## (Intercept) 253.91888  63.351167  4.008117 0.01024062
-    ## pct_cvr      -2.96573   1.006873 -2.945487 0.03205235
+    ##               Estimate Std. Error   t value   Pr(>|t|)
+    ## (Intercept) 229.896009  63.121556  3.642116 0.01487049
+    ## pct_cvr      -2.631601   1.003223 -2.623146 0.04691938
 
 ``` r
 mod_giga %>% map(\(x) x$adj.r.squared)
 ```
 
     ## $C4_grass
-    ## [1] 0.7634883
+    ## [1] 0.693811
     ## 
     ## $forb
-    ## [1] 0.5612718
+    ## [1] 0.4949875
 
 ``` r
 by_giga %>% 
@@ -3076,114 +3081,113 @@ its_taxaGuild(spe_meta$its_rfy %>% filter(region == "BM"), other_threshold = 5)
     ## 
     ## Table: Distribution of ITS OTUs in classes; mean sequence abundance by field type
     ## 
-    ## phylum                   order                                     corn   restored   remnant
-    ## -----------------------  --------------------------------------  ------  ---------  --------
-    ## Ascomycota               Chaetothyriales                           1043    5073.86     14498
-    ## Basidiomycota            Agaricales                                8969    3216.86      6631
-    ## Ascomycota               Geoglossales                                 4    3589.25      5210
-    ## Ascomycota               Pleosporales                             11678    9405.29      5038
-    ## unidentified             unidentified                               977    2760.86      4954
-    ## Ascomycota               Helotiales                                1853    4407.29      3946
-    ## Ascomycota               Hypocreales                               3981    8632.00      3753
-    ## Ascomycota               unidentified                              1816    2928.14      3336
-    ## Ascomycota               Sordariales                              15162    4615.57      2546
-    ## Basidiomycota            Thelephorales                                0      13.67      1631
-    ## Mortierellomycota        Mortierellales                            3791    3190.00      1487
-    ## Ascomycota               Onygenales                                  53    1160.29       814
-    ## Ascomycota               GS34                                         0     108.00       783
-    ## Basidiomycota            Russulales                                   0       5.00       536
-    ## Basidiomycota            Tremellales                                  7     190.00       221
-    ## Ascomycota               Capnodiales                                336     899.43       218
-    ## Ascomycota               Minutisphaerales                             0       0.00       208
-    ## Basidiomycota            unidentified                                39    1273.00       201
-    ## Ascomycota               Chaetosphaeriales                          302     288.86       171
-    ## Mucoromycota             unidentified                                 0      24.50       166
-    ## Ascomycota               Thelebolales                               178      46.50       165
-    ## Basidiomycota            Boletales                                    0       7.00       156
-    ## Ascomycota               Pezizales                                  494     315.71       149
-    ## Basidiomycota            Sebacinales                                 11     753.14       114
-    ## Chytridiomycota          Spizellomycetales                           21      58.14        95
-    ## Basidiomycota            Cantharellales                             646    1251.57        87
-    ## Ascomycota               Mytilinidales                                0       0.00        79
-    ## Ascomycota               Magnaporthales                              24     156.29        72
-    ## Basidiomycota            Trechisporales                             541     776.14        71
-    ## Ascomycota               Xylariales                                 188     493.71        68
-    ## Basidiomycota            Filobasidiales                              42     120.33        68
-    ## Basidiomycota            Trichosporonales                           127      28.33        64
-    ## Glomeromycota            Glomerales                                  38     562.71        62
-    ## Mucoromycota             Umbelopsidales                               0       2.00        59
-    ## Ascomycota               Glomerellales                             1367    1294.29        51
-    ## Basidiomycota            Geminibasidiales                             0      70.60        48
-    ## Ascomycota               Verrucariales                                0      62.00        46
-    ## Ascomycota               Tubeufiales                                191     140.57        44
-    ## Ascomycota               Coniochaetales                             584     221.86        42
-    ## Ascomycota               Microascales                               260     101.60        42
-    ## Basidiomycota            Polyporales                                 11      30.29        39
-    ## Basidiomycota            Auriculariales                              12     240.29        31
-    ## Ascomycota               Diaporthales                                83      14.75        25
-    ## Rozellomycota            GS11                                         0       4.00        22
-    ## Ascomycota               GS32                                         0       0.00        20
-    ## Ascomycota               Ostropales                                   0      48.00        16
-    ## Ascomycota               Sordariomycetes_ord_Incertae_sedis          17     213.29        14
-    ## Ascomycota               Orbiliales                                   2      88.60        11
-    ## Basidiomycota            Atheliales                                   0       5.00        11
-    ## Basidiomycota            Hymenochaetales                              8      45.33        11
-    ## Ascomycota               Eurotiales                                  48      25.86         9
-    ## Basidiomycota            Erythrobasidiales                            0       2.00         9
-    ## Basidiomycota            Geastrales                                 918      15.33         6
-    ## Ascomycota               Myrmecridiales                               0      16.50         5
-    ## Basidiomycota            Leucosporidiales                            13       7.67         5
-    ## Basidiomycota            Ustilaginales                                0       0.00         2
-    ## Chytridiomycota          Rhizophlyctidales                          264     209.33         2
-    ## Mucoromycota             GS22                                         0       3.00         2
-    ## Anthophyta               Brassicales                                  0       6.00         0
-    ## Anthophyta               Fabales                                      0      14.50         0
-    ## Anthophyta               Poales                                       0       2.00         0
-    ## Ascomycota               Archaeorhizomycetales                        0      40.00         0
-    ## Ascomycota               Botryosphaeriales                            2      23.80         0
-    ## Ascomycota               Branch06                                    20     268.80         0
-    ## Ascomycota               Candelariales                                0       6.00         0
-    ## Ascomycota               Dothideales                                  0      37.33         0
-    ## Ascomycota               Microthyriales                               0       1.00         0
-    ## Ascomycota               Pezizomycotina_ord_Incertae_sedis           45       0.00         0
-    ## Ascomycota               Phacidiales                                  0       7.00         0
-    ## Ascomycota               Phomatosporales                            700       9.00         0
-    ## Ascomycota               Saccharomycetales                          124       6.67         0
-    ## Ascomycota               Savoryellales                                0      13.50         0
-    ## Ascomycota               Trichosphaeriales                            0       6.50         0
-    ## Ascomycota               Venturiales                                  0     174.60         0
-    ## Basidiobolomycota        Basidiobolales                               0      41.00         0
-    ## Basidiomycota            Agaricostilbales                             0       1.00         0
-    ## Basidiomycota            Atractiellales                               7       0.00         0
-    ## Basidiomycota            Corticiales                                  0     143.33         0
-    ## Basidiomycota            Cystobasidiales                             39      16.50         0
-    ## Basidiomycota            Cystofilobasidiales                        224      54.67         0
-    ## Basidiomycota            Entylomatales                                0      21.50         0
-    ## Basidiomycota            Holtermanniales                              2      15.00         0
-    ## Basidiomycota            Kriegeriales                                 2       0.00         0
-    ## Basidiomycota            Microbotryomycetes_ord_Incertae_sedis        1       0.00         0
-    ## Basidiomycota            Phallales                                  894      25.80         0
-    ## Basidiomycota            Platygloeales                                0     157.50         0
-    ## Basidiomycota            Pucciniales                                  0       8.00         0
-    ## Basidiomycota            Sporidiobolales                              0       6.75         0
-    ## Basidiomycota            Tremellodendropsidales                       0      76.00         0
-    ## Basidiomycota            Urocystidales                                0       6.20         0
-    ## Calcarisporiellomycota   Calcarisporiellales                          0       5.00         0
-    ## Cercozoa                 unidentified                                 0       3.00         0
-    ## Chlorophyta              Chaetopeltidales                             4       7.25         0
-    ## Chlorophyta              Chaetophorales                               0      22.00         0
-    ## Chlorophyta              Chlorellales                                 0       6.00         0
-    ## Chytridiomycota          Chytridiales                                 0     120.67         0
-    ## Chytridiomycota          Rhizophydiales                               0      20.33         0
-    ## Chytridiomycota          unidentified                                 0       8.00         0
-    ## Glomeromycota            Archaeosporales                              0      16.00         0
-    ## Glomeromycota            Diversisporales                              0       8.00         0
-    ## Glomeromycota            Paraglomerales                               0      47.00         0
-    ## Glomeromycota            unidentified                                 4     197.40         0
-    ## Haplosporidia            Haplosporidia_ord_Incertae_sedis             2       0.00         0
-    ## Monoblepharomycota       Monoblepharidales                            1       0.00         0
-    ## Mortierellomycota        unidentified                                 0       3.00         0
-    ## Mucoromycota             Mucorales                                    0       7.67         0
+    ## phylum                   order                                  corn   restored   remnant
+    ## -----------------------  -----------------------------------  ------  ---------  --------
+    ## Ascomycota               Chaetothyriales                        1042    5062.14     14398
+    ## Basidiomycota            Agaricales                             8984    3189.00      6605
+    ## Ascomycota               Geoglossales                              7    3597.75      5154
+    ## Ascomycota               Pleosporales                          11711    9425.00      5071
+    ## unidentified             unidentified                            973    2763.14      4936
+    ## Ascomycota               Helotiales                             1853    4424.14      4017
+    ## Ascomycota               Hypocreales                            4048    8640.86      3763
+    ## Ascomycota               unidentified                           1803    2914.71      3363
+    ## Ascomycota               Sordariales                           15104    4607.14      2540
+    ## Basidiomycota            Thelephorales                             0      14.00      1662
+    ## Mortierellomycota        Mortierellales                         3768    3203.43      1488
+    ## Ascomycota               Onygenales                               58    1155.71       814
+    ## Ascomycota               GS34                                      0     113.00       803
+    ## Basidiomycota            Russulales                                0       6.00       542
+    ## Basidiomycota            Tremellales                               6     187.57       222
+    ## Ascomycota               Capnodiales                             334     899.71       221
+    ## Ascomycota               Minutisphaerales                          0       0.00       208
+    ## Basidiomycota            unidentified                             36    1266.43       206
+    ## Ascomycota               Chaetosphaeriales                       297     293.14       180
+    ## Ascomycota               Thelebolales                            169      48.50       171
+    ## Mucoromycota             unidentified                              0      19.50       161
+    ## Basidiomycota            Boletales                                 0       8.00       157
+    ## Ascomycota               Pezizales                               491     314.00       151
+    ## Chytridiomycota          Spizellomycetales                        26      59.57       103
+    ## Basidiomycota            Sebacinales                              11     766.71        99
+    ## Basidiomycota            Cantharellales                          653    1245.86        88
+    ## Ascomycota               Mytilinidales                             0       0.00        76
+    ## Ascomycota               Magnaporthales                           21     153.43        71
+    ## Basidiomycota            Filobasidiales                           44     123.00        71
+    ## Basidiomycota            Trichosporonales                        135      28.67        70
+    ## Basidiomycota            Trechisporales                          556     784.71        65
+    ## Ascomycota               Xylariales                              195     479.29        61
+    ## Glomeromycota            Glomerales                               38     564.00        58
+    ## Mucoromycota             Umbelopsidales                            0       2.00        58
+    ## Ascomycota               Glomerellales                          1375    1289.57        54
+    ## Ascomycota               Coniochaetales                          539     224.29        46
+    ## Ascomycota               Microascales                            267     104.00        43
+    ## Ascomycota               Verrucariales                             0      73.00        42
+    ## Basidiomycota            Polyporales                              12      31.00        42
+    ## Basidiomycota            Geminibasidiales                          0      69.40        41
+    ## Ascomycota               Tubeufiales                             188     137.14        38
+    ## Basidiomycota            Auriculariales                           14     239.71        33
+    ## Ascomycota               Diaporthales                             90      14.75        32
+    ## Ascomycota               GS32                                      0       0.00        20
+    ## Rozellomycota            GS11                                      0       2.00        20
+    ## Ascomycota               Ostropales                                0      49.00        15
+    ## Ascomycota               Sordariomycetes_ord_Incertae_sedis       15     217.71        15
+    ## Basidiomycota            Erythrobasidiales                         0       2.50        12
+    ## Basidiomycota            Hymenochaetales                           8      45.17        11
+    ## Ascomycota               Orbiliales                                4      90.80        10
+    ## Ascomycota               Eurotiales                               46      25.57         9
+    ## Basidiomycota            Atheliales                                0       5.00         9
+    ## Basidiomycota            Geastrales                              907      14.67         8
+    ## Ascomycota               Myrmecridiales                            0      15.00         5
+    ## Basidiomycota            Leucosporidiales                         13       8.67         5
+    ## Mucoromycota             GS22                                      0       0.00         3
+    ## Basidiomycota            Ustilaginales                             0       0.00         2
+    ## Chytridiomycota          Rhizophlyctidales                       262     208.33         2
+    ## Anthophyta               Brassicales                               0       6.00         0
+    ## Anthophyta               Fabales                                   0      14.00         0
+    ## Anthophyta               Poales                                    0       2.00         0
+    ## Ascomycota               Archaeorhizomycetales                     0      41.00         0
+    ## Ascomycota               Botryosphaeriales                         3      23.60         0
+    ## Ascomycota               Branch06                                 19     268.40         0
+    ## Ascomycota               Candelariales                             0       4.00         0
+    ## Ascomycota               Dothideales                               0      37.67         0
+    ## Ascomycota               Microthyriales                            0       2.00         0
+    ## Ascomycota               Pezizomycotina_ord_Incertae_sedis        47       0.00         0
+    ## Ascomycota               Phacidiales                               0       6.00         0
+    ## Ascomycota               Phomatosporales                         728       7.33         0
+    ## Ascomycota               Saccharomycetales                       123       6.67         0
+    ## Ascomycota               Savoryellales                             0      13.50         0
+    ## Ascomycota               Trichosphaeriales                         0       6.25         0
+    ## Ascomycota               Venturiales                               0     174.20         0
+    ## Basidiobolomycota        Basidiobolales                            0      41.00         0
+    ## Basidiomycota            Agaricostilbales                          0       1.00         0
+    ## Basidiomycota            Atractiellales                            8       0.00         0
+    ## Basidiomycota            Corticiales                               0     144.67         0
+    ## Basidiomycota            Cystobasidiales                          41      14.00         0
+    ## Basidiomycota            Cystofilobasidiales                     203      55.67         0
+    ## Basidiomycota            Entylomatales                             0      21.50         0
+    ## Basidiomycota            Holtermanniales                           2      15.67         0
+    ## Basidiomycota            Kriegeriales                              2       0.00         0
+    ## Basidiomycota            Phallales                               879      24.60         0
+    ## Basidiomycota            Platygloeales                             0     163.50         0
+    ## Basidiomycota            Pucciniales                               0       6.00         0
+    ## Basidiomycota            Sporidiobolales                           0       7.75         0
+    ## Basidiomycota            Tremellodendropsidales                    0      77.00         0
+    ## Basidiomycota            Urocystidales                             0       5.80         0
+    ## Calcarisporiellomycota   Calcarisporiellales                       0       3.00         0
+    ## Cercozoa                 unidentified                              0       4.00         0
+    ## Chlorophyta              Chaetopeltidales                          6       8.25         0
+    ## Chlorophyta              Chaetophorales                            0      20.50         0
+    ## Chlorophyta              Chlorellales                              0       5.00         0
+    ## Chytridiomycota          Chytridiales                              0     119.00         0
+    ## Chytridiomycota          Rhizophydiales                            0      18.00         0
+    ## Chytridiomycota          unidentified                              0       9.00         0
+    ## Glomeromycota            Archaeosporales                           0      16.00         0
+    ## Glomeromycota            Diversisporales                           0       9.00         0
+    ## Glomeromycota            Paraglomerales                            0      45.00         0
+    ## Glomeromycota            unidentified                              2     196.60         0
+    ## Haplosporidia            Haplosporidia_ord_Incertae_sedis          2       0.00         0
+    ## Monoblepharomycota       Monoblepharidales                         2       0.00         0
+    ## Mortierellomycota        unidentified                              0       4.00         0
+    ## Mucoromycota             Mucorales                                 0       8.00         0
     ## [[1]]
     ## 
     ## 
@@ -3191,26 +3195,26 @@ its_taxaGuild(spe_meta$its_rfy %>% filter(region == "BM"), other_threshold = 5)
     ## 
     ## primary_lifestyle          corn   restored   remnant     total
     ## -----------------------  ------  ---------  --------  --------
-    ## unidentified              29666    29212.6     40171   99049.6
-    ## soil_saprotroph            6025     7772.7     10113   23910.7
-    ## plant_pathogen             5790    10941.4      3176   19907.4
-    ## dung_saprotroph            8636     1996.7       736   11368.7
-    ## wood_saprotroph            3455     2551.1      1022    7028.1
-    ## litter_saprotroph          2862     2482.4       695    6039.4
-    ## animal_parasite             788     1537.1       345    2670.1
-    ## mycoparasite                680      753.9       351    1784.9
-    ## ectomycorrhizal               0      290.5      1118    1408.5
-    ## unspecified_saprotroph      214      177.3        78     469.3
-    ## root_endophyte                0      337.0       122     459.0
-    ## arbuscular_mycorrhizal       26      260.1        15     301.1
-    ## lichen_parasite              14       13.4       111     138.4
-    ## pollen_saprotroph            14       27.1        95     136.1
-    ## lichenized                    0       92.0        16     108.0
-    ## foliar_endophyte              0       54.0         6      60.0
-    ## unspecified_pathotroph        0       19.0         0      19.0
-    ## epiphyte                      0        8.0         0       8.0
+    ## unidentified              29569    29195.4     40246   99010.4
+    ## soil_saprotroph            5975     7783.4     10030   23788.4
+    ## plant_pathogen             5888    10947.6      3178   20013.6
+    ## dung_saprotroph            8638     1999.0       744   11381.0
+    ## wood_saprotroph            3520     2540.3      1020    7080.3
+    ## litter_saprotroph          2881     2479.9       691    6051.9
+    ## animal_parasite             796     1542.0       335    2673.0
+    ## mycoparasite                661      755.7       352    1768.7
+    ## ectomycorrhizal               0      288.0      1136    1424.0
+    ## root_endophyte                0      340.3       117     457.3
+    ## unspecified_saprotroph      185      177.7        75     437.7
+    ## arbuscular_mycorrhizal       25      258.3        13     296.3
+    ## pollen_saprotroph            19       27.4       103     149.4
+    ## lichen_parasite              13       16.6       108     137.6
+    ## lichenized                    0       94.0        15     109.0
+    ## foliar_endophyte              0       53.0         7      60.0
+    ## unspecified_pathotroph        0       21.0         0      21.0
+    ## epiphyte                      0       10.0         0      10.0
     ## nectar/tap_saprotroph         0        6.7         0       6.7
-    ## algal_parasite                0        2.0         0       2.0
+    ## algal_parasite                0        4.0         0       4.0
     ## 
     ## [[2]]
 
@@ -3239,80 +3243,80 @@ its_taxaGuild(spe_meta$its_rfy %>% filter(region == "FG"), other_threshold = 5)
     ## 
     ## phylum              order                                     corn   restored   remnant
     ## ------------------  --------------------------------------  ------  ---------  --------
-    ## Ascomycota          Pleosporales                              7581      19394     10403
-    ## Ascomycota          Hypocreales                              11470       7901      8262
-    ## Ascomycota          Helotiales                                2022       5412      6190
-    ## Basidiomycota       Agaricales                                4209        845      5211
-    ## unidentified        unidentified                              2065       3868      4852
-    ## Ascomycota          unidentified                              2406       3499      4732
-    ## Ascomycota          Sordariales                              15402       6254      4449
-    ## Ascomycota          Onygenales                                  24        597      3537
-    ## Basidiomycota       Thelephorales                                7          0      2030
-    ## Ascomycota          Chaetothyriales                            811        632      1073
-    ## Mortierellomycota   Mortierellales                            2797       1198      1061
-    ## Ascomycota          Xylariales                                  75        156       913
-    ## Glomeromycota       Glomerales                                  85       1026       804
-    ## Ascomycota          Geoglossales                                 0          9       794
-    ## Basidiomycota       Cantharellales                            1056        228       736
-    ## Ascomycota          Coniochaetales                             372         85       389
-    ## Ascomycota          Magnaporthales                             170       1527       364
-    ## Ascomycota          Capnodiales                               1315        101       277
-    ## Basidiomycota       unidentified                               254         67       266
-    ## Glomeromycota       unidentified                                 0        152       240
-    ## Basidiomycota       Auriculariales                             348        285       188
-    ## Ascomycota          Pezizales                                  395       1569       178
-    ## Ascomycota          Sordariomycetes_ord_Incertae_sedis          25        521       130
-    ## Ascomycota          Venturiales                                 27         45       129
-    ## Basidiomycota       Sebacinales                                 45        254       129
-    ## Ascomycota          Branch06                                    11        251       123
-    ## Ascomycota          Mytilinidiales                               0          0       119
-    ## Basidiomycota       Polyporales                                 27         60        95
-    ## Ascomycota          Glomerellales                             3418        824        91
-    ## Basidiomycota       Cystofilobasidiales                         44         86        79
-    ## Basidiomycota       Atheliales                                   0          0        47
-    ## Chytridiomycota     Spizellomycetales                          507         59        47
-    ## Basidiomycota       Tremellales                                  3         14        44
-    ## Chytridiomycota     Rhizophlyctidales                          429         26        36
-    ## Ascomycota          Saccharomycetales                            0        127        34
-    ## Ascomycota          Minutisphaerales                             0          0        25
-    ## Basidiomycota       Trichosporonales                             0          0        20
-    ## Ascomycota          Savoryellales                                0          0        12
+    ## Ascomycota          Pleosporales                              7657      19474     10394
+    ## Ascomycota          Hypocreales                              11440       7910      8278
+    ## Ascomycota          Helotiales                                2008       5374      6194
+    ## Basidiomycota       Agaricales                                4244        847      5195
+    ## unidentified        unidentified                              2061       3843      4853
+    ## Ascomycota          unidentified                              2420       3509      4738
+    ## Ascomycota          Sordariales                              15309       6200      4427
+    ## Ascomycota          Onygenales                                  24        591      3537
+    ## Basidiomycota       Thelephorales                                7          0      2023
+    ## Ascomycota          Chaetothyriales                            824        628      1066
+    ## Mortierellomycota   Mortierellales                            2777       1212      1065
+    ## Ascomycota          Xylariales                                  67        159       932
+    ## Ascomycota          Geoglossales                                 0         12       801
+    ## Glomeromycota       Glomerales                                  93       1038       788
+    ## Basidiomycota       Cantharellales                            1039        236       731
+    ## Ascomycota          Coniochaetales                             373         86       397
+    ## Ascomycota          Magnaporthales                             173       1547       361
+    ## Ascomycota          Capnodiales                               1312        110       274
+    ## Basidiomycota       unidentified                               253         66       268
+    ## Glomeromycota       unidentified                                 0        155       245
+    ## Basidiomycota       Auriculariales                             337        295       184
+    ## Ascomycota          Pezizales                                  393       1543       181
+    ## Ascomycota          Sordariomycetes_ord_Incertae_sedis          25        514       136
+    ## Basidiomycota       Sebacinales                                 46        249       133
+    ## Ascomycota          Venturiales                                 25         45       128
+    ## Ascomycota          Mytilinidiales                               0          0       122
+    ## Ascomycota          Branch06                                    11        238       119
+    ## Basidiomycota       Polyporales                                 26         67        94
+    ## Ascomycota          Glomerellales                             3456        815        92
+    ## Basidiomycota       Cystofilobasidiales                         43         85        80
+    ## Chytridiomycota     Spizellomycetales                          522         60        50
+    ## Basidiomycota       Atheliales                                   0          0        48
+    ## Basidiomycota       Tremellales                                  2         20        45
+    ## Chytridiomycota     Rhizophlyctidales                          436         25        38
+    ## Ascomycota          Saccharomycetales                            0        125        34
+    ## Ascomycota          Minutisphaerales                             0          0        22
+    ## Basidiomycota       Trichosporonales                             0          0        21
+    ## Ascomycota          Savoryellales                                0          0        13
+    ## Chytridiomycota     Chytridiales                                 0          0        11
     ## Ascomycota          Archaeorhizomycetales                        0          0        10
-    ## Chytridiomycota     Chytridiales                                 0          0        10
-    ## Ascomycota          Eurotiales                                   7          7         8
     ## Glomeromycota       Diversisporales                              0          0         8
-    ## Ascomycota          Rhytismatales                                0          0         6
+    ## Ascomycota          Eurotiales                                   3          7         7
     ## Basidiomycota       Phallales                                    0          0         6
+    ## Ascomycota          Rhytismatales                                0          0         5
+    ## Chlorophyta         Chaetopeltidales                             4         12         5
     ## Chlorophyta         unidentified                                 0          0         5
-    ## Ascomycota          Thelebolales                                53         44         4
-    ## Chlorophyta         Chaetopeltidales                             5         11         3
-    ## Ascomycota          Diaporthales                               437          0         1
-    ## Anthophyta          Commelinales                                 3          0         0
+    ## Ascomycota          Thelebolales                                52         42         4
+    ## Ascomycota          Diaporthales                               444          0         2
+    ## Anthophyta          Commelinales                                 5          0         0
     ## Anthophyta          Fabales                                      0          5         0
-    ## Anthophyta          Poales                                       5          0         0
-    ## Ascomycota          Boliniales                                   0        102         0
+    ## Anthophyta          Poales                                       4          0         0
+    ## Ascomycota          Boliniales                                   0        108         0
     ## Ascomycota          Botryosphaeriales                            8          0         0
-    ## Ascomycota          Chaetosphaeriales                            0          4         0
-    ## Ascomycota          Jahnulales                                  10          0         0
-    ## Ascomycota          Microascales                                71         96         0
+    ## Ascomycota          Chaetosphaeriales                            0          3         0
+    ## Ascomycota          Jahnulales                                  12          0         0
+    ## Ascomycota          Microascales                                69         91         0
     ## Ascomycota          Orbiliales                                   0         24         0
-    ## Ascomycota          Trichosphaeriales                            5        103         0
-    ## Ascomycota          Tubeufiales                                  6         24         0
+    ## Ascomycota          Trichosphaeriales                            5         96         0
+    ## Ascomycota          Tubeufiales                                  6         21         0
     ## Basidiobolomycota   Basidiobolales                               0          4         0
     ## Basidiomycota       Agaricostilbales                             2          0         0
     ## Basidiomycota       Atractiellales                              10          0         0
-    ## Basidiomycota       Boletales                                    7          0         0
-    ## Basidiomycota       Cystobasidiales                             46          0         0
+    ## Basidiomycota       Boletales                                    5          0         0
+    ## Basidiomycota       Cystobasidiales                             44          0         0
     ## Basidiomycota       Hymenochaetales                              2          0         0
-    ## Basidiomycota       Kriegeriales                                 4         11         0
-    ## Basidiomycota       Microbotryomycetes_ord_Incertae_sedis        0         12         0
-    ## Basidiomycota       Platygloeales                                0         14         0
+    ## Basidiomycota       Kriegeriales                                 3         12         0
+    ## Basidiomycota       Microbotryomycetes_ord_Incertae_sedis        0         13         0
+    ## Basidiomycota       Platygloeales                                0         10         0
     ## Basidiomycota       Pucciniales                                  0          2         0
-    ## Basidiomycota       Trechisporales                              34        628         0
-    ## Basidiomycota       Tremellodendropsidales                       8          0         0
-    ## Basidiomycota       Urocystidales                                0          4         0
-    ## Chytridiomycota     Rhizophydiales                              47          0         0
-    ## Glomeromycota       Paraglomerales                               0          3         0
+    ## Basidiomycota       Trechisporales                              35        637         0
+    ## Basidiomycota       Tremellodendropsidales                       9          0         0
+    ## Basidiomycota       Urocystidales                                0          3         0
+    ## Chytridiomycota     Rhizophydiales                              45          0         0
+    ## Glomeromycota       Paraglomerales                               0          2         0
     ## [[1]]
     ## 
     ## 
@@ -3320,22 +3324,22 @@ its_taxaGuild(spe_meta$its_rfy %>% filter(region == "FG"), other_threshold = 5)
     ## 
     ## primary_lifestyle          corn   restored   remnant   total
     ## -----------------------  ------  ---------  --------  ------
-    ## unidentified              29709      29539     36436   95684
-    ## plant_pathogen             9743      12251      8438   30432
-    ## soil_saprotroph            4317       3947      4865   13129
-    ## wood_saprotroph            4572       4312      1563   10447
-    ## litter_saprotroph          5688        546       931    7165
-    ## dung_saprotroph             386       2897       621    3904
-    ## ectomycorrhizal               0          6      3498    3504
-    ## mycoparasite               2517        870       117    3504
-    ## animal_parasite             599       1241       805    2645
-    ## root_endophyte               20       2083       296    2399
-    ## pollen_saprotroph           451         59        19     529
-    ## arbuscular_mycorrhizal       36        226       247     509
-    ## unspecified_saprotroph      128         53       270     451
-    ## nectar/tap_saprotroph         0        123        34     157
-    ## lichen_parasite               0          0        30      30
-    ## unspecified_pathotroph        0         17         0      17
+    ## unidentified              29630      29508     36441   95579
+    ## plant_pathogen             9826      12253      8423   30502
+    ## soil_saprotroph            4330       3922      4880   13132
+    ## wood_saprotroph            4553       4326      1578   10457
+    ## litter_saprotroph          5663        542       928    7133
+    ## dung_saprotroph             386       2899       626    3911
+    ## mycoparasite               2510        890       124    3524
+    ## ectomycorrhizal               0          4      3471    3475
+    ## animal_parasite             617       1246       800    2663
+    ## root_endophyte               20       2087       295    2402
+    ## pollen_saprotroph           467         60        21     548
+    ## arbuscular_mycorrhizal       39        232       240     511
+    ## unspecified_saprotroph      125         60       278     463
+    ## nectar/tap_saprotroph         0        121        34     155
+    ## lichen_parasite               0          0        31      31
+    ## unspecified_pathotroph        0         20         0      20
     ## foliar_endophyte              4          0         0       4
     ## 
     ## [[2]]
@@ -3360,97 +3364,99 @@ its_taxaGuild(spe_meta$its_rfy %>% filter(region == "FL"), other_threshold = 5)
     ## 
     ## Table: Distribution of ITS OTUs in classes; mean sequence abundance by field type
     ## 
-    ## phylum              order                                       corn   restored   remnant
-    ## ------------------  --------------------------------------  --------  ---------  --------
-    ## Ascomycota          Pleosporales                              7472.0    5251.67      8221
-    ## Ascomycota          Hypocreales                               8751.5    5978.17      7891
-    ## Ascomycota          unidentified                              1305.5    5305.67      7227
-    ## Basidiomycota       Agaricales                                2251.0    2974.00      6226
-    ## Ascomycota          Onygenales                                 136.0    2781.17      6006
-    ## Ascomycota          Sordariales                              12767.0    5177.33      4943
-    ## Ascomycota          Chaetothyriales                            571.0   12586.67      3598
-    ## Ascomycota          Helotiales                                4412.5    3328.33      3565
-    ## Mortierellomycota   Mortierellales                            5129.5    4929.00      2418
-    ## Basidiomycota       Cantharellales                             306.5     698.33      1364
-    ## unidentified        unidentified                              1216.5    2047.00      1082
-    ## Glomeromycota       Glomerales                                  91.5     196.17       726
-    ## Ascomycota          Glomerellales                             1416.5     962.83       603
-    ## Ascomycota          Sordariomycetes_ord_Incertae_sedis          69.0      51.00       592
-    ## Ascomycota          Magnaporthales                             143.5      72.50       551
-    ## Ascomycota          Pezizales                                 1382.0     351.33       429
-    ## Ascomycota          Coniochaetales                            1481.0      83.00       360
-    ## Ascomycota          Xylariales                                  22.0     306.33       239
-    ## Ascomycota          Branch06                                    15.0     116.00       218
-    ## Basidiomycota       Sebacinales                                 22.0     240.83       207
-    ## Basidiomycota       unidentified                                66.5     302.67       203
-    ## Ascomycota          Geoglossales                                 4.0    1435.67       177
-    ## Basidiomycota       Auriculariales                              29.0     374.00       152
-    ## Ascomycota          Chaetosphaeriales                          187.5     126.33       147
-    ## Basidiomycota       Phallales                                   25.5       2.00       140
-    ## Basidiomycota       Trechisporales                              12.0     271.83       130
-    ## Basidiomycota       Hymenochaetales                             17.5     397.50        87
-    ## Ascomycota          Capnodiales                                629.5     338.67        81
-    ## Ascomycota          Venturiales                                 14.0      46.17        74
-    ## Chytridiomycota     Spizellomycetales                          115.0     155.40        73
-    ## Basidiomycota       Tremellales                                 29.0      47.50        67
-    ## Basidiomycota       Trichosporonales                             2.0      58.25        60
-    ## Ascomycota          Orbiliales                                  28.0     115.67        42
-    ## Chytridiomycota     Chytridiales                                 0.0       8.00        42
-    ## Ascomycota          Saccharomycetales                          481.5      58.33        39
-    ## Glomeromycota       unidentified                                11.0      25.83        27
-    ## Basidiomycota       Filobasidiales                             351.0     176.67        20
-    ## Ascomycota          Eurotiales                                 198.0      28.33        17
-    ## Basidiomycota       Thelephorales                                2.0      32.17        17
-    ## Ascomycota          Thelebolales                                66.0      43.80        15
-    ## Ascomycota          Trichosphaeriales                            0.0      24.83        15
-    ## Chytridiomycota     Rhizophlyctidales                          210.5      61.67        14
-    ## Ascomycota          Savoryellales                                6.0      18.00        13
-    ## Mortierellomycota   unidentified                                 0.0       6.00        10
-    ## Ascomycota          Mytilinidiales                               0.0      15.67         9
-    ## Rozellomycota       GS11                                         0.0       0.00         9
-    ## Basidiomycota       Ustilaginales                                0.0       5.00         8
-    ## Ascomycota          Microascales                                27.5      28.50         5
-    ## Ascomycota          Candelariales                                0.0       0.00         3
-    ## Basidiomycota       Polyporales                                 13.0      37.00         3
-    ## Chytridiomycota     Rhizophydiales                              10.0      16.20         3
-    ## Basidiomycota       Microbotryomycetes_ord_Incertae_sedis       15.5       4.67         2
-    ## Anthophyta          Brassicales                                 10.0       3.00         0
-    ## Anthophyta          Commelinales                                 0.0     236.00         0
-    ## Anthophyta          Poales                                       0.0       4.00         0
-    ## Ascomycota          Acrospermales                                0.0       2.00         0
-    ## Ascomycota          Archaeorhizomycetales                        0.0      33.83         0
-    ## Ascomycota          Boliniales                                  43.5      27.00         0
-    ## Ascomycota          Botryosphaeriales                           21.0       4.00         0
-    ## Ascomycota          Diaporthales                                83.0      15.67         0
-    ## Ascomycota          Dothideales                                  0.0       2.00         0
-    ## Ascomycota          GS34                                         0.0     115.50         0
-    ## Ascomycota          Microthyriales                               0.0      25.00         0
-    ## Ascomycota          Minutisphaerales                             0.0      56.00         0
-    ## Ascomycota          Myrmecridiales                               0.0     115.20         0
-    ## Ascomycota          Rhytismatales                                0.0       3.00         0
-    ## Ascomycota          Tubeufiales                                 52.5     195.33         0
-    ## Basidiomycota       Atractiellales                               7.0      11.00         0
-    ## Basidiomycota       Corticiales                                  0.0      19.33         0
-    ## Basidiomycota       Cystofilobasidiales                       6445.0      19.20         0
-    ## Basidiomycota       Entylomatales                                0.0       4.00         0
-    ## Basidiomycota       Erythrobasidiales                            0.0       8.50         0
-    ## Basidiomycota       Geastrales                                   0.0      96.00         0
-    ## Basidiomycota       Holtermanniales                              6.0       0.00         0
-    ## Basidiomycota       Leucosporidiales                            50.0      10.75         0
-    ## Basidiomycota       Russulales                                   0.0       2.00         0
-    ## Basidiomycota       Sporidiobolales                             49.0       0.00         0
-    ## Basidiomycota       Tilletiales                                 11.0      25.00         0
-    ## Basidiomycota       Tremellodendropsidales                       0.0      30.00         0
-    ## Basidiomycota       Urocystidales                               84.0       0.00         0
-    ## Chlorophyta         Chaetopeltidales                             3.0       7.75         0
-    ## Chlorophyta         Chaetophorales                               0.0      32.00         0
-    ## Chlorophyta         Sphaeropleales                               0.0       5.00         0
-    ## Chlorophyta         unidentified                                 8.0       9.67         0
-    ## Glomeromycota       Archaeosporales                              0.0       5.00         0
-    ## Glomeromycota       Diversisporales                              0.0       5.50         0
-    ## Glomeromycota       Paraglomerales                               4.0       2.00         0
-    ## Haplosporidia       Haplosporidia_ord_Incertae_sedis             2.0       0.00         0
-    ## Mucoromycota        Mucorales                                    0.0       2.50         0
+    ## phylum                             order                                       corn   restored   remnant
+    ## ---------------------------------  --------------------------------------  --------  ---------  --------
+    ## Ascomycota                         Pleosporales                              7438.0    5223.50      7799
+    ## Ascomycota                         Hypocreales                               8736.0    5955.33      7786
+    ## Ascomycota                         unidentified                              1301.5    5302.00      7243
+    ## Basidiomycota                      Agaricales                                2260.5    2979.00      5805
+    ## Ascomycota                         Onygenales                                 134.0    2789.33      5400
+    ## Ascomycota                         Sordariales                              12810.5    5191.00      5119
+    ## Ascomycota                         Helotiales                                4382.0    3344.00      4229
+    ## Ascomycota                         Chaetothyriales                            563.0   12620.00      3372
+    ## Mortierellomycota                  Mortierellales                            5152.5    4953.83      1931
+    ## Basidiomycota                      Cantharellales                             301.5     694.83      1716
+    ## unidentified                       unidentified                              1222.5    2042.67      1233
+    ## Ascomycota                         Glomerellales                             1427.5     960.00      1176
+    ## Glomeromycota                      Glomerales                                  93.0     193.83       824
+    ## Ascomycota                         Sordariomycetes_ord_Incertae_sedis          65.5      50.50       478
+    ## Basidiomycota                      Thelephorales                                1.0      31.17       461
+    ## Ascomycota                         Magnaporthales                             137.0      72.67       457
+    ## Basidiomycota                      Sebacinales                                 21.5     237.83       370
+    ## Ascomycota                         Coniochaetales                            1474.0      80.83       337
+    ## Ascomycota                         Pezizales                                 1383.5     349.00       293
+    ## Ascomycota                         Xylariales                                  21.5     300.83       217
+    ## Basidiomycota                      unidentified                                65.0     307.67       189
+    ## Ascomycota                         Branch06                                    13.0     115.33       183
+    ## Ascomycota                         Geoglossales                                 4.5    1440.33       152
+    ## Basidiomycota                      Auriculariales                              28.0     375.33       136
+    ## Ascomycota                         Chaetosphaeriales                          192.5     123.67       134
+    ## Basidiomycota                      Trechisporales                              12.0     266.00       122
+    ## Ascomycota                         Capnodiales                                643.5     339.67        93
+    ## Basidiomycota                      Filobasidiales                             357.5     174.17        88
+    ## Basidiomycota                      Hymenochaetales                             17.0     400.83        76
+    ## Chytridiomycota                    Spizellomycetales                          128.0     156.00        69
+    ## Basidiomycota                      Ustilaginales                                0.0       5.00        63
+    ## Basidiomycota                      Trichosporonales                             4.0      56.25        62
+    ## Basidiomycota                      Phallales                                   26.5       3.00        61
+    ## Basidiomycota                      Cystofilobasidiales                       6419.0      19.20        56
+    ## Glomeromycota                      unidentified                                11.5      26.17        53
+    ## Ascomycota                         Venturiales                                 20.0      43.83        51
+    ## Basidiomycota                      Tremellales                                 28.0      45.83        44
+    ## Ascomycota                         Eurotiales                                 198.0      28.50        42
+    ## Chytridiomycota                    Chytridiales                                 0.0       3.00        40
+    ## Chytridiomycota                    Rhizophlyctidales                          209.5      63.67        40
+    ## Ascomycota                         Saccharomycetales                          496.5      57.67        36
+    ## Ascomycota                         Orbiliales                                  36.0     115.50        32
+    ## Ascomycota                         Microascales                                27.5      27.25        23
+    ## Ascomycota                         Savoryellales                                6.0      14.00        12
+    ## Ascomycota                         Thelebolales                                61.0      43.20        12
+    ## Basidiomycota                      Polyporales                                 11.5      38.60        12
+    ## Mortierellomycota                  unidentified                                 0.0       6.00        10
+    ## Ascomycota                         Mytilinidiales                               0.0      14.33         7
+    ## Ascomycota                         Dothideales                                  0.0       3.00         6
+    ## Basidiomycota                      Agaricomycetes_ord_Incertae_sedis            0.0       0.00         6
+    ## Chytridiomycota                    Rhizophydiales                              15.0      16.00         4
+    ## Ascomycota                         Candelariales                                0.0       0.00         3
+    ## Basidiomycota                      Russulales                                   0.0       2.00         3
+    ## Mucoromycota                       Mucorales                                    0.0       2.00         2
+    ## Basidiomycota                      Microbotryomycetes_ord_Incertae_sedis       13.0       4.67         1
+    ## Ichthyosporia_phy_Incertae_sedis   unidentified                                 0.0       0.00         1
+    ## Anthophyta                         Brassicales                                  8.0       3.00         0
+    ## Anthophyta                         Commelinales                                 0.0     209.00         0
+    ## Anthophyta                         Poales                                       0.0       5.00         0
+    ## Ascomycota                         Acrospermales                                0.0       3.00         0
+    ## Ascomycota                         Archaeorhizomycetales                        0.0      33.50         0
+    ## Ascomycota                         Boliniales                                  44.5      24.00         0
+    ## Ascomycota                         Botryosphaeriales                           16.0       1.00         0
+    ## Ascomycota                         Diaporthales                                85.0      15.67         0
+    ## Ascomycota                         GS34                                         0.0     117.00         0
+    ## Ascomycota                         Microthyriales                               0.0      22.00         0
+    ## Ascomycota                         Minutisphaerales                             0.0      47.00         0
+    ## Ascomycota                         Myrmecridiales                               0.0     110.60         0
+    ## Ascomycota                         Rhytismatales                                0.0       3.00         0
+    ## Ascomycota                         Trichosphaeriales                            0.0      25.17         0
+    ## Ascomycota                         Tubeufiales                                 58.0     190.83         0
+    ## Basidiomycota                      Atractiellales                               7.0      11.00         0
+    ## Basidiomycota                      Corticiales                                  0.0      19.33         0
+    ## Basidiomycota                      Entylomatales                                0.0       4.50         0
+    ## Basidiomycota                      Erythrobasidiales                            0.0       8.50         0
+    ## Basidiomycota                      Geastrales                                   0.0      91.00         0
+    ## Basidiomycota                      Geminibasidiales                             1.0       0.00         0
+    ## Basidiomycota                      Holtermanniales                              5.0       0.00         0
+    ## Basidiomycota                      Leucosporidiales                            51.0      11.00         0
+    ## Basidiomycota                      Sporidiobolales                             46.0       0.00         0
+    ## Basidiomycota                      Tilletiales                                 11.0      26.50         0
+    ## Basidiomycota                      Tremellodendropsidales                       0.0      29.80         0
+    ## Basidiomycota                      Urocystidales                               75.0       0.00         0
+    ## Chlorophyta                        Chaetopeltidales                             4.0       7.75         0
+    ## Chlorophyta                        Chaetophorales                               0.0      30.00         0
+    ## Chlorophyta                        Sphaeropleales                               0.0       4.00         0
+    ## Chlorophyta                        unidentified                                 8.0       9.67         0
+    ## Glomeromycota                      Archaeosporales                              0.0       7.00         0
+    ## Glomeromycota                      Diversisporales                              0.0       5.00         0
+    ## Glomeromycota                      Paraglomerales                               3.0       3.00         0
+    ## Haplosporidia                      Haplosporidia_ord_Incertae_sedis             2.0       0.00         0
     ## [[1]]
     ## 
     ## 
@@ -3458,23 +3464,23 @@ its_taxaGuild(spe_meta$its_rfy %>% filter(region == "FL"), other_threshold = 5)
     ## 
     ## primary_lifestyle            corn   restored   remnant     total
     ## -----------------------  --------  ---------  --------  --------
-    ## unidentified              24526.0    36856.5     32984   94366.5
-    ## soil_saprotroph           12607.0     8970.7      4570   26147.7
-    ## plant_pathogen             8227.0     5652.7      6741   20620.7
-    ## wood_saprotroph            2876.5     2456.0      3147    8479.5
-    ## dung_saprotroph            2813.5     1541.0      1553    5907.5
-    ## litter_saprotroph          1367.0      800.0      2449    4616.0
-    ## ectomycorrhizal               0.0       14.0      3615    3629.0
-    ## mycoparasite               2947.0      344.2       314    3605.2
-    ## animal_parasite             653.0     1085.3      1649    3387.3
-    ## unspecified_saprotroph     1915.5      124.2       273    2312.7
-    ## root_endophyte               28.0       69.7       521     618.7
-    ## arbuscular_mycorrhizal       74.0       72.0       297     443.0
-    ## pollen_saprotroph           107.5      154.6         3     265.1
-    ## nectar/tap_saprotroph        36.0       52.0        39     127.0
-    ## lichen_parasite               9.0       13.0         4      26.0
-    ## unspecified_pathotroph        0.0       11.5        11      22.5
-    ## algal_parasite                0.0        4.3         0       4.3
+    ## unidentified              24468.0    36844.0     33084   94396.0
+    ## soil_saprotroph           12625.0     9004.2      3796   25425.2
+    ## plant_pathogen             8222.5     5636.7      7604   21463.2
+    ## wood_saprotroph            2925.0     2444.0      2858    8227.0
+    ## dung_saprotroph            2811.0     1555.5      1800    6166.5
+    ## litter_saprotroph          1397.0      798.7      2690    4885.7
+    ## mycoparasite               2919.5      344.5       296    3560.0
+    ## ectomycorrhizal               0.0       13.0      3443    3456.0
+    ## animal_parasite             649.5     1081.8      1526    3257.3
+    ## unspecified_saprotroph     1903.0      122.0       264    2289.0
+    ## root_endophyte               25.0       70.2       455     550.2
+    ## arbuscular_mycorrhizal       73.5       71.8       275     420.3
+    ## pollen_saprotroph           119.0      155.6         2     276.6
+    ## nectar/tap_saprotroph        38.5       51.2        36     125.7
+    ## lichen_parasite               9.0       12.2        32      53.2
+    ## unspecified_pathotroph        0.0       11.0         9      20.0
+    ## algal_parasite                0.0        3.7         0       3.7
     ## foliar_endophyte              3.0        0.0         0       3.0
     ## 
     ## [[2]]
@@ -3502,93 +3508,93 @@ its_taxaGuild(spe_meta$its_rfy %>% filter(region == "LP"), other_threshold = 5)
     ## 
     ## phylum              order                                     corn   restored   remnant
     ## ------------------  --------------------------------------  ------  ---------  --------
-    ## Ascomycota          Hypocreales                              11964    11165.5     13974
-    ## Ascomycota          Chaetothyriales                            804     1192.0      6845
-    ## Basidiomycota       Agaricales                                 954     1206.5      5459
-    ## Ascomycota          Sordariales                              11216     9011.5      4268
-    ## Ascomycota          Helotiales                                3912     4450.5      4123
-    ## Ascomycota          Pleosporales                              6145     6550.0      3727
-    ## Mortierellomycota   Mortierellales                            5226     1908.5      3705
-    ## Basidiomycota       Geastrales                                   0        0.0      3609
-    ## Ascomycota          unidentified                              1059     3285.0      2307
-    ## Ascomycota          Glomerellales                             3983     2587.5      2130
-    ## unidentified        unidentified                              1614     1758.0      1676
-    ## Ascomycota          Geoglossales                                 5        3.0      1041
-    ## Ascomycota          Coniochaetales                             490      648.0       618
-    ## Ascomycota          Sordariomycetes_ord_Incertae_sedis          60       91.5       464
-    ## Basidiomycota       Cantharellales                             240     1111.0       459
-    ## Ascomycota          Xylariales                                  53      150.5       298
-    ## Glomeromycota       Glomerales                                 234     1273.5       281
-    ## Ascomycota          Onygenales                                  54      188.0       256
-    ## Ascomycota          Thelebolales                               166       34.0       252
-    ## Chytridiomycota     Rhizophlyctidales                          229      204.0       222
-    ## Ascomycota          GS34                                         0        0.0       191
-    ## Ascomycota          Capnodiales                                459     1068.5       182
-    ## Basidiomycota       Trichosporonales                             0        5.0       157
-    ## Glomeromycota       unidentified                                11      671.0       153
-    ## Ascomycota          Pezizales                                 2440      510.0       148
-    ## Basidiomycota       Boletales                                    3        0.0       144
-    ## Chytridiomycota     Spizellomycetales                          116      320.5       115
-    ## Ascomycota          Chaetosphaeriales                          593      877.5       100
-    ## Basidiomycota       unidentified                                96       84.0       100
-    ## Basidiomycota       Ustilaginales                                3      210.0        97
-    ## Basidiomycota       Tremellales                                 15       60.0        87
-    ## Ascomycota          Orbiliales                                  21       32.5        86
-    ## Basidiomycota       Cystofilobasidiales                        759      403.5        80
-    ## Basidiomycota       Sebacinales                                 50     2822.5        77
-    ## Basidiomycota       Auriculariales                             101      490.0        74
-    ## Ascomycota          Branch06                                    16       97.5        64
-    ## Basidiomycota       Filobasidiales                            3705     1631.5        62
-    ## Ascomycota          Magnaporthales                              24       48.0        61
-    ## Basidiomycota       Tremellodendropsidales                       0       12.5        47
-    ## Basidiomycota       Thelephorales                                0        5.0        45
-    ## Basidiomycota       Hymenochaetales                             38       21.5        42
-    ## Ascomycota          Myrmecridiales                               0        7.0        36
+    ## Ascomycota          Hypocreales                              11935    11169.5     13966
+    ## Ascomycota          Chaetothyriales                            792     1200.0      6813
+    ## Basidiomycota       Agaricales                                 951     1221.0      5483
+    ## Ascomycota          Sordariales                              11227     8905.0      4297
+    ## Ascomycota          Helotiales                                3875     4519.5      4046
+    ## Mortierellomycota   Mortierellales                            5213     1917.0      3741
+    ## Ascomycota          Pleosporales                              6173     6541.5      3702
+    ## Basidiomycota       Geastrales                                   0        0.0      3668
+    ## Ascomycota          unidentified                              1076     3265.5      2340
+    ## Ascomycota          Glomerellales                             3959     2666.0      2079
+    ## unidentified        unidentified                              1612     1748.5      1662
+    ## Ascomycota          Geoglossales                                 6        4.0      1022
+    ## Ascomycota          Coniochaetales                             495      659.0       641
+    ## Ascomycota          Sordariomycetes_ord_Incertae_sedis          60       91.5       478
+    ## Basidiomycota       Cantharellales                             234     1106.5       452
+    ## Ascomycota          Xylariales                                  55      166.5       314
+    ## Glomeromycota       Glomerales                                 250     1257.0       302
+    ## Ascomycota          Onygenales                                  51      181.5       264
+    ## Ascomycota          Thelebolales                               161       30.5       249
+    ## Ascomycota          GS34                                         0        0.0       192
+    ## Chytridiomycota     Rhizophlyctidales                          223      205.5       189
+    ## Ascomycota          Capnodiales                                467     1066.0       184
+    ## Basidiomycota       Trichosporonales                             0        5.0       170
+    ## Glomeromycota       unidentified                                11      673.5       155
+    ## Ascomycota          Pezizales                                 2463      504.5       145
+    ## Basidiomycota       Boletales                                    1        0.0       141
+    ## Ascomycota          Chaetosphaeriales                          577      867.5       109
+    ## Chytridiomycota     Spizellomycetales                          155      309.5       108
+    ## Basidiomycota       Ustilaginales                                3      219.5        95
+    ## Ascomycota          Orbiliales                                  20       33.5        91
+    ## Basidiomycota       Tremellales                                 19       58.0        90
+    ## Basidiomycota       unidentified                                94       85.5        90
+    ## Basidiomycota       Sebacinales                                 49     2806.0        76
+    ## Basidiomycota       Cystofilobasidiales                        764      394.0        74
+    ## Basidiomycota       Auriculariales                             102      501.5        73
+    ## Basidiomycota       Filobasidiales                            3686     1622.5        66
+    ## Ascomycota          Magnaporthales                              26       45.5        64
+    ## Ascomycota          Branch06                                    18       95.0        58
+    ## Basidiomycota       Tremellodendropsidales                       0       12.5        51
+    ## Basidiomycota       Thelephorales                                0        7.0        40
+    ## Basidiomycota       Hymenochaetales                             38       19.5        39
+    ## Ascomycota          Myrmecridiales                               0        6.0        36
     ## Basidiomycota       Erythrobasidiales                            0        4.0        35
-    ## Ascomycota          Tubeufiales                                 45      637.5        29
-    ## Chytridiomycota     Rhizophydiales                              38       51.5        29
-    ## Basidiomycota       Leucosporidiales                             0        0.0        23
-    ## Basidiomycota       Geminibasidiales                            65        5.0        19
-    ## Mucoromycota        unidentified                                 0        3.0        18
-    ## Basidiomycota       Trechisporales                             138      210.0        17
-    ## Ascomycota          Venturiales                                 54        3.0        15
-    ## Ascomycota          Saccharomycetales                            6       14.0        14
-    ## Ascomycota          Savoryellales                               21        9.0        12
-    ## Chlorophyta         Chaetopeltidales                            40        2.0        11
-    ## Glomeromycota       Archaeosporales                              3       18.0        11
-    ## Ascomycota          Acrospermales                                0       10.0        10
-    ## Basidiomycota       Microbotryomycetes_ord_Incertae_sedis        8       42.0        10
-    ## Ascomycota          Eurotiales                                 115      146.0         7
-    ## Basidiobolomycota   Basidiobolales                               0        2.0         7
-    ## Basidiomycota       Russulales                                   3       12.0         7
-    ## Ascomycota          Microascales                               278      157.0         6
-    ## Basidiomycota       Phallales                                   14      130.5         6
-    ## Ascomycota          Dothideales                                  0       29.0         5
-    ## Ascomycota          Mytilinidiales                               0        0.0         5
-    ## Basidiomycota       Polyporales                                 35        6.0         4
-    ## Basidiomycota       Atractiellales                              42        0.0         3
-    ## Glomeromycota       Diversisporales                              0        0.0         3
-    ## Entorrhizomycota    Entorrhizales                                0        0.0         1
-    ## Mucoromycota        Mucorales                                    0        7.0         1
-    ## Anthophyta          Asterales                                    0        6.0         0
+    ## Ascomycota          Tubeufiales                                 51      640.5        28
+    ## Basidiomycota       Leucosporidiales                             0        0.0        24
+    ## Chytridiomycota     Rhizophydiales                              32       55.0        23
+    ## Mucoromycota        unidentified                                 0        3.0        22
+    ## Basidiomycota       Geminibasidiales                            66        6.0        17
+    ## Basidiomycota       Trechisporales                             143      230.5        17
+    ## Ascomycota          Saccharomycetales                            6       12.5        16
+    ## Ascomycota          Savoryellales                               22       14.0        15
+    ## Basidiomycota       Microbotryomycetes_ord_Incertae_sedis        8       39.0        13
+    ## Ascomycota          Acrospermales                                0       10.0        12
+    ## Ascomycota          Venturiales                                 52        5.0        11
+    ## Chlorophyta         Chaetopeltidales                            34        3.0        10
+    ## Glomeromycota       Archaeosporales                              1       17.0        10
+    ## Ascomycota          Eurotiales                                 121      150.0         9
+    ## Basidiobolomycota   Basidiobolales                               0        1.0         8
+    ## Basidiomycota       Polyporales                                 41        4.5         8
+    ## Basidiomycota       Phallales                                   14      127.5         7
+    ## Ascomycota          Dothideales                                  0       28.0         6
+    ## Ascomycota          Mytilinidiales                               0        0.0         6
+    ## Ascomycota          Microascales                               284      156.0         5
+    ## Basidiomycota       Russulales                                   4       13.0         4
+    ## Basidiomycota       Atractiellales                              36        0.0         3
+    ## Entorrhizomycota    Entorrhizales                                0        0.0         2
+    ## Glomeromycota       Diversisporales                              0        0.0         2
+    ## Mucoromycota        Mucorales                                    0        6.0         2
+    ## Anthophyta          Asterales                                    0        4.0         0
     ## Anthophyta          Poales                                       4        0.0         0
-    ## Ascomycota          Boliniales                                  41       39.5         0
-    ## Ascomycota          Botryosphaeriales                           53        0.0         0
+    ## Ascomycota          Boliniales                                  45       37.5         0
+    ## Ascomycota          Botryosphaeriales                           55        0.0         0
     ## Ascomycota          Diaporthales                               249        0.0         0
     ## Ascomycota          Lichenostigmatales                           0        3.0         0
-    ## Ascomycota          Pezizomycotina_ord_Incertae_sedis           19      517.0         0
-    ## Ascomycota          Phacidiales                                  0        4.0         0
-    ## Ascomycota          Phomatosporales                              0       13.0         0
-    ## Basidiomycota       Atheliales                                   0      300.0         0
-    ## Basidiomycota       Corticiales                                  0        6.0         0
+    ## Ascomycota          Pezizomycotina_ord_Incertae_sedis           23      496.0         0
+    ## Ascomycota          Phacidiales                                  0        5.0         0
+    ## Ascomycota          Phomatosporales                              0       12.0         0
+    ## Basidiomycota       Atheliales                                   0      305.0         0
+    ## Basidiomycota       Corticiales                                  0        4.0         0
     ## Basidiomycota       Cystobasidiales                              0        3.0         0
-    ## Basidiomycota       Entylomatales                                0        3.0         0
-    ## Basidiomycota       Holtermanniales                              6        0.0         0
-    ## Basidiomycota       Platygloeales                                0       38.5         0
-    ## Cercozoa            unidentified                                 4        0.0         0
-    ## Chytridiomycota     unidentified                                25        0.0         0
-    ## Glomeromycota       Paraglomerales                               0        5.5         0
-    ## Haplosporidia       Haplosporidia_ord_Incertae_sedis             6       11.0         0
+    ## Basidiomycota       Entylomatales                                0        1.0         0
+    ## Basidiomycota       Holtermanniales                              5        0.0         0
+    ## Basidiomycota       Platygloeales                                0       37.5         0
+    ## Cercozoa            unidentified                                 5        0.0         0
+    ## Chytridiomycota     unidentified                                23        0.0         0
+    ## Glomeromycota       Paraglomerales                               0        5.0         0
+    ## Haplosporidia       Haplosporidia_ord_Incertae_sedis             5       12.0         0
     ## [[1]]
     ## 
     ## 
@@ -3596,24 +3602,24 @@ its_taxaGuild(spe_meta$its_rfy %>% filter(region == "LP"), other_threshold = 5)
     ## 
     ## primary_lifestyle          corn   restored   remnant     total
     ## -----------------------  ------  ---------  --------  --------
-    ## unidentified              21610    25150.5     29894   76654.5
-    ## plant_pathogen            14008    11393.0      9513   34914.0
-    ## soil_saprotroph           10259     4936.0     12358   27553.0
-    ## wood_saprotroph            4671     4539.5      1604   10814.5
-    ## dung_saprotroph            2571     2875.5      1280    6726.5
-    ## litter_saprotroph          1230     2765.5       969    4964.5
-    ## mycoparasite               1745     1700.0       605    4050.0
-    ## animal_parasite            1265     1449.0       749    3463.0
-    ## root_endophyte                3     1432.5        53    1488.5
-    ## unspecified_saprotroph      493      670.0       212    1375.0
-    ## arbuscular_mycorrhizal      164      712.0       193    1069.0
-    ## pollen_saprotroph           107      339.5       138     584.5
-    ## ectomycorrhizal              11        0.0       553     564.0
-    ## lichen_parasite              25      195.5        11     231.5
-    ## epiphyte                      0        0.0        24      24.0
-    ## nectar/tap_saprotroph         0        7.0        14      21.0
-    ## foliar_endophyte              6       12.0         0      18.0
-    ## algal_parasite                2        4.0         0       6.0
+    ## unidentified              21656    25097.5     29872   76625.5
+    ## plant_pathogen            13945    11487.5      9469   34901.5
+    ## soil_saprotroph           10255     4945.5     12417   27617.5
+    ## wood_saprotroph            4709     4562.5      1619   10890.5
+    ## dung_saprotroph            2557     2865.5      1329    6751.5
+    ## litter_saprotroph          1225     2737.0       931    4893.0
+    ## mycoparasite               1726     1689.5       602    4017.5
+    ## animal_parasite            1238     1449.5       746    3433.5
+    ## root_endophyte                4     1440.0        46    1490.0
+    ## unspecified_saprotroph      496      668.0       202    1366.0
+    ## arbuscular_mycorrhizal      172      688.0       212    1072.0
+    ## pollen_saprotroph           140      328.0       124     592.0
+    ## ectomycorrhizal               9        0.0       547     556.0
+    ## lichen_parasite              29      200.5        10     239.5
+    ## epiphyte                      0        0.0        28      28.0
+    ## foliar_endophyte              7       14.0         0      21.0
+    ## nectar/tap_saprotroph         0        5.0        16      21.0
+    ## algal_parasite                2        3.0         0       5.0
     ## 
     ## [[2]]
 
