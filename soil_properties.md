@@ -2,7 +2,7 @@ Soil abiotic properties
 ================
 Beau Larkin
 
-Last updated: 20 October, 2023
+Last updated: 17 September, 2024
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -91,6 +91,10 @@ fa <- read_csv(paste0(getwd(), "/clean_data/plfa.csv"), show_col_types = FALSE)
 ``` r
 soil_z <- decostand(data.frame(soil[, -1], row.names = 1), "standardize")
 soil_pca <- rda(soil_z)
+soil_pca$CA$u %>% 
+    as.data.frame() %>% 
+    rownames_to_column(var = "field_name") %>% 
+    write_csv(., "soil_properties_files/soil_pca.csv")
 soil_pca %>% summary(., display = NULL)
 ```
 
@@ -114,11 +118,6 @@ soil_pca %>% summary(., display = NULL)
     ## Eigenvalue            0.27747 0.20308 0.129286 0.069183 0.04186 0.019432
     ## Proportion Explained  0.02134 0.01562 0.009945 0.005322 0.00322 0.001495
     ## Cumulative Proportion 0.96440 0.98002 0.989963 0.995285 0.99851 1.000000
-    ## 
-    ## Scaling 2 for species and site scores
-    ## * Species are scaled proportional to eigenvalues
-    ## * Sites are unscaled: weighted dispersion equal on all dimensions
-    ## * General scaling constant of scores:
 
 Axes 1 and 2 explain 52% of the variation in sites. Not bad. Axes 1
 through 5 account for 86%.

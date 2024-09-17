@@ -60,7 +60,10 @@ fa <- read_csv(paste0(getwd(), "/clean_data/plfa.csv"), show_col_types = FALSE)
 #' ## PCA ordination
 soil_z <- decostand(data.frame(soil[, -1], row.names = 1), "standardize")
 soil_pca <- rda(soil_z)
-write_csv(as.data.frame(soil_pca$CA$u), "soil_properties_files/soil_pca.csv")
+soil_pca$CA$u %>% 
+    as.data.frame() %>% 
+    rownames_to_column(var = "field_name") %>% 
+    write_csv(., "soil_properties_files/soil_pca.csv")
 soil_pca %>% summary(., display = NULL)
 #' Axes 1 and 2 explain 52% of the variation in sites. Not bad. Axes 1 through 5 account for 86%. 
 #+ soil_screeplot_fig,fig.align='center'
