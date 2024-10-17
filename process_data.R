@@ -20,6 +20,8 @@
 #' some fields characterized by 9 samples and others by 10. To balance sampling effort
 #' across fields, the top 9 samples by sequence abundance are chosen from each field. 
 #' **Assign "pre" to the argument `process_step` in the etl function so that files are created in the /clean_data/pre/... directory.**
+#' Or, set the variable `ps` to "pre" or "post" so that the current step is easy to identify. 
+#' Find the variable immediately after this list of instructions.
 #' 1. Next, `microbial_diagnostics_pre.R` is run to investigate sequencing depth in samples 
 #' and species accumulation in fields. A few samples are known to have low sequence abundance 
 #' (an order of magnitude lower than the maximum), and the consequence of rarefying to this 
@@ -34,6 +36,9 @@
 #'    - **Assign "post" to the argument `process_step` in the etl function so that files are created in the /clean_data/... directory.**
 #' 1. Finally, `microbial_diagnostics_post.R` is run. It is very similar to the "_pre" script,
 #' but a different file is used so that the two may be compared. 
+#' 1. Set the process step variable here:
+#+ process_step_set
+ps <- "post"
 #' 
 #' ## ITS data (all fungi)
 #' Sequence abundances in 97% similar OTUs in individual samples form the base data. 
@@ -326,7 +331,8 @@ sites    <- read_csv(paste0(getwd(), "/clean_data/sites.csv"), show_col_types = 
 #' to further diagnostics in `microbial_diagnostics_pre.R`.
 #' **Note:** If doing the third step of this workflow, Retain 8 samples from ITS and 7 samples from 18S
 #' per field based on results from `microbial_diagnostics_pre.R`. Proceed to `microbial_diagnostics_post.R` for 
-#' final exploration of the datasets. 
+#' final exploration of the datasets. The process_step is set with variable `ps`, which was defined 
+#' above in the description of this document. Right now, ps is set to `r ps`. 
 #+ otu_its,message=FALSE
 its <-
     etl(
@@ -339,7 +345,7 @@ its <-
         cluster_type = "otu",
         colname_prefix = "ITS_TGP_",
         folder = "/clean_data",
-        process_step = "post"
+        process_step = ps
     )
 its
 #+ otu_18S,message=FALSE,warning=FALSE
@@ -353,7 +359,7 @@ amf <-
         cluster_type = "otu",
         colname_prefix = "X18S_TGP_",
         folder = "/clean_data",
-        process_step = "post"
+        process_step = ps
     )
 amf
 #' 

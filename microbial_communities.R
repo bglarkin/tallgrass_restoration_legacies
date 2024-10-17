@@ -192,6 +192,8 @@ spe_meta <- list(
 #' - amf_uni: rarefied data, summed from 7 samples from each field, UNIFRAC distance
 #' - _gene_samps_region_: objects are distances matrices taken from rarefied data, subsetted to region, with zero sum 
 #' columns removed. Samples in each field depend on the gene-based dataset, see above. 
+#' - amf_uni_samps: rarefied data from 7 samples from each field, UNIFRAC distance. This dataframe is wrangled separately,
+#' added to the list, and written to file for use elsewhere.
 #' 
 #+ distab_list
 index <- "bray"
@@ -305,6 +307,20 @@ distab <- list(
         data.frame(row.names = 1) %>%
         as.dist()
 ) 
+#+ distab_amf_samps_uni
+amf_samps_vec <- paste(spe$amf_samps$field_key, spe$amf_samps$sample, sep = "_")
+distab$amf_samps_uni <- read_delim(file.path(getwd(), "/otu_tables/18S/18S_weighted_samples_UNIFRAC.tsv"), show_col_types = FALSE) %>% 
+    mutate(field_sample = str_remove(field_sample, "18S_TGP_")) %>% 
+    separate_wider_delim(field_sample, delim = "_", names = c("field_key", "sample"), cols_remove = FALSE) %>% 
+    mutate(across(c(field_key, sample), ~ as.numeric(.))) %>% 
+    arrange(field_key, sample) %>%
+    select(-field_key, -sample) %>% 
+    rename_with( ~ str_remove(., "18S_TGP_")) %>% 
+    filter(field_sample %in% amf_samps_vec) %>% 
+    select(any_of(c("field_sample", amf_samps_vec))) %>% 
+    write_csv(., file.path(getwd(), "otu_tables/18S/18S_weighted_samps_unifrac_CLEAN.csv")) %>%
+    data.frame(row.names = 1) %>% 
+    as.dist()
 #' 
 #' # Results
 #' #### Ordinations
