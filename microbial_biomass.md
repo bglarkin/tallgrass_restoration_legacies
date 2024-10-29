@@ -2,7 +2,7 @@ Microbial data: fatty acids (biomass)
 ================
 Beau Larkin
 
-Last updated: 15 December, 2023
+Last updated: 29 October, 2024
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -17,11 +17,11 @@ Last updated: 15 December, 2023
 
 # Description
 
-Microbial data include site-species tables derived from high-throughput
-sequencing and PLFA/NLFA data which Ylva did.
-
 This presents basic visualizations of microbial biomass inferred with
-PLFA/NLFA quantification.
+PLFA/NLFA quantification done by YL.
+
+**Note:** Only fatty acid 18.2 is used for fungi because 18.2w9 is also
+found in gram-negative bacteria.
 
 # Packages and libraries
 
@@ -78,8 +78,9 @@ fa_meta <-
     left_join(fa, by = c("field_key", "field_name"))
 fa_grp <- 
     fa_meta %>% 
-    select(-starts_with("fa_")) %>% 
-    pivot_longer(cols = gram_pos:nlfa_plfa_ratio, names_to = "group", values_to = "qty")
+    rename(fungi_18.2 = fa_18.2) %>% 
+    select(-starts_with("fa_"), -fungi) %>% 
+    pivot_longer(cols = fungi_18.2:nlfa_plfa_ratio, names_to = "group", values_to = "qty")
 ```
 
 # Results
@@ -209,11 +210,6 @@ fa_pca %>% summary(., display = NULL)
     ## Eigenvalue            5.126e-04
     ## Proportion Explained  2.698e-05
     ## Cumulative Proportion 1.000e+00
-    ## 
-    ## Scaling 2 for species and site scores
-    ## * Species are scaled proportional to eigenvalues
-    ## * Sites are unscaled: weighted dispersion equal on all dimensions
-    ## * General scaling constant of scores:
 
 Axes 1 and 2 explain 85% of the variation in sites.
 
@@ -264,11 +260,6 @@ fa_sum_pca %>% summary(., display = NULL)
     ## Eigenvalue            4.8846 0.8460 0.19677 0.052786 0.019770
     ## Proportion Explained  0.8141 0.1410 0.03279 0.008798 0.003295
     ## Cumulative Proportion 0.8141 0.9551 0.98791 0.996705 1.000000
-    ## 
-    ## Scaling 2 for species and site scores
-    ## * Species are scaled proportional to eigenvalues
-    ## * Sites are unscaled: weighted dispersion equal on all dimensions
-    ## * General scaling constant of scores:
 
 Axes 1 and 2 explain 96% of the variation in sites.
 

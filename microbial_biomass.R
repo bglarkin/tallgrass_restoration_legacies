@@ -12,11 +12,11 @@
 #' ---
 #'
 #' # Description
-#' Microbial data include site-species tables derived from high-throughput sequencing 
-#' and PLFA/NLFA data which Ylva did. 
-#' 
 #' This presents basic visualizations of microbial biomass inferred with PLFA/NLFA 
-#' quantification.
+#' quantification done by YL.
+#'
+#' **Note:** Only fatty acid 18.2 is used for fungi because 18.2w9 is also found
+#' in gram-negative bacteria. 
 #' 
 #' # Packages and libraries
 packages_needed = c("GGally", "tidyverse", "vegan", "colorspace", "ggbeeswarm")
@@ -57,8 +57,9 @@ fa_meta <-
     left_join(fa, by = c("field_key", "field_name"))
 fa_grp <- 
     fa_meta %>% 
-    select(-starts_with("fa_")) %>% 
-    pivot_longer(cols = gram_pos:nlfa_plfa_ratio, names_to = "group", values_to = "qty")
+    rename(fungi_18.2 = fa_18.2) %>% 
+    select(-starts_with("fa_"), -fungi) %>% 
+    pivot_longer(cols = fungi_18.2:nlfa_plfa_ratio, names_to = "group", values_to = "qty")
 #' 
 #' # Results
 #' ## Biomass in field types and regions
