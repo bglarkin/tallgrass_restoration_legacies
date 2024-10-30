@@ -14,6 +14,8 @@
 #' # Description
 #' This presents basic visualizations of microbial biomass inferred with PLFA/NLFA 
 #' quantification done by YL.
+#' 
+#' Biomass may also correlate with water stable aggregation, so we'll look at that too. 
 #'
 #' **Note:** Only fatty acid 18.2 is used for fungi because 18.2w9 is also found
 #' in gram-negative bacteria. 
@@ -60,6 +62,10 @@ fa_grp <-
     rename(fungi_18.2 = fa_18.2) %>% 
     select(-starts_with("fa_"), -fungi) %>% 
     pivot_longer(cols = fungi_18.2:nlfa_plfa_ratio, names_to = "group", values_to = "qty")
+#+ wsa_data
+# Remove rows from old field sites (26 and 27)
+wsa <- read_csv(paste0(getwd(), "/clean_data/wsa.csv"), show_col_types = FALSE)[-c(26:27), ] %>% 
+    left_join(sites, by = "field_key")
 #' 
 #' # Results
 #' ## Biomass in field types and regions
@@ -159,3 +165,28 @@ fa_meta %>%
     select(field_name, yr_since, gram_pos, gram_neg, bacteria, fungi, actinomycetes, amf) %>% 
     ggpairs(columns = 2:ncol(.)) + theme_bw()
 #' AMF decline with moderate strength as fields age. 
+#' 
+#' ## Biomass and WSA
+#+ biomass_wsa_wisconsin_fig,fig.align='center'
+fa_grp %>% 
+    filter(group %in% c("fungi_18.2", "amf"), 
+           region != "FL") %>% 
+    pivot_wider(names_from = "group", values_from = "qty", names_prefix = "mass_") %>% 
+    left_join(wsa %>% select(field_key, wsa), by = join_by(field_key)) %>% 
+    mutate(field_type = factor(field_type, ordered = FALSE),
+           yr_since = as.integer(yr_since)) %>% 
+    ggpairs(columns = 5:8, ggplot2::aes(color = field_type, shape = region))
+#' Whatever is going on between fungal biomass and wsa isn't related to age, it might be related to 
+#' something in the plant community or another site variable, but it's not strong and doesn't 
+#' immediately appear to be related to any of the primary questions here. 
+#+ biomass_wsa_bm_fig,fig.align='center'
+fa_grp %>% 
+    filter(group %in% c("fungi_18.2", "amf"), 
+           region == "BM", 
+           field_type == "restored") %>% 
+    pivot_wider(names_from = "group", values_from = "qty", names_prefix = "mass_") %>% 
+    left_join(wsa %>% select(field_key, wsa), by = join_by(field_key)) %>% 
+    mutate(field_type = factor(field_type, ordered = FALSE),
+           yr_since = as.integer(yr_since)) %>% 
+    ggpairs(columns = 5:8)
+#' Again, no relationship between biomass and wsa. 

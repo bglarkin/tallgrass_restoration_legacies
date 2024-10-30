@@ -2,7 +2,7 @@ Microbial data: fatty acids (biomass)
 ================
 Beau Larkin
 
-Last updated: 29 October, 2024
+Last updated: 30 October, 2024
 
 - [Description](#description)
 - [Packages and libraries](#packages-and-libraries)
@@ -14,11 +14,15 @@ Last updated: 29 October, 2024
   - [Ordination with PCA](#ordination-with-pca)
   - [Nutrients and microbial biomass](#nutrients-and-microbial-biomass)
   - [Biomass over field age](#biomass-over-field-age)
+  - [Biomass and WSA](#biomass-and-wsa)
 
 # Description
 
 This presents basic visualizations of microbial biomass inferred with
 PLFA/NLFA quantification done by YL.
+
+Biomass may also correlate with water stable aggregation, so we’ll look
+at that too.
 
 **Note:** Only fatty acid 18.2 is used for fungi because 18.2w9 is also
 found in gram-negative bacteria.
@@ -81,6 +85,12 @@ fa_grp <-
     rename(fungi_18.2 = fa_18.2) %>% 
     select(-starts_with("fa_"), -fungi) %>% 
     pivot_longer(cols = fungi_18.2:nlfa_plfa_ratio, names_to = "group", values_to = "qty")
+```
+
+``` r
+# Remove rows from old field sites (26 and 27)
+wsa <- read_csv(paste0(getwd(), "/clean_data/wsa.csv"), show_col_types = FALSE)[-c(26:27), ] %>% 
+    left_join(sites, by = "field_key")
 ```
 
 # Results
@@ -308,3 +318,137 @@ fa_meta %>%
 <img src="microbial_biomass_files/figure-gfm/fa_yr_since_fig-1.png" style="display: block; margin: auto;" />
 
 AMF decline with moderate strength as fields age.
+
+## Biomass and WSA
+
+``` r
+fa_grp %>% 
+    filter(group %in% c("fungi_18.2", "amf"), 
+           region != "FL") %>% 
+    pivot_wider(names_from = "group", values_from = "qty", names_prefix = "mass_") %>% 
+    left_join(wsa %>% select(field_key, wsa), by = join_by(field_key)) %>% 
+    mutate(field_type = factor(field_type, ordered = FALSE),
+           yr_since = as.integer(yr_since)) %>% 
+    ggpairs(columns = 5:8, ggplot2::aes(color = field_type, shape = region))
+```
+
+    ## Warning: There was 1 warning in `mutate()`.
+    ## ℹ In argument: `yr_since = as.integer(yr_since)`.
+    ## Caused by warning:
+    ## ! NAs introduced by coercion
+
+    ## Warning: Removed 6 rows containing non-finite outside the scale range
+    ## (`stat_density()`).
+
+    ## Warning: Groups with fewer than two data points have been dropped.
+
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+
+    ## Warning in ggally_statistic(data = data, mapping = mapping, na.rm = na.rm, :
+    ## Removed 6 rows containing missing values
+    ## Warning in ggally_statistic(data = data, mapping = mapping, na.rm = na.rm, :
+    ## Removed 6 rows containing missing values
+    ## Warning in ggally_statistic(data = data, mapping = mapping, na.rm = na.rm, :
+    ## Removed 6 rows containing missing values
+
+    ## Warning: Removed 6 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+    ## Warning: Groups with fewer than two data points have been dropped.
+    ## Groups with fewer than two data points have been dropped.
+    ## Groups with fewer than two data points have been dropped.
+    ## Groups with fewer than two data points have been dropped.
+    ## Groups with fewer than two data points have been dropped.
+    ## Groups with fewer than two data points have been dropped.
+    ## Groups with fewer than two data points have been dropped.
+
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+
+    ## Warning: Removed 6 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+    ## Warning: Groups with fewer than two data points have been dropped.
+    ## Groups with fewer than two data points have been dropped.
+    ## Groups with fewer than two data points have been dropped.
+    ## Groups with fewer than two data points have been dropped.
+    ## Groups with fewer than two data points have been dropped.
+    ## Groups with fewer than two data points have been dropped.
+    ## Groups with fewer than two data points have been dropped.
+
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+
+    ## Warning: Removed 6 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+    ## Warning: Groups with fewer than two data points have been dropped.
+    ## Groups with fewer than two data points have been dropped.
+    ## Groups with fewer than two data points have been dropped.
+    ## Groups with fewer than two data points have been dropped.
+    ## Groups with fewer than two data points have been dropped.
+    ## Groups with fewer than two data points have been dropped.
+    ## Groups with fewer than two data points have been dropped.
+
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+    ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+    ## -Inf
+
+<img src="microbial_biomass_files/figure-gfm/biomass_wsa_wisconsin_fig-1.png" style="display: block; margin: auto;" />
+
+Whatever is going on between fungal biomass and wsa isn’t related to
+age, it might be related to something in the plant community or another
+site variable, but it’s not strong and doesn’t immediately appear to be
+related to any of the primary questions here.
+
+``` r
+fa_grp %>% 
+    filter(group %in% c("fungi_18.2", "amf"), 
+           region == "BM", 
+           field_type == "restored") %>% 
+    pivot_wider(names_from = "group", values_from = "qty", names_prefix = "mass_") %>% 
+    left_join(wsa %>% select(field_key, wsa), by = join_by(field_key)) %>% 
+    mutate(field_type = factor(field_type, ordered = FALSE),
+           yr_since = as.integer(yr_since)) %>% 
+    ggpairs(columns = 5:8)
+```
+
+<img src="microbial_biomass_files/figure-gfm/biomass_wsa_bm_fig-1.png" style="display: block; margin: auto;" />
+
+Again, no relationship between biomass and wsa.
