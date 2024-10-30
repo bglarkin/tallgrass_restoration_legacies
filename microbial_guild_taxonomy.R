@@ -33,7 +33,7 @@
 #' to be restarted. 
 # tools::package_dependencies("Matrix", which = "LinkingTo", reverse = TRUE)[[1L]]
 # install.packages("lme4", type = "source")
-library("lme4")
+# library("lme4")
 #' Other packages
 packages_needed = c("tidyverse",
                     "knitr",
