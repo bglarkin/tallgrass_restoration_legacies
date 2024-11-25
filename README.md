@@ -67,7 +67,7 @@ This [report](tgr_constrained.md) attempts to find strong explanations for micro
 due to region might confound such an analysis, site variables like soil abiotic properties and precipitation were first condensed into two ordination axes 
 using PCA and used as covariables in the constrained analysis. The constrained analysis was done with dbRDA and tested the explanatory 
 power of years since restoration, plant community axes or plant traits, and soil properties that we don't believe are due to 
-regional differences and rather come from an agricultural legacy: SOM, NO<sub>3</sub>, P, and K.  
+regional differences and rather arise from an agricultural legacy: SOM, NO<sub>3</sub>, P, and K.  
 
 ## Summary
 The goal of this final [report](tgr_summary.pdf) is to present results and discuss whether a path forward with these data exists. If so, we will determine the strategy that presents the best story, organization, and interpretation of these results.
